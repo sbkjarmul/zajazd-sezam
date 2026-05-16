@@ -145,5 +145,14 @@
       "hoursValue": "Codziennie 12:00 – 22:00",
       "location": "Lokalizacja"
     }
+  },
+  "menu": {
+    "diet": {
+      "vegetarian": "wegetariańskie",
+      "vegan": "wegańskie",
+      "glutenFree": "bezglutenowe",
+      "lactoseFree": "bezlaktozowe",
+      "spicy": "ostre"
+    }
   }
 }

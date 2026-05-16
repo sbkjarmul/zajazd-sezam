@@ -145,5 +145,14 @@
       "hoursValue": "Daily 12:00 – 22:00",
       "location": "Location"
     }
+  },
+  "menu": {
+    "diet": {
+      "vegetarian": "vegetarian",
+      "vegan": "vegan",
+      "glutenFree": "gluten-free",
+      "lactoseFree": "lactose-free",
+      "spicy": "spicy"
+    }
   }
 }

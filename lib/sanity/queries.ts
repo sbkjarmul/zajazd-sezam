@@ -112,9 +112,10 @@ export const RESTAURANT_PAGE_QUERY = defineQuery(`
 
 export const MENU_PAGE_QUERY = defineQuery(`
   *[_type == "menuPage" && _id == "menuPage"][0]{
-    hero { ${HERO_FRAGMENT} },
+    pageIntro { eyebrow, title, subtitle, ctaLabel },
+    photoStrip[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
+    reservationSection { title, description },
     dietaryInfo,
-    allergenInfo,
     seo { ${SEO_FRAGMENT} }
   }
 `)
