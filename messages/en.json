@@ -132,6 +132,11 @@
   },
   "home": {
     "title": "Zajazd Sezam",
-    "intro": "Site under construction."
+    "intro": "Site under construction.",
+    "contact": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address"
+    }
   }
 }

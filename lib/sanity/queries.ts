@@ -7,7 +7,7 @@ import { defineQuery } from 'next-sanity'
 const SEO_FRAGMENT = /* groq */ `
   metaTitle,
   metaDescription,
-  ogImage,
+  ogImage { ..., asset->{ _id, url } },
   noIndex
 `
 
@@ -58,51 +58,34 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
 export const HOMEPAGE_QUERY = defineQuery(`
   *[_type == "homepage" && _id == "homepage"][0]{
     hero { ${HERO_FRAGMENT} },
-    problemSection {
-      title,
-      cards[]{ title, description }
+    aboutSection {
+      intro,
+      stats[]{ value, label }
     },
-    solutionSection {
-      title,
-      description,
-      pillars[]{ title, description }
+    servicesIntro { eyebrow, title },
+    eventsBlock {
+      eyebrow, title, description, ctaLabel,
+      mainImage { ${IMAGE_WITH_ALT_FRAGMENT} },
+      secondaryImage { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
-    eventHallsSection {
-      title,
-      description,
-      ctaLabel,
-      halls[]->{
-        _id,
-        name,
-        capacity,
-        "slug": slug.current,
-        images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
-      }
-    },
-    restaurantSection {
-      title,
-      description,
-      menuLinkLabel,
-      dishImages[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
-    },
-    stepsSection {
-      title,
-      steps[]{ title, description }
-    },
-    reviewsSection {
-      title,
-      description
-    },
-    hotelUpsellSection {
-      title,
-      description,
-      ctaLabel,
+    restaurantBlock {
+      eyebrow, title, description, ctaLabel,
       image { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
-    finalCta {
-      title,
-      description,
-      ctaLabel
+    hotelBlock {
+      eyebrow, title, description, ctaLabel,
+      images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    bistroBlock {
+      eyebrow, title, description, ctaLabel,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    reviewsBlock {
+      eyebrow, title, ratingValue, ratingSource, ratingCount
+    },
+    contactBlock {
+      eyebrow, title,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
     seo { ${SEO_FRAGMENT} }
   }

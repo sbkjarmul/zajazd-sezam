@@ -132,6 +132,11 @@
   },
   "home": {
     "title": "Zajazd Sezam",
-    "intro": "Strona w budowie."
+    "intro": "Strona w budowie.",
+    "contact": {
+      "phone": "Telefon",
+      "email": "Email",
+      "address": "Adres"
+    }
   }
 }

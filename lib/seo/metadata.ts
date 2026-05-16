@@ -1,16 +1,18 @@
 import type { Metadata } from 'next'
 import { getPathname } from '@/i18n/navigation'
 import { routing, type Locale, type Pathname } from '@/i18n/routing'
-import { urlFor } from '@/lib/sanity/image'
 import { SITE_URL } from '@/lib/env'
-import type { Image } from 'sanity'
 
 type LocaleString = { pl?: string | null; en?: string | null } | null | undefined
+
+type SeoImageInput = {
+  asset?: { url?: string | null } | null
+} | null | undefined
 
 export type SeoMetaInput = {
   metaTitle?: LocaleString
   metaDescription?: LocaleString
-  ogImage?: Image | null
+  ogImage?: SeoImageInput
   noIndex?: boolean | null
 } | null
 
@@ -34,7 +36,7 @@ export function buildMetadata({
   const title = pickLocale(seo?.metaTitle, locale) ?? pickLocale(defaultSeo?.metaTitle, locale)
   const description =
     pickLocale(seo?.metaDescription, locale) ?? pickLocale(defaultSeo?.metaDescription, locale)
-  const ogImage = seo?.ogImage ?? defaultSeo?.ogImage ?? null
+  const ogImageUrl = ogImageFromSeo(seo) ?? ogImageFromSeo(defaultSeo)
   const noIndex = Boolean(seo?.noIndex)
 
   const canonical = absoluteUrl(localizedPathname(pathname, locale))
@@ -47,9 +49,7 @@ export function buildMetadata({
     siteName,
     locale: OG_LOCALE[locale],
     type: 'website',
-    images: ogImage
-      ? [{ url: urlFor(ogImage).width(1200).height(630).url(), width: 1200, height: 630 }]
-      : undefined,
+    images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : undefined,
   }
 
   return {
@@ -66,8 +66,14 @@ function pickLocale(value: LocaleString, locale: Locale): string | undefined {
   return value?.[locale] ?? undefined
 }
 
+function ogImageFromSeo(seo: SeoMetaInput | undefined): string | undefined {
+  const url = seo?.ogImage?.asset?.url
+  if (!url) return undefined
+  // Sanity image CDN URL — append transformation params for 1200×630 OG crop.
+  return `${url}?w=1200&h=630&fit=crop&auto=format`
+}
+
 function localizedPathname(pathname: Pathname, locale: Locale): string {
-  // getPathname zawiera już prefix locale (config: localePrefix='always').
   return getPathname({ href: { pathname }, locale })
 }
 

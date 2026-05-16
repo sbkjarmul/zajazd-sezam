@@ -249,65 +249,64 @@ export type Homepage = {
   _updatedAt: string
   _rev: string
   hero?: Hero
-  problemSection?: {
-    title?: LocaleString
-    cards?: Array<{
-      title?: LocaleString
-      description?: LocaleText
-      _type: 'problemCard'
+  aboutSection?: {
+    intro?: LocaleText
+    stats?: Array<{
+      value?: string
+      label?: LocaleString
+      _type: 'stat'
       _key: string
     }>
   }
-  solutionSection?: {
+  servicesIntro?: {
+    eyebrow?: LocaleString
     title?: LocaleString
-    description?: LocaleText
-    pillars?: Array<{
-      title?: LocaleString
-      description?: LocaleText
-      _type: 'pillar'
-      _key: string
-    }>
   }
-  eventHallsSection?: {
+  eventsBlock?: {
+    eyebrow?: LocaleString
     title?: LocaleString
     description?: LocaleText
-    halls?: Array<
-      {
-        _key: string
-      } & EventHallReference
-    >
+    mainImage?: ImageWithAlt
+    secondaryImage?: ImageWithAlt
     ctaLabel?: LocaleString
   }
-  restaurantSection?: {
-    title?: LocaleString
-    description?: LocaleText
-    dishImages?: Array<
-      {
-        _key: string
-      } & ImageWithAlt
-    >
-    menuLinkLabel?: LocaleString
-  }
-  stepsSection?: {
-    title?: LocaleString
-    steps?: Array<{
-      title?: LocaleString
-      description?: LocaleText
-      _type: 'step'
-      _key: string
-    }>
-  }
-  reviewsSection?: {
-    title?: LocaleString
-    description?: LocaleText
-  }
-  hotelUpsellSection?: {
+  restaurantBlock?: {
+    eyebrow?: LocaleString
     title?: LocaleString
     description?: LocaleText
     image?: ImageWithAlt
     ctaLabel?: LocaleString
   }
-  finalCta?: CtaBlock
+  hotelBlock?: {
+    eyebrow?: LocaleString
+    title?: LocaleString
+    description?: LocaleText
+    images?: Array<
+      {
+        _key: string
+      } & ImageWithAlt
+    >
+    ctaLabel?: LocaleString
+  }
+  bistroBlock?: {
+    eyebrow?: LocaleString
+    title?: LocaleString
+    description?: LocaleText
+    image?: ImageWithAlt
+    ctaLabel?: LocaleString
+  }
+  reviewsBlock?: {
+    eyebrow?: LocaleString
+    title?: LocaleString
+    ratingValue?: string
+    ratingSource?: string
+    ratingCount?: LocaleString
+  }
+  contactBlock?: {
+    eyebrow?: LocaleString
+    title?: LocaleString
+    image?: ImageWithAlt
+  }
   seo?: SeoMeta
 }
 
@@ -629,7 +628,7 @@ export type AllSanitySchemaTypes =
 
 // Source: lib/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{    companyName,    legalName,    shortDescription,    address,    phone,    receptionEmail,    publicEmail,    openingHoursRestaurant,    openingHoursReception,    googleBusinessProfileUrl,    googleMapsUrl,    defaultSeo {        metaTitle,  metaDescription,  ogImage,  noIndex    }  }
+// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{    companyName,    legalName,    shortDescription,    address,    phone,    receptionEmail,    publicEmail,    openingHoursRestaurant,    openingHoursReception,    googleBusinessProfileUrl,    googleMapsUrl,    defaultSeo {        metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex    }  }
 export type SITE_SETTINGS_QUERY_RESULT = {
   companyName: LocaleString | null
   legalName: string | null
@@ -654,7 +653,10 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -666,7 +668,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_type == "homepage" && _id == "homepage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    problemSection {      title,      cards[]{ title, description }    },    solutionSection {      title,      description,      pillars[]{ title, description }    },    eventHallsSection {      title,      description,      ctaLabel,      halls[]->{        _id,        name,        capacity,        "slug": slug.current,        images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }      }    },    restaurantSection {      title,      description,      menuLinkLabel,      dishImages[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    stepsSection {      title,      steps[]{ title, description }    },    reviewsSection {      title,      description    },    hotelUpsellSection {      title,      description,      ctaLabel,      image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    finalCta {      title,      description,      ctaLabel    },    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "homepage" && _id == "homepage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    aboutSection {      intro,      stats[]{ value, label }    },    servicesIntro { eyebrow, title },    eventsBlock {      eyebrow, title, description, ctaLabel,      mainImage {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },      secondaryImage {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    restaurantBlock {      eyebrow, title, description, ctaLabel,      image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    hotelBlock {      eyebrow, title, description, ctaLabel,      images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    bistroBlock {      eyebrow, title, description, ctaLabel,      image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    reviewsBlock {      eyebrow, title, ratingValue, ratingSource, ratingCount    },    contactBlock {      eyebrow, title,      image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type HOMEPAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -689,55 +691,23 @@ export type HOMEPAGE_QUERY_RESULT = {
       alt: LocaleString | null
     } | null
   } | null
-  problemSection: {
-    title: LocaleString | null
-    cards: Array<{
-      title: LocaleString | null
-      description: LocaleText | null
+  aboutSection: {
+    intro: LocaleText | null
+    stats: Array<{
+      value: string | null
+      label: LocaleString | null
     }> | null
   } | null
-  solutionSection: {
+  servicesIntro: {
+    eyebrow: LocaleString | null
     title: LocaleString | null
-    description: LocaleText | null
-    pillars: Array<{
-      title: LocaleString | null
-      description: LocaleText | null
-    }> | null
   } | null
-  eventHallsSection: {
+  eventsBlock: {
+    eyebrow: LocaleString | null
     title: LocaleString | null
     description: LocaleText | null
     ctaLabel: LocaleString | null
-    halls: Array<{
-      _id: string
-      name: LocaleString | null
-      capacity: number | null
-      slug: string | null
-      images: Array<{
-        _key: string
-        _type: 'imageWithAlt'
-        asset: {
-          _id: string
-          url: string | null
-          metadata: {
-            dimensions: SanityImageDimensions | null
-            lqip: string | null
-            palette: SanityImagePalette | null
-          } | null
-        } | null
-        media?: unknown
-        hotspot?: SanityImageHotspot
-        crop?: SanityImageCrop
-        alt: LocaleString | null
-      }> | null
-    }> | null
-  } | null
-  restaurantSection: {
-    title: LocaleString | null
-    description: LocaleText | null
-    menuLinkLabel: LocaleString | null
-    dishImages: Array<{
-      _key: string
+    mainImage: {
       _type: 'imageWithAlt'
       asset: {
         _id: string
@@ -752,20 +722,26 @@ export type HOMEPAGE_QUERY_RESULT = {
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
       alt: LocaleString | null
-    }> | null
+    } | null
+    secondaryImage: {
+      _type: 'imageWithAlt'
+      asset: {
+        _id: string
+        url: string | null
+        metadata: {
+          dimensions: SanityImageDimensions | null
+          lqip: string | null
+          palette: SanityImagePalette | null
+        } | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: LocaleString | null
+    } | null
   } | null
-  stepsSection: {
-    title: LocaleString | null
-    steps: Array<{
-      title: LocaleString | null
-      description: LocaleText | null
-    }> | null
-  } | null
-  reviewsSection: {
-    title: LocaleString | null
-    description: LocaleText | null
-  } | null
-  hotelUpsellSection: {
+  restaurantBlock: {
+    eyebrow: LocaleString | null
     title: LocaleString | null
     description: LocaleText | null
     ctaLabel: LocaleString | null
@@ -786,16 +762,86 @@ export type HOMEPAGE_QUERY_RESULT = {
       alt: LocaleString | null
     } | null
   } | null
-  finalCta: {
+  hotelBlock: {
+    eyebrow: LocaleString | null
     title: LocaleString | null
     description: LocaleText | null
     ctaLabel: LocaleString | null
+    images: Array<{
+      _key: string
+      _type: 'imageWithAlt'
+      asset: {
+        _id: string
+        url: string | null
+        metadata: {
+          dimensions: SanityImageDimensions | null
+          lqip: string | null
+          palette: SanityImagePalette | null
+        } | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: LocaleString | null
+    }> | null
+  } | null
+  bistroBlock: {
+    eyebrow: LocaleString | null
+    title: LocaleString | null
+    description: LocaleText | null
+    ctaLabel: LocaleString | null
+    image: {
+      _type: 'imageWithAlt'
+      asset: {
+        _id: string
+        url: string | null
+        metadata: {
+          dimensions: SanityImageDimensions | null
+          lqip: string | null
+          palette: SanityImagePalette | null
+        } | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: LocaleString | null
+    } | null
+  } | null
+  reviewsBlock: {
+    eyebrow: LocaleString | null
+    title: LocaleString | null
+    ratingValue: string | null
+    ratingSource: string | null
+    ratingCount: LocaleString | null
+  } | null
+  contactBlock: {
+    eyebrow: LocaleString | null
+    title: LocaleString | null
+    image: {
+      _type: 'imageWithAlt'
+      asset: {
+        _id: string
+        url: string | null
+        metadata: {
+          dimensions: SanityImageDimensions | null
+          lqip: string | null
+          palette: SanityImagePalette | null
+        } | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: LocaleString | null
+    } | null
   } | null
   seo: {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -807,7 +853,7 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: RESTAURANT_PAGE_QUERY
-// Query: *[_type == "restaurantPage" && _id == "restaurantPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    highlights,    gallery[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    menuCtaLabel,    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "restaurantPage" && _id == "restaurantPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    highlights,    gallery[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    menuCtaLabel,    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type RESTAURANT_PAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -863,7 +909,10 @@ export type RESTAURANT_PAGE_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -875,7 +924,7 @@ export type RESTAURANT_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: MENU_PAGE_QUERY
-// Query: *[_type == "menuPage" && _id == "menuPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    dietaryInfo,    allergenInfo,    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "menuPage" && _id == "menuPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    dietaryInfo,    allergenInfo,    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type MENU_PAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -904,7 +953,10 @@ export type MENU_PAGE_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -916,7 +968,7 @@ export type MENU_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: BISTRO_PAGE_QUERY
-// Query: *[_type == "bistroPage" && _id == "bistroPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    highlights,    openingHours,    gallery[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "bistroPage" && _id == "bistroPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    highlights,    openingHours,    gallery[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type BISTRO_PAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -976,7 +1028,10 @@ export type BISTRO_PAGE_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -988,7 +1043,7 @@ export type BISTRO_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: HOTEL_PAGE_QUERY
-// Query: *[_type == "hotelPage" && _id == "hotelPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    amenities[]{ title, description },    rooms[]->{      _id,      name,      identifier,      description,      capacity,      amenities,      order,      images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "hotelPage" && _id == "hotelPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    amenities[]{ title, description },    rooms[]->{      _id,      name,      identifier,      description,      capacity,      amenities,      order,      images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type HOTEL_PAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -1064,7 +1119,10 @@ export type HOTEL_PAGE_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -1076,7 +1134,7 @@ export type HOTEL_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: EVENTS_PAGE_QUERY
-// Query: *[_type == "eventsPage" && _id == "eventsPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    eventTypes[]->{      _id,      name,      "slug": slug.current,      description,      order    } | order(order asc),    halls[]->{      _id,      name,      "slug": slug.current,      capacity,      description,      amenities,      order,      images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    } | order(order asc),    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "eventsPage" && _id == "eventsPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    eventTypes[]->{      _id,      name,      "slug": slug.current,      description,      order    } | order(order asc),    halls[]->{      _id,      name,      "slug": slug.current,      capacity,      description,      amenities,      order,      images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    } | order(order asc),    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type EVENTS_PAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -1146,7 +1204,10 @@ export type EVENTS_PAGE_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -1158,7 +1219,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: CONTACT_PAGE_QUERY
-// Query: *[_type == "contactPage" && _id == "contactPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    directions,    seo {   metaTitle,  metaDescription,  ogImage,  noIndex }  }
+// Query: *[_type == "contactPage" && _id == "contactPage"][0]{    hero {   headline,  subheadline,  primaryCtaLabel,  image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt } },    intro,    directions,    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type CONTACT_PAGE_QUERY_RESULT = {
   hero: {
     headline: LocaleString | null
@@ -1187,7 +1248,10 @@ export type CONTACT_PAGE_QUERY_RESULT = {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
     ogImage: {
-      asset?: SanityImageAssetReference
+      asset: {
+        _id: string
+        url: string | null
+      } | null
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -1312,14 +1376,14 @@ export type ALL_ROOM_TYPES_QUERY_RESULT = Array<{
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "siteSettings" && _id == "siteSettings"][0]{\n    companyName,\n    legalName,\n    shortDescription,\n    address,\n    phone,\n    receptionEmail,\n    publicEmail,\n    openingHoursRestaurant,\n    openingHoursReception,\n    googleBusinessProfileUrl,\n    googleMapsUrl,\n    defaultSeo {\n      \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n\n    }\n  }\n': SITE_SETTINGS_QUERY_RESULT
-    '\n  *[_type == "homepage" && _id == "homepage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    problemSection {\n      title,\n      cards[]{ title, description }\n    },\n    solutionSection {\n      title,\n      description,\n      pillars[]{ title, description }\n    },\n    eventHallsSection {\n      title,\n      description,\n      ctaLabel,\n      halls[]->{\n        _id,\n        name,\n        capacity,\n        "slug": slug.current,\n        images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n      }\n    },\n    restaurantSection {\n      title,\n      description,\n      menuLinkLabel,\n      dishImages[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    stepsSection {\n      title,\n      steps[]{ title, description }\n    },\n    reviewsSection {\n      title,\n      description\n    },\n    hotelUpsellSection {\n      title,\n      description,\n      ctaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    finalCta {\n      title,\n      description,\n      ctaLabel\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': HOMEPAGE_QUERY_RESULT
-    '\n  *[_type == "restaurantPage" && _id == "restaurantPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    highlights,\n    gallery[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    menuCtaLabel,\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': RESTAURANT_PAGE_QUERY_RESULT
-    '\n  *[_type == "menuPage" && _id == "menuPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    dietaryInfo,\n    allergenInfo,\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': MENU_PAGE_QUERY_RESULT
-    '\n  *[_type == "bistroPage" && _id == "bistroPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    highlights,\n    openingHours,\n    gallery[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': BISTRO_PAGE_QUERY_RESULT
-    '\n  *[_type == "hotelPage" && _id == "hotelPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    amenities[]{ title, description },\n    rooms[]->{\n      _id,\n      name,\n      identifier,\n      description,\n      capacity,\n      amenities,\n      order,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': HOTEL_PAGE_QUERY_RESULT
-    '\n  *[_type == "eventsPage" && _id == "eventsPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    eventTypes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      description,\n      order\n    } | order(order asc),\n    halls[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      capacity,\n      description,\n      amenities,\n      order,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    } | order(order asc),\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': EVENTS_PAGE_QUERY_RESULT
-    '\n  *[_type == "contactPage" && _id == "contactPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    directions,\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage,\n  noIndex\n }\n  }\n': CONTACT_PAGE_QUERY_RESULT
+    '\n  *[_type == "siteSettings" && _id == "siteSettings"][0]{\n    companyName,\n    legalName,\n    shortDescription,\n    address,\n    phone,\n    receptionEmail,\n    publicEmail,\n    openingHoursRestaurant,\n    openingHoursReception,\n    googleBusinessProfileUrl,\n    googleMapsUrl,\n    defaultSeo {\n      \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n\n    }\n  }\n': SITE_SETTINGS_QUERY_RESULT
+    '\n  *[_type == "homepage" && _id == "homepage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    aboutSection {\n      intro,\n      stats[]{ value, label }\n    },\n    servicesIntro { eyebrow, title },\n    eventsBlock {\n      eyebrow, title, description, ctaLabel,\n      mainImage { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n      secondaryImage { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    restaurantBlock {\n      eyebrow, title, description, ctaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    hotelBlock {\n      eyebrow, title, description, ctaLabel,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    bistroBlock {\n      eyebrow, title, description, ctaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    reviewsBlock {\n      eyebrow, title, ratingValue, ratingSource, ratingCount\n    },\n    contactBlock {\n      eyebrow, title,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': HOMEPAGE_QUERY_RESULT
+    '\n  *[_type == "restaurantPage" && _id == "restaurantPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    highlights,\n    gallery[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    menuCtaLabel,\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': RESTAURANT_PAGE_QUERY_RESULT
+    '\n  *[_type == "menuPage" && _id == "menuPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    dietaryInfo,\n    allergenInfo,\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': MENU_PAGE_QUERY_RESULT
+    '\n  *[_type == "bistroPage" && _id == "bistroPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    highlights,\n    openingHours,\n    gallery[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': BISTRO_PAGE_QUERY_RESULT
+    '\n  *[_type == "hotelPage" && _id == "hotelPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    amenities[]{ title, description },\n    rooms[]->{\n      _id,\n      name,\n      identifier,\n      description,\n      capacity,\n      amenities,\n      order,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': HOTEL_PAGE_QUERY_RESULT
+    '\n  *[_type == "eventsPage" && _id == "eventsPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    eventTypes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      description,\n      order\n    } | order(order asc),\n    halls[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      capacity,\n      description,\n      amenities,\n      order,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    } | order(order asc),\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': EVENTS_PAGE_QUERY_RESULT
+    '\n  *[_type == "contactPage" && _id == "contactPage"][0]{\n    hero { \n  headline,\n  subheadline,\n  primaryCtaLabel,\n  image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n },\n    intro,\n    directions,\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': CONTACT_PAGE_QUERY_RESULT
     '\n  *[_type == "menuCategory"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    description,\n    order,\n    "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {\n      _id,\n      name,\n      description,\n      price,\n      diet,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    }\n  }\n': MENU_BY_CATEGORY_QUERY_RESULT
     '\n  *[_type == "eventHall"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_EVENT_HALLS_QUERY_RESULT
     '\n  *[_type == "roomType"] | order(order asc) {\n    _id,\n    name,\n    identifier,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_ROOM_TYPES_QUERY_RESULT
