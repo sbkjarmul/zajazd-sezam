@@ -154,5 +154,8 @@
       "lactoseFree": "bezlaktozowe",
       "spicy": "ostre"
     }
+  },
+  "hotel": {
+    "bookRoom": "Zarezerwuj"
   }
 }

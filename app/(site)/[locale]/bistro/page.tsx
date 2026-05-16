@@ -1,11 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
-import {
-  BISTRO_PAGE_QUERY,
-  BISTRO_MENU_QUERY,
-  SITE_SETTINGS_QUERY,
-} from '@/lib/sanity/queries'
+import { BISTRO_PAGE_QUERY, BISTRO_MENU_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
 import { BistroHero } from '@/components/sections/bistro/BistroHero'

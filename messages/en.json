@@ -154,5 +154,8 @@
       "lactoseFree": "lactose-free",
       "spicy": "spicy"
     }
+  },
+  "hotel": {
+    "bookRoom": "Book"
   }
 }

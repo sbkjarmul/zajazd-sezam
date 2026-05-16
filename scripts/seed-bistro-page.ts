@@ -25,10 +25,7 @@ const ls = (pl: string, en: string) => ({ _type: 'localeString', pl, en })
 const doc = {
   _id: 'bistroPage',
   _type: 'bistroPage',
-  heroHeadline: ls(
-    'Najlepsze bistro w Stalowej Woli!',
-    'The best bistro in Stalowa Wola!',
-  ),
+  heroHeadline: ls('Najlepsze bistro w Stalowej Woli!', 'The best bistro in Stalowa Wola!'),
   centralBanner: ls('Jesteśmy otwarci codziennie!', 'We’re open every day!'),
   seo: {
     _type: 'seoMeta',

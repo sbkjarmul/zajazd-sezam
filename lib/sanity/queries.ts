@@ -150,20 +150,19 @@ export const BISTRO_MENU_QUERY = defineQuery(`
 
 export const HOTEL_PAGE_QUERY = defineQuery(`
   *[_type == "hotelPage" && _id == "hotelPage"][0]{
-    hero { ${HERO_FRAGMENT} },
-    intro,
-    amenities[]{ title, description },
-    rooms[]->{
-      _id,
-      name,
-      identifier,
-      description,
-      capacity,
-      amenities,
-      order,
-      images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
+    hero {
+      eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
-    finalCta { title, description, ctaLabel },
+    quote,
+    amenitiesSection {
+      eyebrow, title,
+      items[]{ title, description }
+    },
+    reservationSection {
+      eyebrow, title, description, ctaLabel,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
     seo { ${SEO_FRAGMENT} }
   }
 `)
