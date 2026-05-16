@@ -621,37 +621,66 @@ WARSTWA 2 — Formularz (Cloudflare Turnstile)
 
 ---
 
-## 11. Theming per branża
+## 11. Theming — wspólna paleta i typografia
 
-Trzy branże mają oddzielne style wizualne oparte o wspólną paletę i typografię z Figma. Implementacja przez CSS Custom Properties na poziomie `data-theme` atrybutu w layout segmentu.
+**Decyzja:** wszystkie trzy branże (Restauracja, Bistro, Hotel) używają **wspólnej palety kolorów** i **jednej czcionki (Inter)**. Różnicowanie branż następuje przez **treść, zdjęcia, układ sekcji i charakter copy** (PRD sekcja 7.2) — nie przez tokeny wizualne.
+
+Implementacja przez CSS Custom Properties w `:root`. Brak `data-theme` per branża — gdyby kiedyś pojawiła się potrzeba subtelnego per-branch tweaku (np. innego gradientu hero), dodamy mechanizm wtedy.
 
 ```css
-/* globals.css — tokeny wspólne */
+/* globals.css — wszystkie tokeny w :root, wartości z Figmy */
 :root {
-  --color-primary: /* z Figma */;
-  --color-bg: /* z Figma */;
-  --font-display: /* z Figma */;
-  --font-body: /* z Figma */;
-}
+  /* Paleta — wspólna dla wszystkich branż */
+  --color-primary: /* z Figmy */;
+  --color-secondary: /* z Figmy */;
+  --color-accent: /* z Figmy */;
+  --color-bg: /* z Figmy */;
+  --color-surface: /* z Figmy */;
+  --color-text: /* z Figmy */;
+  --color-text-muted: /* z Figmy */;
+  --color-border: /* z Figmy */;
 
-/* Tokeny per branża — nadpisują wybrane zmienne */
-[data-theme="restauracja"] {
-  --theme-accent: /* kolor akcentu restauracji */;
-  --theme-hero-overlay: /* gradient hero */;
-}
-
-[data-theme="bistro"] {
-  --theme-accent: /* kolor akcentu bistro */;
-  --theme-hero-overlay: /* gradient hero */;
-}
-
-[data-theme="hotel"] {
-  --theme-accent: /* kolor akcentu hotelu */;
-  --theme-hero-overlay: /* gradient hero */;
+  /* Typografia — wyłącznie Inter */
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 ```
 
-> 📌 Konkretne wartości tokenów do uzupełnienia po finalizacji Figma.
+```typescript
+// app/layout.tsx
+import { Inter } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],   // latin-ext obowiązkowy dla PL (ą, ę, ł, ś, ć, ń, ó, ź, ż)
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+// <html lang={locale} className={inter.variable}>
+```
+
+```typescript
+// tailwind.config.ts — mapowanie tokenów na Tailwind
+export default {
+  theme: {
+    extend: {
+      colors: {
+        primary:   'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        accent:    'var(--color-accent)',
+        bg:        'var(--color-bg)',
+        surface:   'var(--color-surface)',
+        text:      { DEFAULT: 'var(--color-text)', muted: 'var(--color-text-muted)' },
+        border:    'var(--color-border)',
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+      },
+    },
+  },
+}
+```
+
+> 📌 Konkretne wartości HEX do uzupełnienia po eksporcie z Figmy (Variables → JSON lub manualnie).
 
 ---
 
@@ -771,9 +800,10 @@ NEXT_PUBLIC_GA4_MEASUREMENT_ID=
 - [ ] `next/image` na wszystkich zdjęciach — zakaz gołego `<img>`
 
 ### Theming
-- [ ] CSS Custom Properties: tokeny wspólne + tokeny per branża
-- [ ] `data-theme` w layout.tsx każdej branży
-- [ ] Wartości tokenów z Figma
+- [ ] CSS Custom Properties w `:root` — wspólna paleta dla wszystkich branż (bez `data-theme`)
+- [ ] Inter przez `next/font/google` z `subsets: ['latin', 'latin-ext']` i `variable: '--font-sans'`
+- [ ] `tailwind.config.ts` mapuje tokeny na klasy Tailwind
+- [ ] Wartości HEX z Figma
 
 ---
 

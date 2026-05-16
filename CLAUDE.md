@@ -149,24 +149,42 @@ Burger menu zawiera: nawigację + przełącznik języka (PL/EN) — jedyne miejs
 
 ---
 
-## Theming per branża
+## Theming — paleta i typografia wspólna
+
+**Paleta kolorów i czcionka są wspólne dla wszystkich trzech branż.** Różnicowanie Restauracji / Bistro / Hotelu odbywa się przez **treść, zdjęcia, układ sekcji i charakter copy** (PRD sekcja 7.2) — nie przez kolory ani fonty.
+
+**Czcionka:** wyłącznie **Inter** (przez `next/font/google`). Brak rozróżnienia display/body — jedna rodzina, różne wagi/rozmiary.
 
 ```css
-/* Tokeny wspólne w :root (wartości z Figmy — do uzupełnienia) */
+/* globals.css — tokeny wspólne, wartości z Figmy */
 :root {
+  /* Kolory — wartości z Figmy */
   --color-primary: ;
+  --color-secondary: ;
+  --color-accent: ;
   --color-bg: ;
-  --font-display: ;
-  --font-body: ;
-}
+  --color-surface: ;
+  --color-text: ;
+  --color-text-muted: ;
+  --color-border: ;
 
-/* Per branża przez data-theme na layout.tsx */
-[data-theme="restauracja"] { --theme-accent: ; }
-[data-theme="bistro"]      { --theme-accent: ; }
-[data-theme="hotel"]       { --theme-accent: ; }
+  /* Typografia */
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
 ```
 
-Wartości tokenów do uzupełnienia po otrzymaniu dostępu do Figmy. Do tego czasu używaj zmiennych bez wartości — nie hardkoduj kolorów.
+```ts
+// app/layout.tsx
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-sans' })
+
+// <html className={inter.variable}>
+```
+
+> 🚫 **Brak `data-theme` per branża** — wszystkie strony używają tej samej palety. Jeśli kiedyś pojawi się potrzeba per-branch tweaku (np. inny gradient hero), dodamy `data-theme` wtedy.
+
+> Wartości HEX do uzupełnienia z Figmy. Do tego czasu używaj zmiennych bez wartości — nie hardkoduj kolorów.
 
 ---
 
@@ -205,39 +223,97 @@ Zmienne z prefiksem `NEXT_PUBLIC_` są widoczne client-side — tylko te które 
 
 ## Fazy implementacji
 
-### Faza 1 — Setup (bez Figmy) ← zacznij tutaj
-- [ ] `create-next-app` z TypeScript + Tailwind + App Router
-- [ ] Konfiguracja `next-intl` — middleware, routing, lokalizowane slugi
-- [ ] Inicjalizacja projektu Sanity — wszystkie schematy
-- [ ] `generateMetadata` helper bazowy
-- [ ] `sitemap.ts` + `robots.txt`
-- [ ] Schema.org JSON-LD helpers per branża
-- [ ] Route Handler `/api/send-form` (Turnstile + Zod + Resend)
-- [ ] Route Handler `/api/revalidate` (webhook Sanity)
-- [ ] `.env.local` template + `.env.example` (bez wartości, do repo) + `.gitignore`
+> 🛠 **Tryb pracy:** lokalnie (brak domeny, maila, kluczy produkcyjnych). Integracje wymagające zewnętrznych kont używają **test keys / mocków**, kompletna konfiguracja produkcyjna jest w ostatniej fazie. Figma jest gotowa — theming, komponenty globalne i strony mogą lecieć równolegle z resztą.
 
-### Faza 2 — Komponenty globalne (częściowo bez Figmy)
+### Faza 1 — Setup lokalny ← zacznij tutaj
+- [ ] `create-next-app` z TypeScript (strict), Tailwind, App Router, ESLint
+- [ ] Prettier + konfiguracja `tailwind.config.ts` (mapowanie do CSS Custom Properties)
+- [ ] `next-intl` — middleware, `locales: ['pl', 'en']`, lokalizowane slugi (mapowanie z `ARCHITECTURE.md` sekcja 4.3)
+- [ ] Redirect `/` → `/pl/` na podstawie `Accept-Language`
+- [ ] Inicjalizacja projektu Sanity (lokalne Studio embedded pod `/studio`, dataset `production`)
+- [ ] Sanity `localeString` jako custom type (PL + EN) — fundament dla wszystkich pól wielojęzycznych
+- [ ] Sanity schemat `seoMeta` (osadzany w innych schematach)
+- [ ] Konfiguracja `@sanity/typegen` (lub `sanity-codegen`) → typy TS do `/types/sanity.ts`
+- [ ] Klient Sanity (read-only) + helper `urlFor` dla obrazków
+- [ ] `.env.local.example` (do repo, bez wartości) + `.gitignore` (`.env.local`, `node_modules`, `.next`, `dist`)
+
+### Faza 2 — Fundament SEO i schematy Sanity
+- [ ] `generateMetadata` helper bazowy (canonical, hreflang, OG, locale mapping `pl_PL` / `en_US`)
+- [ ] `app/sitemap.ts` — wpisy `/pl/` i `/en/` (URL z env: `NEXT_PUBLIC_SITE_URL=http://localhost:3000` lokalnie)
+- [ ] `public/robots.txt` (lokalnie `Disallow: /` lub bez sitemapy do produkcji)
+- [ ] Schema.org JSON-LD helpers: `Organization`, `LocalBusiness`, `Restaurant`, `LodgingBusiness`, `EventVenue` — dane z `siteSettings`
+- [ ] Schematy Sanity: `siteSettings`, `homepage`, `restaurant`, `bistro`, `hotel`, `menuCategory`, `menuItem`, `eventHall`, `eventType`, `conferenceRoom` (szkielet)
+- [ ] GROQ queries w `lib/sanity/queries.ts` dla wszystkich stron
+- [ ] Wprowadzenie testowych treści PL+EN w lokalnym Studio (NAP, hero, 2–3 pozycje menu, 1 sala — wystarczy do dev)
+
+### Faza 3 — Theming i komponenty bazowe (Figma → kod)
+- [ ] Eksport design tokenów z Figmy: kolory (wspólna paleta), spacing, radii, shadows
+- [ ] CSS Custom Properties w `globals.css` — wyłącznie wspólne tokeny w `:root`, **bez** `data-theme` per branża
+- [ ] `tailwind.config.ts` — mapowanie tokenów (`theme.extend.colors`, `fontFamily.sans = ['var(--font-sans)']`)
+- [ ] Inter przez `next/font/google` z `variable: '--font-sans'`, subsets `['latin', 'latin-ext']` (polskie znaki)
+- [ ] Komponenty bazowe `components/ui/`: `Button`, `Input`, `Select`, `Textarea`, `Card`, `Sheet` (drawer), `Tabs`, `Toast`
+- [ ] Decyzja: shadcn/ui jako baza (rekomendowane, szybkie) vs własne komponenty od zera
+
+### Faza 4 — Komponenty globalne i layout
 - [ ] `useScrollDirection` hook
-- [ ] `Header.tsx` — fixed, scroll-aware, transparent
-- [ ] `BurgerMenu.tsx` — nawigacja + przełącznik języka
-- [ ] `Footer.tsx` — dane z `siteSettings`
-- [ ] `ReservationDrawer.tsx` — dwie zakładki
-- [ ] `RoomBookingForm.tsx` + `EventInquiryForm.tsx`
-- [ ] CSS Custom Properties — struktura tokenów (wartości po Figmie)
+- [ ] `Header.tsx` — `position: fixed`, transparent → blur, scroll-aware
+- [ ] `BurgerMenu.tsx` — overlay/sheet, nawigacja, dane kontaktowe z `siteSettings`
+- [ ] `LanguageSwitcher.tsx` — mapowanie slugów PL↔EN (`/pl/restauracja` ↔ `/en/restaurant`), wyróżnienie aktywnego języka
+- [ ] `Footer.tsx` — dane z `siteSettings`, bez social media
+- [ ] `ReservationDrawer.tsx` — `Sheet` + `Tabs` (Rezerwacja pokoju / Zapytanie o event), zgodnie z Figmą
+- [ ] `Toast`/notyfikacje — feedback po wysłaniu formularza
+- [ ] `app/[locale]/layout.tsx` — provider i18n, Header, Footer, Drawer (globalny), JSON-LD per branża przez nested layouts
 
-### Faza 3 — Strony (czeka na Figmę + zdjęcia)
-- [ ] Strona główna `/[locale]/page.tsx` — wszystkie sekcje
-- [ ] `/restauracja` + `/restauracja/menu`
+### Faza 5 — Formularze i API lokalne
+- [ ] `RoomBookingForm.tsx` + `EventInquiryForm.tsx` — UI z Figmy, walidacja client-side (Zod + react-hook-form)
+- [ ] Cloudflare Turnstile widget — **test site key** `1x00000000000000000000AA` (zawsze passes)
+- [ ] Zod schemas w `lib/validators/` — współdzielone client+server
+- [ ] Route Handler `POST /api/send-form` — Turnstile verify (test secret `1x0000000000000000000000000000000AA`) → Zod → wysyłka
+- [ ] Wysyłka emaila: **mock w dev** (`console.log` HTML + zapis do `tmp/mails/*.html`), Resend dopiero w F8
+- [ ] HTML email templates: recepcja + auto-reply (gotowe, parsowalne po Figma)
+- [ ] Route Handler `POST /api/revalidate` — weryfikacja `SANITY_WEBHOOK_SECRET`, `revalidatePath` dla PL+EN
+
+### Faza 6 — Strony (Figma → kod)
+- [ ] `/[locale]/page.tsx` — sekcje: `HeroSection`, `ProblemSection`, `SolutionSection`, `EventHallsSection`, `RestaurantSection`, `StepsSection`, `ReviewsSection` (mock data), `HotelUpsellSection`, `CtaSection`
+- [ ] `/restauracja` + `/restauracja/menu` (filtr kategorii — client component, bez przeładowania)
 - [ ] `/bistro`
-- [ ] `/hotel`
-- [ ] `/imprezy-okolicznosciowe`
-- [ ] `/kontakt`
+- [ ] `/hotel` — karty 8 typów pokoi
+- [ ] `/imprezy-okolicznosciowe` — sale + typy imprez, CTA → drawer (zakładka event)
+- [ ] `/kontakt` — mapa: placeholder/statyczny obraz lokalnie (Maps Embed w F8)
+- [ ] `LightboxGallery` dla sal (PRD 6.3)
+- [ ] Wszystkie obrazki przez `next/image`, `alt` z Sanity (PL/EN per locale)
+- [ ] Wprowadzenie pełnych treści PL+EN w lokalnym Studio (wszystkie sekcje, zdjęcia)
 
-### Faza 4 — Integracje (czeka na klucze API)
-- [ ] Google Places API — sekcja opinii
-- [ ] Google Maps Embed — strona kontakt
-- [ ] Google Analytics 4
-- [ ] Cloudflare Turnstile — podpięcie site key z .env (widget client-side)
+### Faza 7 — QA lokalne
+- [ ] TypeScript strict — zero `any`, zero `@ts-ignore`, zero błędów
+- [ ] ESLint + Prettier — czysty `lint` i `format`
+- [ ] Lighthouse lokalnie: LCP < 2.5s, CLS < 0.1, accessibility ≥ 95
+- [ ] Walidacja a11y (WCAG 2.1 AA): focus management drawer/menu, kontrast, aria-labels, keyboard nav
+- [ ] Hierarchia nagłówków (jeden H1 per strona) + walidacja `alt` na każdym obrazku
+- [ ] Walidacja długości meta: `metaTitle` ≤ 60, `metaDescription` ≤ 160
+- [ ] Walidacja `hreflang` na każdej stronie (PL ↔ EN)
+- [ ] Test responsywności: 375 / 768 / 1280
+- [ ] Test cross-browser: Chrome, Safari, Firefox
+- [ ] Sprawdzenie czy `.env.local` nie jest commitowane
+
+### Faza 8 — Integracje produkcyjne (czeka na klucze, domenę, maila)
+> Uruchom dopiero gdy klient dostarczy konta i klucze. Wymienić mocki na prawdziwe wartości — kod aplikacji już gotowy.
+- [ ] Resend: konto + verify domeny (DKIM/SPF/DMARC), `RESEND_API_KEY`, podmiana mocka w `/api/send-form`
+- [ ] `RECEPTION_EMAIL=recepcja@zajazdsezam.pl`, `REPLY_FROM_EMAIL` (po potwierdzeniu z klientem)
+- [ ] Cloudflare Turnstile: konto + prawdziwe `NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`
+- [ ] Google Places API: klucz + `GOOGLE_PLACE_ID` → wymienić mock w `lib/googleReviews.ts`
+- [ ] Google Maps Embed: klucz + iframe na `/kontakt`
+- [ ] Google Analytics 4: `NEXT_PUBLIC_GA4_MEASUREMENT_ID` + komponent script
+- [ ] Sanity webhook URL → produkcyjny endpoint `/api/revalidate`
+
+### Faza 9 — Deploy i launch (czeka na domenę)
+- [ ] Domena `zajazdsezam.pl` → rejestrator → Cloudflare NS
+- [ ] Cloudflare: proxy ON, Bot Fight Mode, WAF rules, rate limiting `/api/send-form`
+- [ ] Vercel: projekt, podpięcie repo, zmienne środowiskowe produkcyjne, domena custom
+- [ ] `NEXT_PUBLIC_SITE_URL=https://zajazdsezam.pl` — sprawdzić sitemap, canonical, OG, hreflang
+- [ ] `robots.txt` produkcyjny (`Allow: /` + `Sitemap:`)
+- [ ] Google Search Console: weryfikacja domeny + submisja sitemap
+- [ ] Smoke test produkcyjny: każda podstrona PL+EN, drawer, formularz (test wysyłki → recepcja), language switcher
 
 ---
 
