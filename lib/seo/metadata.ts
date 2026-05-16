@@ -5,9 +5,12 @@ import { SITE_URL } from '@/lib/env'
 
 type LocaleString = { pl?: string | null; en?: string | null } | null | undefined
 
-type SeoImageInput = {
-  asset?: { url?: string | null } | null
-} | null | undefined
+type SeoImageInput =
+  | {
+      asset?: { url?: string | null } | null
+    }
+  | null
+  | undefined
 
 export type SeoMetaInput = {
   metaTitle?: LocaleString

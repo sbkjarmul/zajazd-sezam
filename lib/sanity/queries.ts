@@ -93,12 +93,19 @@ export const HOMEPAGE_QUERY = defineQuery(`
 
 export const RESTAURANT_PAGE_QUERY = defineQuery(`
   *[_type == "restaurantPage" && _id == "restaurantPage"][0]{
-    hero { ${HERO_FRAGMENT} },
-    intro,
-    highlights,
-    gallery[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
-    menuCtaLabel,
-    finalCta { title, description, ctaLabel },
+    heroHeadline,
+    heroImage { ${IMAGE_WITH_ALT_FRAGMENT} },
+    pitchSection { text, ctaLabel },
+    craftSection {
+      title, description, ctaLabel,
+      primaryImage { ${IMAGE_WITH_ALT_FRAGMENT} },
+      secondaryImage { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    ambianceSection {
+      title, tagline, ctaLabel,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    reservationSection { title, description },
     seo { ${SEO_FRAGMENT} }
   }
 `)

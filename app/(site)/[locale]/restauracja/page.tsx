@@ -1,0 +1,50 @@
+import { setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
+import { sanityClient } from '@/lib/sanity/client'
+import { RESTAURANT_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
+import { buildMetadata } from '@/lib/seo/metadata'
+import type { Locale } from '@/i18n/routing'
+import { RestaurantHero } from '@/components/sections/restaurant/RestaurantHero'
+import { RestaurantPitch } from '@/components/sections/restaurant/RestaurantPitch'
+import { RestaurantCraft } from '@/components/sections/restaurant/RestaurantCraft'
+import { RestaurantAmbiance } from '@/components/sections/restaurant/RestaurantAmbiance'
+import { RestaurantReservation } from '@/components/sections/restaurant/RestaurantReservation'
+
+type Params = { locale: string }
+
+export async function generateMetadata({ params }: { params: Promise<Params> }) {
+  const { locale } = await params
+  const [page, settings] = await Promise.all([
+    sanityClient.fetch(RESTAURANT_PAGE_QUERY),
+    sanityClient.fetch(SITE_SETTINGS_QUERY),
+  ])
+  return buildMetadata({
+    locale: locale as Locale,
+    pathname: '/restauracja',
+    seo: page?.seo,
+    defaultSeo: settings?.defaultSeo,
+  })
+}
+
+export default async function RestaurantPage({ params }: { params: Promise<Params> }) {
+  const { locale: rawLocale } = await params
+  setRequestLocale(rawLocale)
+  const locale = rawLocale as Locale
+
+  const [page, settings] = await Promise.all([
+    sanityClient.fetch(RESTAURANT_PAGE_QUERY),
+    sanityClient.fetch(SITE_SETTINGS_QUERY),
+  ])
+
+  if (!page) notFound()
+
+  return (
+    <>
+      <RestaurantHero data={page} locale={locale} />
+      <RestaurantPitch data={page.pitchSection} locale={locale} />
+      <RestaurantCraft data={page.craftSection} locale={locale} />
+      <RestaurantAmbiance data={page.ambianceSection} settings={settings} locale={locale} />
+      <RestaurantReservation data={page.reservationSection} settings={settings} locale={locale} />
+    </>
+  )
+}
