@@ -1,11 +1,76 @@
 {
-  "home": {
-    "title": "Zajazd Sezam",
-    "intro": "Site under construction."
-  },
   "common": {
     "reserve": "Book now",
     "menu": "Menu",
+    "close": "Close",
+    "openMenu": "Open menu",
+    "loading": "Loading…",
+    "siteName": "Zajazd Sezam"
+  },
+  "nav": {
+    "home": "Home",
+    "restaurant": "Restaurant",
+    "restaurantMenu": "Restaurant menu",
+    "bistro": "Bistro",
+    "hotel": "Hotel",
+    "events": "Events & celebrations",
     "contact": "Contact"
+  },
+  "header": {
+    "tagline": "ALWAYS FRESH"
+  },
+  "burgerMenu": {
+    "title": "Menu",
+    "languageLabel": "Language"
+  },
+  "languageSwitcher": {
+    "pl": "PL",
+    "en": "EN",
+    "ariaLabel": "Choose language"
+  },
+  "footer": {
+    "siteMapHeading": "Sitemap",
+    "termsHeading": "Terms of use",
+    "links": {
+      "privacy": "Privacy policy",
+      "cookies": "Cookie policy",
+      "terms": "Hotel terms"
+    },
+    "copyright": "© {year} Zajazd Sezam. All rights reserved."
+  },
+  "reservationDrawer": {
+    "title": "BOOK",
+    "tabs": {
+      "room": "Rooms",
+      "event": "Events"
+    },
+    "room": {
+      "intro": "Looking for a quiet stay?",
+      "fullName": "Full name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "roomType": "Room type",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "guests": "Number of guests",
+      "notes": "Notes (optional)"
+    },
+    "event": {
+      "intro": "Pick a date for your event",
+      "fullName": "Full name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "eventType": "Event type",
+      "preferredDate": "Preferred date",
+      "guests": "Number of guests",
+      "hall": "Chosen hall (optional)",
+      "message": "Additional message (optional)"
+    },
+    "submit": "Send inquiry",
+    "disclaimer": "No payment yet — reception will contact you to confirm availability."
+  },
+  "home": {
+    "title": "Zajazd Sezam",
+    "intro": "Site under construction."
   }
 }

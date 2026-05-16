@@ -1,11 +1,76 @@
 {
+  "common": {
+    "reserve": "Zarezerwuj termin",
+    "menu": "Menu",
+    "close": "Zamknij",
+    "openMenu": "Otwórz menu",
+    "loading": "Ładowanie…",
+    "siteName": "Zajazd Sezam"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "restaurant": "Restauracja",
+    "restaurantMenu": "Menu restauracji",
+    "bistro": "Bistro",
+    "hotel": "Hotel",
+    "events": "Imprezy okolicznościowe",
+    "contact": "Kontakt"
+  },
+  "header": {
+    "tagline": "ZAWSZE ŚWIEŻO"
+  },
+  "burgerMenu": {
+    "title": "Menu",
+    "languageLabel": "Język"
+  },
+  "languageSwitcher": {
+    "pl": "PL",
+    "en": "EN",
+    "ariaLabel": "Wybierz język"
+  },
+  "footer": {
+    "siteMapHeading": "Mapa strony",
+    "termsHeading": "Warunki korzystania",
+    "links": {
+      "privacy": "Polityka prywatności",
+      "cookies": "Polityka plików cookie",
+      "terms": "Regulamin hotelu"
+    },
+    "copyright": "© {year} Zajazd Sezam. Wszystkie prawa zastrzeżone."
+  },
+  "reservationDrawer": {
+    "title": "REZERWUJ",
+    "tabs": {
+      "room": "Pokoje",
+      "event": "Imprezy okolicznościowe"
+    },
+    "room": {
+      "intro": "Szukasz spokojnego noclegu?",
+      "fullName": "Imię i nazwisko",
+      "email": "Adres e-mail",
+      "phone": "Numer telefonu",
+      "roomType": "Rodzaj pokoju",
+      "checkIn": "Zameldowanie",
+      "checkOut": "Wymeldowanie",
+      "guests": "Liczba gości",
+      "notes": "Uwagi (opcjonalnie)"
+    },
+    "event": {
+      "intro": "Wybierz termin na imprezę",
+      "fullName": "Imię i nazwisko",
+      "email": "Adres e-mail",
+      "phone": "Numer telefonu",
+      "eventType": "Rodzaj imprezy",
+      "preferredDate": "Preferowana data",
+      "guests": "Liczba gości",
+      "hall": "Wybrana sala (opcjonalnie)",
+      "message": "Dodatkowa wiadomość (opcjonalnie)"
+    },
+    "submit": "Wyślij zapytanie",
+    "disclaimer": "Płatność nie zostanie jeszcze naliczona — recepcja skontaktuje się aby potwierdzić dostępność."
+  },
   "home": {
     "title": "Zajazd Sezam",
     "intro": "Strona w budowie."
-  },
-  "common": {
-    "reserve": "Rezerwuj",
-    "menu": "Menu",
-    "contact": "Kontakt"
   }
 }
