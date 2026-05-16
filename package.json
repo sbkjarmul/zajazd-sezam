@@ -15,9 +15,12 @@
     "sanity:gen": "pnpm sanity:extract && pnpm sanity:types"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@marsidev/react-turnstile": "^1.5.2",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.25.1",
+    "@sanity/webhook": "^4.0.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.16.0",
@@ -28,9 +31,11 @@
     "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-hook-form": "^7.76.0",
     "sanity": "^5.25.1",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

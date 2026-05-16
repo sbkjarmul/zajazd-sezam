@@ -66,8 +66,69 @@
       "hall": "Chosen hall (optional)",
       "message": "Additional message (optional)"
     },
+    "roomTypeOptions": {
+      "apartment-comfort": "Comfort Apartment",
+      "double-comfort": "Comfort Double Room",
+      "triple-comfort": "Comfort Triple Room",
+      "quad-comfort": "Comfort Quad Room",
+      "single-comfort-single-bed": "Single Comfort — single bed",
+      "single-comfort-king": "Single Comfort — King size bed",
+      "single-standard": "Standard Single Room",
+      "double-standard": "Standard Double Room"
+    },
+    "eventTypeOptions": {
+      "wedding": "Wedding",
+      "communion": "Communion",
+      "birthday": "Birthday",
+      "corporate": "Corporate event",
+      "other": "Other"
+    },
     "submit": "Send inquiry",
-    "disclaimer": "No payment yet — reception will contact you to confirm availability."
+    "submitting": "Sending…",
+    "disclaimer": "No payment yet — reception will contact you to confirm availability.",
+    "toasts": {
+      "success": "Thanks! Reception will contact you within 24h.",
+      "turnstileMissing": "Please wait a moment for the human check to complete.",
+      "errors": {
+        "validation": "The form has errors — check highlighted fields.",
+        "turnstile": "Anti-spam check failed. Please try again.",
+        "send-failed": "Sending the email failed. Please try again soon.",
+        "invalid-json": "Invalid form data.",
+        "server": "Server error. Please try again later.",
+        "network": "No connection to the server. Check your internet and try again."
+      }
+    }
+  },
+  "reservationErrors": {
+    "fullName": {
+      "tooShort": "Enter your full name (min. 2 characters)",
+      "tooLong": "Max 100 characters"
+    },
+    "email": {
+      "invalid": "Invalid email address"
+    },
+    "phone": {
+      "invalid": "Invalid phone number"
+    },
+    "roomType": {
+      "required": "Select a room type"
+    },
+    "checkIn": {
+      "invalid": "Pick a check-in date"
+    },
+    "checkOut": {
+      "invalid": "Pick a check-out date",
+      "beforeCheckIn": "Check-out must be later than check-in"
+    },
+    "eventType": {
+      "required": "Select an event type"
+    },
+    "preferredDate": {
+      "invalid": "Pick a preferred date"
+    },
+    "turnstile": {
+      "missing": "Missing anti-spam check"
+    }
   },
   "home": {
     "title": "Zajazd Sezam",

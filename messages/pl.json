@@ -66,8 +66,69 @@
       "hall": "Wybrana sala (opcjonalnie)",
       "message": "Dodatkowa wiadomość (opcjonalnie)"
     },
+    "roomTypeOptions": {
+      "apartment-comfort": "Apartament Komfort",
+      "double-comfort": "Pokój dwuosobowy Komfort",
+      "triple-comfort": "Pokój trzyosobowy Komfort",
+      "quad-comfort": "Pokój czteroosobowy Komfort",
+      "single-comfort-single-bed": "Pokój 1-os. Komfort — łóżko pojedyncze",
+      "single-comfort-king": "Pokój 1-os. Komfort — łóżko King Size",
+      "single-standard": "Pokój jednoosobowy Standard",
+      "double-standard": "Pokój dwuosobowy Standard"
+    },
+    "eventTypeOptions": {
+      "wedding": "Wesele",
+      "communion": "Komunia",
+      "birthday": "Urodziny",
+      "corporate": "Impreza firmowa",
+      "other": "Inne"
+    },
     "submit": "Wyślij zapytanie",
-    "disclaimer": "Płatność nie zostanie jeszcze naliczona — recepcja skontaktuje się aby potwierdzić dostępność."
+    "submitting": "Wysyłanie…",
+    "disclaimer": "Płatność nie zostanie jeszcze naliczona — recepcja skontaktuje się aby potwierdzić dostępność.",
+    "toasts": {
+      "success": "Dziękujemy! Recepcja skontaktuje się w ciągu 24h.",
+      "turnstileMissing": "Poczekaj chwilę aż zostaniesz zweryfikowany jako człowiek.",
+      "errors": {
+        "validation": "Formularz zawiera błędy — sprawdź wyróżnione pola.",
+        "turnstile": "Weryfikacja antyspamowa nie powiodła się. Spróbuj ponownie.",
+        "send-failed": "Wysyłka emaila nie powiodła się. Spróbuj za chwilę.",
+        "invalid-json": "Niepoprawne dane formularza.",
+        "server": "Wystąpił błąd serwera. Spróbuj ponownie później.",
+        "network": "Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie."
+      }
+    }
+  },
+  "reservationErrors": {
+    "fullName": {
+      "tooShort": "Wpisz imię i nazwisko (minimum 2 znaki)",
+      "tooLong": "Maksymalnie 100 znaków"
+    },
+    "email": {
+      "invalid": "Niepoprawny adres email"
+    },
+    "phone": {
+      "invalid": "Niepoprawny numer telefonu"
+    },
+    "roomType": {
+      "required": "Wybierz typ pokoju"
+    },
+    "checkIn": {
+      "invalid": "Wybierz datę zameldowania"
+    },
+    "checkOut": {
+      "invalid": "Wybierz datę wymeldowania",
+      "beforeCheckIn": "Data wymeldowania musi być późniejsza niż zameldowania"
+    },
+    "eventType": {
+      "required": "Wybierz rodzaj imprezy"
+    },
+    "preferredDate": {
+      "invalid": "Wybierz preferowaną datę"
+    },
+    "turnstile": {
+      "missing": "Brak weryfikacji antyspamowej"
+    }
   },
   "home": {
     "title": "Zajazd Sezam",
