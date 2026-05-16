@@ -1,31 +1,23 @@
 import { defineField, defineType } from 'sanity'
 
+// Singleton — fixed ID 'bistroPage'.
+// Layout zgodny z Figma "SEZAM - Bistro" (676:3251).
+// Menu pobierane z menuCategory (kategorie: dania-miesne, ryby, wege).
 export const bistroPage = defineType({
   name: 'bistroPage',
   title: 'Strona: Bistro',
   type: 'document',
   fields: [
-    defineField({ name: 'hero', title: 'Hero', type: 'hero' }),
-    defineField({ name: 'intro', title: 'Wprowadzenie', type: 'localeText' }),
     defineField({
-      name: 'highlights',
-      title: 'Wyróżniki bistro',
-      type: 'array',
-      of: [{ type: 'localeString' }],
+      name: 'heroHeadline',
+      title: '1. Hero — nagłówek',
+      type: 'localeString',
     }),
     defineField({
-      name: 'openingHours',
-      title: 'Godziny otwarcia bistro',
-      type: 'array',
-      of: [{ type: 'openingHoursEntry' }],
+      name: 'centralBanner',
+      title: '2. Banner środkowy (np. "JESTEŚMY OTWARCI CODZIENNIE!")',
+      type: 'localeString',
     }),
-    defineField({
-      name: 'gallery',
-      title: 'Galeria',
-      type: 'array',
-      of: [{ type: 'imageWithAlt' }],
-    }),
-    defineField({ name: 'finalCta', title: 'CTA końcowe', type: 'ctaBlock' }),
     defineField({ name: 'seo', title: 'SEO', type: 'seoMeta' }),
   ],
   preview: { prepare: () => ({ title: 'Bistro' }) },

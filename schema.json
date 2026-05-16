@@ -902,93 +902,19 @@
           "type": "string"
         }
       },
-      "hero": {
+      "heroHeadline": {
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "hero"
+          "name": "localeString"
         },
         "optional": true
       },
-      "intro": {
+      "centralBanner": {
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "localeText"
-        },
-        "optional": true
-      },
-      "highlights": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
-              "name": "localeString"
-            }
-          }
-        },
-        "optional": true
-      },
-      "openingHours": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
-              "name": "openingHoursEntry"
-            }
-          }
-        },
-        "optional": true
-      },
-      "gallery": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
-              "name": "imageWithAlt"
-            }
-          }
-        },
-        "optional": true
-      },
-      "finalCta": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "ctaBlock"
+          "name": "localeString"
         },
         "optional": true
       },

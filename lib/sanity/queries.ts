@@ -122,14 +122,30 @@ export const MENU_PAGE_QUERY = defineQuery(`
 
 export const BISTRO_PAGE_QUERY = defineQuery(`
   *[_type == "bistroPage" && _id == "bistroPage"][0]{
-    hero { ${HERO_FRAGMENT} },
-    intro,
-    highlights,
-    openingHours,
-    gallery[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
-    finalCta { title, description, ctaLabel },
+    heroHeadline,
+    centralBanner,
     seo { ${SEO_FRAGMENT} }
   }
+`)
+
+// Wybrane kategorie + pozycje serwowane w bistro (subset menu).
+export const BISTRO_MENU_QUERY = defineQuery(`
+  *[_type == "menuCategory" && slug.current in ["dania-miesne", "ryby", "wege"]]
+    | order(order asc) {
+      _id,
+      name,
+      "slug": slug.current,
+      description,
+      order,
+      "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {
+        _id,
+        name,
+        description,
+        price,
+        diet,
+        image { ${IMAGE_WITH_ALT_FRAGMENT} }
+      }
+    }
 `)
 
 export const HOTEL_PAGE_QUERY = defineQuery(`
