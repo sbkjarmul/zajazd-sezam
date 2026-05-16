@@ -1,9 +1,131 @@
 @import 'tailwindcss';
 
+/* =============================================================================
+   Zajazd Sezam — design tokens
+   Wyciągnięte z Figmy (page "Final" / ColorSwatches frame).
+   Paleta wspólna dla wszystkich trzech branż (decyzja CLAUDE.md).
+
+   Konwencja Tailwind 4: tokeny zdefiniowane w @theme automatycznie generują
+   utility classes (np. --color-primary → bg-primary / text-primary / border-primary).
+   ============================================================================= */
+
+@theme {
+  /* =========================================================================
+     PALETA (nazwy z Figma Variables)
+     ========================================================================= */
+  --color-light: #f6f5ef; /* off-white kremowy */
+  --color-dark: #1f1f1c; /* prawie czarny, ciepły */
+  --color-dark-ruby: #111c2a; /* bardzo ciemny granat */
+  --color-gold: #a49266; /* złoty akcent marki */
+  --color-ruby: #1c224f; /* granat */
+
+  /* =========================================================================
+     ROLE SEMANTYCZNE
+     Używaj tych w komponentach (np. bg-primary), zamiast surowych kolorów.
+     ========================================================================= */
+
+  /* Tła */
+  --color-bg: #f6f5ef; /* główne tło strony */
+  --color-surface: #ffffff; /* karty, drawer, modale na cream bg */
+  --color-surface-dark: #111c2a; /* sekcje na ciemnym tle (footer?, hero?) */
+
+  /* Tekst */
+  --color-text: #1f1f1c; /* główny tekst na light */
+  --color-text-muted: color-mix(in srgb, #1f1f1c 65%, transparent);
+  --color-text-inverse: #f6f5ef; /* tekst na dark surface */
+
+  /* CTA / przyciski — dark to primary w designie */
+  --color-primary: #1f1f1c;
+  --color-primary-foreground: #f6f5ef;
+  --color-primary-hover: color-mix(in srgb, #1f1f1c 90%, #ffffff);
+
+  /* Akcent — gold do gradientów hero, dekoracji, hover'ów linków */
+  --color-accent: #a49266;
+  --color-accent-foreground: #f6f5ef;
+  --color-accent-hover: color-mix(in srgb, #a49266 90%, #ffffff);
+
+  /* Drugorzędny — ruby do alternatywnych ciemnych sekcji */
+  --color-secondary: #1c224f;
+  --color-secondary-foreground: #f6f5ef;
+
+  /* Ramki */
+  --color-border: #1f1f1c;
+  --color-border-subtle: color-mix(in srgb, #1f1f1c 15%, transparent);
+
+  /* Stan focus (a11y) */
+  --color-ring: #a49266;
+
+  /* =========================================================================
+     ALIASY dla shadcn/ui — mapują standardowe nazwy shadcn na nasze role.
+     Pozwala wstępnym komponentom (button, dialog, sheet, …) renderować się
+     poprawnie bez modyfikacji. W F4 możemy podmieniać klasy w komponentach
+     na nasze semantyczne (bg-primary zamiast bg-background, etc.).
+     ========================================================================= */
+  --color-background: #f6f5ef; /* = bg */
+  --color-foreground: #1f1f1c; /* = text */
+  --color-card: #ffffff;
+  --color-card-foreground: #1f1f1c;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1f1f1c;
+  --color-muted: color-mix(in srgb, #1f1f1c 8%, #f6f5ef); /* delikatne tło sekcji */
+  --color-muted-foreground: color-mix(in srgb, #1f1f1c 60%, transparent);
+  --color-input: color-mix(in srgb, #1f1f1c 15%, transparent); /* = border-subtle */
+  --color-destructive: #b3261e; /* czerwony do błędów walidacji formularzy */
+  --color-destructive-foreground: #ffffff;
+
+  /* =========================================================================
+     TYPOGRAFIA — skala z Figmy
+     ========================================================================= */
+  --text-xs: 0.75rem; /* 12px — captions, small labels */
+  --text-sm: 1rem; /* 16px — body small */
+  --text-md: 1.1875rem; /* 19px — body */
+  --text-lg: 1.25rem; /* 20px — body large, button */
+  --text-xl: 1.5rem; /* 24px — section subtitle */
+  --text-2xl: 2rem; /* 32px — section title small */
+  --text-3xl: 2.5rem; /* 40px — section title (i logo wordmark) */
+  --text-4xl: 3rem; /* 48px — heading large */
+  --text-5xl: 4rem; /* 64px — display */
+  --text-6xl: 4.5rem; /* 72px — hero H1 */
+  --text-7xl: 5rem; /* 80px — XL hero */
+  --text-8xl: 6.25rem; /* 100px — display max */
+
+  /* Tracking (letter-spacing) — z Figmy */
+  --tracking-display: -0.04em; /* hero ~ -3px @ 72px */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  --tracking-wider: 0.1em;
+  --tracking-widest: 0.125em; /* logo SEZAM ~ 5px @ 40px */
+
+  /* =========================================================================
+     RADII — z Figmy (button = pill, card = 12px)
+     ========================================================================= */
+  --radius-sm: 0.5rem; /* 8px */
+  --radius-md: 0.75rem; /* 12px — karty, header background */
+  --radius-lg: 1rem; /* 16px */
+  --radius-full: 9999px; /* pill buttons */
+}
+
+/* Czcionka Inter ładowana przez next/font/google w app/(site)/[locale]/layout.tsx.
+   --font-sans jest wystawiana na <html> jako CSS variable. */
 @theme inline {
   --font-sans: var(--font-sans);
 }
 
+/* =============================================================================
+   Reset / body defaults
+   ============================================================================= */
 body {
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: var(--text-md);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus ring globally — accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
 }
