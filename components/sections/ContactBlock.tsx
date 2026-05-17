@@ -10,6 +10,9 @@ type Props = {
   locale: Locale
 }
 
+// Wg Figma 676:1657 — sekcja na dark (#1f1f1c), tekst light, gap-80 items-center.
+// Lewo flex-1: title block (eyebrow 20px + h2 64px) + boxes vertical stack (gap-32, każdy box gap-4).
+// Prawo flex-1: okrągły obraz (rounded-full), aspect-square, h-full.
 export async function ContactBlock({ data, settings, locale }: Props) {
   if (!data) return null
   const t = await getTranslations('home.contact')
@@ -20,21 +23,32 @@ export async function ContactBlock({ data, settings, locale }: Props) {
   const address = settings?.address
 
   return (
-    <section className="bg-bg py-20 md:py-32">
-      <div className="mx-auto grid w-full max-w-[1384px] grid-cols-1 gap-10 px-6 md:grid-cols-12 md:px-16">
-        <div className="flex flex-col gap-10 md:col-span-7">
-          <div className="flex flex-col gap-4">
-            {eyebrow && <p className="text-accent text-sm tracking-widest uppercase">{eyebrow}</p>}
+    <section
+      className="text-text-inverse py-16 md:py-20"
+      style={{ background: 'var(--color-primary)' }}
+    >
+      <div className="layout-container flex flex-col gap-8 md:flex-row md:items-center md:gap-20">
+        <div className="flex flex-col gap-8 md:flex-1 md:gap-10">
+          <div className="flex flex-col gap-2">
+            {eyebrow && (
+              <p className="text-text-inverse text-base tracking-normal uppercase md:text-xl">
+                {eyebrow}
+              </p>
+            )}
             {title && (
-              <h2 className="text-text text-4xl font-light tracking-tight md:text-5xl">{title}</h2>
+              <h2 className="text-text-inverse text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
+                {title}
+              </h2>
             )}
           </div>
 
-          <dl className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <dl className="flex flex-col gap-6 md:gap-8">
             {phone && (
               <div className="flex flex-col gap-1">
-                <dt className="text-text-muted text-sm tracking-wider uppercase">{t('phone')}</dt>
-                <dd className="text-text text-2xl">
+                <dt className="text-text-inverse text-base tracking-normal md:text-xl">
+                  {t('phone')}
+                </dt>
+                <dd className="text-text-inverse text-2xl md:text-[32px]">
                   <a
                     href={`tel:${phone.replace(/\s/g, '')}`}
                     className="hover:text-accent transition-colors"
@@ -46,8 +60,10 @@ export async function ContactBlock({ data, settings, locale }: Props) {
             )}
             {email && (
               <div className="flex flex-col gap-1">
-                <dt className="text-text-muted text-sm tracking-wider uppercase">{t('email')}</dt>
-                <dd className="text-text text-2xl">
+                <dt className="text-text-inverse text-base tracking-normal md:text-xl">
+                  {t('email')}
+                </dt>
+                <dd className="text-text-inverse text-2xl break-all md:text-[32px]">
                   <a href={`mailto:${email}`} className="hover:text-accent transition-colors">
                     {email}
                   </a>
@@ -55,9 +71,11 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               </div>
             )}
             {address?.street && (
-              <div className="flex flex-col gap-1 md:col-span-2">
-                <dt className="text-text-muted text-sm tracking-wider uppercase">{t('address')}</dt>
-                <dd className="text-text text-2xl">
+              <div className="flex flex-col gap-1">
+                <dt className="text-text-inverse text-base tracking-normal md:text-xl">
+                  {t('address')}
+                </dt>
+                <dd className="text-text-inverse text-2xl leading-[1.2] md:text-[32px]">
                   {address.street}
                   {address.postalCode && address.city && (
                     <>
@@ -68,9 +86,18 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               </div>
             )}
           </dl>
+
+          {phone && (
+            <a
+              href={`tel:${phone.replace(/\s/g, '')}`}
+              className="bg-text-inverse text-text hover:bg-text-inverse/90 inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:hidden"
+            >
+              {locale === 'pl' ? 'Zadzwoń' : 'Call us'}
+            </a>
+          )}
         </div>
 
-        <div className="relative aspect-[4/5] overflow-hidden rounded-md md:col-span-5">
+        <div className="relative aspect-square w-full overflow-hidden rounded-md md:flex-1 md:rounded-full">
           <SanityImage
             image={data.image}
             locale={locale}

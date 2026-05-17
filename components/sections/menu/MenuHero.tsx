@@ -15,24 +15,30 @@ export function MenuHero({ data, locale }: Props) {
   const ctaLabel = pickLocale(data.ctaLabel, locale)
 
   return (
-    <section className="bg-bg flex min-h-[80vh] flex-col items-center justify-center px-6 pt-32 pb-12 text-center md:px-16 md:pt-40">
-      {eyebrow && <p className="text-accent text-sm tracking-widest uppercase">{eyebrow}</p>}
-      {title && (
-        <h1 className="text-text mt-6 max-w-6xl text-5xl leading-tight font-light tracking-tight uppercase md:text-7xl lg:text-[120px]">
-          {title}
-        </h1>
-      )}
-      {subtitle && (
-        <p className="text-text-muted mt-8 max-w-3xl text-xl leading-relaxed">{subtitle}</p>
-      )}
-      {ctaLabel && (
-        <a
-          href="#menu"
-          className="bg-primary text-primary-foreground hover:bg-primary-hover mt-10 inline-flex h-[60px] items-center justify-center rounded-full px-8 text-lg uppercase transition-colors"
-        >
-          {ctaLabel}
-        </a>
-      )}
+    <section className="bg-bg text-secondary pt-40 pb-16 md:pt-48 md:pb-24">
+      <div className="layout-container flex flex-col items-center gap-6 text-center md:gap-8">
+        {eyebrow && (
+          <p className="text-secondary wide:text-lg text-base tracking-normal uppercase">
+            {eyebrow}
+          </p>
+        )}
+        {title && (
+          <h1 className="text-secondary text-5xl leading-none font-black tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[140px]">
+            {title}
+          </h1>
+        )}
+        {subtitle && (
+          <p className="text-secondary max-w-3xl text-lg leading-[1.2] md:text-xl">{subtitle}</p>
+        )}
+        {ctaLabel && (
+          <a
+            href="#menu"
+            className="border-secondary text-secondary hover:bg-secondary hover:text-text-inverse mt-2 inline-flex h-[60px] items-center justify-center rounded-full border-2 px-8 text-lg uppercase transition-colors md:mt-4 md:h-[65px] md:px-10"
+          >
+            {ctaLabel}
+          </a>
+        )}
+      </div>
     </section>
   )
 }

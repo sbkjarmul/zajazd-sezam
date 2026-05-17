@@ -68,13 +68,8 @@
     },
     "roomTypeOptions": {
       "apartment-comfort": "Apartament Komfort",
-      "double-comfort": "Pokój dwuosobowy Komfort",
-      "triple-comfort": "Pokój trzyosobowy Komfort",
-      "quad-comfort": "Pokój czteroosobowy Komfort",
-      "single-comfort-single-bed": "Pokój 1-os. Komfort — łóżko pojedyncze",
-      "single-comfort-king": "Pokój 1-os. Komfort — łóżko King Size",
-      "single-standard": "Pokój jednoosobowy Standard",
-      "double-standard": "Pokój dwuosobowy Standard"
+      "comfort-room": "Pokój Komfort",
+      "standard-room": "Pokój Standard"
     },
     "eventTypeOptions": {
       "wedding": "Wesele",
@@ -156,6 +151,8 @@
     }
   },
   "hotel": {
-    "bookRoom": "Zarezerwuj"
-  }
+    "bookRoom": "Zarezerwuj",
+    "prevImage": "Poprzednie zdjęcie",
+    "nextImage": "Następne zdjęcie"
+}
 }

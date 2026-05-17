@@ -16,13 +16,8 @@ const BRAND = {
 
 const ROOM_LABELS_PL: Record<RoomBookingValues['roomType'], string> = {
   'apartment-comfort': 'Apartament Komfort',
-  'double-comfort': 'Pokój dwuosobowy Komfort',
-  'triple-comfort': 'Pokój trzyosobowy Komfort',
-  'quad-comfort': 'Pokój czteroosobowy Komfort',
-  'single-comfort-single-bed': 'Pokój 1-os. Komfort — łóżko pojedyncze',
-  'single-comfort-king': 'Pokój 1-os. Komfort — łóżko King Size',
-  'single-standard': 'Pokój jednoosobowy Standard',
-  'double-standard': 'Pokój dwuosobowy Standard',
+  'comfort-room': 'Pokój Komfort',
+  'standard-room': 'Pokój Standard',
 }
 
 const EVENT_LABELS_PL: Record<EventInquiryValues['eventType'], string> = {

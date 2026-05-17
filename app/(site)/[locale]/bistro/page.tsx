@@ -7,6 +7,8 @@ import type { Locale } from '@/i18n/routing'
 import { BistroHero } from '@/components/sections/bistro/BistroHero'
 import { BistroBanner } from '@/components/sections/bistro/BistroBanner'
 import { MenuCategorySection } from '@/components/sections/menu/MenuCategorySection'
+import { Footer } from '@/components/layout/Footer'
+import { Header } from '@/components/layout/Header'
 
 type Params = { locale: string }
 
@@ -29,9 +31,10 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
   setRequestLocale(rawLocale)
   const locale = rawLocale as Locale
 
-  const [page, categories] = await Promise.all([
+  const [page, categories, settings] = await Promise.all([
     sanityClient.fetch(BISTRO_PAGE_QUERY),
     sanityClient.fetch(BISTRO_MENU_QUERY),
+    sanityClient.fetch(SITE_SETTINGS_QUERY),
   ])
 
   if (!page) notFound()
@@ -40,21 +43,38 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
   const first = categories[0]
   const rest = categories.slice(1)
 
+  const brandLabel = locale === 'pl' ? 'Bistro Sezam' : 'Sezam Bistro'
+  const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+
   return (
     <>
+      <Header heroTheme="dark" logoImage={logoImage} locale={locale} />
       <BistroHero data={page} locale={locale} />
 
-      <div className="mx-auto w-full max-w-[1024px] px-6 md:px-16">
-        {first && <MenuCategorySection category={first} locale={locale} />}
-      </div>
+      {first && (
+        <MenuCategorySection category={first} locale={locale} index={0} forceTheme="light" />
+      )}
 
       <BistroBanner text={page.centralBanner} locale={locale} />
 
-      <div className="mx-auto w-full max-w-[1024px] px-6 md:px-16">
-        {rest.map((category) => (
-          <MenuCategorySection key={category._id} category={category} locale={locale} />
-        ))}
-      </div>
+      {rest.map((category, i) => (
+        <MenuCategorySection
+          key={category._id}
+          category={category}
+          locale={locale}
+          index={i + 1}
+          forceTheme="light"
+        />
+      ))}
+
+      <Footer
+        settings={settings}
+        locale={locale}
+        brandLabel={brandLabel}
+        theme="dark"
+        bgColor="#1a2789"
+        bigBrand
+      />
     </>
   )
 }

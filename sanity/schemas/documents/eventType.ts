@@ -24,6 +24,11 @@ export const eventType = defineType({
       type: 'localeText',
     }),
     defineField({
+      name: 'image',
+      title: 'Zdjęcie reprezentacyjne (karuzela typów)',
+      type: 'imageWithAlt',
+    }),
+    defineField({
       name: 'order',
       title: 'Kolejność wyświetlania',
       type: 'number',

@@ -9,6 +9,13 @@ export const hotelPage = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'headerLogo',
+      title: 'Logo w headerze (SVG/PNG) — override dla tej strony',
+      description:
+        'Jeśli puste, używane jest defaultHeaderLogo z siteSettings (lub fallback tekstowy SEZAM).',
+      type: 'imageWithAlt',
+    }),
+    defineField({
       name: 'hero',
       title: '1. Hero',
       type: 'object',
@@ -59,8 +66,63 @@ export const hotelPage = defineType({
     }),
 
     defineField({
+      name: 'reviewsSection',
+      title: '5. Opinie gości',
+      type: 'object',
+      fields: [
+        { name: 'eyebrow', type: 'localeString', title: 'Eyebrow' },
+        { name: 'title', type: 'localeString', title: 'Tytuł' },
+        { name: 'ratingValue', type: 'string', title: 'Średnia ocena (np. "4.4/5")' },
+        { name: 'ratingSource', type: 'string', title: 'Źródło (np. "Google")' },
+        {
+          name: 'ratingCount',
+          type: 'localeString',
+          title: 'Opis liczby (np. "Na podstawie 1100+ opinii.")',
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'discoverSection',
+      title: '6. "Wszystko w jednym miejscu" — 4 karty cross-sell',
+      type: 'object',
+      fields: [
+        { name: 'eyebrow', type: 'localeString', title: 'Eyebrow (np. "Odkryj Sezam")' },
+        { name: 'title', type: 'localeString', title: 'Tytuł' },
+        {
+          name: 'cards',
+          type: 'array',
+          title: 'Karty (zalecane: 4)',
+          of: [
+            {
+              type: 'object',
+              name: 'discoverCard',
+              fields: [
+                {
+                  name: 'eyebrow',
+                  type: 'localeString',
+                  title: 'Eyebrow (np. "SMAK, KTÓRY ZNASZ Z DOMU")',
+                },
+                { name: 'title', type: 'localeString', title: 'Tytuł (np. "Bistro")' },
+                { name: 'description', type: 'localeText', title: 'Opis' },
+                { name: 'ctaLabel', type: 'localeString', title: 'Etykieta linku' },
+                {
+                  name: 'ctaHref',
+                  type: 'string',
+                  title: 'Ścieżka (np. "/bistro", "/restauracja")',
+                },
+                { name: 'image', type: 'imageWithAlt', title: 'Zdjęcie' },
+              ],
+              preview: { select: { title: 'title.pl', subtitle: 'eyebrow.pl', media: 'image' } },
+            },
+          ],
+        },
+      ],
+    }),
+
+    defineField({
       name: 'reservationSection',
-      title: '5. CTA końcowe — rezerwacja noclegu',
+      title: '7. CTA końcowe — rezerwacja noclegu',
       type: 'object',
       fields: [
         { name: 'eyebrow', type: 'localeString', title: 'Eyebrow' },

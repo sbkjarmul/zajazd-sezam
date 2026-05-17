@@ -9,6 +9,9 @@ type Props = {
   locale: Locale
 }
 
+// Sekcja na dark-ruby. Desktop: 800px wysokości, 80px góra/dół. Obraz 50% szerokości
+// przyklejony do prawej krawędzi kontenera (NIE viewportu), wysokości 640px.
+// Mobile: stacked.
 export function RestaurantBlock({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -17,36 +20,49 @@ export function RestaurantBlock({ data, locale }: Props) {
   const ctaLabel = pickLocale(data.ctaLabel, locale)
 
   return (
-    <section className="bg-bg py-20 md:py-32">
-      <div className="mx-auto grid w-full max-w-[1384px] grid-cols-1 gap-10 px-6 md:grid-cols-12 md:px-16">
-        <div className="flex flex-col justify-between gap-8 md:col-span-5">
-          <div className="flex flex-col gap-4">
-            {eyebrow && <p className="text-accent text-sm tracking-widest uppercase">{eyebrow}</p>}
-            {title && (
-              <h2 className="text-text text-4xl font-light tracking-tight md:text-5xl">{title}</h2>
-            )}
-          </div>
-
-          {description && <p className="text-text-muted text-lg leading-relaxed">{description}</p>}
-
-          {ctaLabel && (
-            <Link
-              href="/restauracja/menu"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground inline-flex h-[60px] w-fit items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
-            >
-              {ctaLabel}
-            </Link>
+    <section
+      className="text-text-inverse py-20 md:h-[800px]"
+      style={{ background: 'var(--color-dark-ruby)' }}
+    >
+      <div className="layout-container grid h-full grid-cols-1 gap-8 md:grid-cols-2 md:items-center md:gap-16 md:!pr-0">
+        {/* Title block — mobile pos 1, desktop top-left */}
+        <div className="flex flex-col gap-4 md:self-start">
+          {eyebrow && (
+            <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
+              {eyebrow}
+            </p>
+          )}
+          {title && (
+            <h2 className="text-text-inverse text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em]">
+              {title}
+            </h2>
           )}
         </div>
 
-        <div className="relative aspect-[5/4] overflow-hidden rounded-md md:col-span-7">
+        {/* Image — mobile pos 2, desktop right col spanning both rows */}
+        <div className="relative aspect-square overflow-hidden md:col-start-2 md:row-span-2 md:row-start-1 md:h-[640px] md:w-full md:self-center">
           <SanityImage
             image={data.image}
             locale={locale}
             fill
-            sizes="(max-width: 768px) 100vw, 60vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
+        </div>
+
+        {/* Description + CTA — mobile pos 3, desktop bottom-left */}
+        <div className="flex flex-col gap-8 md:col-start-1 md:row-start-2 md:self-end">
+          {description && (
+            <p className="text-text-inverse/80 max-w-md text-lg leading-[1.2]">{description}</p>
+          )}
+          {ctaLabel && (
+            <Link
+              href="/restauracja/menu"
+              className="bg-text-inverse text-text inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-opacity hover:opacity-90 md:w-fit md:min-w-[220px]"
+            >
+              {ctaLabel}
+            </Link>
+          )}
         </div>
       </div>
     </section>

@@ -45,6 +45,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     openingHoursReception,
     googleBusinessProfileUrl,
     googleMapsUrl,
+    defaultHeaderLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     defaultSeo {
       ${SEO_FRAGMENT}
     }
@@ -57,6 +58,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
 
 export const HOMEPAGE_QUERY = defineQuery(`
   *[_type == "homepage" && _id == "homepage"][0]{
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     hero { ${HERO_FRAGMENT} },
     aboutSection {
       intro,
@@ -93,6 +95,7 @@ export const HOMEPAGE_QUERY = defineQuery(`
 
 export const RESTAURANT_PAGE_QUERY = defineQuery(`
   *[_type == "restaurantPage" && _id == "restaurantPage"][0]{
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     heroHeadline,
     heroImage { ${IMAGE_WITH_ALT_FRAGMENT} },
     pitchSection { text, ctaLabel },
@@ -112,6 +115,7 @@ export const RESTAURANT_PAGE_QUERY = defineQuery(`
 
 export const MENU_PAGE_QUERY = defineQuery(`
   *[_type == "menuPage" && _id == "menuPage"][0]{
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     pageIntro { eyebrow, title, subtitle, ctaLabel },
     photoStrip[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
     reservationSection { title, description },
@@ -122,6 +126,7 @@ export const MENU_PAGE_QUERY = defineQuery(`
 
 export const BISTRO_PAGE_QUERY = defineQuery(`
   *[_type == "bistroPage" && _id == "bistroPage"][0]{
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     heroHeadline,
     centralBanner,
     seo { ${SEO_FRAGMENT} }
@@ -150,6 +155,7 @@ export const BISTRO_MENU_QUERY = defineQuery(`
 
 export const HOTEL_PAGE_QUERY = defineQuery(`
   *[_type == "hotelPage" && _id == "hotelPage"][0]{
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     hero {
       eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,
       image { ${IMAGE_WITH_ALT_FRAGMENT} }
@@ -158,6 +164,14 @@ export const HOTEL_PAGE_QUERY = defineQuery(`
     amenitiesSection {
       eyebrow, title,
       items[]{ title, description }
+    },
+    reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },
+    discoverSection {
+      eyebrow, title,
+      cards[]{
+        eyebrow, title, description, ctaLabel, ctaHref,
+        image { ${IMAGE_WITH_ALT_FRAGMENT} }
+      }
     },
     reservationSection {
       eyebrow, title, description, ctaLabel,
@@ -169,15 +183,22 @@ export const HOTEL_PAGE_QUERY = defineQuery(`
 
 export const EVENTS_PAGE_QUERY = defineQuery(`
   *[_type == "eventsPage" && _id == "eventsPage"][0]{
-    hero { ${HERO_FRAGMENT} },
-    intro,
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
+    hero {
+      eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    promiseSection { leadText, highlightedText, tailText, ctaLabel },
+    eventTypesSection { eyebrow, title, description },
     eventTypes[]->{
       _id,
       name,
       "slug": slug.current,
       description,
-      order
+      order,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
     } | order(order asc),
+    hallsSection { eyebrow, title, description },
     halls[]->{
       _id,
       name,
@@ -188,16 +209,43 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
       order,
       images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
     } | order(order asc),
-    finalCta { title, description, ctaLabel },
+    hotelUpsellSection { eyebrow, title, description, ctaLabel },
+    cateringSection {
+      eyebrow, title, description,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },
+    stepsSection {
+      eyebrow, title,
+      steps[]{ text }
+    },
+    reservationSection {
+      eyebrow, title, description,
+      formInvitationTitle, formInvitationText, ctaLabel
+    },
     seo { ${SEO_FRAGMENT} }
   }
 `)
 
 export const CONTACT_PAGE_QUERY = defineQuery(`
   *[_type == "contactPage" && _id == "contactPage"][0]{
-    hero { ${HERO_FRAGMENT} },
-    intro,
-    directions,
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
+    hero {
+      eyebrow, title, subtitle,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    contactSection {
+      eyebrow, title,
+      addressLabel, phoneLabel, emailLabel,
+      restaurantHoursLabel, receptionHoursLabel
+    },
+    mapSection {
+      eyebrow, title,
+      mapImage { ${IMAGE_WITH_ALT_FRAGMENT} },
+      googleMapsLinkLabel
+    },
+    directionsSection { eyebrow, title, content },
+    finalCta { title, description, ctaLabel },
     seo { ${SEO_FRAGMENT} }
   }
 `)

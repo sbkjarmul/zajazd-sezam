@@ -9,6 +9,13 @@ export const bistroPage = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'headerLogo',
+      title: 'Logo w headerze (SVG/PNG) — override dla tej strony',
+      description:
+        'Jeśli puste, używane jest defaultHeaderLogo z siteSettings (lub fallback tekstowy SEZAM).',
+      type: 'imageWithAlt',
+    }),
+    defineField({
       name: 'heroHeadline',
       title: '1. Hero — nagłówek',
       type: 'localeString',

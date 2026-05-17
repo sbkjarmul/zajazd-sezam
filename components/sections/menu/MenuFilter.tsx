@@ -9,10 +9,12 @@ type Props = {
   categories: CategoryNav[]
 }
 
-// Sticky pill nav nad menu — smooth-scroll do anchorów + podświetlenie
-// aktywnej kategorii na podstawie IntersectionObserver.
+// Initial: absolute top-20 (80px from top of #menu = top of Przystawki section).
+// On scroll past #menu top: switches to fixed top-20 (80px from viewport top) so the
+// menu remains visible across all category sections.
 export function MenuFilter({ categories }: Props) {
   const [active, setActive] = useState<string | undefined>(categories[0]?.slug)
+  const [isFixed, setIsFixed] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined' || categories.length === 0) return
@@ -21,7 +23,6 @@ export function MenuFilter({ categories }: Props) {
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting)
         if (visible.length === 0) return
-        // Wybierz pierwszą widoczną (najbliższą górze viewportu).
         const closest = visible.sort(
           (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
         )[0]
@@ -38,6 +39,21 @@ export function MenuFilter({ categories }: Props) {
     return () => observer.disconnect()
   }, [categories])
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const menuEl = document.getElementById('menu')
+    if (!menuEl) return
+
+    function handleScroll() {
+      if (!menuEl) return
+      setIsFixed(menuEl.getBoundingClientRect().top < 0)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, slug: string) {
     e.preventDefault()
     const el = document.getElementById(slug)
@@ -48,11 +64,17 @@ export function MenuFilter({ categories }: Props) {
   }
 
   return (
-    <nav
-      aria-label="Kategorie menu"
-      className="bg-bg/90 sticky top-20 z-30 -mx-6 mb-12 px-6 backdrop-blur-md md:-mx-16 md:px-16"
+    <div
+      aria-hidden="false"
+      className={cn(
+        'pointer-events-none z-30 hidden justify-center px-4 lg:flex lg:px-8',
+        isFixed ? 'fixed inset-x-0 top-20' : 'absolute inset-x-0 top-20',
+      )}
     >
-      <div className="border-border-subtle flex gap-2 overflow-x-auto border-b py-3">
+      <nav
+        aria-label="Kategorie menu"
+        className="bg-light pointer-events-auto flex max-w-full items-center gap-1 rounded-full p-1.5 shadow-xl wide:p-2"
+      >
         {categories.map((c) => {
           const isActive = c.slug === active
           return (
@@ -61,17 +83,17 @@ export function MenuFilter({ categories }: Props) {
               href={`#${c.slug}`}
               onClick={(e) => handleClick(e, c.slug)}
               className={cn(
-                'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border px-5 py-2 text-sm tracking-wide uppercase transition-colors',
+                'inline-flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full px-4 text-sm whitespace-nowrap transition-colors wide:h-[60px] wide:px-6 wide:text-lg',
                 isActive
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-border-subtle text-text hover:border-primary',
+                  ? 'bg-secondary text-secondary-foreground font-normal'
+                  : 'hover:bg-secondary/10 font-normal text-[color:var(--color-dark-ruby)]',
               )}
             >
               {c.label}
             </a>
           )
         })}
-      </div>
-    </nav>
+      </nav>
+    </div>
   )
 }

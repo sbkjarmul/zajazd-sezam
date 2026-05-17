@@ -3,12 +3,10 @@ import { Inter } from 'next/font/google'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import { routing, type Locale } from '@/i18n/routing'
+import { routing } from '@/i18n/routing'
 import { sanityClient } from '@/lib/sanity/client'
 import { SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { UIProvider } from '@/components/providers/UIProvider'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { BurgerMenu } from '@/components/layout/BurgerMenu'
 import { ReservationDrawer } from '@/components/layout/ReservationDrawer'
 import { Toaster } from '@/components/ui/sonner'
@@ -48,9 +46,8 @@ export default async function LocaleLayout({
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
         <NextIntlClientProvider>
           <UIProvider>
-            <Header />
+            {/* Header + Footer renderowane per-strona (per-route logo, theme, brand) */}
             <main className="flex flex-1 flex-col">{children}</main>
-            <Footer settings={settings} locale={locale as Locale} />
             <BurgerMenu settings={settings} />
             <ReservationDrawer />
             <Toaster position="top-center" richColors />

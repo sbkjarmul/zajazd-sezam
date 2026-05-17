@@ -2,7 +2,7 @@
 ## Projekt: Zajazd Sezam
 
 Jesteś **Senior Web Developerem** pracującym nad stroną internetową Zajazdu Sezam.
-Przed rozpoczęciem pracy przeczytaj `PRD.md` i `ARCHITECTURE.md` — to Twoje jedyne źródła prawdy dla wymagań i decyzji architektonicznych. Dodatkowo `RULES.md` zawiera obowiązujące zasady współpracy, jakości kodu i komunikacji — stosuj je w każdej interakcji.
+Przed rozpoczęciem pracy przeczytaj [PRD.md](context/PRD.md) i [ARCHITECTURE.md](context/ARCHITECTURE.md) — to Twoje jedyne źródła prawdy dla wymagań i decyzji architektonicznych. Dodatkowo [RULES.md](context/RULES.md) zawiera obowiązujące zasady współpracy, jakości kodu i komunikacji — stosuj je w każdej interakcji. [DESIGN-RULES.md](context/DESIGN-RULES.md) zawiera wytyczne typografii, kolorów i paddingów. [AGENTS.md](context/AGENTS.md) — konfiguracja sub-agentów.
 
 ---
 
@@ -57,7 +57,7 @@ chore: update Sanity schemas for room types
 
 ## Struktura projektu
 
-Ściśle zgodna z `ARCHITECTURE.md` sekcja 3. Skrót:
+Ściśle zgodna z [ARCHITECTURE.md](context/ARCHITECTURE.md) sekcja 3. Skrót:
 
 ```
 app/[locale]/          ← wszystkie strony pod locałem
@@ -142,7 +142,7 @@ Burger menu zawiera: nawigację + przełącznik języka (PL/EN) — jedyne miejs
 
 - Globalny komponent, dostępny z każdej podstrony
 - Dwie zakładki: **Rezerwacja pokoju** i **Zapytanie o event**
-- Pełna specyfikacja pól w `ARCHITECTURE.md` sekcja 7
+- Pełna specyfikacja pól w [ARCHITECTURE.md](context/ARCHITECTURE.md) sekcja 7
 - Flow wysyłki: Turnstile token → `POST /api/send-form` → verify server-side → Zod validate → send email
 - Email recepcji: `recepcja@zajazdsezam.pl`
 - Typy pokoi (select): apartament-komfort, pokój 2os. komfort, 3os. komfort, 4os. komfort, 1os. komfort single, 1os. komfort king, 1os. standard, 2os. standard
@@ -190,7 +190,7 @@ const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-sans' }
 
 ## Zmienne środowiskowe
 
-Pełna lista w `ARCHITECTURE.md` sekcja 13. Template `.env.local`:
+Pełna lista w [ARCHITECTURE.md](context/ARCHITECTURE.md) sekcja 13. Template `.env.local`:
 
 ```bash
 # Sanity
@@ -228,7 +228,7 @@ Zmienne z prefiksem `NEXT_PUBLIC_` są widoczne client-side — tylko te które 
 ### Faza 1 — Setup lokalny ← zacznij tutaj
 - [ ] `create-next-app` z TypeScript (strict), Tailwind, App Router, ESLint
 - [ ] Prettier + konfiguracja `tailwind.config.ts` (mapowanie do CSS Custom Properties)
-- [ ] `next-intl` — middleware, `locales: ['pl', 'en']`, lokalizowane slugi (mapowanie z `ARCHITECTURE.md` sekcja 4.3)
+- [ ] `next-intl` — middleware, `locales: ['pl', 'en']`, lokalizowane slugi (mapowanie z [ARCHITECTURE.md](context/ARCHITECTURE.md) sekcja 4.3)
 - [ ] Redirect `/` → `/pl/` na podstawie `Accept-Language`
 - [ ] Inicjalizacja projektu Sanity (lokalne Studio embedded pod `/studio`, dataset `production`)
 - [ ] Sanity `localeString` jako custom type (PL + EN) — fundament dla wszystkich pól wielojęzycznych
@@ -342,4 +342,4 @@ Używana w: canonical URL, hreflang, sitemap, Schema.org, Cloudflare config.
 
 Zajazd Sezam to kompleks gastronomiczno-hotelowy w **Stalowej Woli**. Trzy branże z osobnymi stylami wizualnymi: **Restauracja**, **Bistro**, **Hotel** — plus oferta eventowa i kontakt. SEO lokalne pod Stalową Wolę i okolice. Strona dwujęzyczna: PL (domyślny) + EN.
 
-Pełny kontekst: `PRD.md` i `ARCHITECTURE.md`. Zasady pracy: `RULES.md`.
+Pełny kontekst: [PRD.md](context/PRD.md) i [ARCHITECTURE.md](context/ARCHITECTURE.md). Zasady pracy: [RULES.md](context/RULES.md).

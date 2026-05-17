@@ -16,8 +16,8 @@ export function RestaurantCraft({ data, locale }: Props) {
   const ctaLabel = pickLocale(data.ctaLabel, locale)
 
   return (
-    <section className="bg-bg py-20 md:py-32">
-      <div className="mx-auto grid w-full max-w-[1384px] grid-cols-1 gap-10 px-6 md:grid-cols-2 md:px-16">
+    <section className="bg-bg py-10 md:py-16">
+      <div className="layout-container grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="relative aspect-square overflow-hidden rounded-md">
           <SanityImage
             image={data.primaryImage}
@@ -30,7 +30,7 @@ export function RestaurantCraft({ data, locale }: Props) {
 
         <div className="flex flex-col justify-between gap-10">
           {title && (
-            <h2 className="text-text text-4xl leading-tight font-light tracking-tight uppercase md:text-5xl">
+            <h2 className="text-secondary text-4xl leading-[1.0] font-bold tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
               {title}
             </h2>
           )}
@@ -38,12 +38,12 @@ export function RestaurantCraft({ data, locale }: Props) {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="flex flex-col gap-6 md:col-span-2">
               {description && (
-                <p className="text-text-muted text-lg leading-relaxed">{description}</p>
+                <p className="text-secondary text-xl leading-relaxed">{description}</p>
               )}
               {ctaLabel && (
                 <Link
                   href="/restauracja/menu"
-                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground inline-flex h-[60px] w-fit items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
+                  className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground inline-flex h-[60px] w-fit items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
                 >
                   {ctaLabel}
                 </Link>

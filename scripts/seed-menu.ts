@@ -624,8 +624,8 @@ async function main() {
     seo: {
       _type: 'seoMeta',
       metaTitle: {
-        pl: 'Menu Restauracji Sezam Stalowa Wola — przystawki, zupy, mięsa, desery',
-        en: 'Sezam Restaurant Menu Stalowa Wola — starters, soups, mains, desserts',
+        pl: 'Menu Sezam — przystawki, zupy, mięsa, desery (Stalowa Wola)',
+        en: 'Sezam Menu — starters, soups, mains, desserts (Stalowa Wola)',
       },
       metaDescription: {
         pl: 'Pełne menu Restauracji Zajazdu Sezam: przystawki, zupy, dania mięsne i rybne, opcje wegetariańskie, sałatki, menu dla dzieci, desery.',

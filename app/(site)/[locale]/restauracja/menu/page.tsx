@@ -10,6 +10,8 @@ import { MenuPhotoStrip } from '@/components/sections/menu/MenuPhotoStrip'
 import { MenuFilter } from '@/components/sections/menu/MenuFilter'
 import { MenuCategorySection } from '@/components/sections/menu/MenuCategorySection'
 import { MenuReservation } from '@/components/sections/menu/MenuReservation'
+import { Footer } from '@/components/layout/Footer'
+import { Header } from '@/components/layout/Header'
 
 type Params = { locale: string }
 
@@ -47,19 +49,33 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
       label: pickLocale(c.name, locale) ?? c.slug!,
     }))
 
+  const brandLabel = locale === 'pl' ? 'Restauracja Sezam' : 'Sezam Restaurant'
+  const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+
   return (
     <>
+      <Header
+        heroTheme="light"
+        logoImage={logoImage}
+        locale={locale}
+        nav={[
+          { label: locale === 'pl' ? 'Restauracja' : 'Restaurant', href: '/restauracja' },
+          { label: locale === 'pl' ? 'Menu' : 'Menu', href: '/restauracja/menu' },
+          { label: locale === 'pl' ? 'Kontakt' : 'Contact', href: '/kontakt' },
+        ]}
+      />
       <MenuHero data={page.pageIntro} locale={locale} />
       <MenuPhotoStrip data={page.photoStrip} locale={locale} />
 
-      <div id="menu" className="mx-auto w-full max-w-[1024px] px-6 md:px-16">
+      <div id="menu" className="relative">
         <MenuFilter categories={nav} />
-        {categories.map((category) => (
-          <MenuCategorySection key={category._id} category={category} locale={locale} />
+        {categories.map((category, i) => (
+          <MenuCategorySection key={category._id} category={category} locale={locale} index={i} />
         ))}
       </div>
 
       <MenuReservation data={page.reservationSection} settings={settings} locale={locale} />
+      <Footer settings={settings} locale={locale} brandLabel={brandLabel} theme="dark" />
     </>
   )
 }

@@ -14,10 +14,12 @@ export function ServicesIntro({ data, locale }: Props) {
 
   return (
     <section className="bg-bg pt-8 pb-12 md:pt-12 md:pb-16">
-      <div className="mx-auto w-full max-w-[1384px] px-6 text-center md:px-16">
-        {eyebrow && <p className="text-accent text-sm tracking-widest uppercase">{eyebrow}</p>}
+      <div className="layout-container text-center">
+        {eyebrow && (
+          <p className="text-accent wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
+        )}
         {title && (
-          <h2 className="text-text mt-4 text-4xl font-light tracking-tight md:text-5xl lg:text-6xl">
+          <h2 className="text-text mt-4 text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
             {title}
           </h2>
         )}

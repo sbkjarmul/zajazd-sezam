@@ -9,6 +9,8 @@ import { RestaurantPitch } from '@/components/sections/restaurant/RestaurantPitc
 import { RestaurantCraft } from '@/components/sections/restaurant/RestaurantCraft'
 import { RestaurantAmbiance } from '@/components/sections/restaurant/RestaurantAmbiance'
 import { RestaurantReservation } from '@/components/sections/restaurant/RestaurantReservation'
+import { Footer } from '@/components/layout/Footer'
+import { Header } from '@/components/layout/Header'
 
 type Params = { locale: string }
 
@@ -38,13 +40,27 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
 
   if (!page) notFound()
 
+  const brandLabel = locale === 'pl' ? 'Restauracja Sezam' : 'Sezam Restaurant'
+  const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+
   return (
     <>
+      <Header
+        heroTheme="light"
+        logoImage={logoImage}
+        locale={locale}
+        nav={[
+          { label: locale === 'pl' ? 'Restauracja' : 'Restaurant', href: '/restauracja' },
+          { label: locale === 'pl' ? 'Menu' : 'Menu', href: '/restauracja/menu' },
+          { label: locale === 'pl' ? 'Kontakt' : 'Contact', href: '/kontakt' },
+        ]}
+      />
       <RestaurantHero data={page} locale={locale} />
       <RestaurantPitch data={page.pitchSection} locale={locale} />
       <RestaurantCraft data={page.craftSection} locale={locale} />
       <RestaurantAmbiance data={page.ambianceSection} settings={settings} locale={locale} />
       <RestaurantReservation data={page.reservationSection} settings={settings} locale={locale} />
+      <Footer settings={settings} locale={locale} brandLabel={brandLabel} />
     </>
   )
 }

@@ -67,7 +67,7 @@ export function BurgerMenu({ settings }: Props) {
 
         <div className="border-border-subtle flex flex-col gap-6 border-t pt-6">
           <div className="flex items-center justify-between">
-            <span className="text-text-muted text-sm tracking-wider uppercase">
+            <span className="text-text-muted text-sm tracking-normal uppercase">
               {t('burgerMenu.languageLabel')}
             </span>
             <LanguageSwitcher />

@@ -68,80 +68,25 @@ const rooms: RoomSeed[] = [
     tier: 'comfort',
   },
   {
-    identifier: 'double-comfort',
+    identifier: 'comfort-room',
     order: 20,
-    name: ls('Pokój dwuosobowy Komfort', 'Comfort Double Room'),
+    name: ls('Pokój Komfort', 'Comfort Room'),
     description: lt(
-      'Dla dwojga lub osoby ceniącej przestrzeń. Klimatyzacja, wygodny materac, zestaw powitalny.',
-      'For two, or anyone who values space. AC, comfortable mattress, welcome set.',
-    ),
-    capacity: 2,
-    tier: 'comfort',
-  },
-  {
-    identifier: 'triple-comfort',
-    order: 30,
-    name: ls('Pokój trzyosobowy Komfort', 'Comfort Triple Room'),
-    description: lt(
-      'Idealny dla rodzin lub grupy znajomych. Trzy wygodne miejsca, klimatyzacja i pełne wyposażenie.',
-      'Perfect for families or small groups. Three comfortable beds, AC, fully equipped.',
-    ),
-    capacity: 3,
-    tier: 'comfort',
-  },
-  {
-    identifier: 'quad-comfort',
-    order: 40,
-    name: ls('Pokój czteroosobowy Komfort', 'Comfort Quad Room'),
-    description: lt(
-      'Dla większej rodziny lub ekipy w podróży służbowej. Cztery miejsca z pełnym wyposażeniem Komfort.',
-      'For larger families or business teams. Four beds with the full Comfort kit.',
+      'Wygodny pokój z pełnym wyposażeniem Komfort. Klimatyzacja, wygodny materac, zestaw powitalny. Recepcja dobierze konfigurację łóżek do liczby gości.',
+      'Comfortable room with the full Comfort kit. AC, comfortable mattress, welcome set. Reception will match bed configuration to your party size.',
     ),
     capacity: 4,
     tier: 'comfort',
   },
   {
-    identifier: 'single-comfort-single-bed',
-    order: 50,
-    name: ls('Pokój jednoosobowy Komfort — łóżko pojedyncze', 'Single Comfort — single bed'),
+    identifier: 'standard-room',
+    order: 30,
+    name: ls('Pokój Standard', 'Standard Room'),
     description: lt(
-      'Spokojny pokój dla pojedynczego gościa. Łóżko pojedyncze, klimatyzacja i pełne wyposażenie Komfort.',
-      'Calm room for a single guest. Single bed, AC, full Comfort kit.',
+      'Wygodny nocleg w rozsądnej cenie. Wszystko czego potrzeba, bez zbędnych dodatków. Recepcja dobierze konfigurację łóżek do liczby gości.',
+      'Comfortable stay at a sensible price. Everything you need, no extras. Reception will match bed configuration to your party size.',
     ),
-    capacity: 1,
-    tier: 'comfort',
-  },
-  {
-    identifier: 'single-comfort-king',
-    order: 60,
-    name: ls('Pokój jednoosobowy Komfort — łóżko King Size', 'Single Comfort — King size bed'),
-    description: lt(
-      'Dla wymagających gości. Szerokie łóżko King Size, klimatyzacja i pełen pakiet Komfort.',
-      'For demanding guests. Wide King size bed, AC, full Comfort package.',
-    ),
-    capacity: 1,
-    tier: 'comfort',
-  },
-  {
-    identifier: 'single-standard',
-    order: 70,
-    name: ls('Pokój jednoosobowy Standard', 'Standard Single Room'),
-    description: lt(
-      'Wygodny nocleg w rozsądnej cenie. Dokładnie to czego szukasz na krótki pobyt.',
-      'Comfortable stay at a sensible price. Exactly what you need for a short visit.',
-    ),
-    capacity: 1,
-    tier: 'standard',
-  },
-  {
-    identifier: 'double-standard',
-    order: 80,
-    name: ls('Pokój dwuosobowy Standard', 'Standard Double Room'),
-    description: lt(
-      'Praktyczny wybór dla dwóch osób. Wszystko czego potrzeba, bez zbędnych dodatków.',
-      'A practical choice for two. Everything you need, no unnecessary extras.',
-    ),
-    capacity: 2,
+    capacity: 4,
     tier: 'standard',
   },
 ]
@@ -232,6 +177,66 @@ async function main() {
         },
       ],
     },
+    reviewsSection: {
+      eyebrow: ls('Doświadczenie', 'Experience'),
+      title: ls(
+        'Sprawdź opinie, później przekonaj się sam',
+        'Read the reviews, then experience it yourself',
+      ),
+      ratingValue: '4.4/5',
+      ratingSource: 'Google',
+      ratingCount: ls('Na podstawie 1100+ opinii.', 'Based on 1100+ reviews.'),
+    },
+    discoverSection: {
+      eyebrow: ls('Odkryj Sezam', 'Discover Sezam'),
+      title: ls('Wszystko w jednym miejscu', 'Everything in one place'),
+      cards: [
+        {
+          _key: 'card-bistro',
+          eyebrow: ls('Smak, który znasz z domu', 'Taste you know from home'),
+          title: ls('Bistro', 'Bistro'),
+          description: lt(
+            'Ciepłe, domowe jedzenie gotowe wtedy, kiedy go potrzebujesz. Na miejscu lub na wynos, zawsze świeże i bez pośpiechu.',
+            'Warm homestyle food ready when you need it. Eat in or take away, always fresh and unhurried.',
+          ),
+          ctaLabel: ls('Dowiedz się więcej', 'Learn more'),
+          ctaHref: '/bistro',
+        },
+        {
+          _key: 'card-events',
+          eyebrow: ls('Radosne chwile z najbliższymi', 'Joyful moments with loved ones'),
+          title: ls('Imprezy okolicznościowe', 'Celebrations'),
+          description: lt(
+            'Najważniejsze momenty w życiu zasługują na oprawę. W Sezamie zajmujemy się wszystkim, żebyś mógł cieszyć się czasem z bliskimi.',
+            'Life’s most important moments deserve a setting. At Sezam we handle everything so you can enjoy time with loved ones.',
+          ),
+          ctaLabel: ls('Dowiedz się więcej', 'Learn more'),
+          ctaHref: '/imprezy-okolicznosciowe',
+        },
+        {
+          _key: 'card-restaurant',
+          eyebrow: ls('Naturalne składniki, wyjątkowy smak', 'Natural ingredients, unique taste'),
+          title: ls('Restauracja', 'Restaurant'),
+          description: lt(
+            'Gotujemy w oparciu o naturalne produkty od lokalnych dostawców. Każde danie to chwila, przy której warto zwolnić i cieszyć się jedzeniem.',
+            'We cook with natural produce from local suppliers. Every dish is a moment worth slowing down for.',
+          ),
+          ctaLabel: ls('Dowiedz się więcej', 'Learn more'),
+          ctaHref: '/restauracja',
+        },
+        {
+          _key: 'card-conferences',
+          eyebrow: ls('Idealne miejsce spotkań', 'The perfect meeting place'),
+          title: ls('Sale konferencyjne', 'Conference rooms'),
+          description: lt(
+            'Dobrze wyposażone sale konferencyjne, pełne zaplecze techniczne i catering na miejscu sprawiają, że możesz skupić się na biznesie.',
+            'Well-equipped conference rooms, full tech setup, and on-site catering — focus on business while we handle the rest.',
+          ),
+          ctaLabel: ls('Dowiedz się więcej', 'Learn more'),
+          ctaHref: '/kontakt',
+        },
+      ],
+    },
     reservationSection: {
       eyebrow: ls('Rezerwacje', 'Reservations'),
       title: ls('Zarezerwuj nocleg w Stalowej Woli', 'Book your stay in Stalowa Wola'),
@@ -244,7 +249,7 @@ async function main() {
     seo: {
       _type: 'seoMeta',
       metaTitle: {
-        pl: 'Hotel Sezam Stalowa Wola — 70+ miejsc noclegowych, sauna, recepcja 24/7',
+        pl: 'Hotel Sezam Stalowa Wola — 70+ pokoi, sauna, recepcja 24/7',
         en: 'Hotel Sezam Stalowa Wola — 70+ beds, sauna, 24/7 reception',
       },
       metaDescription: {

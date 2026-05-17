@@ -8,23 +8,28 @@ type Props = {
   locale: Locale
 }
 
+// Pitch ma dwa zdania o różnej stylistyce — pierwsze (bold uppercase) i drugie (regular).
+// Seed rozdziela je znakiem nowej linii.
 export function RestaurantPitch({ data, locale }: Props) {
   if (!data) return null
   const text = pickLocale(data.text, locale)
   const ctaLabel = pickLocale(data.ctaLabel, locale)
+  const [first, ...rest] = (text ?? '').split(/\n+/).filter(Boolean)
+  const second = rest.join(' ')
 
   return (
     <section className="bg-bg py-24 md:py-40">
-      <div className="mx-auto flex w-full max-w-[1384px] flex-col items-center gap-12 px-6 text-center md:px-16">
-        {text && (
-          <p className="text-text max-w-5xl text-3xl leading-[1.15] font-light uppercase md:text-5xl lg:text-6xl">
-            {text}
+      <div className="layout-container flex flex-col items-center gap-10 text-center">
+        {first && (
+          <p className="text-secondary max-w-5xl text-3xl leading-[1.1] tracking-[-0.01em] md:text-5xl lg:text-[58px]">
+            <span className="block font-bold uppercase">{first}</span>
+            {second && <span className="block font-normal">{second}</span>}
           </p>
         )}
         {ctaLabel && (
           <Link
             href="/restauracja/menu"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground inline-flex h-[60px] items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
+            className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground inline-flex h-[60px] items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
           >
             {ctaLabel}
           </Link>

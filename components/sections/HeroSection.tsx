@@ -1,3 +1,4 @@
+import { Star, StarHalf } from 'lucide-react'
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
@@ -52,10 +53,20 @@ export function HeroSection({ data, locale }: Props) {
         }}
       />
 
-      <div className="text-text-inverse mx-auto w-full max-w-[1384px] px-6 pt-32 pb-16 md:px-16 md:pt-40 md:pb-32">
+      <div className="text-text-inverse layout-container pt-32 pb-16 md:pt-40 md:pb-32">
         <div className="flex max-w-4xl flex-col gap-8">
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-3" aria-hidden>
+          <div className="flex flex-col items-start gap-3 md:flex-row md:items-center">
+            {/* Mobile: 5 gwiazdek (Figma 676:2007) */}
+            <div className="text-accent flex items-center gap-1 md:hidden" aria-hidden>
+              <Star className="size-5 fill-current" />
+              <Star className="size-5 fill-current" />
+              <Star className="size-5 fill-current" />
+              <Star className="size-5 fill-current" />
+              <StarHalf className="size-5 fill-current" />
+            </div>
+            {/* Desktop: 3 avatary użytkowników z Google Reviews (Figma 676:1517).
+                Placeholder do czasu F8 — kolorowe kółka z borderem. */}
+            <div className="hidden -space-x-3 md:flex" aria-hidden>
               <span className="border-text-inverse/60 bg-gold size-10 rounded-full border-2" />
               <span className="border-text-inverse/60 bg-secondary size-10 rounded-full border-2" />
               <span className="border-text-inverse/60 bg-dark-ruby size-10 rounded-full border-2" />
@@ -64,17 +75,17 @@ export function HeroSection({ data, locale }: Props) {
           </div>
 
           {headline && (
-            <h1 className="text-5xl leading-[1.05] font-normal tracking-tight md:text-6xl lg:text-[72px] lg:leading-[1]">
+            <h1 className="text-5xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-[72px]">
               {headline}
             </h1>
           )}
 
           {subheadline && (
-            <p className="max-w-2xl text-lg leading-relaxed md:text-xl">{subheadline}</p>
+            <p className="max-w-2xl text-lg leading-[1.2] md:text-xl">{subheadline}</p>
           )}
 
           <div className="pt-2">
-            <ReservationCtaButton tab="room" variant="filled-dark">
+            <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
               {ctaLabel}
             </ReservationCtaButton>
           </div>

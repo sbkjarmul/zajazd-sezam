@@ -9,6 +9,26 @@ type Props = {
   locale: Locale
 }
 
+// Podświetla rzeczowniki "najlepszy stolik" / "best table" w tekście (zgodnie z Figmą).
+function HighlightTerms({ text, locale }: { text: string; locale: Locale }) {
+  const terms = locale === 'pl' ? ['najlepszy', 'stolik'] : ['best', 'table']
+  const pattern = new RegExp(`(${terms.join('|')})`, 'gi')
+  const parts = text.split(pattern)
+  return (
+    <>
+      {parts.map((part, i) =>
+        terms.some((t) => t.toLowerCase() === part.toLowerCase()) ? (
+          <strong key={i} className="font-bold">
+            {part}
+          </strong>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </>
+  )
+}
+
 export async function RestaurantReservation({ data, settings, locale }: Props) {
   if (!data) return null
   const t = await getTranslations('restaurant.reservation')
@@ -18,33 +38,42 @@ export async function RestaurantReservation({ data, settings, locale }: Props) {
   const address = settings?.address
 
   return (
-    <section className="bg-bg py-24 md:py-40">
-      <div className="mx-auto flex w-full max-w-[1384px] flex-col items-center gap-8 px-6 text-center md:px-16">
+    <section
+      className="text-text-inverse w-full py-24 md:py-32"
+      style={{ background: 'var(--color-dark-ruby)' }}
+    >
+      <div className="layout-container flex max-w-[1280px] flex-col items-center gap-6 text-center">
         {title && (
-          <h2 className="text-text max-w-5xl text-4xl leading-tight font-light tracking-tight uppercase md:text-6xl">
+          <h2 className="text-text-inverse max-w-5xl text-4xl leading-[1.0] font-bold tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
             {title}
           </h2>
         )}
         {description && (
-          <p className="text-text-muted max-w-2xl text-xl leading-relaxed">{description}</p>
+          <p className="text-text-inverse max-w-2xl text-lg leading-relaxed md:text-xl">
+            <HighlightTerms text={description} locale={locale} />
+          </p>
         )}
         {phone && (
           <a
             href={`tel:${phone.replace(/\s/g, '')}`}
-            className="text-text hover:text-accent mt-4 text-5xl font-light tracking-tight transition-colors md:text-7xl lg:text-8xl"
+            className="text-text-inverse hover:text-accent py-8 text-6xl font-black tracking-[-0.05em] transition-colors md:text-7xl lg:text-[96px] lg:leading-none"
           >
             {phone}
           </a>
         )}
 
-        <dl className="border-border-subtle mt-8 grid w-full max-w-2xl grid-cols-1 gap-8 border-t pt-8 md:grid-cols-2">
-          <div className="flex flex-col items-center gap-1">
-            <dt className="text-text-muted text-sm tracking-wider uppercase">{t('hours')}</dt>
-            <dd className="text-text text-lg">{t('hoursValue')}</dd>
+        <dl className="mt-2 grid w-full max-w-2xl grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="flex flex-col items-center gap-2">
+            <dt className="text-text-inverse text-sm font-bold tracking-normal uppercase">
+              {t('hours')}
+            </dt>
+            <dd className="text-text-inverse text-base font-light">{t('hoursValue')}</dd>
           </div>
-          <div className="flex flex-col items-center gap-1">
-            <dt className="text-text-muted text-sm tracking-wider uppercase">{t('location')}</dt>
-            <dd className="text-text text-lg">
+          <div className="flex flex-col items-center gap-2">
+            <dt className="text-text-inverse text-sm font-bold tracking-normal uppercase">
+              {t('location')}
+            </dt>
+            <dd className="text-text-inverse text-base font-light">
               {address?.street ?? '—'}
               {address?.postalCode && address?.city && (
                 <>

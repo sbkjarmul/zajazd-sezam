@@ -68,13 +68,8 @@
     },
     "roomTypeOptions": {
       "apartment-comfort": "Comfort Apartment",
-      "double-comfort": "Comfort Double Room",
-      "triple-comfort": "Comfort Triple Room",
-      "quad-comfort": "Comfort Quad Room",
-      "single-comfort-single-bed": "Single Comfort — single bed",
-      "single-comfort-king": "Single Comfort — King size bed",
-      "single-standard": "Standard Single Room",
-      "double-standard": "Standard Double Room"
+      "comfort-room": "Comfort Room",
+      "standard-room": "Standard Room"
     },
     "eventTypeOptions": {
       "wedding": "Wedding",
@@ -156,6 +151,8 @@
     }
   },
   "hotel": {
-    "bookRoom": "Book"
+    "bookRoom": "Book",
+    "prevImage": "Previous image",
+    "nextImage": "Next image"
   }
 }

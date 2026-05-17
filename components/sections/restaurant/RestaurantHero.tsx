@@ -14,7 +14,7 @@ export function RestaurantHero({ data, locale }: Props) {
   return (
     <section className="bg-bg relative flex min-h-screen w-full flex-col">
       <div className="flex flex-1 items-end px-6 pt-40 pb-12 md:px-16 md:pt-48 md:pb-16">
-        <h1 className="text-text text-6xl leading-none font-light tracking-tight uppercase md:text-7xl lg:text-[120px]">
+        <h1 className="text-secondary text-6xl leading-none font-bold tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[120px]">
           {headline}
         </h1>
       </div>

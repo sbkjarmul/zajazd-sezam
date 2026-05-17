@@ -7,14 +7,16 @@ type Props = {
   locale: Locale
 }
 
+// Wg Figma 676:352 — bg-light, items-end justify-center, w-[1021px], py-[80px] px-[60px].
+// Tekst 32px Inter Light uppercase, tracking-[-0.64px] (=-2%), right-aligned.
 export function HotelQuote({ data, locale }: Props) {
   const value = pickLocale(data, locale)
   if (!value) return null
 
   return (
-    <section className="bg-bg py-24 md:py-40">
-      <div className="mx-auto max-w-5xl px-6 text-center md:px-16">
-        <p className="text-text text-2xl leading-relaxed font-light tracking-tight uppercase md:text-4xl lg:text-5xl">
+    <section className="bg-bg py-20 md:py-32">
+      <div className="layout-container flex md:justify-end">
+        <p className="text-text text-2xl leading-[1.2] font-light tracking-[-0.02em] uppercase md:max-w-[1021px] md:text-right md:text-[32px]">
           {value}
         </p>
       </div>

@@ -46,26 +46,36 @@ export function HotelHero({ data, locale }: Props) {
         }}
       />
 
-      <div className="text-text-inverse mx-auto w-full max-w-[1384px] px-6 pt-32 pb-16 md:px-16 md:pt-40 md:pb-32">
-        <div className="flex max-w-4xl flex-col gap-6">
-          {eyebrow && <p className="text-accent text-sm tracking-widest uppercase">{eyebrow}</p>}
-          {title && (
-            <h1 className="text-5xl leading-[1.05] font-normal tracking-tight md:text-6xl lg:text-[88px] lg:leading-[1]">
-              {title}
-            </h1>
-          )}
-          {subtitle && <p className="max-w-xl text-lg md:text-xl">{subtitle}</p>}
+      <div className="text-text-inverse layout-container pt-32 pb-16 md:pt-40 md:pb-32">
+        <div className="flex flex-col gap-10 md:max-w-[1062px]">
+          <div className="flex flex-col gap-4">
+            {eyebrow && (
+              <p className="text-text-inverse text-base tracking-normal uppercase md:text-2xl">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h1 className="text-text-inverse text-5xl leading-[1.0] font-normal tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
+                {title}
+              </h1>
+            )}
+            {subtitle && <p className="text-text-inverse text-xl md:text-2xl">{subtitle}</p>}
+          </div>
 
-          <div className="mt-2 flex flex-wrap gap-3">
+          <div className="flex flex-col gap-3 md:flex-row md:gap-[10px]">
             {primaryCta && (
-              <ReservationCtaButton tab="room" variant="filled-dark">
+              <ReservationCtaButton
+                tab="room"
+                variant="filled-light"
+                className="h-[65px] w-full md:w-auto"
+              >
                 {primaryCta}
               </ReservationCtaButton>
             )}
             {secondaryCta && (
               <a
                 href="#rooms"
-                className="border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text inline-flex h-[60px] items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
+                className="border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text inline-flex h-[65px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto"
               >
                 {secondaryCta}
               </a>

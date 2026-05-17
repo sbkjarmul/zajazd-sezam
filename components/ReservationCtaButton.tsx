@@ -3,7 +3,7 @@
 import { useUI } from '@/components/providers/UIProvider'
 import { cn } from '@/lib/utils'
 
-type Variant = 'filled-dark' | 'outline-dark' | 'outline-light'
+type Variant = 'filled-dark' | 'filled-light' | 'outline-dark' | 'outline-light'
 
 type Props = {
   children: React.ReactNode
@@ -15,6 +15,8 @@ type Props = {
 const VARIANT_CLASSES: Record<Variant, string> = {
   'filled-dark':
     'bg-primary text-primary-foreground border-2 border-primary hover:bg-primary-hover',
+  'filled-light':
+    'bg-text-inverse text-text border-2 border-text-inverse hover:bg-transparent hover:text-text-inverse',
   'outline-dark':
     'border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground',
   'outline-light':

@@ -5,17 +5,9 @@
 import { z } from 'zod'
 
 // Identyfikatory pokoi — zsynchronizowane z `roomType.identifier` w Sanity
-// (sanity/schemas/documents/roomType.ts) oraz ARCHITECTURE.md sekcja 7.1.
-export const ROOM_TYPE_IDS = [
-  'apartment-comfort',
-  'double-comfort',
-  'triple-comfort',
-  'quad-comfort',
-  'single-comfort-single-bed',
-  'single-comfort-king',
-  'single-standard',
-  'double-standard',
-] as const
+// (sanity/schemas/documents/roomType.ts). Trzy kategorie: rezerwacja ogólna,
+// liczbę osób ustala gość, konkretną alokację robi recepcja.
+export const ROOM_TYPE_IDS = ['apartment-comfort', 'comfort-room', 'standard-room'] as const
 export type RoomTypeId = (typeof ROOM_TYPE_IDS)[number]
 
 export const EVENT_TYPE_IDS = ['wedding', 'communion', 'birthday', 'corporate', 'other'] as const

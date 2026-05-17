@@ -76,6 +76,12 @@ export const siteSettings = defineType({
     }),
 
     defineField({
+      name: 'defaultHeaderLogo',
+      title: 'Domyślne logo w headerze (SVG/PNG, fallback dla stron bez własnego)',
+      type: 'imageWithAlt',
+    }),
+
+    defineField({
       name: 'defaultSeo',
       title: 'Domyślny SEO (fallback dla stron bez własnego)',
       type: 'seoMeta',

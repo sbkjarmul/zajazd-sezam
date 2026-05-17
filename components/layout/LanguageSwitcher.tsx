@@ -22,7 +22,10 @@ export function LanguageSwitcher({ className }: { className?: string }) {
     <div
       role="group"
       aria-label={t('ariaLabel')}
-      className={cn('inline-flex items-center gap-2 text-base tracking-wider uppercase', className)}
+      className={cn(
+        'inline-flex items-center gap-2 text-base tracking-normal uppercase',
+        className,
+      )}
     >
       {routing.locales.map((loc) => {
         const active = loc === locale

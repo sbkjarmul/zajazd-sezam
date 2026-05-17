@@ -12,6 +12,8 @@ import { HotelBlock } from '@/components/sections/HotelBlock'
 import { BistroBlock } from '@/components/sections/BistroBlock'
 import { ReviewsBlock } from '@/components/sections/ReviewsBlock'
 import { ContactBlock } from '@/components/sections/ContactBlock'
+import { Footer } from '@/components/layout/Footer'
+import { Header } from '@/components/layout/Header'
 
 type Params = { locale: string }
 
@@ -39,8 +41,11 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
     sanityClient.fetch(SITE_SETTINGS_QUERY),
   ])
 
+  const logoImage = home?.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+
   return (
     <>
+      <Header logoImage={logoImage} locale={locale} />
       <HeroSection data={home?.hero ?? null} locale={locale} />
       <AboutSection data={home?.aboutSection ?? null} locale={locale} />
       <ServicesIntro data={home?.servicesIntro ?? null} locale={locale} />
@@ -50,6 +55,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
       <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
       <ReviewsBlock data={home?.reviewsBlock ?? null} locale={locale} />
       <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />
+      <Footer settings={settings} locale={locale} />
     </>
   )
 }

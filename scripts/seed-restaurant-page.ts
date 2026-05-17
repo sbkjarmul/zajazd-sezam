@@ -29,8 +29,8 @@ const doc = {
   heroHeadline: ls('Zjedz w Sezamie.', 'Eat at Sezam.'),
   pitchSection: {
     text: lt(
-      'Robimy najlepsze sałatki w mieście. Wpadnij z ekipą i przekonajcie się sami!',
-      'We make the best salads in town. Come with your crew and see for yourself!',
+      'Robimy najlepsze sałatki w mieście.\nWpadnij z ekipą i przekonajcie się sami!',
+      'We make the best salads in town.\nCome with your crew and see for yourself!',
     ),
     ctaLabel: ls('Zobacz menu', 'See menu'),
   },
@@ -60,8 +60,8 @@ const doc = {
   seo: {
     _type: 'seoMeta',
     metaTitle: {
-      pl: 'Restauracja Sezam Stalowa Wola — polska kuchnia, lokalne składniki',
-      en: 'Sezam Restaurant Stalowa Wola — Polish cuisine, local ingredients',
+      pl: 'Restauracja Sezam — polska kuchnia w Stalowej Woli',
+      en: 'Sezam Restaurant — Polish cuisine in Stalowa Wola',
     },
     metaDescription: {
       pl: 'Restauracja Zajazdu Sezam w Stalowej Woli. Polska kuchnia z lokalnych składników, codziennie 12:00–22:00. Rezerwacja stolika telefoniczna.',
