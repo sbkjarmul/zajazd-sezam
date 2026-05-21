@@ -6,6 +6,21 @@ export const menuCategory = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'cuisine',
+      title: 'Branża (czyje menu)',
+      description: 'Restauracja albo Bistro. Każda strona ma własny zestaw kategorii.',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Restauracja', value: 'restaurant' },
+          { title: 'Bistro', value: 'bistro' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'restaurant',
+      validation: (r) => r.required(),
+    }),
+    defineField({
       name: 'name',
       title: 'Nazwa (np. Przystawki, Zupy)',
       type: 'localeString',

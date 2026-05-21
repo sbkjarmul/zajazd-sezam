@@ -2,6 +2,7 @@ import type { ALL_ROOM_TYPES_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
 import { RoomImageSlider } from './RoomImageSlider'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { getTranslations } from 'next-intl/server'
 import { cn } from '@/lib/utils'
@@ -33,43 +34,43 @@ export async function HotelRoomCard({ room, locale, index }: Props) {
           !imageOnLeft && 'lg:[&>*:first-child]:order-2',
         )}
       >
-        <div className="relative aspect-square lg:aspect-auto lg:h-[800px]">
+        <Reveal className="relative aspect-square lg:aspect-auto lg:h-[800px]">
           <RoomImageSlider
             images={images}
             locale={locale}
             prevLabel={t('prevImage')}
             nextLabel={t('nextImage')}
           />
-        </div>
+        </Reveal>
 
         <div className="bg-bg flex flex-col gap-6 p-6 md:p-8 lg:gap-8 lg:p-[32px]">
-          <div className="flex flex-col gap-6">
+          <Reveal className="flex flex-col gap-4">
             {name && (
-              <h3 className="text-text text-3xl leading-none font-normal tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[40px]">
+              <h3 className="text-text text-2xl leading-none font-normal tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]">
                 {name}
               </h3>
             )}
             {description && (
-              <p className="text-text text-lg leading-[1.2] md:text-xl lg:text-2xl">
-                {description}
-              </p>
+              <p className="text-text text-base leading-[1.2] md:text-lg">{description}</p>
             )}
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal delay={150}>
             <ReservationCtaButton tab="room" variant="outline-dark" className="w-full md:w-auto">
               {t('bookRoom')}
             </ReservationCtaButton>
-          </div>
+          </Reveal>
 
           {amenities.length > 0 && (
-            <ul className="mt-auto flex flex-col items-end gap-1 pt-4 lg:gap-2 lg:pt-8">
-              {amenities.map((a, i) => (
-                <li key={i} className="text-text text-base md:text-xl lg:text-2xl">
-                  {pickLocale(a, locale)}
-                </li>
-              ))}
-            </ul>
+            <Reveal delay={250} className="mt-auto pt-4 lg:pt-8">
+              <ul className="flex flex-col items-end">
+                {amenities.map((a, i) => (
+                  <li key={i} className="text-text text-base leading-[1.5] md:text-lg">
+                    {pickLocale(a, locale)}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
           )}
         </div>
       </div>

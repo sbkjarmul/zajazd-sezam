@@ -9,6 +9,11 @@ type Props = {
   locale: Locale
 }
 
+// Desktop (lg+): 2 kolumny — obrazy po lewej (col 1, oba rzędy), tekst po prawej
+//   (tytuł góra, opis+CTA dół). Rozmieszczenie przez explicit grid placement,
+//   więc kolejność w DOM nie wpływa na desktop.
+// Tablet/mobile (<lg): jedna kolumna, kolejność DOM — tytuł → opis+CTA → obrazy
+//   (obraz pod tekstem).
 export function HotelBlock({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -20,9 +25,9 @@ export function HotelBlock({ data, locale }: Props) {
 
   return (
     <section className="bg-bg py-16 md:py-32">
-      <div className="layout-container grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-x-36">
-        {/* Title — mobile pos 1, desktop col 2 row 1 (top) */}
-        <div className="flex flex-col gap-4 md:col-start-2 md:row-start-1 md:self-start">
+      <div className="layout-container grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-x-36">
+        {/* Title — stacked pos 1, desktop col 2 row 1 (top) */}
+        <div className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1 lg:self-start">
           {eyebrow && (
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
@@ -33,14 +38,24 @@ export function HotelBlock({ data, locale }: Props) {
           )}
         </div>
 
-        {/* Images — mobile pos 2, desktop col 1 row 1+2 */}
-        <div className="flex flex-col gap-4 md:col-start-1 md:row-span-2 md:row-start-1 md:self-center">
+        {/* Description + CTA — stacked pos 2, desktop col 2 row 2 (bottom) */}
+        <div className="flex flex-col items-start gap-6 lg:col-start-2 lg:row-start-2 lg:self-end">
+          {description && <p className="text-text text-lg leading-[1.2]">{description}</p>}
+          {ctaLabel && (
+            <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
+              {ctaLabel}
+            </ReservationCtaButton>
+          )}
+        </div>
+
+        {/* Images — stacked pos 3 (pod tekstem), desktop col 1 row 1+2 */}
+        <div className="flex flex-col gap-4 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-center">
           <div className="relative aspect-[2/1] overflow-hidden">
             <SanityImage
               image={hero}
               locale={locale}
               fill
-              sizes="(max-width: 768px) 100vw, 45vw"
+              sizes="(max-width: 1024px) 100vw, 45vw"
               className="object-cover"
             />
           </div>
@@ -50,7 +65,7 @@ export function HotelBlock({ data, locale }: Props) {
                 image={second}
                 locale={locale}
                 fill
-                sizes="(max-width: 768px) 50vw, 22vw"
+                sizes="(max-width: 1024px) 50vw, 22vw"
                 className="object-cover"
               />
             </div>
@@ -59,21 +74,11 @@ export function HotelBlock({ data, locale }: Props) {
                 image={third}
                 locale={locale}
                 fill
-                sizes="(max-width: 768px) 50vw, 22vw"
+                sizes="(max-width: 1024px) 50vw, 22vw"
                 className="object-cover"
               />
             </div>
           </div>
-        </div>
-
-        {/* Description + CTA — mobile pos 3, desktop col 2 row 2 (bottom) */}
-        <div className="flex flex-col items-start gap-6 md:col-start-2 md:row-start-2 md:self-end">
-          {description && <p className="text-text text-lg leading-[1.2]">{description}</p>}
-          {ctaLabel && (
-            <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
-              {ctaLabel}
-            </ReservationCtaButton>
-          )}
         </div>
       </div>
     </section>

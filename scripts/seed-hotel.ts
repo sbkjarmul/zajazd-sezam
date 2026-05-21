@@ -134,6 +134,7 @@ async function main() {
             'Ktoś zawsze jest na miejscu. Nieważne, o której przyjeżdżasz.',
             'Someone is always here. No matter when you arrive.',
           ),
+          icon: 'sezam-recepcja-icon.svg',
         },
         {
           _key: 'a2',
@@ -142,6 +143,7 @@ async function main() {
             'Relaks na zakończenie długiego dnia. Bez wychodzenia z hotelu.',
             'Relax at the end of a long day. Without leaving the hotel.',
           ),
+          icon: 'sezam-sauna-icon.svg',
         },
         {
           _key: 'a3',
@@ -150,6 +152,7 @@ async function main() {
             'Przyjeżdżasz z maluchem? Łóżeczko czeka, nie musisz nic przynosić.',
             'Traveling with a baby? The crib is ready — bring nothing.',
           ),
+          icon: 'sezam-kids-icon.png',
         },
         {
           _key: 'a4',
@@ -158,6 +161,7 @@ async function main() {
             'Strategiczne miejsce na wjeździe do Stalowej Woli. Bezpłatny parking na miejscu.',
             'Strategic spot at the entry to Stalowa Wola. Free on-site parking.',
           ),
+          icon: 'sezam-lokalizacja-icon.svg',
         },
         {
           _key: 'a5',
@@ -166,6 +170,7 @@ async function main() {
             'Nie musisz szukać jedzenia po mieście. Ciepłe danie czeka na miejscu.',
             'No need to hunt for food around town. A warm meal is waiting on-site.',
           ),
+          icon: 'sezam-restauracja-icon.svg',
         },
         {
           _key: 'a6',
@@ -174,6 +179,7 @@ async function main() {
             'Zadbamy o Twoje rzeczy podczas pobytu. Idealne na dłuższe wyjazdy.',
             'We’ll take care of your clothes during your stay. Perfect for longer trips.',
           ),
+          icon: 'sezam-pralnia-icon.svg',
         },
       ],
     },
@@ -262,4 +268,7 @@ async function main() {
   console.log('✓ hotelPage zapisany')
 }
 
-await main()
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})

@@ -1,5 +1,14 @@
 @import 'tailwindcss';
 
+/* Wyłączamy systemowy dark mode (domyślny w Tailwind 4 = @media prefers-color-scheme).
+   Projekt ma jedną paletę (CLAUDE.md: "Paleta wspólna dla wszystkich trzech branż"),
+   ale komponenty shadcn niosą zestaw `dark:bg-input/30` itp. — z włączonym media query
+   włączały się one na OS-ach w dark mode, malując pola szarym tłem mimo light UI.
+   Po tej redefinicji `dark:` reaguje wyłącznie na klasę `.dark` na przodku — nigdzie
+   jej nie ustawiamy, więc dark variants są efektywnie martwe. Łatwe do zdjęcia
+   gdyby kiedyś pojawił się prawdziwy dark theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* =============================================================================
    Zajazd Sezam — design tokens
    Wyciągnięte z Figmy (page "Final" / ColorSwatches frame).
@@ -9,7 +18,22 @@
    utility classes (np. --color-primary → bg-primary / text-primary / border-primary).
    ============================================================================= */
 
+/* =============================================================================
+   Animacje globalne
+   ============================================================================= */
+@keyframes hero-zoom-out {
+  0% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @theme {
+  /* Animations */
+  --animate-hero-zoom-out: hero-zoom-out 10s cubic-bezier(0.22, 1, 0.36, 1) both;
+
   /* =========================================================================
      PALETA (nazwy z Figma Variables)
      ========================================================================= */
@@ -18,6 +42,8 @@
   --color-dark-ruby: #111c2a; /* bardzo ciemny granat */
   --color-gold: #a49266; /* złoty akcent marki */
   --color-ruby: #1c224f; /* granat */
+  --color-ruby-light: #1a2789; /* jaśniejszy granat (bistro hero / banner) */
+  --color-gray: #9b9b9b; /* generic gray — disabled na light bg, drobne szare elementy poza paletą */
 
   /* =========================================================================
      ROLE SEMANTYCZNE
@@ -126,15 +152,49 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: var(--text-md);
+  font-size: var(--text-lg); /* 20px — bazowy rozmiar body */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Focus ring globally — accessibility */
-*:focus-visible {
-  outline: 2px solid var(--color-ring);
-  outline-offset: 2px;
+/* Focus ring globally — a11y. W `@layer base` żeby utility classes Tailwinda
+   (`focus-visible:outline-none` na formularzowych inputach) mogły to nadpisać —
+   nielayerowe CSS wygrywałoby w kaskadzie warstw nad `@layer utilities`. */
+@layer base {
+  *:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  /* Override Chrome/Safari autofill — lawendowe tło i ciemny tekst nie pasują
+     do underline-only inputów. Trick z box-shadow: malujemy "fałszywe" tło
+     w kolorze surface, transparent się nie da. Tekst przez -webkit-text-fill-color
+     bo color jest nadpisywane przez UA stylesheet. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
+    -webkit-text-fill-color: var(--color-accent);
+    caret-color: var(--color-accent);
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Underline-only design — natywne strzałki spinnera w `<input type="number">`
+     się gryzą z kreską + wpychają padding. Wartość wpisuje się klawiaturą,
+     mobile dostaje numeryczną przez `inputMode="numeric"` w komponencie. */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 }
 
 /* =============================================================================

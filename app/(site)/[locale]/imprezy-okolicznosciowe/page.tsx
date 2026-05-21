@@ -62,11 +62,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
       <EventsReviews data={page.reviewsSection} locale={locale} />
       <EventsSteps data={page.stepsSection} locale={locale} />
       <EventsReservationCta data={page.reservationSection} settings={settings} locale={locale} />
-      <Footer
-        settings={settings}
-        locale={locale}
-        brandLabel={locale === 'pl' ? 'Sezam — imprezy' : 'Sezam — events'}
-      />
+      <Footer settings={settings} locale={locale} logoImage={logoImage} />
     </>
   )
 }

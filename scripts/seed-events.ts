@@ -62,8 +62,8 @@ const eventTypes: EventTypeSeed[] = [
     order: 30,
     name: ls('Urodziny i jubileusze', 'Birthdays and anniversaries'),
     description: lt(
-      'Świętuj swój dzień w wyjątkowym wnętrzu. Małe spotkanie czy wielka gala — dobierzemy salę i menu do skali wieczoru.',
-      'Celebrate your day in a special space. Small gathering or grand gala — we’ll match the hall and menu to the scale.',
+      'Świętuj swój dzień w wyjątkowym wnętrzu. Małe spotkanie czy wielka gala, dobierzemy salę i menu do skali wieczoru.',
+      'Celebrate your day in a special space. Small gathering or grand gala, we’ll match the hall and menu to the scale.',
     ),
   },
   {

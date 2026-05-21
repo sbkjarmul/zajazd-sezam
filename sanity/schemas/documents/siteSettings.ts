@@ -82,6 +82,14 @@ export const siteSettings = defineType({
     }),
 
     defineField({
+      name: 'favicon',
+      title: 'Favicon (ikona w zakładce przeglądarki)',
+      description:
+        'Najlepiej SVG lub kwadratowe PNG ≥ 192×192. Domyślnie używany jest /images/icons/sezam-hotel-brandmark.svg.',
+      type: 'image',
+    }),
+
+    defineField({
       name: 'defaultSeo',
       title: 'Domyślny SEO (fallback dla stron bez własnego)',
       type: 'seoMeta',

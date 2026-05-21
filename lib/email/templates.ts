@@ -71,12 +71,12 @@ function detailsRow(label: string, value: string | number): string {
 // Recepcja — zawsze PL
 // =============================================================================
 export function buildRoomReceptionEmail(data: RoomBookingValues) {
-  const subject = `Nowe zapytanie o pokój — ${data.fullName}`
+  const subject = `Nowe zapytanie o pokój — ${data.fullName || data.email}`
   const html = shell(
     subject,
     `<h2 style="margin:0 0 16px;font-size:20px;color:${BRAND.text};">Nowe zapytanie o pokój</h2>
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-      ${detailsRow('Imię i nazwisko', data.fullName)}
+      ${data.fullName ? detailsRow('Imię i nazwisko', data.fullName) : ''}
       ${detailsRow('Email', data.email)}
       ${detailsRow('Telefon', data.phone)}
       ${detailsRow('Typ pokoju', ROOM_LABELS_PL[data.roomType])}
@@ -89,7 +89,7 @@ export function buildRoomReceptionEmail(data: RoomBookingValues) {
       Skontaktuj się z gościem aby potwierdzić dostępność.
     </p>`,
   )
-  const text = `Nowe zapytanie o pokój — ${data.fullName}
+  const text = `Nowe zapytanie o pokój — ${data.fullName || data.email}
 Email: ${data.email}
 Telefon: ${data.phone}
 Typ pokoju: ${ROOM_LABELS_PL[data.roomType]}
@@ -101,19 +101,18 @@ ${data.notes ? `Uwagi: ${data.notes}\n` : ''}`
 }
 
 export function buildEventReceptionEmail(data: EventInquiryValues) {
-  const subject = `Nowe zapytanie o event — ${data.fullName} (${EVENT_LABELS_PL[data.eventType]})`
+  const subject = `Nowe zapytanie o event — ${data.fullName || data.email} (${EVENT_LABELS_PL[data.eventType]})`
   const html = shell(
     subject,
     `<h2 style="margin:0 0 16px;font-size:20px;color:${BRAND.text};">Nowe zapytanie o event</h2>
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-      ${detailsRow('Imię i nazwisko', data.fullName)}
+      ${data.fullName ? detailsRow('Imię i nazwisko', data.fullName) : ''}
       ${detailsRow('Email', data.email)}
       ${detailsRow('Telefon', data.phone)}
       ${detailsRow('Rodzaj imprezy', EVENT_LABELS_PL[data.eventType])}
       ${detailsRow('Preferowana data', data.preferredDate)}
       ${detailsRow('Liczba gości', data.guests)}
       ${data.hall ? detailsRow('Wybrana sala', data.hall) : ''}
-      ${data.message ? detailsRow('Wiadomość', data.message) : ''}
     </table>
     <p style="margin:24px 0 0;font-size:14px;color:${BRAND.textMuted};">
       Skontaktuj się z gościem aby potwierdzić dostępność sali i terminu.
@@ -125,7 +124,7 @@ Telefon: ${data.phone}
 Rodzaj: ${EVENT_LABELS_PL[data.eventType]}
 Data: ${data.preferredDate}
 Liczba gości: ${data.guests}
-${data.hall ? `Sala: ${data.hall}\n` : ''}${data.message ? `Wiadomość: ${data.message}\n` : ''}`
+${data.hall ? `Sala: ${data.hall}\n` : ''}`
   return { subject, html, text }
 }
 

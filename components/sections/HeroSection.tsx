@@ -1,8 +1,8 @@
 import { Star, StarHalf } from 'lucide-react'
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { SanityImage } from '@/components/SanityImage'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
+import { HeroParallaxImage } from './HeroParallaxImage'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -23,16 +23,7 @@ export function HeroSection({ data, locale }: Props) {
 
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden">
-      {data.image && (
-        <SanityImage
-          image={data.image}
-          locale={locale}
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10"
-        />
-      )}
+      {data.image && <HeroParallaxImage image={data.image} locale={locale} />}
       {!data.image && (
         <div
           aria-hidden
@@ -54,9 +45,9 @@ export function HeroSection({ data, locale }: Props) {
       />
 
       <div className="text-text-inverse layout-container pt-32 pb-16 md:pt-40 md:pb-32">
-        <div className="flex max-w-4xl flex-col gap-8">
-          <div className="flex flex-col items-start gap-3 md:flex-row md:items-center">
-            {/* Mobile: 5 gwiazdek (Figma 676:2007) */}
+        <div className="flex max-w-4xl flex-col gap-8 text-center md:text-left">
+          <div className="flex flex-col items-center gap-3 md:flex-row md:items-center">
+            {/* Mobile: 5 gwiazdek wycentrowane (Figma 676:2007) */}
             <div className="text-accent flex items-center gap-1 md:hidden" aria-hidden>
               <Star className="size-5 fill-current" />
               <Star className="size-5 fill-current" />
@@ -81,7 +72,9 @@ export function HeroSection({ data, locale }: Props) {
           )}
 
           {subheadline && (
-            <p className="max-w-2xl text-lg leading-[1.2] md:text-xl">{subheadline}</p>
+            <p className="mx-auto max-w-2xl text-lg leading-[1.2] md:mx-0 md:text-xl">
+              {subheadline}
+            </p>
           )}
 
           <div className="pt-2">

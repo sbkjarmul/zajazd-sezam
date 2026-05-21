@@ -39,14 +39,14 @@ export function HotelDiscover({ data, locale }: Props) {
             const cardDesc = pickLocale(card.description, locale)
             const cardCta = pickLocale(card.ctaLabel, locale)
             return (
-              <article key={i} className="flex flex-col gap-6">
+              <article key={i} className="group flex flex-col gap-6">
                 <div className="relative aspect-square overflow-hidden">
                   <SanityImage
                     image={card.image}
                     locale={locale}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover"
+                    className="scale-[1.08] object-cover transition-transform duration-500 ease-out group-hover:scale-100"
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-3">

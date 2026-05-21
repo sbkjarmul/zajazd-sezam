@@ -22,19 +22,19 @@ export function RestaurantAmbiance({ data, settings, locale }: Props) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           <div className="md:col-span-7">
             {title && (
-              <h2 className="text-secondary text-4xl leading-[1.1] font-bold tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
+              <h2 className="text-dark-ruby text-4xl leading-none font-bold tracking-tight whitespace-pre-line uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
                 {title}
               </h2>
             )}
           </div>
           <div className="flex flex-col items-start gap-6 md:col-span-5 md:items-end md:text-right">
             {tagline && (
-              <p className="text-secondary max-w-sm text-xl leading-relaxed">{tagline}</p>
+              <p className="text-dark-ruby max-w-sm text-xl leading-[normal]">{tagline}</p>
             )}
             {ctaLabel && phone && (
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}
-                className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground inline-flex h-[60px] items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
+                className="border-dark-ruby text-dark-ruby hover:bg-dark-ruby hover:text-text-inverse inline-flex h-[60px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto"
               >
                 {ctaLabel}
               </a>
@@ -42,7 +42,7 @@ export function RestaurantAmbiance({ data, settings, locale }: Props) {
           </div>
         </div>
 
-        <div className="relative aspect-[2/1] w-full overflow-hidden rounded-md">
+        <div className="relative aspect-[2/1] w-full overflow-hidden">
           <SanityImage
             image={data.image}
             locale={locale}

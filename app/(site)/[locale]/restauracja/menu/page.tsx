@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { MENU_BY_CATEGORY_QUERY, MENU_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
@@ -50,7 +50,8 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
     }))
 
   const brandLabel = locale === 'pl' ? 'Restauracja Sezam' : 'Sezam Restaurant'
-  const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+  const logoImage = page.restaurantHeaderLogo ?? settings?.defaultHeaderLogo ?? undefined
+  const tReservation = await getTranslations('restaurant.reservation')
 
   return (
     <>
@@ -70,12 +71,26 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
       <div id="menu" className="relative">
         <MenuFilter categories={nav} />
         {categories.map((category, i) => (
-          <MenuCategorySection key={category._id} category={category} locale={locale} index={i} />
+          <MenuCategorySection
+            key={category._id}
+            category={category}
+            locale={locale}
+            index={i}
+            lightTone="dark-ruby"
+            filterOffset={i === 0}
+          />
         ))}
       </div>
 
       <MenuReservation data={page.reservationSection} settings={settings} locale={locale} />
-      <Footer settings={settings} locale={locale} brandLabel={brandLabel} theme="dark" />
+      <Footer
+        settings={settings}
+        locale={locale}
+        brandLabel={brandLabel}
+        logoImage={logoImage}
+        bigBrand
+        hoursText={tReservation('hoursValue')}
+      />
     </>
   )
 }

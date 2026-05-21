@@ -1,7 +1,7 @@
 import type { HOTEL_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { SanityImage } from '@/components/SanityImage'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
+import { HeroParallaxImage } from '@/components/sections/HeroParallaxImage'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -20,14 +20,7 @@ export function HotelHero({ data, locale }: Props) {
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden">
       {data.image ? (
-        <SanityImage
-          image={data.image}
-          locale={locale}
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10"
-        />
+        <HeroParallaxImage image={data.image} locale={locale} />
       ) : (
         <div
           aria-hidden
@@ -50,16 +43,20 @@ export function HotelHero({ data, locale }: Props) {
         <div className="flex flex-col gap-10 md:max-w-[1062px]">
           <div className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text-inverse text-base tracking-normal uppercase md:text-2xl">
+              <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h1 className="text-text-inverse text-5xl leading-[1.0] font-normal tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
+              <h1 className="text-text-inverse wide:text-[96px] text-5xl leading-none font-normal tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
                 {title}
               </h1>
             )}
-            {subtitle && <p className="text-text-inverse text-xl md:text-2xl">{subtitle}</p>}
+            {subtitle && (
+              <p className="text-text-inverse wide:text-xl text-base leading-[1.3] md:text-lg">
+                {subtitle}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-3 md:flex-row md:gap-[10px]">

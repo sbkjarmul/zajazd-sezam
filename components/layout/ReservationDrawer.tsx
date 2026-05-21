@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { X } from 'lucide-react'
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { useUI } from '@/components/providers/UIProvider'
 import { VisuallyHidden } from 'radix-ui'
@@ -8,15 +9,22 @@ import { cn } from '@/lib/utils'
 import { RoomBookingForm } from '@/components/forms/RoomBookingForm'
 import { EventInquiryForm } from '@/components/forms/EventInquiryForm'
 
+// Wg Figma 676:1750: drawer 632px szerokości, bg-white, p-[32px], gap-[40px].
+// Header: "REZERWUJ" text-[40px] font-light + close X 32px.
+// Tabs gap-[16px], aktywny = border-b-1 text-bold, oba 20px.
+// Backdrop: backdrop-blur-[6px] bg-[rgba(31,31,28,0.5)].
 export function ReservationDrawer() {
   const t = useTranslations('reservationDrawer')
   const { reservationOpen, closeReservation, reservationTab, setReservationTab } = useUI()
+  const tCommon = useTranslations('common')
 
   return (
     <Sheet open={reservationOpen} onOpenChange={(open) => (open ? null : closeReservation())}>
       <SheetContent
         side="right"
-        className="bg-surface flex w-full max-w-[632px] flex-col gap-8 overflow-y-auto border-l-0 p-8 sm:max-w-[632px]"
+        showCloseButton={false}
+        overlayClassName="backdrop-blur-[6px] bg-[rgba(31,31,28,0.5)]"
+        className="bg-surface flex w-full max-w-[632px] flex-col gap-10 overflow-y-auto border-l-0 p-8 sm:max-w-[632px]"
       >
         <VisuallyHidden.Root>
           <SheetDescription>
@@ -24,39 +32,52 @@ export function ReservationDrawer() {
           </SheetDescription>
         </VisuallyHidden.Root>
 
-        <SheetTitle className="text-text text-3xl font-light tracking-tight">
-          {t('title')}
-        </SheetTitle>
+        <div className="flex items-start justify-between">
+          <SheetTitle className="text-text text-[40px] font-light tracking-normal">
+            {t('title')}
+          </SheetTitle>
+          <button
+            type="button"
+            onClick={closeReservation}
+            aria-label={tCommon('close')}
+            className="text-text hover:text-accent cursor-pointer transition-colors"
+          >
+            <X className="size-8" />
+          </button>
+        </div>
 
-        <div role="tablist" className="border-border-subtle flex gap-4 border-b">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={reservationTab === 'room'}
-            onClick={() => setReservationTab('room')}
-            className={cn(
-              'cursor-pointer px-1 pb-2 text-lg transition-colors',
-              reservationTab === 'room'
-                ? 'border-text -mb-px border-b-2 font-bold'
-                : 'text-text-muted font-normal',
-            )}
-          >
-            {t('tabs.room')}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={reservationTab === 'event'}
-            onClick={() => setReservationTab('event')}
-            className={cn(
-              'cursor-pointer px-1 pb-2 text-lg transition-colors',
-              reservationTab === 'event'
-                ? 'border-text -mb-px border-b-2 font-bold'
-                : 'text-text-muted font-normal',
-            )}
-          >
-            {t('tabs.event')}
-          </button>
+        <div className="flex flex-col gap-6">
+          <div role="tablist" className="flex items-center gap-4">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={reservationTab === 'room'}
+              onClick={() => setReservationTab('room')}
+              className={cn(
+                'text-text cursor-pointer py-1 text-lg transition-all',
+                reservationTab === 'room'
+                  ? 'border-text border-b font-bold'
+                  : 'font-normal',
+              )}
+            >
+              {t('tabs.room')}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={reservationTab === 'event'}
+              onClick={() => setReservationTab('event')}
+              className={cn(
+                'text-text cursor-pointer py-1 text-lg transition-all',
+                reservationTab === 'event'
+                  ? 'border-text border-b font-bold'
+                  : 'font-normal',
+              )}
+            >
+              {t('tabs.event')}
+            </button>
+          </div>
+          <div className="border-text border-t" aria-hidden />
         </div>
 
         {reservationTab === 'room' ? <RoomBookingForm /> : <EventInquiryForm />}

@@ -18,18 +18,18 @@ export function RestaurantPitch({ data, locale }: Props) {
   const second = rest.join(' ')
 
   return (
-    <section className="bg-bg py-24 md:py-40">
+    <section className="bg-bg flex min-h-[800px] items-center py-16 md:py-[64px]">
       <div className="layout-container flex flex-col items-center gap-10 text-center">
         {first && (
-          <p className="text-secondary max-w-5xl text-3xl leading-[1.1] tracking-[-0.01em] md:text-5xl lg:text-[58px]">
-            <span className="block font-bold uppercase">{first}</span>
+          <p className="text-dark-ruby text-3xl leading-[1.1] tracking-[-0.01em] uppercase md:text-5xl lg:text-[58px]">
+            <span className="block font-bold">{first}</span>
             {second && <span className="block font-normal">{second}</span>}
           </p>
         )}
         {ctaLabel && (
           <Link
             href="/restauracja/menu"
-            className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground inline-flex h-[60px] items-center justify-center rounded-full border-2 px-6 text-lg transition-colors"
+            className="border-dark-ruby text-dark-ruby hover:bg-dark-ruby hover:text-text-inverse inline-flex h-[63px] w-full items-center justify-center rounded-full border-2 px-6 py-2 text-lg transition-colors md:w-auto"
           >
             {ctaLabel}
           </Link>

@@ -50,7 +50,7 @@ export default async function ContactPage({ params }: { params: Promise<Params> 
       <ContactMap data={page.mapSection} settings={settings} locale={locale} />
       <ContactDirections data={page.directionsSection} locale={locale} />
       <ContactFinalCta data={page.finalCta} locale={locale} />
-      <Footer settings={settings} locale={locale} />
+      <Footer settings={settings} locale={locale} logoImage={logoImage} />
     </>
   )
 }

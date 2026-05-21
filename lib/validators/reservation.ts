@@ -17,11 +17,14 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const PHONE_REGEX = /^\+?[\d\s\-()]{6,20}$/
 
 const baseContact = {
+  // Imię i nazwisko jest opcjonalne — Figma drawer rezerwacji pokazuje tylko
+  // email + telefon. Recepcja pyta o imię przy potwierdzeniu telefonicznym.
   fullName: z
     .string()
     .trim()
-    .min(2, 'reservationErrors.fullName.tooShort')
-    .max(100, 'reservationErrors.fullName.tooLong'),
+    .max(100, 'reservationErrors.fullName.tooLong')
+    .optional()
+    .or(z.literal('')),
   email: z.string().trim().toLowerCase().pipe(z.email('reservationErrors.email.invalid')),
   phone: z.string().trim().regex(PHONE_REGEX, 'reservationErrors.phone.invalid'),
 }
@@ -58,7 +61,6 @@ export const eventInquirySchema = z.object({
   preferredDate: z.string().regex(ISO_DATE, 'reservationErrors.preferredDate.invalid'),
   guests: z.number().int().min(1).max(300),
   hall: z.string().trim().max(64).optional().or(z.literal('')),
-  message: z.string().trim().max(2000).optional().or(z.literal('')),
 })
 
 export type EventInquiryValues = z.infer<typeof eventInquirySchema>

@@ -9,10 +9,12 @@ type Props = {
   locale: Locale
 }
 
-// Desktop (Figma 676:1557): 12-col grid items-end. Główny obraz lewo col 1-6
-// row 1+2. Środek col 7-9: title row-1 (top), secondary image row-2 (bottom).
-// Prawo col 10-12: description row-1 (top), CTA row-2 (bottom).
-// Mobile (Figma 676:2040): flat — title → mainImage → description → secondaryImage → CTA.
+// Dwa bloki obok siebie (od lg): [główny obraz] | [content].
+//   content = nagłówek (góra) + rząd [mały obraz][opis + CTA] (dół).
+// Mały obraz pokazywany dopiero od xl. Gdy ukryty (tablet/mobile) lub brak go
+// w Sanity, opis+CTA (flex-1) automatycznie wypełnia cały rząd.
+// Poniżej lg: bloki ułożone pionowo (content → obraz) — obraz pod tekstem
+// dzięki order-last; na lg wraca do DOM order (obraz po lewej).
 export function EventsBlock({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -22,63 +24,64 @@ export function EventsBlock({ data, locale }: Props) {
 
   return (
     <section className="bg-bg py-16 md:py-32">
-      <div className="layout-container flex flex-col gap-8 md:grid md:grid-cols-12 md:items-end md:gap-8">
-        {/* Main image — mobile 2, desktop col 1-6 row 1+2 */}
-        <div className="relative order-2 aspect-[662/592] overflow-hidden md:col-span-6 md:col-start-1 md:row-span-2 md:row-start-1 md:order-none">
+      <div className="layout-container flex flex-col gap-8 lg:flex-row">
+        {/* Blok 1: główny obraz */}
+        <div className="relative order-last aspect-[662/592] w-full overflow-hidden lg:order-none lg:w-1/2 lg:shrink-0 lg:self-start">
           <SanityImage
             image={data.mainImage}
             locale={locale}
             fill
             priority
-            sizes="(max-width: 768px) 100vw, 55vw"
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
         </div>
 
-        {/* Title — mobile 1, desktop col 7-9 row-1 (top) */}
-        <div className="order-1 flex flex-col gap-4 md:col-span-3 md:col-start-7 md:row-start-1 md:gap-6 md:self-start md:order-none">
-          {eyebrow && (
-            <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
-          )}
-          {title && (
-            <h2 className="text-text text-4xl font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px] lg:leading-none">
-              {title}
-            </h2>
-          )}
-        </div>
-
-        {/* Description (mobile 3) — desktop grupowany w jednej komórce z CTA w row-2 col 10-12 */}
-        {description && (
-          <p className="text-text order-3 text-base leading-[1.2] md:hidden">{description}</p>
-        )}
-
-        {/* Secondary image — mobile 4, desktop col 7-9 row-2 (bottom) */}
-        {data.secondaryImage && (
-          <div className="relative order-4 aspect-square overflow-hidden md:col-span-3 md:col-start-7 md:row-start-2 md:self-end md:order-none">
-            <SanityImage
-              image={data.secondaryImage}
-              locale={locale}
-              fill
-              sizes="(max-width: 768px) 100vw, 25vw"
-              className="object-cover"
-            />
+        {/* Blok 2: nagłówek + rząd [mały obraz][opis + CTA] */}
+        <div className="flex flex-1 flex-col gap-8 lg:justify-between">
+          {/* Nagłówek */}
+          <div className="flex flex-col gap-4 md:gap-6">
+            {eyebrow && (
+              <p className="text-text wide:text-lg text-base tracking-normal uppercase">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h2 className="text-text text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
+                {title}
+              </h2>
+            )}
           </div>
-        )}
 
-        {/* Description + CTA — desktop wspólna komórka row-2 col 10-12 (bottom-right) */}
-        <div className="order-5 flex flex-col gap-6 md:col-span-3 md:col-start-10 md:row-start-2 md:self-end md:order-none">
-          {description && (
-            <p className="text-text hidden text-lg leading-[1.2] md:block">{description}</p>
-          )}
-          {ctaLabel && (
-            <Link
-              href="/imprezy-okolicznosciowe"
-              className="text-text-inverse inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-opacity hover:opacity-90"
-              style={{ background: 'var(--color-dark-ruby)' }}
-            >
-              {ctaLabel}
-            </Link>
-          )}
+          {/* Rząd: mały obraz + opis/CTA. Mały obraz tylko od xl —
+              gdy ukryty, opis+CTA (flex-1) wypełnia całą szerokość. */}
+          <div className="flex flex-col gap-8 xl:flex-row xl:items-end">
+            {data.secondaryImage && (
+              <div className="relative hidden aspect-square overflow-hidden xl:block xl:w-1/2 xl:shrink-0">
+                <SanityImage
+                  image={data.secondaryImage}
+                  locale={locale}
+                  fill
+                  sizes="25vw"
+                  className="object-cover"
+                />
+              </div>
+            )}
+            <div className="flex flex-1 flex-col gap-6">
+              {description && (
+                <p className="text-text text-base leading-[1.2] lg:text-lg">{description}</p>
+              )}
+              {ctaLabel && (
+                <Link
+                  href="/imprezy-okolicznosciowe"
+                  className="text-text-inverse inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-opacity hover:opacity-90 md:w-fit md:min-w-[220px]"
+                  style={{ background: 'var(--color-dark-ruby)' }}
+                >
+                  {ctaLabel}
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>

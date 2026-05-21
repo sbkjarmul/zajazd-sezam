@@ -20,7 +20,7 @@ export function ContactDirections({ data, locale }: Props) {
         <div className="flex flex-col gap-4 md:col-span-5">
           {eyebrow && <p className="text-accent text-sm tracking-normal uppercase">{eyebrow}</p>}
           {title && (
-            <h2 className="text-text text-3xl leading-tight font-light tracking-tight md:text-4xl md:tracking-[-0.03em] lg:text-5xl">
+            <h2 className="text-text text-3xl leading-none font-light tracking-tight md:text-4xl md:tracking-[-0.03em] lg:text-5xl">
               {title}
             </h2>
           )}

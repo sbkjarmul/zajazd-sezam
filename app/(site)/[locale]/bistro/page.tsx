@@ -52,10 +52,16 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
       <BistroHero data={page} locale={locale} />
 
       {first && (
-        <MenuCategorySection category={first} locale={locale} index={0} forceTheme="light" />
+        <MenuCategorySection
+          category={first}
+          locale={locale}
+          index={0}
+          forceTheme="light"
+          headingWeight="black"
+        />
       )}
 
-      <BistroBanner text={page.centralBanner} locale={locale} />
+      <BistroBanner text={page.centralBanner} hours={page.hoursText} locale={locale} />
 
       {rest.map((category, i) => (
         <MenuCategorySection
@@ -64,6 +70,7 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
           locale={locale}
           index={i + 1}
           forceTheme="light"
+          headingWeight="black"
         />
       ))}
 

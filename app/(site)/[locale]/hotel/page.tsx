@@ -70,7 +70,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
       <HotelReviews data={page.reviewsSection} locale={locale} />
       <HotelDiscover data={page.discoverSection} locale={locale} />
       <HotelReservationCta data={page.reservationSection} locale={locale} />
-      <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" />
+      <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />
     </>
   )
 }

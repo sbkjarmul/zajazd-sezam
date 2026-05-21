@@ -21,9 +21,24 @@ export const bistroPage = defineType({
       type: 'localeString',
     }),
     defineField({
-      name: 'centralBanner',
-      title: '2. Banner środkowy (np. "JESTEŚMY OTWARCI CODZIENNIE!")',
+      name: 'menuIntroHeading',
+      title: '2. Intro menu — nagłówek (np. "Menu")',
       type: 'localeString',
+    }),
+    defineField({
+      name: 'menuIntroBody',
+      title: '3. Intro menu — opis',
+      type: 'localeText',
+    }),
+    defineField({
+      name: 'centralBanner',
+      title: '4. Banner środkowy (np. "JESTEŚMY OTWARCI CODZIENNIE!")',
+      type: 'localeString',
+    }),
+    defineField({
+      name: 'hoursText',
+      title: '5. Godziny otwarcia (tekst, łamania linii zachowane)',
+      type: 'localeText',
     }),
     defineField({ name: 'seo', title: 'SEO', type: 'seoMeta' }),
   ],

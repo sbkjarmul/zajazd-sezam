@@ -11,6 +11,7 @@
     "home": "Strona główna",
     "restaurant": "Restauracja",
     "restaurantMenu": "Menu restauracji",
+    "menu": "Menu",
     "bistro": "Bistro",
     "hotel": "Hotel",
     "events": "Imprezy okolicznościowe",
@@ -21,11 +22,11 @@
   },
   "burgerMenu": {
     "title": "Menu",
-    "languageLabel": "Język"
+    "languageLabel": "Język strony"
   },
   "languageSwitcher": {
-    "pl": "PL",
-    "en": "EN",
+    "pl": "Polski",
+    "en": "English",
     "ariaLabel": "Wybierz język"
   },
   "footer": {
@@ -135,6 +136,10 @@
     }
   },
   "restaurant": {
+    "hero": {
+      "subheadline": "Niezapomniane spotkania",
+      "viewMenu": "Zobacz menu"
+    },
     "reservation": {
       "hours": "Godziny otwarcia",
       "hoursValue": "Codziennie 12:00 – 22:00",

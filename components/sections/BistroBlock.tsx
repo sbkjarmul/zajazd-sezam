@@ -9,9 +9,11 @@ type Props = {
   locale: Locale
 }
 
-// Sekcja na ruby (#1c224f). Desktop: 800px wysokości, 80px góra/dół. Obraz 50%
-// szerokości przyklejony do prawej krawędzi viewportu (brak prawego paddingu),
-// wysokości 640px. Button gold (accent) z dark tekstem.
+// Sekcja na ruby (#1c224f). Desktop (lg+): 800px wysokości, 80px góra/dół, układ
+// 2-kolumnowy — obraz 50% szerokości przyklejony do prawej krawędzi viewportu
+// (brak prawego paddingu), wysokości 640px. Button gold (accent) z dark tekstem.
+// Tablet/mobile (<lg): jedna kolumna, kolejność DOM — tytuł → opis+CTA → obraz
+// (obraz pod tekstem).
 export function BistroBlock({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -21,12 +23,12 @@ export function BistroBlock({ data, locale }: Props) {
 
   return (
     <section
-      className="text-text-inverse py-20 md:h-[800px]"
+      className="text-text-inverse py-20 lg:h-[800px]"
       style={{ background: 'var(--color-secondary)' }}
     >
-      <div className="layout-container grid h-full grid-cols-1 gap-8 md:grid-cols-2 md:items-center md:gap-16 md:!pr-0">
-        {/* Title block — mobile pos 1, desktop top-left */}
-        <div className="flex flex-col gap-4 md:self-start">
+      <div className="layout-container grid h-full grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center lg:gap-16 lg:!pr-0">
+        {/* Title block — stacked pos 1, desktop top-left */}
+        <div className="flex flex-col gap-4 lg:self-start">
           {eyebrow && (
             <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
               {eyebrow}
@@ -39,19 +41,8 @@ export function BistroBlock({ data, locale }: Props) {
           )}
         </div>
 
-        {/* Image — mobile pos 2, desktop right col spanning both rows */}
-        <div className="relative aspect-square overflow-hidden md:col-start-2 md:row-span-2 md:row-start-1 md:h-[640px] md:w-full md:self-center">
-          <SanityImage
-            image={data.image}
-            locale={locale}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
-          />
-        </div>
-
-        {/* Description + CTA — mobile pos 3, desktop bottom-left */}
-        <div className="flex flex-col gap-8 md:col-start-1 md:row-start-2 md:self-end">
+        {/* Description + CTA — stacked pos 2, desktop bottom-left */}
+        <div className="flex flex-col gap-8 lg:col-start-1 lg:row-start-2 lg:self-end">
           {description && (
             <p className="text-text-inverse/80 max-w-md text-lg leading-[1.2]">{description}</p>
           )}
@@ -63,6 +54,17 @@ export function BistroBlock({ data, locale }: Props) {
               {ctaLabel}
             </Link>
           )}
+        </div>
+
+        {/* Image — stacked pos 3 (pod tekstem), desktop right col spanning both rows */}
+        <div className="relative aspect-square overflow-hidden lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[640px] lg:w-full lg:self-center">
+          <SanityImage
+            image={data.image}
+            locale={locale}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+          />
         </div>
       </div>
     </section>

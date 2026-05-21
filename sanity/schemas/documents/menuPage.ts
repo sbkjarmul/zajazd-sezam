@@ -8,13 +8,8 @@ export const menuPage = defineType({
   title: 'Strona: Menu restauracji',
   type: 'document',
   fields: [
-    defineField({
-      name: 'headerLogo',
-      title: 'Logo w headerze (SVG/PNG) — override dla tej strony',
-      description:
-        'Jeśli puste, używane jest defaultHeaderLogo z siteSettings (lub fallback tekstowy SEZAM).',
-      type: 'imageWithAlt',
-    }),
+    // Logo w headerze pochodzi zawsze z restaurantPage.headerLogo
+    // (z fallbackiem do siteSettings.defaultHeaderLogo). Menu nie ma własnego override.
     defineField({
       name: 'pageIntro',
       title: '1. Hero (intro strony)',

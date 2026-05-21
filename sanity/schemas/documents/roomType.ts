@@ -1,16 +1,11 @@
 import { defineField, defineType } from 'sanity'
 
 // ID slugów odpowiada wartościom z formularza rezerwacji
-// (patrz ARCHITECTURE.md sekcja 7.1 — drawer Rezerwuj, pole "Typ pokoju").
+// (patrz ROOM_TYPE_IDS w lib/validators/reservation.ts).
 const ROOM_TYPE_SLUGS = [
   { title: 'Apartament Komfort', value: 'apartment-comfort' },
-  { title: 'Pokój dwuosobowy Komfort', value: 'double-comfort' },
-  { title: 'Pokój trzyosobowy Komfort', value: 'triple-comfort' },
-  { title: 'Pokój czteroosobowy Komfort', value: 'quad-comfort' },
-  { title: 'Pokój jednoosobowy Komfort — łóżko pojedyncze', value: 'single-comfort-single-bed' },
-  { title: 'Pokój jednoosobowy Komfort — łóżko King Size', value: 'single-comfort-king' },
-  { title: 'Pokój jednoosobowy Standard', value: 'single-standard' },
-  { title: 'Pokój dwuosobowy Standard', value: 'double-standard' },
+  { title: 'Pokój Komfort', value: 'comfort-room' },
+  { title: 'Pokój Standard', value: 'standard-room' },
 ]
 
 export const roomType = defineType({

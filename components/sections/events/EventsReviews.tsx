@@ -1,55 +1,57 @@
-import { Quote } from 'lucide-react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { getGoogleReviews } from '@/lib/googleReviews'
+import { Reveal } from '@/components/Reveal'
+import { ReviewsCarousel } from '@/components/sections/ReviewsCarousel'
 
 type Props = {
   data: NonNullable<EVENTS_PAGE_QUERY_RESULT>['reviewsSection']
   locale: Locale
 }
 
-// F8 podepnie real Google Places API (lib/googleReviews.ts).
-// Na razie statyczna placeholder-karta-CTA, identyczna z homepage ReviewsBlock.
-export function EventsReviews({ data, locale }: Props) {
+// Reużywa ReviewsCarousel (jak homepage / hotel). Carousel z mocka
+// `getGoogleReviews()` — w F8 podmienimy na prawdziwe Google Places API.
+export async function EventsReviews({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
   const title = pickLocale(data.title, locale)
-  const ratingValue = data.ratingValue
-  const ratingSource = data.ratingSource
-  const ratingCount = pickLocale(data.ratingCount, locale)
+  const reviews = await getGoogleReviews()
+
+  const ratingLabel = locale === 'pl' ? 'Co mówią nasi goście?' : 'What our guests say?'
+  const basedOnLabel =
+    locale === 'pl'
+      ? `Na podstawie ${reviews.userRatingsTotal}+ opinii.`
+      : `Based on ${reviews.userRatingsTotal}+ reviews.`
 
   return (
-    <section className="bg-bg py-20 md:py-32">
-      <div className="layout-container flex flex-col gap-12">
-        <header className="flex flex-col items-center gap-4 text-center">
-          {eyebrow && <p className="text-text text-base tracking-normal uppercase">{eyebrow}</p>}
-          {title && (
-            <h2 className="text-text max-w-3xl text-4xl font-light tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
-              {title}
-            </h2>
-          )}
-          {(ratingValue || ratingSource || ratingCount) && (
-            <p className="text-text-muted mt-2 flex items-baseline gap-2 text-2xl">
-              {ratingValue && <span className="text-text text-4xl font-light">{ratingValue}</span>}
-              {ratingSource && <span className="text-text-muted text-2xl">{ratingSource}</span>}
-              {ratingCount && <span className="text-text-muted text-base">· {ratingCount}</span>}
-            </p>
-          )}
-        </header>
+    <section className="bg-bg py-16 md:py-20">
+      <div className="layout-container flex flex-col gap-10 md:gap-[54px]">
+        <Reveal>
+          <header className="mx-auto flex max-w-[874px] flex-col items-center gap-3 text-center md:gap-4">
+            {eyebrow && (
+              <p className="text-text text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h2 className="text-text text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
+                {title}
+              </h2>
+            )}
+            <div className="text-text mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl">
+              <span>{reviews.rating.toFixed(1)}/5</span>
+              <span className="font-bold">Google</span>
+              <span>{basedOnLabel}</span>
+            </div>
+          </header>
+        </Reveal>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="bg-surface flex flex-col gap-6 rounded-md p-8">
-            <Quote className="text-accent size-10" aria-hidden />
-            <p className="text-text text-2xl leading-tight">
-              {locale === 'pl' ? 'Co mówią nasi goście?' : 'What our guests say'}
-            </p>
-            <p className="text-text-muted text-sm">
-              {locale === 'pl'
-                ? 'Sekcja opinii zostanie zasilona z Google Reviews — zobaczysz najnowsze opinie 4★+.'
-                : 'Reviews will populate from Google Reviews — you’ll see latest 4★+ entries.'}
-            </p>
-          </div>
-        </div>
+        <ReviewsCarousel
+          reviews={reviews.reviews}
+          locale={locale}
+          placeholderLabel={ratingLabel}
+        />
       </div>
     </section>
   )

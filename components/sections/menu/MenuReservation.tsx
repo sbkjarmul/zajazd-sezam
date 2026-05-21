@@ -25,7 +25,7 @@ export async function MenuReservation({ data, settings, locale }: Props) {
     >
       <div className="layout-container flex max-w-[1280px] flex-col items-center gap-6 text-center">
         {title && (
-          <h2 className="text-text-inverse max-w-5xl text-4xl leading-[1.0] font-bold tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
+          <h2 className="text-text-inverse max-w-5xl text-4xl leading-none font-bold tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
             {title}
           </h2>
         )}

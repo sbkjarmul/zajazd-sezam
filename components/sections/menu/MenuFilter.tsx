@@ -85,8 +85,8 @@ export function MenuFilter({ categories }: Props) {
               className={cn(
                 'inline-flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full px-4 text-sm whitespace-nowrap transition-colors wide:h-[60px] wide:px-6 wide:text-lg',
                 isActive
-                  ? 'bg-secondary text-secondary-foreground font-normal'
-                  : 'hover:bg-secondary/10 font-normal text-[color:var(--color-dark-ruby)]',
+                  ? 'bg-dark-ruby text-text-inverse font-normal'
+                  : 'hover:bg-dark-ruby/10 text-dark-ruby font-normal',
               )}
             >
               {c.label}

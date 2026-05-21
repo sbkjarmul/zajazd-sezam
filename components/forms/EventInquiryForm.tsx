@@ -12,9 +12,7 @@ import {
 } from '@/lib/validators/reservation'
 import { useReservationSubmit } from './useReservationSubmit'
 import { TurnstileField } from './TurnstileField'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
+import { DateField } from './DateField'
 import {
   Select,
   SelectContent,
@@ -24,6 +22,8 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
+// Styling per Figma 676:1763 (tab room) — to samo dla event tab dla spójności.
+// Pola h-[63px] border p-[16px] text-[20px], submit h-[65px], disclaimer text-base center.
 export function EventInquiryForm() {
   const t = useTranslations('reservationDrawer.event')
   const tErrors = useTranslations()
@@ -36,12 +36,10 @@ export function EventInquiryForm() {
   const form = useForm<EventInquiryValues>({
     resolver: zodResolver(eventInquirySchema),
     defaultValues: {
-      fullName: '',
       email: '',
       phone: '',
       guests: 50,
       hall: '',
-      message: '',
     },
   })
 
@@ -63,63 +61,86 @@ export function EventInquiryForm() {
   })
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
-      <p className="text-text text-2xl">{t('intro')}</p>
+    <form onSubmit={onSubmit} className="flex flex-col gap-6" noValidate>
+      <h3 className="text-text text-lg leading-none font-normal tracking-tight uppercase md:text-xl md:tracking-[-0.03em]">
+        {t('intro')}
+      </h3>
 
-      <FieldRow label={t('fullName')} error={errors.fullName?.message} tt={tErrors}>
-        <Input {...register('fullName')} autoComplete="name" />
-      </FieldRow>
+      <div className="flex flex-col gap-5">
+        <FieldShell error={errors.email?.message} tt={tErrors}>
+          <input
+            {...register('email')}
+            type="email"
+            placeholder={t('email')}
+            autoComplete="email"
+            inputMode="email"
+            aria-label={t('email')}
+            className={inputClasses}
+          />
+        </FieldShell>
 
-      <FieldRow label={t('email')} error={errors.email?.message} tt={tErrors}>
-        <Input {...register('email')} type="email" autoComplete="email" inputMode="email" />
-      </FieldRow>
+        <FieldShell error={errors.phone?.message} tt={tErrors}>
+          <input
+            {...register('phone')}
+            type="tel"
+            placeholder={t('phone')}
+            autoComplete="tel"
+            inputMode="tel"
+            aria-label={t('phone')}
+            className={inputClasses}
+          />
+        </FieldShell>
 
-      <FieldRow label={t('phone')} error={errors.phone?.message} tt={tErrors}>
-        <Input {...register('phone')} type="tel" autoComplete="tel" inputMode="tel" />
-      </FieldRow>
+        <FieldShell error={errors.eventType?.message} tt={tErrors}>
+          <Controller
+            control={control}
+            name="eventType"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger className={selectTriggerClasses} aria-label={t('eventType')}>
+                  <SelectValue placeholder={t('eventType')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {EVENT_TYPE_IDS.map((id) => (
+                    <SelectItem key={id} value={id}>
+                      {tEventTypes(id)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </FieldShell>
 
-      <FieldRow label={t('eventType')} error={errors.eventType?.message} tt={tErrors}>
-        <Controller
-          control={control}
-          name="eventType"
-          render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="—" />
-              </SelectTrigger>
-              <SelectContent>
-                {EVENT_TYPE_IDS.map((id) => (
-                  <SelectItem key={id} value={id}>
-                    {tEventTypes(id)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
-      </FieldRow>
+        <FieldShell error={errors.preferredDate?.message} tt={tErrors}>
+          <Controller
+            control={control}
+            name="preferredDate"
+            render={({ field }) => (
+              <DateField
+                value={field.value || ''}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                placeholder={t('preferredDate')}
+                ariaLabel={t('preferredDate')}
+              />
+            )}
+          />
+        </FieldShell>
 
-      <FieldRow label={t('preferredDate')} error={errors.preferredDate?.message} tt={tErrors}>
-        <Input {...register('preferredDate')} type="date" />
-      </FieldRow>
-
-      <FieldRow label={t('guests')} error={errors.guests?.message} tt={tErrors}>
-        <Input
-          {...register('guests', { valueAsNumber: true })}
-          type="number"
-          min={1}
-          max={300}
-          inputMode="numeric"
-        />
-      </FieldRow>
-
-      <FieldRow label={t('hall')} error={errors.hall?.message} tt={tErrors}>
-        <Input {...register('hall')} />
-      </FieldRow>
-
-      <FieldRow label={t('message')} error={errors.message?.message} tt={tErrors}>
-        <Textarea {...register('message')} rows={3} />
-      </FieldRow>
+        <FieldShell error={errors.guests?.message} tt={tErrors}>
+          <input
+            {...register('guests', { valueAsNumber: true })}
+            type="number"
+            min={1}
+            max={300}
+            inputMode="numeric"
+            placeholder={t('guests')}
+            aria-label={t('guests')}
+            className={inputClasses}
+          />
+        </FieldShell>
+      </div>
 
       <TurnstileField
         ref={setTurnstile}
@@ -128,35 +149,49 @@ export function EventInquiryForm() {
         onError={() => setTurnstileToken('')}
       />
 
-      <button
-        type="submit"
-        disabled={submitting || !turnstileToken}
-        className={cn(
-          'bg-primary text-primary-foreground hover:bg-primary-hover inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg font-normal transition-colors',
-          (submitting || !turnstileToken) && 'cursor-not-allowed opacity-60',
-        )}
-      >
-        {submitting ? tCommon('submitting') : tCommon('submit')}
-      </button>
-      <p className="text-text-muted text-center text-sm">{tCommon('disclaimer')}</p>
+      <div className="border-text mt-auto border-t" aria-hidden />
+
+      <div className="flex flex-col gap-2">
+        <button
+          type="submit"
+          disabled={submitting || !turnstileToken}
+          className={cn(
+            'bg-primary text-primary-foreground hover:bg-primary-hover inline-flex h-[65px] w-full items-center justify-center rounded-full px-6 text-base font-normal transition-colors',
+            (submitting || !turnstileToken) && 'cursor-not-allowed opacity-60',
+          )}
+        >
+          {submitting ? tCommon('submitting') : tCommon('submit')}
+        </button>
+        <p className="text-text text-center text-base">{tCommon('disclaimer')}</p>
+      </div>
     </form>
   )
 }
 
-function FieldRow({
-  label,
+// Underline-only inputs zgodnie z Figmą. Patrz RoomBookingForm.tsx — bazą jest
+// stan aktywny (border-b-2 accent), a `:placeholder-shown:not(:focus)` (input)
+// i `[data-placeholder]:not(:focus):not([data-state=open])` (select) przełączają
+// na nieaktywny (border-b 1px text dark + tekst muted). Łączymy warunki w jeden
+// selector żeby focus na pustym polu nadal trzymał accent.
+const inputClasses =
+  'border-accent text-accent placeholder:text-text-muted h-[56px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 text-[20px] outline-none focus-visible:outline-none transition-colors [&:placeholder-shown:not(:focus)]:border-b [&:placeholder-shown:not(:focus)]:border-text [&:placeholder-shown:not(:focus)]:text-text-muted'
+
+// `data-[size=default]:h-[56px]` nadpisuje shadcnowe `data-[size=default]:h-9`
+// — bez tego select renderuje się jako 36px i nie pasuje do inputów.
+const selectTriggerClasses =
+  'border-accent text-accent h-[56px] data-[size=default]:h-[56px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-0 text-[20px] shadow-none outline-none focus-visible:outline-none transition-colors focus-visible:ring-0 [&[data-placeholder]:not(:focus):not([data-state=open])]:border-b [&[data-placeholder]:not(:focus):not([data-state=open])]:border-text [&[data-placeholder]:not(:focus):not([data-state=open])]:text-text-muted [&_svg]:size-5 [&_svg]:opacity-100 [&_svg]:text-accent [&[data-placeholder]:not(:focus):not([data-state=open])_svg]:text-text-muted'
+
+function FieldShell({
   error,
   tt,
   children,
 }: {
-  label: string
   error?: string
   tt: (key: string) => string
   children: React.ReactNode
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <Label className="text-text-muted text-xs tracking-wide uppercase">{label}</Label>
       {children}
       {error && <p className="text-destructive text-sm">{tt(error)}</p>}
     </div>

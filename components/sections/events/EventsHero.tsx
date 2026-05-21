@@ -1,6 +1,6 @@
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { SanityImage } from '@/components/SanityImage'
+import { HeroParallaxImage } from '@/components/sections/HeroParallaxImage'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
@@ -20,14 +20,7 @@ export function EventsHero({ data, locale }: Props) {
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden">
       {data.image ? (
-        <SanityImage
-          image={data.image}
-          locale={locale}
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10"
-        />
+        <HeroParallaxImage image={data.image} locale={locale} />
       ) : (
         <div
           aria-hidden
@@ -50,12 +43,12 @@ export function EventsHero({ data, locale }: Props) {
         <div className="flex max-w-5xl flex-col gap-6 md:gap-10">
           <div className="flex flex-col gap-3 md:gap-4">
             {eyebrow && (
-              <p className="text-text-inverse text-base tracking-normal uppercase md:text-xl">
+              <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h1 className="text-text-inverse text-[64px] leading-[1.0] font-medium tracking-tight md:text-7xl md:tracking-[-0.03em] lg:text-[120px]">
+              <h1 className="text-text-inverse text-[64px] leading-none font-medium tracking-tight md:text-7xl md:tracking-[-0.03em] lg:text-[120px]">
                 {title}
               </h1>
             )}

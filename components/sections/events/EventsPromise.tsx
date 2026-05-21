@@ -1,6 +1,7 @@
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -18,17 +19,19 @@ export function EventsPromise({ data, locale }: Props) {
   if (!lead && !highlight && !tail) return null
 
   return (
-    <section className="bg-surface flex w-full justify-end py-20 md:py-32">
+    <section className="bg-surface flex min-h-[800px] w-full items-center justify-end py-20 md:py-32">
       <div className="layout-container flex flex-col gap-10">
-        <p className="text-text text-3xl leading-tight font-light tracking-tight md:text-5xl">
-          {lead} {highlight && <span className="font-medium">{highlight}</span>} {tail}
-        </p>
+        <Reveal>
+          <p className="text-text text-[32px] leading-tight font-light tracking-[-0.03em]">
+            {lead} {highlight && <span className="font-medium">{highlight}</span>} {tail}
+          </p>
+        </Reveal>
         {ctaLabel && (
-          <div>
+          <Reveal delay={150}>
             <ReservationCtaButton tab="event" variant="outline-dark">
               {ctaLabel}
             </ReservationCtaButton>
-          </div>
+          </Reveal>
         )}
       </div>
     </section>

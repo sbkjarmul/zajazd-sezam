@@ -50,7 +50,7 @@ export function ContactHero({ data, locale }: Props) {
             </p>
           )}
           {title && (
-            <h1 className="text-text-inverse text-5xl leading-[1.05] font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-7xl">
+            <h1 className="text-text-inverse text-5xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-7xl">
               {title}
             </h1>
           )}

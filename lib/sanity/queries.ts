@@ -46,6 +46,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     googleBusinessProfileUrl,
     googleMapsUrl,
     defaultHeaderLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
+    favicon { asset->{ url } },
     defaultSeo {
       ${SEO_FRAGMENT}
     }
@@ -113,9 +114,11 @@ export const RESTAURANT_PAGE_QUERY = defineQuery(`
   }
 `)
 
+// Logo headera dla /restauracja/menu pochodzi z restaurantPage.headerLogo
+// (kontent menu nie ma własnego override).
 export const MENU_PAGE_QUERY = defineQuery(`
   *[_type == "menuPage" && _id == "menuPage"][0]{
-    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
+    "restaurantHeaderLogo": *[_type == "restaurantPage" && _id == "restaurantPage"][0].headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     pageIntro { eyebrow, title, subtitle, ctaLabel },
     photoStrip[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
     reservationSection { title, description },
@@ -128,14 +131,17 @@ export const BISTRO_PAGE_QUERY = defineQuery(`
   *[_type == "bistroPage" && _id == "bistroPage"][0]{
     headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     heroHeadline,
+    menuIntroHeading,
+    menuIntroBody,
     centralBanner,
+    hoursText,
     seo { ${SEO_FRAGMENT} }
   }
 `)
 
-// Wybrane kategorie + pozycje serwowane w bistro (subset menu).
+// Kategorie bistro — własne, niezależne od restauracji.
 export const BISTRO_MENU_QUERY = defineQuery(`
-  *[_type == "menuCategory" && slug.current in ["dania-miesne", "ryby", "wege"]]
+  *[_type == "menuCategory" && cuisine == "bistro"]
     | order(order asc) {
       _id,
       name,
@@ -163,7 +169,7 @@ export const HOTEL_PAGE_QUERY = defineQuery(`
     quote,
     amenitiesSection {
       eyebrow, title,
-      items[]{ title, description }
+      items[]{ title, description, icon }
     },
     reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },
     discoverSection {
@@ -254,8 +260,9 @@ export const CONTACT_PAGE_QUERY = defineQuery(`
 // Listy — używane przez konkretne sekcje (np. menu, sale)
 // =============================================================================
 
+// Menu restauracji — wyklucza kategorie bistro.
 export const MENU_BY_CATEGORY_QUERY = defineQuery(`
-  *[_type == "menuCategory"] | order(order asc) {
+  *[_type == "menuCategory" && cuisine == "restaurant"] | order(order asc) {
     _id,
     name,
     "slug": slug.current,

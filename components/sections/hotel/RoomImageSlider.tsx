@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { SanityImage } from '@/components/SanityImage'
 import type { ALL_ROOM_TYPES_QUERY_RESULT } from '@/types/sanity'
@@ -16,17 +16,48 @@ type Props = {
   nextLabel: string
 }
 
+// Próg w pikselach — krótsze swipe ignorujemy żeby zwykły tap/scroll
+// w nie wywoływał zmiany slajdu.
+const SWIPE_THRESHOLD = 40
+
 export function RoomImageSlider({ images, locale, prevLabel, nextLabel }: Props) {
   const [index, setIndex] = useState(0)
   const count = images.length
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
 
   if (count === 0) return null
 
   const goPrev = () => setIndex((i) => (i - 1 + count) % count)
   const goNext = () => setIndex((i) => (i + 1) % count)
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].clientX
+    touchStartY.current = e.changedTouches[0].clientY
+  }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+    touchStartX.current = null
+    touchStartY.current = null
+    // Tylko ruchy bardziej poziome niż pionowe — nie kradniemy pionowego scrolla.
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) <= Math.abs(dy)) return
+    if (dx > 0) goPrev()
+    else goNext()
+  }
+
+  // Strzałki schowane na mobile — od md w górę: zawsze widoczne na tablet,
+  // a od lg odsłaniane tylko na hover / focus w grupie.
+  const arrowBase =
+    'bg-bg/80 text-text hover:bg-bg absolute top-1/2 z-10 hidden size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full backdrop-blur-sm transition-opacity duration-200 md:inline-flex md:size-14 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100 lg:group-focus-within:opacity-100'
+
   return (
-    <div className="relative h-full w-full">
+    <div
+      className="group relative h-full w-full touch-pan-y select-none"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
       {images.map((image, i) => (
         <div
           key={i}
@@ -53,7 +84,7 @@ export function RoomImageSlider({ images, locale, prevLabel, nextLabel }: Props)
             type="button"
             onClick={goPrev}
             aria-label={prevLabel}
-            className="bg-bg/80 text-text hover:bg-bg absolute top-1/2 left-4 z-10 inline-flex size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full backdrop-blur-sm transition-colors md:left-6 md:size-14"
+            className={cn(arrowBase, 'left-4 md:left-6')}
           >
             <ChevronLeft className="size-6 md:size-7" aria-hidden />
           </button>
@@ -61,26 +92,10 @@ export function RoomImageSlider({ images, locale, prevLabel, nextLabel }: Props)
             type="button"
             onClick={goNext}
             aria-label={nextLabel}
-            className="bg-bg/80 text-text hover:bg-bg absolute top-1/2 right-4 z-10 inline-flex size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full backdrop-blur-sm transition-colors md:right-6 md:size-14"
+            className={cn(arrowBase, 'right-4 md:right-6')}
           >
             <ChevronRight className="size-6 md:size-7" aria-hidden />
           </button>
-
-          <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2 md:bottom-6">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-label={`${i + 1} / ${count}`}
-                aria-current={i === index}
-                className={cn(
-                  'h-2 cursor-pointer rounded-full transition-all',
-                  i === index ? 'bg-bg w-8' : 'bg-bg/50 hover:bg-bg/80 w-2',
-                )}
-              />
-            ))}
-          </div>
         </>
       )}
     </div>

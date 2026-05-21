@@ -11,6 +11,7 @@
     "home": "Home",
     "restaurant": "Restaurant",
     "restaurantMenu": "Restaurant menu",
+    "menu": "Menu",
     "bistro": "Bistro",
     "hotel": "Hotel",
     "events": "Events & celebrations",
@@ -21,11 +22,11 @@
   },
   "burgerMenu": {
     "title": "Menu",
-    "languageLabel": "Language"
+    "languageLabel": "Page language"
   },
   "languageSwitcher": {
-    "pl": "PL",
-    "en": "EN",
+    "pl": "Polski",
+    "en": "English",
     "ariaLabel": "Choose language"
   },
   "footer": {
@@ -135,6 +136,10 @@
     }
   },
   "restaurant": {
+    "hero": {
+      "subheadline": "Unforgettable gatherings",
+      "viewMenu": "See menu"
+    },
     "reservation": {
       "hours": "Opening hours",
       "hoursValue": "Daily 12:00 – 22:00",

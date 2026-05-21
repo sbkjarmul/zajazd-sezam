@@ -76,7 +76,7 @@ export function ContactInfo({ data, settings, locale }: Props) {
         <header className="flex flex-col gap-4">
           {eyebrow && <p className="text-accent text-sm tracking-normal uppercase">{eyebrow}</p>}
           {title && (
-            <h2 className="text-text max-w-3xl text-4xl leading-tight font-light tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+            <h2 className="text-text max-w-3xl text-4xl leading-none font-light tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
               {title}
             </h2>
           )}

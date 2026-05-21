@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { RESTAURANT_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
@@ -42,11 +42,13 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
 
   const brandLabel = locale === 'pl' ? 'Restauracja Sezam' : 'Sezam Restaurant'
   const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+  const tReservation = await getTranslations('restaurant.reservation')
 
   return (
     <>
       <Header
         heroTheme="light"
+        mobileHeroTheme="dark"
         logoImage={logoImage}
         locale={locale}
         nav={[
@@ -60,7 +62,14 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
       <RestaurantCraft data={page.craftSection} locale={locale} />
       <RestaurantAmbiance data={page.ambianceSection} settings={settings} locale={locale} />
       <RestaurantReservation data={page.reservationSection} settings={settings} locale={locale} />
-      <Footer settings={settings} locale={locale} brandLabel={brandLabel} />
+      <Footer
+        settings={settings}
+        locale={locale}
+        brandLabel={brandLabel}
+        logoImage={logoImage}
+        bigBrand
+        hoursText={tReservation('hoursValue')}
+      />
     </>
   )
 }

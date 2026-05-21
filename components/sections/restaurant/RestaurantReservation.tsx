@@ -39,24 +39,24 @@ export async function RestaurantReservation({ data, settings, locale }: Props) {
 
   return (
     <section
-      className="text-text-inverse w-full py-24 md:py-32"
+      className="text-text-inverse w-full py-16 md:py-32"
       style={{ background: 'var(--color-dark-ruby)' }}
     >
       <div className="layout-container flex max-w-[1280px] flex-col items-center gap-6 text-center">
         {title && (
-          <h2 className="text-text-inverse max-w-5xl text-4xl leading-[1.0] font-bold tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
+          <h2 className="text-text-inverse max-w-5xl text-3xl leading-none font-bold tracking-tight uppercase sm:text-4xl md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
             {title}
           </h2>
         )}
         {description && (
-          <p className="text-text-inverse max-w-2xl text-lg leading-relaxed md:text-xl">
+          <p className="text-text-inverse max-w-2xl text-base leading-relaxed sm:text-lg md:text-xl">
             <HighlightTerms text={description} locale={locale} />
           </p>
         )}
         {phone && (
           <a
             href={`tel:${phone.replace(/\s/g, '')}`}
-            className="text-text-inverse hover:text-accent py-8 text-6xl font-black tracking-[-0.05em] transition-colors md:text-7xl lg:text-[96px] lg:leading-none"
+            className="text-text-inverse hover:text-accent text-[40px] font-black whitespace-nowrap tracking-[-0.03em] py-4 transition-colors sm:text-5xl md:py-8 md:text-6xl lg:text-[96px] lg:leading-none"
           >
             {phone}
           </a>

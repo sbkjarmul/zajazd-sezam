@@ -55,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
       <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
       <ReviewsBlock data={home?.reviewsBlock ?? null} locale={locale} />
       <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />
-      <Footer settings={settings} locale={locale} />
+      <Footer settings={settings} locale={locale} logoImage={logoImage} />
     </>
   )
 }

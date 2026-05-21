@@ -4,12 +4,19 @@ import { Logo } from './Logo'
 import type { SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
 import type { Locale, Pathname } from '@/i18n/routing'
 import { cn } from '@/lib/utils'
+import type { SanityImage } from '@/components/SanityImage'
 
-type SiteMapItem = { href: Pathname; key: 'hotel' | 'restaurant' | 'bistro' | 'events' | 'contact' }
+type LogoImage = Parameters<typeof SanityImage>[0]['image']
+
+type SiteMapItem = {
+  href: Pathname
+  key: 'hotel' | 'restaurant' | 'menu' | 'bistro' | 'events' | 'contact'
+}
 
 const SITE_MAP_ITEMS: SiteMapItem[] = [
   { href: '/hotel', key: 'hotel' },
   { href: '/restauracja', key: 'restaurant' },
+  { href: '/restauracja/menu', key: 'menu' },
   { href: '/bistro', key: 'bistro' },
   { href: '/imprezy-okolicznosciowe', key: 'events' },
   { href: '/kontakt', key: 'contact' },
@@ -26,8 +33,14 @@ type Props = {
   theme?: FooterTheme
   // Override koloru tła (np. bistro #1a2789).
   bgColor?: string
-  // Wariant z gigantycznym SEZAM wordmarkiem na górze + kolumny right-aligned (bistro).
+  // Wariant z powiększonym logo na górze + kolumny right-aligned (bistro/restauracja).
   bigBrand?: boolean
+  // Godziny otwarcia w kolumnie 1 (wariant bigBrand) — zamiast telefonu.
+  hoursText?: string
+  // Ukrywa opis (shortDescription) obok logo w standardowym wariancie stopki.
+  hideDescription?: boolean
+  // Obraz logo — to samo co w headerze per-podstrona. Jeśli brak, fallback tekstowy "SEZAM / ZAWSZE ŚWIEŻO".
+  logoImage?: LogoImage
 }
 
 export async function Footer({
@@ -37,9 +50,12 @@ export async function Footer({
   theme = 'light',
   bgColor,
   bigBrand = false,
+  hoursText,
+  hideDescription = false,
+  logoImage,
 }: Props) {
   const t = await getTranslations()
-  const description = settings?.shortDescription?.[locale]
+  const description = hideDescription ? undefined : settings?.shortDescription?.[locale]
   const defaultBrand = settings?.companyName?.[locale] ?? 'Zajazd Sezam'
   const resolvedBrand = brandLabel ?? defaultBrand
   const address = settings?.address
@@ -62,33 +78,23 @@ export async function Footer({
       style={bgStyle}
     >
       {bigBrand ? (
-        <div className="layout-container flex flex-col gap-16 pt-20 pb-12 md:pt-20">
-          {/* Gigantic SEZAM wordmark — rozciągnięty na pełną szerokość kontenera */}
-          <svg
-            viewBox="0 0 1000 240"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="SEZAM"
-            className={cn('block w-full', isDark ? 'text-text-inverse' : 'text-text')}
-          >
-            <text
-              x="0"
-              y="220"
-              fontSize="290"
-              fontWeight="900"
-              fontFamily="Inter, sans-serif"
-              fill="currentColor"
-              textLength="1000"
-              lengthAdjust="spacingAndGlyphs"
-            >
-              SEZAM
-            </text>
-          </svg>
+        <div className="layout-container flex flex-col items-center gap-12 pt-20 pb-12 md:flex-row md:items-start md:justify-between md:gap-16 md:pt-20">
+          {/* Powiększone logo (ten sam komponent co w headerze, size="lg") —
+              naturalne proporcje, bez naciągania SVG. Mobile: wycentrowane nad
+              kolumnami; desktop: po lewej, kolumny po prawej w jednym rzędzie. */}
+          <Logo
+            size="lg"
+            variant={isDark ? 'on-dark' : 'on-light'}
+            image={logoImage}
+            locale={locale}
+          />
 
-          {/* Navigation columns — right-aligned na desktop */}
-          <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-end md:gap-10">
+          {/* Kolumny nawigacji — centrowane na mobile, rząd na desktop */}
+          <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-10">
             <FooterColumn
               title={resolvedBrand}
               isDark={isDark}
+              strong
               items={[
                 address?.street && {
                   text: (
@@ -103,15 +109,18 @@ export async function Footer({
                     </>
                   ),
                 },
-                phone && {
-                  text: phone,
-                  href: `tel:${phone.replace(/\s/g, '')}`,
-                },
+                hoursText
+                  ? { text: hoursText }
+                  : phone && {
+                      text: phone,
+                      href: `tel:${phone.replace(/\s/g, '')}`,
+                    },
               ]}
             />
             <FooterColumn
               title={t('footer.siteMapHeading')}
               isDark={isDark}
+              strong
               items={SITE_MAP_ITEMS.map((item) => ({
                 text: t(`nav.${item.key}`),
                 href: item.href,
@@ -121,6 +130,7 @@ export async function Footer({
             <FooterColumn
               title={t('footer.termsHeading')}
               isDark={isDark}
+              strong
               items={[
                 { text: t('footer.links.privacy') },
                 { text: t('footer.links.cookies') },
@@ -130,14 +140,18 @@ export async function Footer({
           </div>
         </div>
       ) : (
-        <div className="layout-container flex flex-col items-center gap-12 py-16 text-center md:flex-row md:items-start md:py-20 md:text-left">
+        <div className="layout-container flex flex-col items-center gap-12 py-16 text-center md:items-start md:py-20 md:text-left xl:flex-row">
           {/* Left: logo + description (mobile: centered) */}
-          <div className="flex flex-col items-center gap-6 md:w-1/2 md:items-start">
-            <Logo variant={isDark ? 'on-dark' : 'on-light'} />
+          <div className="flex flex-col items-center gap-6 md:items-start xl:w-1/3">
+            <Logo
+              variant={isDark ? 'on-dark' : 'on-light'}
+              image={logoImage}
+              locale={locale}
+            />
             {description && (
               <p
                 className={cn(
-                  'max-w-[600px] text-base leading-relaxed md:text-lg',
+                  'max-w-[450px] text-[14px] leading-[normal]',
                   isDark ? 'text-text-inverse' : 'text-text',
                 )}
               >
@@ -149,7 +163,7 @@ export async function Footer({
           {/* Right: 3 columns (mobile: stacked + centered) */}
           <div
             className={cn(
-              'grid w-full flex-1 grid-cols-1 gap-10 border-t pt-10 md:grid-cols-3 md:border-t-0 md:pt-0',
+              'grid w-full flex-1 grid-cols-1 gap-10 border-t pt-10 md:grid-cols-3 xl:border-t-0 xl:pt-0',
               isDark ? 'border-white/15' : 'border-border-subtle',
             )}
           >
@@ -228,18 +242,27 @@ function FooterColumn({
   title,
   items,
   isDark,
+  strong = false,
 }: {
   title: string
   items: ColumnItem[]
   isDark: boolean
+  // `strong` (wariant bigBrand): nagłówek bold + pełny kontrast, itemy w pełnym
+  // dark-ruby zamiast wyciszonych. Standardowa stopka zostaje przy text-muted.
+  strong?: boolean
 }) {
+  const headingClass = isDark
+    ? 'text-text-inverse'
+    : strong
+      ? 'text-dark-ruby'
+      : 'text-text-muted'
+  const itemClass = isDark ? 'text-text-inverse' : strong ? 'text-dark-ruby' : 'text-text'
+  const spanClass = isDark ? 'text-text-inverse' : strong ? 'text-dark-ruby' : 'text-text'
+
   return (
     <div className="flex flex-col items-center gap-3 md:items-start">
       <h4
-        className={cn(
-          'text-sm tracking-normal uppercase',
-          isDark ? 'text-text-inverse' : 'text-text-muted',
-        )}
+        className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}
       >
         {title}
       </h4>
@@ -248,7 +271,7 @@ function FooterColumn({
         const className = cn(
           'text-base',
           item.href && 'hover:text-accent transition-colors',
-          isDark ? 'text-text-inverse' : 'text-text',
+          itemClass,
         )
         if (item.href && item.isInternal) {
           return (
@@ -265,10 +288,7 @@ function FooterColumn({
           )
         }
         return (
-          <span
-            key={i}
-            className={cn('text-base', isDark ? 'text-text-inverse' : 'text-text-muted')}
-          >
+          <span key={i} className={cn('text-base', spanClass)}>
             {item.text}
           </span>
         )

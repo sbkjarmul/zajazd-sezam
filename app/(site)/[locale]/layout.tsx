@@ -18,9 +18,24 @@ const inter = Inter({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'Zajazd Sezam',
-  description: 'Kompleks gastronomiczno-hotelowy w Stalowej Woli.',
+const DEFAULT_FAVICON = '/images/icons/sezam-hotel-brandmark.svg'
+
+export async function generateMetadata(): Promise<Metadata> {
+  // Favicon: jeśli CMS ma własny, użyj; inaczej domyślne sezam-hotel-brandmark.svg.
+  // Cast: query typegen wnioskuje `favicon: null` dopóki pole nie jest wypełnione w żadnym dokumencie.
+  const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY)
+  const favicon = settings?.favicon as { asset?: { url?: string | null } | null } | null | undefined
+  const customFaviconUrl = favicon?.asset?.url
+  const iconUrl = customFaviconUrl || DEFAULT_FAVICON
+  return {
+    title: 'Zajazd Sezam',
+    description: 'Kompleks gastronomiczno-hotelowy w Stalowej Woli.',
+    icons: {
+      icon: iconUrl,
+      shortcut: iconUrl,
+      apple: iconUrl,
+    },
+  }
 }
 
 export function generateStaticParams() {
@@ -39,8 +54,6 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale)
 
-  const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY)
-
   return (
     <html lang={locale} className={`${inter.variable} h-full antialiased`}>
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
@@ -48,7 +61,7 @@ export default async function LocaleLayout({
           <UIProvider>
             {/* Header + Footer renderowane per-strona (per-route logo, theme, brand) */}
             <main className="flex flex-1 flex-col">{children}</main>
-            <BurgerMenu settings={settings} />
+            <BurgerMenu />
             <ReservationDrawer />
             <Toaster position="top-center" richColors />
           </UIProvider>

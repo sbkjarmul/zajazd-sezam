@@ -24,13 +24,13 @@ export function ContactMap({ data, settings, locale }: Props) {
         <header className="flex flex-col gap-4">
           {eyebrow && <p className="text-accent text-sm tracking-normal uppercase">{eyebrow}</p>}
           {title && (
-            <h2 className="text-text max-w-3xl text-4xl leading-tight font-light tracking-tight md:text-5xl md:tracking-[-0.03em]">
+            <h2 className="text-text max-w-3xl text-4xl leading-none font-light tracking-tight md:text-5xl md:tracking-[-0.03em]">
               {title}
             </h2>
           )}
         </header>
 
-        <div className="border-border-subtle relative aspect-[16/9] overflow-hidden rounded-md border md:aspect-[21/9]">
+        <div className="border-border-subtle relative aspect-[16/9] overflow-hidden border md:aspect-[21/9]">
           {data?.mapImage?.asset?.url ? (
             <SanityImage
               image={data.mapImage}

@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
   const receptionEmail =
     kind === 'room' ? buildRoomReceptionEmail(data) : buildEventReceptionEmail(data)
-  const autoReply = buildAutoReplyEmail(data.fullName, locale)
+  const autoReply = buildAutoReplyEmail(data.fullName ?? '', locale)
 
   try {
     await Promise.all([

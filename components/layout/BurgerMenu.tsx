@@ -1,110 +1,128 @@
 'use client'
 
 import { useTranslations, useLocale } from 'next-intl'
+import Image from 'next/image'
+import { X } from 'lucide-react'
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter, usePathname } from '@/i18n/navigation'
 import { useUI } from '@/components/providers/UIProvider'
-import { LanguageSwitcher } from './LanguageSwitcher'
-import { Logo } from './Logo'
-import type { SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
-import type { Locale, Pathname } from '@/i18n/routing'
+import { routing, type Locale, type Pathname } from '@/i18n/routing'
+import { cn } from '@/lib/utils'
 import { VisuallyHidden } from 'radix-ui'
 
 type NavItem = {
   href: Pathname
-  key: 'home' | 'restaurant' | 'bistro' | 'hotel' | 'events' | 'contact'
+  label: { pl: string; en: string }
 }
 
+// Krótkie etykiety dla burger menu (Figma 773:110). Footer używa pełnych
+// nazw z `nav.*`, więc nie nadpisujemy globalnych translations.
 const NAV_ITEMS: NavItem[] = [
-  { href: '/', key: 'home' },
-  { href: '/restauracja', key: 'restaurant' },
-  { href: '/bistro', key: 'bistro' },
-  { href: '/hotel', key: 'hotel' },
-  { href: '/imprezy-okolicznosciowe', key: 'events' },
-  { href: '/kontakt', key: 'contact' },
+  { href: '/', label: { pl: 'Strona główna', en: 'Home' } },
+  { href: '/hotel', label: { pl: 'Hotel', en: 'Hotel' } },
+  { href: '/restauracja', label: { pl: 'Restauracja', en: 'Restaurant' } },
+  { href: '/bistro', label: { pl: 'Bistro', en: 'Bistro' } },
+  { href: '/imprezy-okolicznosciowe', label: { pl: 'Imprezy', en: 'Events' } },
+  { href: '/kontakt', label: { pl: 'Kontakt', en: 'Contact' } },
 ]
 
-type Props = {
-  settings: SITE_SETTINGS_QUERY_RESULT | null
-}
-
-export function BurgerMenu({ settings }: Props) {
+// Wg Figma 773:47: drawer 508px szerokości, bg-white, p-[32px], gap-[40px].
+// Header: brand icon (sezam-brandmark.svg) + close X (size-8).
+// Nav: 6 linków text-[40px] Inter regular, gap-[16px], aktywny = accent gold.
+// Language: label "Język strony" 20px uppercase + pill 2-button toggle,
+// każdy button p-[16px] text-[32px], aktywny = gold, nieaktywny = color/gray.
+// Overlay: backdrop-blur-[6px] na półprzezroczystym dark bg.
+export function BurgerMenu() {
   const t = useTranslations()
   const locale = useLocale() as Locale
+  const pathname = usePathname()
+  const router = useRouter()
   const { burgerOpen, closeBurger } = useUI()
 
-  const address = settings?.address
-  const phone = settings?.phone
-  const email = settings?.publicEmail ?? settings?.receptionEmail
+  function switchLocale(target: Locale) {
+    if (target === locale) return
+    router.replace(pathname, { locale: target })
+    closeBurger()
+  }
 
   return (
     <Sheet open={burgerOpen} onOpenChange={(open) => (open ? null : closeBurger())}>
       <SheetContent
         side="right"
-        className="bg-bg flex w-full max-w-[480px] flex-col gap-10 border-l-0 p-8 sm:max-w-[480px]"
+        showCloseButton={false}
+        overlayClassName="backdrop-blur-[6px] bg-[rgba(31,31,28,0.5)]"
+        className="bg-surface flex w-full max-w-[508px] flex-col gap-10 border-l-0 p-8 sm:max-w-[508px]"
       >
         <VisuallyHidden.Root>
           <SheetTitle>{t('burgerMenu.title')}</SheetTitle>
-          <SheetDescription>Nawigacja po stronie i dane kontaktowe.</SheetDescription>
+          <SheetDescription>Nawigacja po stronie i przełącznik języka.</SheetDescription>
         </VisuallyHidden.Root>
 
         <div className="flex items-start justify-between">
-          <Logo variant="on-light" />
+          <Image
+            src="/images/icons/sezam-brandmark.svg"
+            alt="Sezam"
+            width={100}
+            height={52}
+            className="h-auto w-[60px]"
+            priority
+          />
+          <button
+            type="button"
+            onClick={closeBurger}
+            aria-label={t('common.close')}
+            className="text-text hover:text-accent cursor-pointer transition-colors"
+          >
+            <X className="size-8" />
+          </button>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-2 text-3xl tracking-tight">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              onClick={closeBurger}
-              className="text-text hover:text-accent py-1 transition-colors"
-            >
-              {t(`nav.${item.key}`)}
-            </Link>
-          ))}
+        <nav className="flex flex-1 flex-col gap-4">
+          {NAV_ITEMS.map((item) => {
+            const isActive = item.href === pathname
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeBurger}
+                className={cn(
+                  'text-[40px] leading-none transition-colors',
+                  isActive ? 'text-accent' : 'text-text hover:text-accent',
+                )}
+              >
+                {item.label[locale]}
+              </Link>
+            )
+          })}
         </nav>
 
-        <div className="border-border-subtle flex flex-col gap-6 border-t pt-6">
-          <div className="flex items-center justify-between">
-            <span className="text-text-muted text-sm tracking-normal uppercase">
-              {t('burgerMenu.languageLabel')}
-            </span>
-            <LanguageSwitcher />
-          </div>
-
-          {(address || phone || email) && (
-            <address className="flex flex-col gap-2 text-base not-italic">
-              {address?.street && (
-                <p className="text-text">
-                  {address.street}
-                  {address.postalCode && address.city && (
-                    <>
-                      <br />
-                      {address.postalCode} {address.city}
-                    </>
+        <div className="flex w-full flex-col items-start gap-[10px]">
+          <span className="text-text text-base tracking-normal uppercase md:text-xl">
+            {t('burgerMenu.languageLabel')}
+          </span>
+          <div
+            role="group"
+            aria-label={t('languageSwitcher.ariaLabel')}
+            className="flex w-full items-start justify-between rounded-full p-2"
+          >
+            {routing.locales.map((loc) => {
+              const active = loc === locale
+              return (
+                <button
+                  key={loc}
+                  type="button"
+                  onClick={() => switchLocale(loc)}
+                  aria-current={active ? 'true' : undefined}
+                  className={cn(
+                    'flex flex-1 cursor-pointer items-center justify-center rounded-full p-4 text-[32px] transition-colors',
+                    active ? 'text-accent' : 'text-gray hover:text-text',
                   )}
-                </p>
-              )}
-              {phone && (
-                <a
-                  href={`tel:${phone.replace(/\s/g, '')}`}
-                  className="text-text hover:text-accent transition-colors"
                 >
-                  {phone}
-                </a>
-              )}
-              {email && (
-                <a
-                  href={`mailto:${email}`}
-                  className="text-text hover:text-accent transition-colors"
-                  lang={locale === 'pl' ? 'pl' : 'en'}
-                >
-                  {email}
-                </a>
-              )}
-            </address>
-          )}
+                  {t(`languageSwitcher.${loc}`)}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </SheetContent>
     </Sheet>

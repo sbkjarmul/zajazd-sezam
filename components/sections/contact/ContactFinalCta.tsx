@@ -22,7 +22,7 @@ export function ContactFinalCta({ data, locale }: Props) {
     >
       <div className="layout-container flex max-w-[1080px] flex-col items-center gap-8 text-center">
         {title && (
-          <h2 className="text-text-inverse max-w-3xl text-4xl leading-tight font-light tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+          <h2 className="text-text-inverse max-w-3xl text-4xl leading-none font-light tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
             {title}
           </h2>
         )}

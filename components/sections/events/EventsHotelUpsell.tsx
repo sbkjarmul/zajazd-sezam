@@ -1,6 +1,7 @@
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -21,23 +22,31 @@ export function EventsHotelUpsell({ data, locale }: Props) {
       style={{ background: 'var(--color-ruby)' }}
     >
       <div className="layout-container flex max-w-[1280px] flex-col items-center gap-10 text-center">
-        <header className="flex flex-col items-center gap-3">
-          {eyebrow && (
-            <p className="text-text-inverse text-base tracking-normal uppercase">{eyebrow}</p>
-          )}
-          {title && (
-            <h2 className="text-text-inverse max-w-3xl text-4xl leading-tight font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
-              {title}
-            </h2>
-          )}
-        </header>
+        <Reveal>
+          <header className="flex flex-col items-center gap-3">
+            {eyebrow && (
+              <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h2 className="text-text-inverse max-w-3xl text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+                {title}
+              </h2>
+            )}
+          </header>
+        </Reveal>
         {description && (
-          <p className="max-w-3xl text-lg leading-relaxed text-[#f6f5efcc]">{description}</p>
+          <Reveal delay={100}>
+            <p className="max-w-3xl text-lg leading-[normal] text-[#f6f5efcc]">{description}</p>
+          </Reveal>
         )}
         {ctaLabel && (
-          <ReservationCtaButton tab="room" variant="outline-light">
-            {ctaLabel}
-          </ReservationCtaButton>
+          <Reveal delay={200}>
+            <ReservationCtaButton tab="room" variant="outline-light">
+              {ctaLabel}
+            </ReservationCtaButton>
+          </Reveal>
         )}
       </div>
     </section>

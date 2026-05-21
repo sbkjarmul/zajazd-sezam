@@ -57,6 +57,13 @@ export const hotelPage = defineType({
               fields: [
                 { name: 'title', type: 'localeString', title: 'Nazwa' },
                 { name: 'description', type: 'localeText', title: 'Opis' },
+                {
+                  name: 'icon',
+                  type: 'string',
+                  title: 'Ikona (pełna nazwa pliku z /public/images/icons/)',
+                  description:
+                    'Wpisz pełną nazwę pliku z rozszerzeniem, np. "sezam-recepcja-icon.svg" lub "sezam-kids-icon.png".',
+                },
               ],
               preview: { select: { title: 'title.pl', subtitle: 'description.pl' } },
             },
