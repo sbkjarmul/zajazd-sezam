@@ -19,6 +19,41 @@ Przed rozpoczęciem pracy przeczytaj [PRD.md](context/PRD.md) i [ARCHITECTURE.md
 
 ---
 
+## Figma — źródło prawdy designu
+
+**Workflow:** używamy **Figma Desktop MCP** (`http://127.0.0.1:3845/mcp` — config w [.mcp.json](.mcp.json)). Plik Figmy musi być **otwarty lokalnie w Figma Desktop w trybie Dev Mode** — bez tego MCP nie odpowie.
+
+**URL pliku:** https://www.figma.com/design/NJj7G0lK5sIwVnTke5Dyt4/SEZAM?node-id=652-4043&p=f&t=9JRmJZN7ShWvCIp1-0
+
+**Reguła pracy z MCP** (per widok):
+1. `mcp__figma-desktop__get_design_context` z node ID (struktura, tokeny, layout)
+2. **Zawsze** sparuj z `mcp__figma-desktop__get_screenshot` z tym samym node ID
+3. Jeśli dane z `get_design_context` są wewnętrznie sprzeczne — ufaj screenshotowi
+
+**Mapowanie node ID per strona** (desktop wyciągnięte z commitów, mobile/imprezy/kontakt do uzupełnienia):
+
+| Strona | Mobile | Desktop |
+|---|---|---|
+| Home (Landing Page) | `676-1991` | `676:1500` |
+| Restauracja | `676-2298` | `676:2181` |
+| Restauracja → Menu | `676-2845` | `676:2407` |
+| Bistro | `676-3459` | `676:3251` |
+| Hotel | `676-702` | `676:305` |
+| Imprezy okolicznościowe | `676-1304` | `676-1079` |
+| Kontakt | _brak makiety_ | _brak makiety_ |
+
+**Komponenty globalne:**
+
+| Komponent | Node ID |
+|---|---|
+| Header Desktop | `676:3664` |
+| ReservationDrawer | `676:3722` |
+| Footer | `676:1673` |
+
+**Breakpointy w Figmie:** tylko mobile + desktop, brak tabletu — patrz [context/DESIGN-RULES.md](context/DESIGN-RULES.md) sekcja 2.
+
+---
+
 ## Zasady których ZAWSZE przestrzegasz
 
 ### Kod
@@ -108,6 +143,15 @@ types/                 ← TypeScript interfaces
 - Dane do strony pobierane przez GROQ w Server Components — nigdy client-side fetch do Sanity
 - ISR revalidacja przez webhook: `POST /api/revalidate` po każdej publikacji w Studio
 - Klient Sanity jest read-only w Next.js — zapis tylko przez Studio
+
+---
+
+## Assets — zasady
+
+- **Zdjęcia produktowe (pokoje, dania, sale eventowe, hero, banery) — wszystkie z Sanity.** Wgrywaj je do Sanity Studio (`/studio`) przed implementacją widoku.
+- **`public/images/` zarezerwowane** dla statycznych zasobów: ikonki SVG (`icons/`), logo, favicony, OG image fallback. **Nie kopiuj** tu zdjęć produktowych.
+- W kodzie: `next/image` z `urlFor()` z [lib/sanity/](lib/sanity/) dla obrazów Sanity, alt z pola `localeString` (PL/EN per locale).
+- Lokalnie pracujesz z dataset `production` — co wgrasz w Studio, widzi cała aplikacja.
 
 ---
 

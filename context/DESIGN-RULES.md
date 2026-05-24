@@ -353,8 +353,6 @@ Hero h1 lg+ jest **zawsze większy niż h2 sekcji** (kanon h2 lg+ = 72px). Wszys
 | `line-height` | 1.0 (`leading-none`) | 1.0 | 1.0 |
 | `letter-spacing` | -1% (`tracking-tight`) | -3% (`tracking-[-0.03em]`) | -3% |
 
-**Uwaga subpage**: niektóre sekcje na subpage'ach (HotelReviews, EventsReviews, HotelReservationCta, EventsCatering) używają mobilnego `text-4xl` (48px) zamiast `text-2xl` (32px) — to obecnie zachowane jako wariant subpage. Konwergencja na md+ na 64px → lg+ 72px jest zachowana.
-
 #### Weight per branża
 
 | Strona | Weight | Uzasadnienie |
@@ -573,7 +571,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 2 | HotelQuote | FH (`min-h-[800px]`) | (body-quote `font-light`) | — |
 | 3..N | HotelRoomCard × N | (karta, nie sekcja) | h3-room `font-normal uppercase` | — |
 | N+1 | HotelAmenities | D | `h2-medium` `font-normal uppercase` | B (baseline-aligned) |
-| N+2 | HotelReviews | C | h2 kanon (`text-4xl` mobile wariant) | D (centered) |
+| N+2 | HotelReviews | C | h2 kanon | D (centered) |
 | N+3 | HotelDiscover | D | `h2-medium` `font-normal uppercase` | B (baseline-aligned) |
 | N+4 | HotelReservationCta | D + dark | h2 kanon `font-normal uppercase` (text-text-inverse) | D (text-text-inverse, `md:text-2xl` lokalnie — do uspójnienia) |
 
@@ -586,8 +584,8 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 3 | EventTypesCarousel | D | h2 kanon `font-normal` | D |
 | 4 | EventsHalls | D | h2 kanon `font-normal` | D |
 | 5 | EventsHotelUpsell | S + dark | h2 kanon `font-normal` | D (text-text-inverse) |
-| 6 | EventsCatering | D | h2 kanon (`text-4xl` mobile wariant) `font-normal` | D |
-| 7 | EventsReviews | C | h2 kanon (`text-4xl` mobile wariant) `font-normal` | D (centered) |
+| 6 | EventsCatering | D | h2 kanon `font-normal` | D |
+| 7 | EventsReviews | C | h2 kanon `font-normal` | D (centered) |
 | 8 | EventsSteps | FH (`min-h-[800px]`) + accent bg | h2 kanon `font-normal` | D (na gold tle) |
 | 9 | EventsReservationCta | S | h2 kanon `font-normal` | D z `text-accent` |
 
@@ -612,7 +610,6 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | Heading weight | `font-normal` (home/hotel/events) · `font-bold` (restauracja) · `font-black` (bistro) · `font-light` (kontakt subpage) |
 | H1 hero lg+ | ≥ 80px (zawsze > h2 sekcji = 72px) |
 | H2 sekcja kanon | `text-2xl md:text-5xl lg:text-6xl` (32/64/72px) |
-| H2 mobile (subpage variant) | `text-4xl` (48px) — HotelReviews, EventsReviews, HotelReservationCta, EventsCatering |
 | Body lead | `text-2xl leading-[normal] tracking-[-0.03em]` (32px) |
 | Body large | `text-base leading-[1.2] md:text-lg` (16→20px) |
 | Body tracking | 0 |
