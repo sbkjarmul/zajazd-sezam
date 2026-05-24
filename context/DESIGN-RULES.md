@@ -212,7 +212,43 @@ Nie zastępuje skali `py-*` — dodaje constraint wysokości do "kafelka" z Figm
 
 **Użycie**: HotelQuote (`min-h-[800px]`), RestaurantBlock (`md:min-h-[760px] lg:h-[800px]`), BistroBlock (`lg:h-[800px]`), EventsPromise (`min-h-[800px]`), EventsSteps (`min-h-[800px]`), BistroBanner (`lg:min-h-[800px]`).
 
-### 2.7 Wyjątki udokumentowane (NIE naprawiać bez decyzji designera)
+### 2.7 Wzorzec: stacked content + image full-bleed bottom (mobile)
+
+W klasycznych, powtarzalnych sekcjach contentowych — **eyebrow + h2 + body + jedno zdjęcie** — na mobile zdjęcie:
+
+- aspekt **`aspect-square` (1:1)**
+- szerokość **full-bleed** (do lewej i prawej krawędzi viewportu, bez padding-inline)
+- pozycja **na dole sekcji** — dolna krawędź zdjęcia styka się z dolną krawędzią sekcji (sekcja **bez `pb` na mobile**)
+
+Padding tylko wokół tekstu (header + body). Na desktopie zdjęcie wraca do układu 2-kolumnowego z normalnym aspectem/heightem.
+
+```tsx
+<section className="bg-surface pt-20 md:py-32">
+  <div className="layout-container grid grid-cols-1 items-center gap-12 px-0 lg:grid-cols-2">
+    {/* Header + body — z paddingiem */}
+    <div className="flex flex-col gap-10 px-4 md:px-16">
+      <p>eyebrow</p>
+      <h2>title</h2>
+      <p>description</p>
+    </div>
+    {/* Image — full-bleed na mobile, normalny grid na lg+ */}
+    <div className="relative aspect-square w-full overflow-hidden md:aspect-auto md:min-h-[700px]">
+      <Image fill ... />
+    </div>
+  </div>
+</section>
+```
+
+Kluczowe elementy:
+- `pt-20 md:py-32` — mobile dostaje tylko top padding, md+ wraca do skali `default`
+- `layout-container ... px-0` — grid zeruje padding-inline z `layout-container`
+- `flex flex-col ... px-4 md:px-16` — text wrapper przywraca padding wokół tekstu
+- `aspect-square w-full` — kwadrat na mobile, full-bleed
+- `md:aspect-auto md:min-h-[700px]` — na md+ aspect zniknięty, height ustawiany przez `min-h`
+
+**Użycie**: EventsCatering.
+
+### 2.8 Wyjątki udokumentowane (NIE naprawiać bez decyzji designera)
 
 - **MenuCategorySection** — `py-16 md:py-24`. Kategorie menu występują wielokrotnie pod sobą; pełne `py-32` rozciągnęłoby stronę menu do 6+ ekranów.
 - **RestaurantPitch** — `py-16 md:py-[64px]` wewnątrz `min-h-[800px]`. Padding tu nie definiuje wysokości, tylko safe zone od krawędzi.
@@ -584,7 +620,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 3 | EventTypesCarousel | D | h2 kanon `font-normal` | D |
 | 4 | EventsHalls | D | h2 kanon `font-normal` | D |
 | 5 | EventsHotelUpsell | S + dark | h2 kanon `font-normal` | D (text-text-inverse) |
-| 6 | EventsCatering | D | h2 kanon `font-normal` | D |
+| 6 | EventsCatering | D + §2.7 (mobile image-bottom pattern) | h2 kanon `font-normal` | D |
 | 7 | EventsReviews | C | h2 kanon `font-normal` | D (centered) |
 | 8 | EventsSteps | FH (`min-h-[800px]`) + accent bg | h2 kanon `font-normal` | D (na gold tle) |
 | 9 | EventsReservationCta | S | h2 kanon `font-normal` | D z `text-accent` |

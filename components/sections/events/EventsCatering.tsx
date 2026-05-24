@@ -16,7 +16,7 @@ export function EventsCatering({ data, locale }: Props) {
   const description = pickLocale(data.description, locale)
 
   return (
-    <section className="bg-surface py-20 md:py-32">
+    <section className="bg-surface pt-20 md:py-32">
       <div className="layout-container grid grid-cols-1 items-center gap-12 px-0 lg:grid-cols-2">
         <Reveal className="flex flex-col gap-10 px-4 md:px-16">
           <div className="flex flex-col gap-4">
@@ -40,7 +40,7 @@ export function EventsCatering({ data, locale }: Props) {
 
         <Reveal
           delay={120}
-          className="relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:min-h-[700px]"
+          className="relative aspect-square w-full overflow-hidden md:aspect-auto md:min-h-[700px]"
         >
           <SanityImage
             image={data.image}
