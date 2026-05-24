@@ -29,7 +29,7 @@ export function RestaurantPitch({ data, locale }: Props) {
         {ctaLabel && (
           <Link
             href="/restauracja/menu"
-            className="border-dark-ruby text-dark-ruby hover:bg-dark-ruby hover:text-text-inverse inline-flex h-[63px] w-full items-center justify-center rounded-full border-2 px-6 py-2 text-lg transition-colors md:w-auto"
+            className="border-dark-ruby text-dark-ruby hover:bg-dark-ruby hover:text-text-inverse inline-flex h-[60px] w-full items-center justify-center rounded-full border-2 px-6 py-2 text-lg transition-colors md:w-auto"
           >
             {ctaLabel}
           </Link>

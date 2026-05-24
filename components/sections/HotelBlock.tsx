@@ -24,7 +24,7 @@ export function HotelBlock({ data, locale }: Props) {
   const [hero, second, third] = images
 
   return (
-    <section className="bg-bg py-16 md:py-32">
+    <section className="bg-bg py-20 md:py-32">
       <div className="layout-container grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-x-36">
         {/* Title — stacked pos 1, desktop col 2 row 1 (top) */}
         <div className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1 lg:self-start">
@@ -32,7 +32,7 @@ export function HotelBlock({ data, locale }: Props) {
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
           {title && (
-            <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em]">
+            <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
               {title}
             </h2>
           )}

@@ -66,7 +66,7 @@ export function HeroSection({ data, locale }: Props) {
           </div>
 
           {headline && (
-            <h1 className="text-3xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-[72px]">
+            <h1 className="text-3xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
               {headline}
             </h1>
           )}

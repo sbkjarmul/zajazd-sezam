@@ -17,7 +17,7 @@ export function ContactFinalCta({ data, locale }: Props) {
 
   return (
     <section
-      className="text-text-inverse w-full py-24 md:py-32"
+      className="text-text-inverse w-full py-24 md:py-40"
       style={{ background: 'var(--color-dark)' }}
     >
       <div className="layout-container flex max-w-[1080px] flex-col items-center gap-8 text-center">

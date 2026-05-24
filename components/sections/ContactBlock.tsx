@@ -32,12 +32,12 @@ export async function ContactBlock({ data, settings, locale }: Props) {
         <div className="flex flex-col gap-8 lg:flex-1 lg:gap-10">
           <div className="flex flex-col gap-2">
             {eyebrow && (
-              <p className="text-text-inverse text-base tracking-normal uppercase md:text-xl">
+              <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="text-text-inverse text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
+              <h2 className="text-text-inverse text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}

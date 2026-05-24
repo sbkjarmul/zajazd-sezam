@@ -33,7 +33,7 @@ export function HotelReservationCta({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text-inverse text-4xl leading-none font-normal tracking-tight uppercase md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
+              <h2 className="text-text-inverse text-4xl leading-none font-normal tracking-tight uppercase md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}
