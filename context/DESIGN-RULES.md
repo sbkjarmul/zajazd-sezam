@@ -246,7 +246,32 @@ Kluczowe elementy:
 - `aspect-square w-full` — kwadrat na mobile, full-bleed
 - `md:aspect-auto md:min-h-[700px]` — na md+ aspect zniknięty, height ustawiany przez `min-h`
 
-**Użycie**: EventsCatering.
+#### Wariant B — obraz pod tekstem na wszystkich breakpointach
+
+Gdy zdjęcie jest pod tekstem także na desktopie (sekcja stacked top-to-bottom na każdym bp), zamiast `px-0` na containerze użyj **negative margin trick** na samym image wrapperze. Zachowuje desktop inset bez zmian, dodaje full-bleed tylko na mobile.
+
+```tsx
+<section className="bg-bg pt-32 md:pt-40 md:pb-20">
+  <div className="layout-container flex flex-col gap-10">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+      {/* text — w containerze, normalny padding */}
+    </div>
+
+    {/* Image — full-bleed mobile via -mx-4, normalny inset md+ */}
+    <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:aspect-[2/1] md:w-full">
+      <Image fill ... />
+    </div>
+  </div>
+</section>
+```
+
+Kluczowe elementy mobile:
+- `-mx-4` — przesuwa zdjęcie 16px w lewo (kompensuje `layout-container`'s `px-4` mobile)
+- `w-[calc(100%+2rem)]` — szerokość = container content + 32px = viewport width
+- `aspect-square` — kwadrat na mobile
+- `md:mx-0 md:w-full md:aspect-[2/1]` — desktop reset do normalnego inseta + oryginalny aspect
+
+**Użycie**: EventsCatering (wariant A), RestaurantAmbiance (wariant B).
 
 ### 2.8 Wyjątki udokumentowane (NIE naprawiać bez decyzji designera)
 
@@ -581,7 +606,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 1 | RestaurantHero | H | h1 `font-black uppercase clamp(72,20vw,112)` mobile / `font-bold md:text-[120px]` desktop | mobile-only `text-sm font-medium tracking-widest` |
 | 2 | RestaurantPitch | FH (`min-h-[800px]`) + wyjątek `py-16 md:py-[64px]` | (lead 2 zdania `font-bold` + `font-normal`) | — |
 | 3 | RestaurantCraft | wyjątek `py-10 md:py-16` | `h2-large` (`font-bold`) | — |
-| 4 | RestaurantAmbiance | hero-pattern (wyjątek "drugi hero") | `h2-large` (`font-bold uppercase`) | — |
+| 4 | RestaurantAmbiance | hero-pattern (wyjątek) + §2.7 wariant B (mobile image-bottom) | `h2-large` (`font-bold uppercase`) | — |
 | 5 | RestaurantReservation | D + dark | `h2-large` (`font-bold uppercase`) | — |
 
 ### 7.3 Restauracja → Menu (/restauracja/menu)
