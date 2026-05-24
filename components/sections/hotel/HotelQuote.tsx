@@ -16,10 +16,10 @@ export function HotelQuote({ data, locale }: Props) {
   if (!value) return null
 
   return (
-    <section className="bg-bg flex items-center justify-center py-20 md:min-h-[800px] md:py-0">
+    <section className="bg-bg flex min-h-[800px] items-center justify-center">
       <div className="layout-container">
         <Reveal>
-          <p className="text-text mx-auto max-w-[1021px] text-2xl leading-[normal] font-light tracking-[-0.02em] whitespace-pre-line uppercase md:text-[32px]">
+          <p className="text-text mx-auto max-w-[1021px] text-xl leading-[normal] font-light tracking-[-0.02em] whitespace-pre-line uppercase md:text-[32px]">
             {value}
           </p>
         </Reveal>

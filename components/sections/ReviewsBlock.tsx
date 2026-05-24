@@ -32,7 +32,7 @@ export async function ReviewsBlock({ data, locale }: Props) {
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
           {title && (
-            <h2 className="text-text text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
+            <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-[64px]">
               {title}
             </h2>
           )}

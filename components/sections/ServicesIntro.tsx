@@ -19,7 +19,7 @@ export function ServicesIntro({ data, locale }: Props) {
           <p className="text-accent wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
         )}
         {title && (
-          <h2 className="text-text mt-4 text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+          <h2 className="text-text mt-4 text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
             {title}
           </h2>
         )}

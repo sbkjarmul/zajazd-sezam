@@ -32,7 +32,7 @@ export function HotelBlock({ data, locale }: Props) {
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
           {title && (
-            <h2 className="text-text text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em]">
+            <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em]">
               {title}
             </h2>
           )}
@@ -40,7 +40,7 @@ export function HotelBlock({ data, locale }: Props) {
 
         {/* Description + CTA — stacked pos 2, desktop col 2 row 2 (bottom) */}
         <div className="flex flex-col items-start gap-6 lg:col-start-2 lg:row-start-2 lg:self-end">
-          {description && <p className="text-text text-lg leading-[1.2]">{description}</p>}
+          {description && <p className="text-text text-base leading-[1.2] md:text-lg">{description}</p>}
           {ctaLabel && (
             <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
               {ctaLabel}

@@ -48,7 +48,7 @@ export function HotelHero({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h1 className="text-text-inverse wide:text-[96px] text-5xl leading-none font-normal tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
+              <h1 className="text-text-inverse wide:text-[96px] text-3xl leading-none font-normal tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
                 {title}
               </h1>
             )}

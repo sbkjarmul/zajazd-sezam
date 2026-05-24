@@ -37,7 +37,7 @@ export function RestaurantBlock({ data, locale }: Props) {
             </p>
           )}
           {title && (
-            <h2 className="text-text-inverse text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em]">
+            <h2 className="text-text-inverse text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em]">
               {title}
             </h2>
           )}
@@ -46,7 +46,7 @@ export function RestaurantBlock({ data, locale }: Props) {
         {/* Description + CTA — pos 2, desktop bottom-left */}
         <div className="flex flex-col gap-8 lg:col-start-1 lg:row-start-2 lg:self-end">
           {description && (
-            <p className="text-text-inverse/80 max-w-md text-lg leading-[1.2]">{description}</p>
+            <p className="text-text-inverse/80 max-w-md text-base leading-[1.2] md:text-lg">{description}</p>
           )}
           {ctaLabel && (
             <Link

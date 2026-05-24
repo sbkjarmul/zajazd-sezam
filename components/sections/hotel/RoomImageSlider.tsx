@@ -54,29 +54,31 @@ export function RoomImageSlider({ images, locale, prevLabel, nextLabel }: Props)
 
   return (
     <div
-      className="group relative h-full w-full touch-pan-y select-none"
+      className="group relative h-full w-full touch-pan-y overflow-hidden select-none"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {images.map((image, i) => (
-        <div
-          key={i}
-          className={cn(
-            'absolute inset-0 transition-opacity duration-500',
-            i === index ? 'opacity-100' : 'pointer-events-none opacity-0',
-          )}
-          aria-hidden={i !== index}
-        >
-          <SanityImage
-            image={image}
-            locale={locale}
-            fill
-            priority={i === 0}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-          />
-        </div>
-      ))}
+      <div
+        className="flex h-full w-full transition-transform duration-500 ease-out"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {images.map((image, i) => (
+          <div
+            key={i}
+            className="relative h-full w-full flex-none"
+            aria-hidden={i !== index}
+          >
+            <SanityImage
+              image={image}
+              locale={locale}
+              fill
+              priority={i === 0}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+        ))}
+      </div>
 
       {count > 1 && (
         <>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Locale } from '@/i18n/routing'
 import type { GoogleReview } from '@/lib/googleReviews'
@@ -13,16 +13,20 @@ type Props = {
   placeholderLabel: string
 }
 
-const CARD_W_MOBILE = 320 + 16 // card width + gap
-const CARD_W_DESKTOP = 406 + 16
-
-// Karuzela opinii z placeholder-cardem przyklejonym po lewej (sticky left-0).
-// Recenzje scrollują się poziomo i znikają za placeholderem.
-// Strzałki w placeholderze przesuwają o jedną opinię:
-//   - LEFT (←)  = previous → scroll w prawo (poprzednia opinia wraca)
-//   - RIGHT (→) = next     → scroll w lewo (kolejna opinia pojawia się z prawej)
-// Pierwsza opinia (scrollLeft = 0)         → LEFT disabled (nie ma poprzedniej).
-// Ostatnia opinia (scrollLeft = max)       → RIGHT disabled (nie ma następnej).
+// Karuzela opinii.
+//
+// Desktop (md+): placeholder-card przyklejony po lewej (sticky left-0) z
+// dużym cudzysłowem, labelem i strzałkami; recenzje scrollują się poziomo
+// za nim i znikają.
+//
+// Mobile: placeholder ukryty (sticky 280px zżerało cały ekran zostawiając
+// kilka pikseli na recenzję). Karty recenzji rozciągnięte do pełnej
+// szerokości containera, snap-x. Pod scrollerem dwa okrągłe ciemne
+// przyciski prev/next.
+//
+// LEFT (←) = previous → scroll w prawo. RIGHT (→) = next → scroll w lewo.
+// Pierwsza opinia (scrollLeft = 0) → LEFT disabled.
+// Ostatnia opinia (scrollLeft = max) → RIGHT disabled.
 export function ReviewsCarousel({ reviews, locale, placeholderLabel }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const [isFirst, setIsFirst] = useState(true)
@@ -44,31 +48,68 @@ export function ReviewsCarousel({ reviews, locale, placeholderLabel }: Props) {
     }
   }, [])
 
-  const cardStep = () => (window.matchMedia('(min-width: 768px)').matches ? CARD_W_DESKTOP : CARD_W_MOBILE)
+  // Krok scrolla mierzony z aktualnych kart — szerokość różni się na mobile
+  // (w-full) vs desktop (w-[406px]), więc hardcode się nie sprawdzał.
+  const cardStep = () => {
+    const el = scrollerRef.current
+    if (!el) return 0
+    const cards = el.querySelectorAll<HTMLElement>('[data-card]')
+    if (cards.length >= 2) {
+      const dist = cards[1].offsetLeft - cards[0].offsetLeft
+      if (dist > 0) return dist
+    }
+    if (cards.length === 1) return cards[0].offsetWidth + 16
+    return el.clientWidth
+  }
 
-  const handleLeft = () => {
+  const handleLeft = () =>
     scrollerRef.current?.scrollBy({ left: -cardStep(), behavior: 'smooth' })
-  }
-  const handleRight = () => {
+  const handleRight = () =>
     scrollerRef.current?.scrollBy({ left: cardStep(), behavior: 'smooth' })
-  }
+
+  const prevAria = locale === 'pl' ? 'Poprzednia opinia' : 'Previous review'
+  const nextAria = locale === 'pl' ? 'Następna opinia' : 'Next review'
 
   return (
-    <div
-      ref={scrollerRef}
-      className="-mr-4 flex w-[calc(100%+1rem)] snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth scroll-pl-[296px] [scrollbar-width:none] md:-mr-16 md:w-[calc(100%+4rem)] md:scroll-pl-[346px] [&::-webkit-scrollbar]:hidden"
-    >
-      <PlaceholderCard
-        label={placeholderLabel}
-        locale={locale}
-        onLeft={handleLeft}
-        onRight={handleRight}
-        leftDisabled={isFirst}
-        rightDisabled={isLast}
-      />
-      {reviews.map((review, i) => (
-        <ReviewCard key={i} review={review} locale={locale} />
-      ))}
+    <div className="flex flex-col gap-10 md:gap-0">
+      <div
+        ref={scrollerRef}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth [scrollbar-width:none] md:-mr-16 md:w-[calc(100%+4rem)] md:scroll-pl-[346px] [&::-webkit-scrollbar]:hidden"
+      >
+        <PlaceholderCard
+          label={placeholderLabel}
+          locale={locale}
+          onLeft={handleLeft}
+          onRight={handleRight}
+          leftDisabled={isFirst}
+          rightDisabled={isLast}
+        />
+        {reviews.map((review, i) => (
+          <ReviewCard key={i} review={review} locale={locale} />
+        ))}
+      </div>
+
+      {/* Mobile: okrągłe ciemne strzałki pod scrollerem */}
+      <div className="flex items-center justify-center gap-4 md:hidden">
+        <button
+          type="button"
+          onClick={handleLeft}
+          disabled={isFirst}
+          aria-label={prevAria}
+          className="bg-primary text-primary-foreground hover:bg-primary-hover flex size-14 cursor-pointer items-center justify-center rounded-full transition-colors disabled:bg-gray disabled:cursor-not-allowed disabled:hover:bg-gray"
+        >
+          <ChevronLeft className="size-6" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={handleRight}
+          disabled={isLast}
+          aria-label={nextAria}
+          className="bg-primary text-primary-foreground hover:bg-primary-hover flex size-14 cursor-pointer items-center justify-center rounded-full transition-colors disabled:bg-gray disabled:cursor-not-allowed disabled:hover:bg-gray"
+        >
+          <ChevronRight className="size-6" aria-hidden />
+        </button>
+      </div>
     </div>
   )
 }
@@ -91,7 +132,7 @@ function PlaceholderCard({
   const leftAria = locale === 'pl' ? 'Poprzednia opinia' : 'Previous review'
   const rightAria = locale === 'pl' ? 'Następna opinia' : 'Next review'
   return (
-    <div className="bg-bg sticky left-0 z-10 flex h-[353px] w-[280px] shrink-0 flex-col justify-between px-4 py-2 md:w-[330px] md:px-8">
+    <div className="bg-bg sticky left-0 z-10 hidden h-[353px] w-[280px] shrink-0 flex-col justify-between px-4 py-2 md:flex md:w-[330px] md:px-8">
       <Image
         src="/images/icons/sezam-quote.svg"
         alt=""
@@ -146,7 +187,10 @@ function ReviewCard({
   const text = review.text[locale]
   const time = review.relativeTimeDescription[locale]
   return (
-    <article className="flex h-[353px] w-[320px] shrink-0 snap-start flex-col justify-between p-8 md:w-[406px]">
+    <article
+      data-card
+      className="flex h-[353px] w-full shrink-0 snap-start flex-col justify-between p-8 md:w-[406px]"
+    >
       <p className="text-text line-clamp-[8] text-base leading-[1.4]">{text}</p>
       <div className="flex items-start gap-3">
         <Avatar name={review.authorName} photoUrl={review.profilePhotoUrl} />

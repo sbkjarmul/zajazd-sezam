@@ -33,7 +33,7 @@ export function AboutSection({ data, locale }: Props) {
     <section className="bg-bg py-20 md:py-32">
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         {intro && (
-          <p className="text-4xl leading-[normal] font-normal tracking-[-0.03em]">
+          <p className="text-2xl leading-[normal] font-normal tracking-[-0.03em]">
             <ColorizeText text={intro} />
           </p>
         )}

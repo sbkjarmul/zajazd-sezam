@@ -66,13 +66,13 @@ export function HeroSection({ data, locale }: Props) {
           </div>
 
           {headline && (
-            <h1 className="text-5xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-[72px]">
+            <h1 className="text-3xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-[72px]">
               {headline}
             </h1>
           )}
 
           {subheadline && (
-            <p className="mx-auto max-w-2xl text-lg leading-[1.2] md:mx-0 md:text-xl">
+            <p className="mx-auto max-w-2xl text-base leading-[1.2] md:mx-0 md:text-xl">
               {subheadline}
             </p>
           )}
