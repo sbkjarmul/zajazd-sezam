@@ -23,7 +23,9 @@ const IMAGE_WITH_ALT_FRAGMENT = /* groq */ `
 
 const HERO_FRAGMENT = /* groq */ `
   headline,
+  headlineMobile,
   subheadline,
+  subheadlineMobile,
   primaryCtaLabel,
   image { ${IMAGE_WITH_ALT_FRAGMENT} }
 `

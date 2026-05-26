@@ -7,13 +7,26 @@ export const hero = defineType({
   fields: [
     defineField({
       name: 'headline',
-      title: 'Nagłówek (H1)',
+      title: 'Nagłówek (H1) — desktop',
       type: 'localeString',
       validation: (r) => r.required(),
     }),
     defineField({
+      name: 'headlineMobile',
+      title: 'Nagłówek (H1) — mobile (opcjonalny override)',
+      description:
+        'Krótszy wariant nagłówka pokazywany do md (< 768px). Jeśli puste — używa wariantu desktop.',
+      type: 'localeString',
+    }),
+    defineField({
       name: 'subheadline',
-      title: 'Podtytuł',
+      title: 'Podtytuł — desktop',
+      type: 'localeText',
+    }),
+    defineField({
+      name: 'subheadlineMobile',
+      title: 'Podtytuł — mobile (opcjonalny override)',
+      description: 'Krótszy podtytuł pokazywany do md. Jeśli puste — używa wariantu desktop.',
       type: 'localeText',
     }),
     defineField({
