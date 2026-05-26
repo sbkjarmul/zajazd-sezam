@@ -57,7 +57,7 @@ export function BistroBlock({ data, locale }: Props) {
         </div>
 
         {/* Image — stacked pos 3 (pod tekstem), desktop right col spanning both rows */}
-        <div className="relative aspect-square overflow-hidden lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[640px] lg:w-full lg:self-center">
+        <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[640px] lg:w-full lg:self-center">
           <SanityImage
             image={data.image}
             locale={locale}

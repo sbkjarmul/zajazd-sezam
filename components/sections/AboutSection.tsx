@@ -48,7 +48,7 @@ export function AboutSection({ data, locale }: Props) {
                 delayMs={introAnimDurationMs + i * STAT_FULL_DURATION_MS}
                 className="flex flex-col items-center gap-2 md:items-start"
                 valueClassName="text-text text-6xl leading-none font-normal tracking-tight md:text-7xl md:tracking-[-0.03em] lg:text-[100px]"
-                labelClassName="text-text text-base md:text-lg lg:text-xl"
+                labelClassName="text-text-muted text-base md:text-lg lg:text-xl"
               />
             ))}
           </div>

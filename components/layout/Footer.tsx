@@ -151,7 +151,7 @@ export async function Footer({
             {description && (
               <p
                 className={cn(
-                  'max-w-[450px] text-[14px] leading-[normal]',
+                  'max-w-[450px] text-base leading-[1.2]',
                   isDark ? 'text-text-inverse' : 'text-text',
                 )}
               >

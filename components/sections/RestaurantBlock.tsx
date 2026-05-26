@@ -60,7 +60,7 @@ export function RestaurantBlock({ data, locale }: Props) {
 
         {/* Image — pos 3 (pod tekstem). Tablet: flex-1 wypełnia resztę wysokości.
             Desktop: prawa kolumna spinająca oba rzędy, h-640. */}
-        <div className="relative aspect-square w-full overflow-hidden md:aspect-[16/9] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:aspect-auto lg:h-[640px] lg:self-center">
+        <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:aspect-[16/9] md:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:aspect-auto lg:h-[640px] lg:self-center">
           <SanityImage
             image={data.image}
             locale={locale}

@@ -40,7 +40,7 @@ export function HotelBlock({ data, locale }: Props) {
 
         {/* Description + CTA — stacked pos 2, desktop col 2 row 2 (bottom) */}
         <div className="flex flex-col items-start gap-6 lg:col-start-2 lg:row-start-2 lg:self-end">
-          {description && <p className="text-text text-base leading-[1.2] md:text-lg">{description}</p>}
+          {description && <p className="text-text-muted text-base leading-[1.2] md:text-lg">{description}</p>}
           {ctaLabel && (
             <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
               {ctaLabel}
@@ -49,7 +49,7 @@ export function HotelBlock({ data, locale }: Props) {
         </div>
 
         {/* Images — stacked pos 3 (pod tekstem), desktop col 1 row 1+2 */}
-        <div className="flex flex-col gap-4 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-center">
+        <div className="-mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 md:mx-0 md:w-full lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-center">
           <div className="relative aspect-[2/1] overflow-hidden">
             <SanityImage
               image={hero}

@@ -273,6 +273,30 @@ Kluczowe elementy mobile:
 
 **Użycie**: EventsCatering (wariant A), RestaurantAmbiance (wariant B).
 
+#### Wariant C — image full-bleed w karcie (single-column grid mobile)
+
+Karta w gridzie, który jest 1-kolumnowy na mobile i wielokolumnowy od `sm:`+. Obraz w karcie ma być full-bleed tylko gdy karta zajmuje pełną szerokość viewportu (mobile). Ten sam negative margin trick co w wariancie B, ale przełącznik na `sm:` zamiast `md:` — reset wystąpi w momencie gdy grid przejdzie do >1 kolumny.
+
+```tsx
+<div className="grid grid-cols-1 gap-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+  {/* karta — image full-bleed na mobile */}
+  <article className="flex flex-col gap-3">
+    <button className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden sm:mx-0 sm:w-full">
+      <Image fill ... />
+    </button>
+    <p>text — w containerze, normalny inset</p>
+  </article>
+</div>
+```
+
+Kluczowe elementy:
+- `-mx-4` + `w-[calc(100%+2rem)]` na obrazku (jak w wariancie B)
+- `sm:mx-0 sm:w-full` — reset gdy grid przełącza się na >1 kolumnę
+- Mobile gap pomiędzy kartami: `gap-12` (48px) zamiast standardowego `gap-6` — pełna szerokość wymaga większego oddechu między kartami
+- Tekst karty zostaje w naturalnym insecie containera (16px)
+
+**Użycie**: HallCard image w EventsHalls.
+
 ### 2.8 Wyjątki udokumentowane (NIE naprawiać bez decyzji designera)
 
 - **MenuCategorySection** — `py-16 md:py-24`. Kategorie menu występują wielokrotnie pod sobą; pełne `py-32` rozciągnęłoby stronę menu do 6+ ekranów.
@@ -280,6 +304,7 @@ Kluczowe elementy mobile:
 - **RestaurantCraft** — `py-10 md:py-16`. Leży między dwoma fixed-height (`RestaurantPitch` + `RestaurantAmbiance`); designer celowo ścisnął by Craft był "wstawką".
 - **RestaurantAmbiance** — używa **hero-pattern** `pt-32 pb-16 md:pt-40 md:pb-20` mimo że to nie hero — celowy "drugi hero" w środku strony.
 - **EventsSteps** — padding wewnątrz layout-container; sekcja ma `min-h-[800px] flex flex-col`.
+- **EventsReservationCta** — `layout-container` z override `px-4 md:!px-4` (16px na wszystkich breakpointach zamiast standardowych 16→64). Numer telefonu (`text-[96px]` na lg+) z `whitespace-nowrap` wymaga pełnej szerokości viewportu by nie zostać ucięty po prawej.
 
 ---
 
@@ -432,6 +457,7 @@ W trzech sytuacjach robimy mniejszą h2 świadomie:
 | `h2-medium` | `text-3xl md:text-4xl lg:text-[48px]` | Header 2-kolumnowy (eyebrow lewo / h2 prawo) — h2 nie wypycha eyebrowa za viewport. HotelAmenities, HotelDiscover. |
 | `h2-sub` | `text-3xl md:text-4xl lg:text-5xl` | h2 jako "tytuł działu" obok bloku tekstu w 5/7 grid. ContactDirections. |
 | `h2-large` | `text-4xl md:text-6xl lg:text-[80px]` | Sekcja "manifest brandu". RestaurantCraft, RestaurantAmbiance, RestaurantReservation, MenuCategorySection bez accent image. |
+| `h2-intro` | `text-4xl md:text-5xl lg:text-6xl` | Mini-sekcja typu `header` (§2.2) z samym eyebrowem + h2, bez content body. Mobile `text-2xl` (kanon 32px) byłby za mały samodzielnie na ekranie — bumpujemy do 48px (`text-4xl`), md+ wraca do kanonicznych 64/72px. ServicesIntro. |
 
 #### Anti-patterns
 
@@ -468,6 +494,8 @@ Duży, display-style paragraf wprowadzający sekcję.
 | `font-size` | 32px (mobile + desktop, bez skoku) |
 | `leading` | normal (~1.4) lub tight (1.2) wariant highlight |
 | `tracking` | -0.03em (display) |
+
+**Highlight span wewnątrz wariantu highlight** (EventsPromise): `<span className="font-bold">` — przy 32px display kontrast `font-normal` (400) → `font-bold` (700) wyraźniej rozdziela treść neutralną od podkreślonej. Wariant `font-medium` (500) daje zbyt subtelną różnicę. Parent `<p>` zawsze `font-normal` (zgodnie z §4.6).
 
 ### 4.6 Body — large / default / small
 
@@ -591,7 +619,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 |---|---|---|---|---|---|---|
 | 1 | HeroSection | H | `gap-6` (subheadline) | — | (h1) `font-normal` | — |
 | 2 | AboutSection | D | — | `gap-12 md:gap-20` | (lead) | — |
-| 3 | ServicesIntro | Hd | `mt-4` (h2↔eyebrow) | — | `font-normal` | D |
+| 3 | ServicesIntro | Hd | `mt-4` (h2↔eyebrow) | — | `h2-intro` `font-normal` | D |
 | 4 | EventsBlock | D | `gap-4 md:gap-6` | `gap-8` (lg row) | `font-normal` | D |
 | 5 | RestaurantBlock | FH + `py-20` | `gap-4` | `gap-8` | `font-normal` (text-text-inverse) | D (text-text-inverse) |
 | 6 | HotelBlock | D | `gap-4` | `gap-6` | `font-normal` | D |

@@ -26,7 +26,7 @@ export function EventsBlock({ data, locale }: Props) {
     <section className="bg-bg py-20 md:py-32">
       <div className="layout-container flex flex-col gap-8 lg:flex-row">
         {/* Blok 1: główny obraz */}
-        <div className="relative order-last aspect-[662/592] w-full overflow-hidden lg:order-none lg:w-1/2 lg:shrink-0 lg:self-start">
+        <div className="relative order-last -mx-4 aspect-[662/592] w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:order-none lg:w-1/2 lg:shrink-0 lg:self-start">
           <SanityImage
             image={data.mainImage}
             locale={locale}
@@ -69,7 +69,7 @@ export function EventsBlock({ data, locale }: Props) {
             )}
             <div className="flex flex-1 flex-col gap-6">
               {description && (
-                <p className="text-text text-base leading-[1.2] md:text-lg">{description}</p>
+                <p className="text-text-muted text-base leading-[1.2] md:text-lg">{description}</p>
               )}
               {ctaLabel && (
                 <Link
