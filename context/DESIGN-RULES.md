@@ -631,7 +631,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 
 | # | Sekcja | Padding | h2 / hero | Eyebrow |
 |---|---|---|---|---|
-| 1 | RestaurantHero | H | h1 `font-black uppercase clamp(72,20vw,112)` mobile / `font-bold md:text-[120px]` desktop | mobile-only `text-sm font-medium tracking-widest` |
+| 1 | RestaurantHero | H | h1 `font-black uppercase clamp(64,18vw,100)` mobile / `font-bold md:text-[120px]` desktop | D (mobile-only) |
 | 2 | RestaurantPitch | FH (`min-h-[800px]`) + wyjątek `py-16 md:py-[64px]` | (lead 2 zdania `font-bold` + `font-normal`) | — |
 | 3 | RestaurantCraft | wyjątek `py-10 md:py-16` | `h2-large` (`font-bold`) | — |
 | 4 | RestaurantAmbiance | hero-pattern (wyjątek) + §2.7 wariant B (mobile image-bottom) | `h2-large` (`font-bold uppercase`) | — |

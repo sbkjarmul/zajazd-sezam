@@ -22,7 +22,7 @@ export function BistroHero({ data, locale }: Props) {
     >
       <div className="layout-container flex flex-col gap-6 md:gap-8">
         {headline && (
-          <h1 className="text-text-inverse text-5xl leading-none font-black tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[90px]">
+          <h1 className="text-text-inverse text-[clamp(40px,12vw,64px)] leading-none font-black tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[90px]">
             {headline}
           </h1>
         )}

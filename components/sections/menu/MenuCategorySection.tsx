@@ -96,7 +96,7 @@ export function MenuCategorySection({
               <header className="flex flex-col gap-4">
                 <h2
                   className={cn(
-                    'text-4xl leading-none tracking-tight uppercase md:text-5xl md:tracking-[-0.03em] lg:text-[64px]',
+                    'text-2xl leading-none tracking-tight uppercase md:text-5xl md:tracking-[-0.03em] lg:text-[64px]',
                     headingWeightClass,
                   )}
                 >
@@ -148,7 +148,7 @@ export function MenuCategorySection({
             <header className="flex max-w-3xl flex-col gap-3 md:gap-4">
               <h2
                 className={cn(
-                  'text-4xl leading-none tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]',
+                  'text-2xl leading-none tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]',
                   headingWeightClass,
                 )}
               >

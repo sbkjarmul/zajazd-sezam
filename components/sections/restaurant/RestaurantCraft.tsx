@@ -23,12 +23,13 @@ export function RestaurantCraft({ data, locale }: Props) {
 
   return (
     <section className="bg-bg py-10 md:py-16">
-      {/* Mobile + tablet: heading → dwa zdjęcia obok siebie → opis → button */}
+      {/* Mobile + tablet: heading → primary (mobile full-bleed) → opis → button → secondary (mobile, po buttonie) */}
       <div className="layout-container flex flex-col gap-10 md:gap-12 lg:hidden">
         {title && <h2 className={headingClass}>{title}</h2>}
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-          <div className="relative aspect-square overflow-hidden">
+        {/* Mobile: tylko primary (full-bleed). md+: oba zdjęcia w 2-col grid. */}
+        <div className="md:grid md:grid-cols-2 md:gap-10">
+          <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full">
             <SanityImage
               image={data.primaryImage}
               locale={locale}
@@ -37,12 +38,12 @@ export function RestaurantCraft({ data, locale }: Props) {
               className="object-cover"
             />
           </div>
-          <div className="relative aspect-square overflow-hidden">
+          <div className="relative hidden aspect-square overflow-hidden md:block">
             <SanityImage
               image={data.secondaryImage}
               locale={locale}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="50vw"
               className="object-cover"
             />
           </div>
@@ -55,6 +56,17 @@ export function RestaurantCraft({ data, locale }: Props) {
               {ctaLabel}
             </Link>
           )}
+        </div>
+
+        {/* Secondary mobile-only — po buttonie, full-bleed */}
+        <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:hidden">
+          <SanityImage
+            image={data.secondaryImage}
+            locale={locale}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
         </div>
       </div>
 

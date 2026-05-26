@@ -43,11 +43,11 @@ export async function RestaurantHero({ data, locale }: Props) {
         />
 
         <div className="text-text-inverse flex flex-col items-center gap-4 px-4 pb-6 text-center">
-          <p className="text-text-inverse text-sm font-medium tracking-widest uppercase">
+          <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
             {t('subheadline')}
           </p>
           {headline && (
-            <h1 className="text-text-inverse text-[clamp(72px,20vw,112px)] leading-none font-black tracking-tight uppercase">
+            <h1 className="text-text-inverse text-[clamp(64px,18vw,100px)] leading-none font-black tracking-tight uppercase">
               {headline}
             </h1>
           )}

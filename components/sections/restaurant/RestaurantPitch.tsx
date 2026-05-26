@@ -19,7 +19,7 @@ export function RestaurantPitch({ data, locale }: Props) {
 
   return (
     <section className="bg-bg flex min-h-[800px] items-center py-16 md:py-[64px]">
-      <div className="layout-container flex flex-col items-center gap-10 text-center">
+      <div className="layout-container flex flex-col items-start gap-10 text-left md:items-center md:text-center">
         {first && (
           <p className="text-dark-ruby text-3xl leading-[1.1] tracking-[-0.01em] uppercase md:text-5xl lg:text-[58px]">
             <span className="block font-bold">{first}</span>
