@@ -9,7 +9,7 @@ import { MenuHero } from '@/components/sections/menu/MenuHero'
 import { MenuPhotoStrip } from '@/components/sections/menu/MenuPhotoStrip'
 import { MenuFilter } from '@/components/sections/menu/MenuFilter'
 import { MenuCategorySection } from '@/components/sections/menu/MenuCategorySection'
-import { MenuReservation } from '@/components/sections/menu/MenuReservation'
+import { RestaurantReservation } from '@/components/sections/RestaurantReservation'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 
@@ -82,7 +82,13 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
         ))}
       </div>
 
-      <MenuReservation data={page.reservationSection} settings={settings} locale={locale} />
+      <RestaurantReservation
+        title={pickLocale(page.reservationSection?.title, locale)}
+        description={pickLocale(page.reservationSection?.description, locale)}
+        phone={settings?.phone}
+        address={settings?.address}
+        locale={locale}
+      />
       <Footer
         settings={settings}
         locale={locale}

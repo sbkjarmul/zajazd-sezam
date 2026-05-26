@@ -78,10 +78,10 @@ export async function Footer({
       style={bgStyle}
     >
       {bigBrand ? (
-        <div className="layout-container flex flex-col items-center gap-12 pt-20 pb-12 md:flex-row md:items-start md:justify-between md:gap-16 md:pt-20">
+        <div className="layout-container flex flex-col items-center gap-12 pt-20 pb-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16 lg:pt-20">
           {/* Powiększone logo (ten sam komponent co w headerze, size="lg") —
-              naturalne proporcje, bez naciągania SVG. Mobile: wycentrowane nad
-              kolumnami; desktop: po lewej, kolumny po prawej w jednym rzędzie. */}
+              naturalne proporcje, bez naciągania SVG. Mobile + tablet: wycentrowane
+              nad kolumnami (2 rzędy); desktop lg+: po lewej, kolumny po prawej. */}
           <Logo
             size="lg"
             variant={isDark ? 'on-dark' : 'on-light'}

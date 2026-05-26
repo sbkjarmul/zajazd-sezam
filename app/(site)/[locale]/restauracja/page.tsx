@@ -8,7 +8,8 @@ import { RestaurantHero } from '@/components/sections/restaurant/RestaurantHero'
 import { RestaurantPitch } from '@/components/sections/restaurant/RestaurantPitch'
 import { RestaurantCraft } from '@/components/sections/restaurant/RestaurantCraft'
 import { RestaurantAmbiance } from '@/components/sections/restaurant/RestaurantAmbiance'
-import { RestaurantReservation } from '@/components/sections/restaurant/RestaurantReservation'
+import { RestaurantReservation } from '@/components/sections/RestaurantReservation'
+import { pickLocale } from '@/lib/i18n/pickLocale'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 
@@ -61,7 +62,14 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
       <RestaurantPitch data={page.pitchSection} locale={locale} />
       <RestaurantCraft data={page.craftSection} locale={locale} />
       <RestaurantAmbiance data={page.ambianceSection} settings={settings} locale={locale} />
-      <RestaurantReservation data={page.reservationSection} settings={settings} locale={locale} />
+      <RestaurantReservation
+        title={pickLocale(page.reservationSection?.title, locale)}
+        description={pickLocale(page.reservationSection?.description, locale)}
+        phone={settings?.phone}
+        address={settings?.address}
+        locale={locale}
+        highlightTerms={locale === 'pl' ? ['najlepszy', 'stolik'] : ['best', 'table']}
+      />
       <Footer
         settings={settings}
         locale={locale}

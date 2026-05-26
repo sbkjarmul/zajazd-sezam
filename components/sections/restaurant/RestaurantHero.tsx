@@ -3,6 +3,7 @@ import type { RESTAURANT_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { Link } from '@/i18n/navigation'
 import { SanityImage } from '@/components/SanityImage'
+import { Reveal } from '@/components/Reveal'
 import { RestaurantHeroBand } from './RestaurantHeroBand'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
@@ -21,11 +22,12 @@ export async function RestaurantHero({ data, locale }: Props) {
   return (
     <section className="bg-bg relative w-full">
       {/* MOBILE: hero pełnoekranowy ze zdjęciem jako tło, content na dole.
-          `isolate` tworzy stacking context — bez tego obraz na `-z-20`
-          poleciałby za tło `bg-bg` sekcji (rodzic nie miał własnego SC). */}
+          Image dostaje CSS animate-hero-zoom-out (10s scale 1.15→1.0) na load.
+          Tekst + CTA z sekwencyjnym Reveal-em. `isolate` trzyma stacking context
+          — bez tego obraz na `-z-20` poleciałby za tło `bg-bg` sekcji. */}
       <div className="relative isolate flex h-[800px] max-h-[100dvh] w-full flex-col justify-end overflow-hidden md:hidden">
         {data.heroImage && (
-          <div className="absolute inset-0 -z-20">
+          <div className="animate-hero-zoom-out absolute inset-0 -z-20">
             <SanityImage
               image={data.heroImage}
               locale={locale}
@@ -43,20 +45,26 @@ export async function RestaurantHero({ data, locale }: Props) {
         />
 
         <div className="text-text-inverse flex flex-col items-center gap-4 px-4 pb-6 text-center">
-          <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
-            {t('subheadline')}
-          </p>
+          <Reveal>
+            <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              {t('subheadline')}
+            </p>
+          </Reveal>
           {headline && (
-            <h1 className="text-text-inverse text-[clamp(64px,18vw,100px)] leading-none font-black tracking-tight uppercase">
-              {headline}
-            </h1>
+            <Reveal delay={120}>
+              <h1 className="text-text-inverse text-[clamp(64px,18vw,100px)] leading-none font-black tracking-tight uppercase">
+                {headline}
+              </h1>
+            </Reveal>
           )}
-          <Link
-            href="/restauracja/menu"
-            className="bg-light text-text mt-4 inline-flex h-[60px] w-full items-center justify-center rounded-full px-8 text-lg font-normal"
-          >
-            {t('viewMenu')}
-          </Link>
+          <Reveal delay={260} className="w-full">
+            <Link
+              href="/restauracja/menu"
+              className="bg-light text-text mt-4 inline-flex h-[60px] w-full items-center justify-center rounded-full px-8 text-lg font-normal"
+            >
+              {t('viewMenu')}
+            </Link>
+          </Reveal>
         </div>
       </div>
 

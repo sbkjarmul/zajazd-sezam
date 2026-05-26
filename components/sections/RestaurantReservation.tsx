@@ -1,17 +1,28 @@
-import type { RESTAURANT_PAGE_QUERY_RESULT, SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
-import type { Locale } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
-import { pickLocale } from '@/lib/i18n/pickLocale'
+import type { Locale } from '@/i18n/routing'
+
+type Address = {
+  street?: string | null
+  postalCode?: string | null
+  city?: string | null
+} | null
 
 type Props = {
-  data: NonNullable<RESTAURANT_PAGE_QUERY_RESULT>['reservationSection']
-  settings: SITE_SETTINGS_QUERY_RESULT | null
+  title?: string | null
+  description?: string | null
+  phone?: string | null
+  address?: Address
   locale: Locale
+  /**
+   * Optional terms to bold within the description (case-insensitive).
+   * Used by /restauracja to highlight "najlepszy stolik" / "best table".
+   * Omit for plain rendering (e.g. /restauracja/menu).
+   */
+  highlightTerms?: string[]
 }
 
-// Podświetla rzeczowniki "najlepszy stolik" / "best table" w tekście (zgodnie z Figmą).
-function HighlightTerms({ text, locale }: { text: string; locale: Locale }) {
-  const terms = locale === 'pl' ? ['najlepszy', 'stolik'] : ['best', 'table']
+function HighlightTerms({ text, terms }: { text: string; terms: string[] }) {
+  if (!terms.length) return <>{text}</>
   const pattern = new RegExp(`(${terms.join('|')})`, 'gi')
   const parts = text.split(pattern)
   return (
@@ -29,17 +40,23 @@ function HighlightTerms({ text, locale }: { text: string; locale: Locale }) {
   )
 }
 
-export async function RestaurantReservation({ data, settings, locale }: Props) {
-  if (!data) return null
+// Sekcja CTA "zarezerwuj stolik" — dark-ruby bg, biały bold h2, wielki numer
+// telefonu z whitespace-nowrap (mieści się na 375px viewport), poniżej dl z
+// godzinami + adresem. Współdzielona przez /restauracja i /restauracja/menu.
+export async function RestaurantReservation({
+  title,
+  description,
+  phone,
+  address,
+  locale,
+  highlightTerms,
+}: Props) {
+  if (!title && !description && !phone) return null
   const t = await getTranslations('restaurant.reservation')
-  const title = pickLocale(data.title, locale)
-  const description = pickLocale(data.description, locale)
-  const phone = settings?.phone
-  const address = settings?.address
 
   return (
     <section
-      className="text-text-inverse w-full py-16 md:py-32"
+      className="text-text-inverse w-full py-24 md:py-32"
       style={{ background: 'var(--color-dark-ruby)' }}
     >
       <div className="layout-container flex max-w-[1280px] flex-col items-center gap-6 text-center">
@@ -50,7 +67,11 @@ export async function RestaurantReservation({ data, settings, locale }: Props) {
         )}
         {description && (
           <p className="text-text-inverse max-w-2xl text-base leading-relaxed sm:text-lg md:text-xl">
-            <HighlightTerms text={description} locale={locale} />
+            {highlightTerms?.length ? (
+              <HighlightTerms text={description} terms={highlightTerms} />
+            ) : (
+              description
+            )}
           </p>
         )}
         {phone && (

@@ -148,7 +148,7 @@ Padding nakładamy na **inner div** w `layout-container`, **nie** na sekcji — 
 | top | 128px (kompensuje fixed header) | 160px |
 | bottom | 64px | 128px |
 
-**Użycie**: HomeHero, HotelHero, EventsHero. ContactHero używa `md:pb-24` zamiast `md:pb-32` (krótszy hero `min-h-[60vh]`).
+**Użycie**: HomeHero, HotelHero, EventsHero. (ContactHero ma własny wariant — image-only, fixed `h-[400px]`, bez tekstu; patrz §7.7.)
 
 ### 2.2 `header` — `pt-8 pb-12 md:pt-12 md:pb-16`
 
@@ -176,7 +176,7 @@ Mini-sekcja-pasek z samym nagłówkiem (eyebrow + h2), bez contentu.
 |---|---|---|
 | py | 80px | 128px |
 
-**Użycie**: AboutSection, EventsBlock, HotelBlock, EventTypesCarousel, EventsHalls, EventsCatering, EventsPromise (+ `min-h-[800px]`), HotelAmenities, HotelDiscover, HotelReservationCta, ContactInfo, ContactMap, ContactDirections.
+**Użycie**: AboutSection, EventsBlock, HotelBlock, EventTypesCarousel, EventsHalls, EventsCatering, EventsPromise (+ `min-h-[800px]`), HotelAmenities, HotelDiscover, HotelReservationCta, ContactInfo.
 
 ### 2.4 `compact` — `py-16 md:py-20`
 
@@ -196,7 +196,7 @@ Końcowe sekcje "wezwanie do działania" / banery cross-sell. Maksymalny oddech,
 |---|---|---|
 | py | 96px | 160px |
 
-**Użycie**: EventsHotelUpsell, EventsReservationCta, ContactFinalCta.
+**Użycie**: EventsHotelUpsell, EventsReservationCta.
 
 ### 2.6 `fixed-height` (modyfikator)
 
@@ -388,8 +388,8 @@ Mały capslocked nadpis nad nagłówkiem sekcji.
 ```
 
 - 16px stale (bez skoku na 1440)
-- `text-accent` (gold) — wyróżnia accent kolorystyczny obok h2 `font-light`
-- **Użycie**: ContactHero, ContactInfo, ContactMap, ContactDirections subpage
+- `text-accent` (gold) — wyróżnia accent kolorystyczny w sekcji NAP
+- **Użycie**: ContactInfo (od redukcji /kontakt do 1 sekcji — ContactHero jest teraz image-only bez eyebrowa)
 
 #### Wariant baseline-aligned (rzadko)
 
@@ -419,7 +419,7 @@ Mały capslocked nadpis nad nagłówkiem sekcji.
 | **Events** | `text-[64px] md:text-7xl lg:text-[120px]` | `font-medium` | mixed |
 | **Restauracja** | mobile `text-[clamp(72px,20vw,112px)] font-black`, desktop `md:text-[120px] font-bold` | mixed | **UPPERCASE** |
 | **Bistro** | `text-5xl md:text-7xl lg:text-[90px]` | `font-black` | **UPPERCASE** |
-| **Kontakt** | `text-5xl md:text-6xl lg:text-7xl` | `font-normal` | mixed |
+| ~~Kontakt~~ | _image-only h-[400px], bez h1 — patrz §7.7_ | — | — |
 
 Hero h1 lg+ jest **zawsze większy niż h2 sekcji** (kanon h2 lg+ = 72px). Wszystkie hero osiągają ≥ 80px na lg+.
 
@@ -446,7 +446,7 @@ Hero h1 lg+ jest **zawsze większy niż h2 sekcji** (kanon h2 lg+ = 72px). Wszys
 | Home, Hotel, Events, MenuReservation w restauracji | `font-normal` | Neutralna, "klasyczna" elegancja |
 | **Restauracja** | `font-bold` | Brand restauracji — większy ciężar, tradycja |
 | **Bistro** | `font-black` | Brand bistro — najcięższy weight, dynamika "uliczna" |
-| **Kontakt** | `font-light` | Brand kontaktu — lekkość, oddech informacyjny |
+| **Kontakt** | `font-normal` | Spójność z home/hotel/events — Kontakt nie ma już osobnej brand-wagi |
 
 #### Warianty rozmiaru
 
@@ -455,7 +455,7 @@ W trzech sytuacjach robimy mniejszą h2 świadomie:
 | Wariant | Klasy | Użycie |
 |---|---|---|
 | `h2-medium` | `text-3xl md:text-4xl lg:text-[48px]` | Header 2-kolumnowy (eyebrow lewo / h2 prawo) — h2 nie wypycha eyebrowa za viewport. HotelAmenities, HotelDiscover. |
-| `h2-sub` | `text-3xl md:text-4xl lg:text-5xl` | h2 jako "tytuł działu" obok bloku tekstu w 5/7 grid. ContactDirections. |
+| `h2-sub` | `text-3xl md:text-4xl lg:text-5xl` | h2 jako "tytuł działu" obok bloku tekstu w 5/7 grid. _(Obecnie nieużywany po redukcji /kontakt; zachowany jako dostępny atom.)_ |
 | `h2-large` | `text-4xl md:text-6xl lg:text-[80px]` | Sekcja "manifest brandu". RestaurantCraft, RestaurantAmbiance, RestaurantReservation, MenuCategorySection bez accent image. |
 | `h2-intro` | `text-4xl md:text-5xl lg:text-6xl` | Mini-sekcja typu `header` (§2.2) z samym eyebrowem + h2, bez content body. Mobile `text-2xl` (kanon 32px) byłby za mały samodzielnie na ekranie — bumpujemy do 48px (`text-4xl`), md+ wraca do kanonicznych 64/72px. ServicesIntro. |
 
@@ -594,13 +594,13 @@ Disabled state: `disabled:bg-gray` (gray fill, **nie** opacity drop).
 | `bg-secondary` (= navy `#1c224f`) | BistroBlock home |
 | `style={{ background: 'var(--color-dark-ruby)' }}` (= `#111c2a`) | RestaurantBlock home, RestaurantReservation, EventsBlock CTA inline |
 | `style={{ background: 'var(--color-ruby-light)' }}` (= `#1a2789`) | BistroHero, BistroBanner |
-| `style={{ background: 'var(--color-dark)' }}` | ContactFinalCta |
+| `style={{ background: 'var(--color-dark)' }}` | _(nieużywane po redukcji /kontakt)_ |
 | `bg-accent` (gold) | EventsSteps |
 
 ### Reguła tekstu na dark
 
 - Main: `text-text-inverse` (cream)
-- Drugorzędny (opisy pod h2): `text-text-inverse/70` (ContactFinalCta, BistroBlock desc) lub `/80` (RestaurantBlock, BistroBlock desc)
+- Drugorzędny (opisy pod h2): `text-text-inverse/70` (BistroBlock desc) lub `/80` (RestaurantBlock, BistroBlock desc, EventsHotelUpsell)
 - Eyebrow na dark: `text-text-inverse` (cream, full opacity)
 - Link/CTA hover na dark: `hover:text-accent` (gold)
 
@@ -680,13 +680,12 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 
 ### 7.7 Kontakt (/kontakt)
 
+Strona zredukowana do 1 sekcji contentowej + image-only hero. Wszystkie pozostałe sekcje (Map, Directions, FinalCta) usunięte z kodu i Sanity schema.
+
 | # | Sekcja | Padding | h2 weight | Eyebrow |
 |---|---|---|---|---|
-| 1 | ContactHero | H (`min-h-[60vh]`, `md:pb-24`) | h1 `font-normal text-5xl md:text-6xl lg:text-7xl` | K (Kontakt wariant) |
-| 2 | ContactInfo | D | h2 `font-light text-4xl md:text-5xl lg:text-6xl` | K |
-| 3 | ContactMap | D | h2 `font-light text-4xl md:text-5xl` | K |
-| 4 | ContactDirections | D | `h2-sub` `font-light text-3xl md:text-4xl lg:text-5xl` | K |
-| 5 | ContactFinalCta | S + dark | h2 `font-light text-4xl md:text-5xl lg:text-6xl` (text-text-inverse) | — |
+| 1 | ContactHero | `h-[400px]` image-only | _(brak h1 — tylko obraz z parallax animacją 1:1 jak HotelHero przez `HeroParallaxImage`, z `imageClassName="object-bottom"`)_ | — |
+| 2 | ContactInfo | D | h2 kanon `font-normal` | K (Kontakt wariant — gold accent) |
 
 ---
 
@@ -696,7 +695,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 |---|---|
 | Heading tracking | `tracking-tight md:tracking-[-0.03em]` (−1% / −3%) |
 | Heading leading | `leading-none` |
-| Heading weight | `font-normal` (home/hotel/events) · `font-bold` (restauracja) · `font-black` (bistro) · `font-light` (kontakt subpage) |
+| Heading weight | `font-normal` (home/hotel/events/kontakt) · `font-bold` (restauracja) · `font-black` (bistro) |
 | H1 hero lg+ | ≥ 80px (zawsze > h2 sekcji = 72px) |
 | H2 sekcja kanon | `text-2xl md:text-5xl lg:text-6xl` (32/64/72px) |
 | Body lead | `text-2xl leading-[normal] tracking-[-0.03em]` (32px) |

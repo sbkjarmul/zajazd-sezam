@@ -7,14 +7,22 @@ type Props = {
   locale: Locale
 }
 
+// Infinity marquee w lewo — content duplikowany 2× w jednym flex-row, animacja
+// translateX(0 → -50%) linear infinite. Hover pauzuje (UX dla użytkownika).
+// Gap 8px (gap-2) między zdjęciami, kompensowany w keyframie tak żeby loop był seamless.
 export function MenuPhotoStrip({ data, locale }: Props) {
-  // Renderuj zawsze 4 sloty — placeholder gdy brak zdjęcia.
   const slots = [0, 1, 2, 3]
+  // Duplikujemy listę: pierwsza połowa scrolluje out → druga zajmuje miejsce → reset bez "skoku"
+  const loopSlots = [...slots, ...slots]
+
   return (
-    <section className="bg-bg" aria-hidden>
-      <div className="grid grid-cols-2 md:grid-cols-4">
-        {slots.map((i) => (
-          <div key={i} className="relative aspect-square">
+    <section className="bg-bg mb-2 overflow-hidden md:mb-0" aria-hidden>
+      <div className="animate-marquee-left flex w-max gap-2 hover:[animation-play-state:paused]">
+        {loopSlots.map((i, idx) => (
+          <div
+            key={idx}
+            className="relative aspect-square w-[50vw] shrink-0 overflow-hidden md:w-[25vw]"
+          >
             <SanityImage
               image={data?.[i]}
               locale={locale}

@@ -30,9 +30,20 @@
   }
 }
 
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  /* -50% + kompensacja połowy gapu (gap-2 = 0.5rem → -0.25rem) — seamless loop */
+  100% {
+    transform: translateX(calc(-50% - 0.25rem));
+  }
+}
+
 @theme {
   /* Animations */
   --animate-hero-zoom-out: hero-zoom-out 10s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-marquee-left: marquee-left 60s linear infinite;
 
   /* =========================================================================
      PALETA (nazwy z Figma Variables)

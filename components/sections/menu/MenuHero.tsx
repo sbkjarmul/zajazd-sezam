@@ -23,7 +23,7 @@ export function MenuHero({ data, locale }: Props) {
           </p>
         )}
         {title && (
-          <h1 className="text-dark-ruby text-5xl leading-none font-black tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[140px]">
+          <h1 className="text-dark-ruby text-[42px] leading-none font-black tracking-tight uppercase md:text-[51px] md:tracking-[-0.03em] lg:text-[90px]">
             {title}
           </h1>
         )}
