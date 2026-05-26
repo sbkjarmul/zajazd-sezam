@@ -23,25 +23,41 @@ const VARIANT_CLASSES: Record<Variant, string> = {
     'border-2 border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',
 }
 
-// Pill-shaped CTA that opens the global reservation drawer.
+// Pill-shaped CTA.
+// Desktop (md+): otwiera global reservation drawer z formularzem.
+// Mobile (< md): renderuje <a href="tel:..."> — kliknięcie inicjuje połączenie,
+// klient nie musi męczyć się z wypełnianiem formularza na małym ekranie.
+// Jeśli brak phone w UIProvider, fallback do drawer-buttona na wszystkich BP.
 export function ReservationCtaButton({
   children,
   tab = 'room',
   variant = 'filled-dark',
   className,
 }: Props) {
-  const { openReservation } = useUI()
+  const { openReservation, phone } = useUI()
+  const baseClasses = cn(
+    'h-[60px] cursor-pointer items-center justify-center rounded-full px-6 text-lg font-normal transition-colors',
+    VARIANT_CLASSES[variant],
+    className,
+  )
+
   return (
-    <button
-      type="button"
-      onClick={() => openReservation(tab)}
-      className={cn(
-        'inline-flex h-[60px] cursor-pointer items-center justify-center rounded-full px-6 text-lg font-normal transition-colors',
-        VARIANT_CLASSES[variant],
-        className,
+    <>
+      {phone && (
+        <a
+          href={`tel:${phone.replace(/\s/g, '')}`}
+          className={cn(baseClasses, 'inline-flex md:hidden')}
+        >
+          {children}
+        </a>
       )}
-    >
-      {children}
-    </button>
+      <button
+        type="button"
+        onClick={() => openReservation(tab)}
+        className={cn(baseClasses, phone ? 'hidden md:inline-flex' : 'inline-flex')}
+      >
+        {children}
+      </button>
+    </>
   )
 }

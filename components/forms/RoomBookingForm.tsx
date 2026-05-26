@@ -143,23 +143,7 @@ export function RoomBookingForm() {
           </FieldShell>
         </div>
 
-        {/* Kolejność per Figma 676:1777: LEWE = Wymeldowanie, PRAWE = Zameldowanie */}
         <div className="grid grid-cols-2 gap-[10px]">
-          <FieldShell error={errors.checkOut?.message} tt={tErrors}>
-            <Controller
-              control={control}
-              name="checkOut"
-              render={({ field }) => (
-                <DateField
-                  value={field.value || ''}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  placeholder={t('checkOut')}
-                  ariaLabel={t('checkOut')}
-                />
-              )}
-            />
-          </FieldShell>
           <FieldShell error={errors.checkIn?.message} tt={tErrors}>
             <Controller
               control={control}
@@ -171,6 +155,21 @@ export function RoomBookingForm() {
                   onBlur={field.onBlur}
                   placeholder={t('checkIn')}
                   ariaLabel={t('checkIn')}
+                />
+              )}
+            />
+          </FieldShell>
+          <FieldShell error={errors.checkOut?.message} tt={tErrors}>
+            <Controller
+              control={control}
+              name="checkOut"
+              render={({ field }) => (
+                <DateField
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  placeholder={t('checkOut')}
+                  ariaLabel={t('checkOut')}
                 />
               )}
             />

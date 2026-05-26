@@ -13,11 +13,19 @@ type UIContextValue = {
   setReservationTab: (tab: ReservationTab) => void
   openBurger: () => void
   closeBurger: () => void
+  // Numer telefonu z siteSettings — używany przez ReservationCtaButton
+  // do "tap-to-call" na mobile zamiast otwierania drawer formularza.
+  phone: string | null
 }
 
 const UIContext = createContext<UIContextValue | null>(null)
 
-export function UIProvider({ children }: { children: ReactNode }) {
+type ProviderProps = {
+  children: ReactNode
+  phone?: string | null
+}
+
+export function UIProvider({ children, phone = null }: ProviderProps) {
   const [reservationOpen, setReservationOpen] = useState(false)
   const [reservationTab, setReservationTab] = useState<ReservationTab>('room')
   const [burgerOpen, setBurgerOpen] = useState(false)
@@ -41,6 +49,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
       setReservationTab,
       openBurger,
       closeBurger,
+      phone,
     }),
     [
       reservationOpen,
@@ -50,6 +59,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
       closeReservation,
       openBurger,
       closeBurger,
+      phone,
     ],
   )
 

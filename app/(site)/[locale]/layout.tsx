@@ -54,11 +54,15 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale)
 
+  // settings.phone trafia do UIProvider → ReservationCtaButton używa go do
+  // tap-to-call (tel:) na mobile zamiast otwierania drawer formularza.
+  const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY)
+
   return (
     <html lang={locale} className={`${inter.variable} h-full antialiased`}>
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
         <NextIntlClientProvider>
-          <UIProvider>
+          <UIProvider phone={settings?.phone}>
             {/* Header + Footer renderowane per-strona (per-route logo, theme, brand) */}
             <main className="flex flex-1 flex-col">{children}</main>
             <BurgerMenu />
