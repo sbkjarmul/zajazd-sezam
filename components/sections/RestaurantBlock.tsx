@@ -2,6 +2,7 @@ import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { Link } from '@/i18n/navigation'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -30,7 +31,7 @@ export function RestaurantBlock({ data, locale }: Props) {
     >
       <div className="layout-container flex h-full flex-col gap-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16 lg:!pr-0">
         {/* Title block — pos 1, desktop top-left */}
-        <div className="flex flex-col gap-4 lg:self-start">
+        <Reveal className="flex flex-col gap-4 lg:self-start">
           {eyebrow && (
             <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
               {eyebrow}
@@ -41,10 +42,13 @@ export function RestaurantBlock({ data, locale }: Props) {
               {title}
             </h2>
           )}
-        </div>
+        </Reveal>
 
         {/* Description + CTA — pos 2, desktop bottom-left */}
-        <div className="flex flex-col gap-8 lg:col-start-1 lg:row-start-2 lg:self-end">
+        <Reveal
+          delay={100}
+          className="flex flex-col gap-8 lg:col-start-1 lg:row-start-2 lg:self-end"
+        >
           {description && (
             <p className="text-text-inverse/80 max-w-md text-base leading-[1.2] md:text-lg">{description}</p>
           )}
@@ -56,11 +60,14 @@ export function RestaurantBlock({ data, locale }: Props) {
               {ctaLabel}
             </Link>
           )}
-        </div>
+        </Reveal>
 
         {/* Image — pos 3 (pod tekstem). Tablet: flex-1 wypełnia resztę wysokości.
             Desktop: prawa kolumna spinająca oba rzędy, h-640. */}
-        <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:aspect-[16/9] md:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:aspect-auto lg:h-[640px] lg:self-center">
+        <Reveal
+          delay={200}
+          className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:aspect-[16/9] md:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:aspect-auto lg:h-[640px] lg:self-center"
+        >
           <SanityImage
             image={data.image}
             locale={locale}
@@ -68,7 +75,7 @@ export function RestaurantBlock({ data, locale }: Props) {
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
-        </div>
+        </Reveal>
       </div>
     </section>
   )

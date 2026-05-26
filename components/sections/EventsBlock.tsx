@@ -2,6 +2,7 @@ import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { Link } from '@/i18n/navigation'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -26,7 +27,10 @@ export function EventsBlock({ data, locale }: Props) {
     <section className="bg-bg py-20 md:py-32">
       <div className="layout-container flex flex-col gap-8 lg:flex-row">
         {/* Blok 1: główny obraz */}
-        <div className="relative order-last -mx-4 aspect-[662/592] w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:order-none lg:w-1/2 lg:shrink-0 lg:self-start">
+        <Reveal
+          delay={120}
+          className="relative order-last -mx-4 aspect-[662/592] w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:order-none lg:w-1/2 lg:shrink-0 lg:self-start"
+        >
           <SanityImage
             image={data.mainImage}
             locale={locale}
@@ -35,10 +39,10 @@ export function EventsBlock({ data, locale }: Props) {
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
-        </div>
+        </Reveal>
 
         {/* Blok 2: nagłówek + rząd [mały obraz][opis + CTA] */}
-        <div className="flex flex-1 flex-col gap-8 lg:justify-between">
+        <Reveal className="flex flex-1 flex-col gap-8 lg:justify-between">
           {/* Nagłówek */}
           <div className="flex flex-col gap-4 md:gap-6">
             {eyebrow && (
@@ -82,7 +86,7 @@ export function EventsBlock({ data, locale }: Props) {
               )}
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

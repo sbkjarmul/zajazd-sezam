@@ -2,6 +2,7 @@ import type { HOMEPAGE_QUERY_RESULT, SITE_SETTINGS_QUERY_RESULT } from '@/types/
 import type { Locale } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
 import { SanityImage } from '@/components/SanityImage'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -29,7 +30,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
       style={{ background: 'var(--color-primary)' }}
     >
       <div className="layout-container flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-20">
-        <div className="flex flex-col gap-8 lg:flex-1 lg:gap-10">
+        <Reveal className="flex flex-col gap-8 lg:flex-1 lg:gap-10">
           <div className="flex flex-col gap-2">
             {eyebrow && (
               <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
@@ -96,9 +97,9 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               {locale === 'pl' ? 'Zadzwoń' : 'Call us'}
             </a>
           )}
-        </div>
+        </Reveal>
 
-        <div className="flex justify-center lg:flex-1">
+        <Reveal delay={120} className="flex justify-center lg:flex-1">
           <div className="relative aspect-square w-4/5 overflow-hidden rounded-full">
             <SanityImage
               image={data.image}
@@ -108,7 +109,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               className="object-cover"
             />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

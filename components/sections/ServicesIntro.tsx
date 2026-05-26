@@ -1,5 +1,6 @@
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -14,7 +15,7 @@ export function ServicesIntro({ data, locale }: Props) {
 
   return (
     <section className="bg-bg pt-8 pb-12 md:pt-12 md:pb-16">
-      <div className="layout-container text-center">
+      <Reveal className="layout-container text-center">
         {eyebrow && (
           <p className="text-accent wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
         )}
@@ -23,7 +24,7 @@ export function ServicesIntro({ data, locale }: Props) {
             {title}
           </h2>
         )}
-      </div>
+      </Reveal>
     </section>
   )
 }

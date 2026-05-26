@@ -7,6 +7,9 @@ import type { Locale } from '@/i18n/routing'
 type Props = {
   image: Parameters<typeof SanityImage>[0]['image']
   locale: Locale
+  // Klasy dodawane do <SanityImage>, np. `object-bottom` żeby anchor crop
+  // na dolnej krawędzi obrazu zamiast domyślnego center.
+  imageClassName?: string
 }
 
 // Hero image fixed do viewportu z scroll-based parallax effect.
@@ -32,7 +35,7 @@ const LOAD_END_SCALE = 1.1
 const SCROLL_FLOOR = 1.0
 const SCROLL_AMPLITUDE = LOAD_END_SCALE - SCROLL_FLOOR
 
-export function HeroParallaxImage({ image, locale }: Props) {
+export function HeroParallaxImage({ image, locale, imageClassName }: Props) {
   const outerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -96,7 +99,14 @@ export function HeroParallaxImage({ image, locale }: Props) {
       }}
     >
       <div className="relative h-full w-full">
-        <SanityImage image={image} locale={locale} fill priority sizes="100vw" />
+        <SanityImage
+          image={image}
+          locale={locale}
+          fill
+          priority
+          sizes="100vw"
+          className={imageClassName}
+        />
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { getGoogleReviews } from '@/lib/googleReviews'
+import { Reveal } from '@/components/Reveal'
 import { ReviewsCarousel } from './ReviewsCarousel'
 
 type Props = {
@@ -27,27 +28,33 @@ export async function ReviewsBlock({ data, locale }: Props) {
   return (
     <section className="bg-bg py-16 md:py-20">
       <div className="layout-container flex flex-col gap-10 md:gap-[54px]">
-        <header className="mx-auto flex max-w-[874px] flex-col items-center gap-3 text-center md:gap-4">
-          {eyebrow && (
-            <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
-          )}
-          {title && (
-            <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
-              {title}
-            </h2>
-          )}
-          <div className="text-text mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl">
-            <span>{reviews.rating.toFixed(1)}/5</span>
-            <span className="font-bold">Google</span>
-            <span>{basedOnLabel}</span>
-          </div>
-        </header>
+        <Reveal>
+          <header className="mx-auto flex max-w-[874px] flex-col items-center gap-3 text-center md:gap-4">
+            {eyebrow && (
+              <p className="text-text wide:text-lg text-base tracking-normal uppercase">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+                {title}
+              </h2>
+            )}
+            <div className="text-text mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl">
+              <span>{reviews.rating.toFixed(1)}/5</span>
+              <span className="font-bold">Google</span>
+              <span>{basedOnLabel}</span>
+            </div>
+          </header>
+        </Reveal>
 
-        <ReviewsCarousel
-          reviews={reviews.reviews}
-          locale={locale}
-          placeholderLabel={ratingLabel}
-        />
+        <Reveal delay={120}>
+          <ReviewsCarousel
+            reviews={reviews.reviews}
+            locale={locale}
+            placeholderLabel={ratingLabel}
+          />
+        </Reveal>
       </div>
     </section>
   )

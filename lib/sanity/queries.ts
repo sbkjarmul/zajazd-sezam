@@ -236,22 +236,11 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
 export const CONTACT_PAGE_QUERY = defineQuery(`
   *[_type == "contactPage" && _id == "contactPage"][0]{
     headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
-    hero {
-      eyebrow, title, subtitle,
-      image { ${IMAGE_WITH_ALT_FRAGMENT} }
-    },
+    heroImage { ${IMAGE_WITH_ALT_FRAGMENT} },
     contactSection {
       eyebrow, title,
-      addressLabel, phoneLabel, emailLabel,
-      restaurantHoursLabel, receptionHoursLabel
+      addressLabel, phoneLabel, emailLabel
     },
-    mapSection {
-      eyebrow, title,
-      mapImage { ${IMAGE_WITH_ALT_FRAGMENT} },
-      googleMapsLinkLabel
-    },
-    directionsSection { eyebrow, title, content },
-    finalCta { title, description, ctaLabel },
     seo { ${SEO_FRAGMENT} }
   }
 `)

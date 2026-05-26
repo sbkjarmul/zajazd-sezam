@@ -2,6 +2,7 @@ import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
+import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -27,7 +28,7 @@ export function HotelBlock({ data, locale }: Props) {
     <section className="bg-bg py-20 md:py-32">
       <div className="layout-container grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-x-36">
         {/* Title — stacked pos 1, desktop col 2 row 1 (top) */}
-        <div className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1 lg:self-start">
+        <Reveal className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1 lg:self-start">
           {eyebrow && (
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
@@ -36,20 +37,26 @@ export function HotelBlock({ data, locale }: Props) {
               {title}
             </h2>
           )}
-        </div>
+        </Reveal>
 
         {/* Description + CTA — stacked pos 2, desktop col 2 row 2 (bottom) */}
-        <div className="flex flex-col items-start gap-6 lg:col-start-2 lg:row-start-2 lg:self-end">
+        <Reveal
+          delay={100}
+          className="flex flex-col items-start gap-6 lg:col-start-2 lg:row-start-2 lg:self-end"
+        >
           {description && <p className="text-text-muted text-base leading-[1.2] md:text-lg">{description}</p>}
           {ctaLabel && (
             <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
               {ctaLabel}
             </ReservationCtaButton>
           )}
-        </div>
+        </Reveal>
 
         {/* Images — stacked pos 3 (pod tekstem), desktop col 1 row 1+2 */}
-        <div className="-mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 md:mx-0 md:w-full lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-center">
+        <Reveal
+          delay={200}
+          className="-mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 md:mx-0 md:w-full lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-center"
+        >
           <div className="relative aspect-[2/1] overflow-hidden">
             <SanityImage
               image={hero}
@@ -79,7 +86,7 @@ export function HotelBlock({ data, locale }: Props) {
               />
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

@@ -1579,7 +1579,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: CONTACT_PAGE_QUERY
-// Query: *[_type == "contactPage" && _id == "contactPage"][0]{    headerLogo {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    hero {      eyebrow, title, subtitle,      image {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }    },    contactSection {      eyebrow, title,      addressLabel, phoneLabel, emailLabel,      restaurantHoursLabel, receptionHoursLabel    },    mapSection {      eyebrow, title,      mapImage {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },      googleMapsLinkLabel    },    directionsSection { eyebrow, title, content },    finalCta { title, description, ctaLabel },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
+// Query: *[_type == "contactPage" && _id == "contactPage"][0]{    headerLogo {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    heroImage {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    contactSection {      eyebrow, title,      addressLabel, phoneLabel, emailLabel    },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type CONTACT_PAGE_QUERY_RESULT = {
   headerLogo: {
     _type: 'imageWithAlt'
@@ -1597,66 +1597,13 @@ export type CONTACT_PAGE_QUERY_RESULT = {
     crop?: SanityImageCrop
     alt: LocaleString | null
   } | null
-  hero: {
-    eyebrow: LocaleString | null
-    title: LocaleString | null
-    subtitle: LocaleText | null
-    image: {
-      _type: 'imageWithAlt'
-      asset: {
-        _id: string
-        url: string | null
-        metadata: {
-          dimensions: SanityImageDimensions | null
-          lqip: string | null
-          palette: SanityImagePalette | null
-        } | null
-      } | null
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      alt: LocaleString | null
-    } | null
-  } | null
+  heroImage: null
   contactSection: {
     eyebrow: LocaleString | null
     title: LocaleString | null
     addressLabel: LocaleString | null
     phoneLabel: LocaleString | null
     emailLabel: LocaleString | null
-    restaurantHoursLabel: LocaleString | null
-    receptionHoursLabel: LocaleString | null
-  } | null
-  mapSection: {
-    eyebrow: LocaleString | null
-    title: LocaleString | null
-    mapImage: {
-      _type: 'imageWithAlt'
-      asset: {
-        _id: string
-        url: string | null
-        metadata: {
-          dimensions: SanityImageDimensions | null
-          lqip: string | null
-          palette: SanityImagePalette | null
-        } | null
-      } | null
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      alt: LocaleString | null
-    } | null
-    googleMapsLinkLabel: LocaleString | null
-  } | null
-  directionsSection: {
-    eyebrow: LocaleString | null
-    title: LocaleString | null
-    content: LocaleText | null
-  } | null
-  finalCta: {
-    title: LocaleString | null
-    description: LocaleText | null
-    ctaLabel: LocaleString | null
   } | null
   seo: {
     metaTitle: MetaTitle | null
@@ -1789,7 +1736,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "menuCategory" && cuisine == "bistro"]\n    | order(order asc) {\n      _id,\n      name,\n      "slug": slug.current,\n      description,\n      order,\n      "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {\n        _id,\n        name,\n        description,\n        price,\n        diet,\n        image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n      }\n    }\n': BISTRO_MENU_QUERY_RESULT
     '\n  *[_type == "hotelPage" && _id == "hotelPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    hero {\n      eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    quote,\n    amenitiesSection {\n      eyebrow, title,\n      items[]{ title, description, icon }\n    },\n    reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },\n    discoverSection {\n      eyebrow, title,\n      cards[]{\n        eyebrow, title, description, ctaLabel, ctaHref,\n        image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n      }\n    },\n    reservationSection {\n      eyebrow, title, description, ctaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': HOTEL_PAGE_QUERY_RESULT
     '\n  *[_type == "eventsPage" && _id == "eventsPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    hero {\n      eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    promiseSection { leadText, highlightedText, tailText, ctaLabel },\n    eventTypesSection { eyebrow, title, description },\n    eventTypes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      description,\n      order,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    } | order(order asc),\n    hallsSection { eyebrow, title, description },\n    halls[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      capacity,\n      description,\n      amenities,\n      order,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    } | order(order asc),\n    hotelUpsellSection { eyebrow, title, description, ctaLabel },\n    cateringSection {\n      eyebrow, title, description,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },\n    stepsSection {\n      eyebrow, title,\n      steps[]{ text }\n    },\n    reservationSection {\n      eyebrow, title, description,\n      formInvitationTitle, formInvitationText, ctaLabel\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': EVENTS_PAGE_QUERY_RESULT
-    '\n  *[_type == "contactPage" && _id == "contactPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    hero {\n      eyebrow, title, subtitle,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    contactSection {\n      eyebrow, title,\n      addressLabel, phoneLabel, emailLabel,\n      restaurantHoursLabel, receptionHoursLabel\n    },\n    mapSection {\n      eyebrow, title,\n      mapImage { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n      googleMapsLinkLabel\n    },\n    directionsSection { eyebrow, title, content },\n    finalCta { title, description, ctaLabel },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': CONTACT_PAGE_QUERY_RESULT
+    '\n  *[_type == "contactPage" && _id == "contactPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    heroImage { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    contactSection {\n      eyebrow, title,\n      addressLabel, phoneLabel, emailLabel\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': CONTACT_PAGE_QUERY_RESULT
     '\n  *[_type == "menuCategory" && cuisine == "restaurant"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    description,\n    order,\n    "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {\n      _id,\n      name,\n      description,\n      price,\n      diet,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    }\n  }\n': MENU_BY_CATEGORY_QUERY_RESULT
     '\n  *[_type == "eventHall"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_EVENT_HALLS_QUERY_RESULT
     '\n  *[_type == "roomType"] | order(order asc) {\n    _id,\n    name,\n    identifier,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_ROOM_TYPES_QUERY_RESULT
