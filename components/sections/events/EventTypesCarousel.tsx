@@ -103,21 +103,23 @@ export function EventTypesCarousel({ section, types, locale }: Props) {
     <section className="bg-bg overflow-hidden py-20 md:py-32">
       <div className="px-4 md:px-16">
         <header className="flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
-          <Reveal className="flex flex-col gap-2">
+          <Reveal className="flex flex-col gap-4">
             {eyebrow && (
               <p className="text-text text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="text-text max-w-3xl text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text max-w-3xl text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}
           </Reveal>
           {description && (
             <Reveal delay={100}>
-              <p className="text-text-muted max-w-sm text-xl leading-[normal]">{description}</p>
+              <p className="text-text-muted max-w-sm text-base leading-[1.2] md:text-lg lg:text-xl">
+                {description}
+              </p>
             </Reveal>
           )}
         </header>
@@ -146,11 +148,11 @@ export function EventTypesCarousel({ section, types, locale }: Props) {
 
           <div className="flex flex-col gap-6">
             {name && (
-              <h3 className="text-text text-4xl leading-none font-normal tracking-tight md:tracking-[-0.03em]">
+              <h3 className="text-text text-2xl leading-none font-normal tracking-tight md:tracking-[-0.03em]">
                 {name}
               </h3>
             )}
-            {desc && <p className="text-text text-lg leading-[normal]">{desc}</p>}
+            {desc && <p className="text-text-muted text-base leading-[1.2] md:text-lg">{desc}</p>}
           </div>
         </div>
 

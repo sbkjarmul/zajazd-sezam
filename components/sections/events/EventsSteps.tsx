@@ -26,14 +26,14 @@ export function EventsSteps({ data, locale }: Props) {
     >
       <div className="layout-container flex flex-1 flex-col gap-10 py-16 md:gap-12 md:py-20">
         <Reveal>
-          <header className="flex flex-col items-center gap-3 text-center text-white">
+          <header className="flex flex-col items-center gap-4 text-center text-white">
             {eyebrow && (
               <p className="text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="max-w-3xl text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="max-w-3xl text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}
@@ -50,7 +50,7 @@ export function EventsSteps({ data, locale }: Props) {
                   className="flex min-h-[280px] flex-col justify-between gap-12 p-8 md:p-10"
                 >
                   <p className="text-7xl leading-none md:text-8xl lg:text-9xl">{i + 1}</p>
-                  {text && <p className="text-xl leading-snug md:text-2xl">{text}</p>}
+                  {text && <p className="text-xl leading-[1.2] md:text-2xl">{text}</p>}
                 </div>
               )
             })}

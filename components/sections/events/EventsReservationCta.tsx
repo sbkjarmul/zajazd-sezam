@@ -22,16 +22,16 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
 
   return (
     <section className="bg-bg w-full py-24 md:py-40">
-      <div className="layout-container flex max-w-[1280px] flex-col items-center gap-10 text-center">
+      <div className="layout-container flex max-w-[1280px] flex-col items-center gap-10 px-4 text-center md:!px-4">
         <Reveal>
-          <header className="flex flex-col items-center gap-3">
+          <header className="flex flex-col items-center gap-4">
             {eyebrow && (
               <p className="text-accent text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="text-text max-w-4xl text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text max-w-4xl text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}
@@ -40,7 +40,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
 
         {description && (
           <Reveal delay={100}>
-            <p className="text-text max-w-3xl text-lg leading-relaxed">{description}</p>
+            <p className="text-text-muted max-w-3xl text-base leading-[1.2] md:text-lg">{description}</p>
           </Reveal>
         )}
 
@@ -48,7 +48,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
           <Reveal delay={180}>
             <a
               href={`tel:${phone.replace(/\s+/g, '')}`}
-              className="text-text hover:text-accent text-5xl font-semibold tracking-tight transition-colors md:text-7xl lg:text-8xl"
+              className="text-text hover:text-accent text-[40px] font-semibold whitespace-nowrap tracking-[-0.03em] transition-colors sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
             >
               {phone}
             </a>
@@ -58,8 +58,14 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
         {(formTitle || formText) && (
           <Reveal delay={260}>
             <div className="flex flex-col items-center gap-1">
-              {formTitle && <p className="text-text text-2xl md:text-3xl">{formTitle}</p>}
-              {formText && <p className="text-text text-lg">{formText}</p>}
+              {formTitle && (
+                <p className="text-text text-2xl leading-[normal] tracking-[-0.03em]">
+                  {formTitle}
+                </p>
+              )}
+              {formText && (
+                <p className="text-text-muted text-base leading-[1.2] md:text-lg">{formText}</p>
+              )}
             </div>
           </Reveal>
         )}

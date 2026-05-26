@@ -32,7 +32,7 @@ export function EventsCatering({ data, locale }: Props) {
             )}
           </div>
           {description && (
-            <p className="text-text max-w-2xl text-xl leading-[normal] whitespace-pre-line lg:text-base xl:text-xl">
+            <p className="text-text-muted max-w-2xl text-base leading-[1.2] whitespace-pre-line md:text-lg">
               {description}
             </p>
           )}

@@ -53,7 +53,11 @@ export function EventsHero({ data, locale }: Props) {
               </h1>
             )}
           </div>
-          {subtitle && <p className="text-text-inverse max-w-2xl text-lg md:text-xl">{subtitle}</p>}
+          {subtitle && (
+            <p className="text-text-inverse max-w-2xl text-base leading-[1.2] md:text-xl">
+              {subtitle}
+            </p>
+          )}
 
           <div className="mt-2 flex flex-col gap-3 md:flex-row md:flex-wrap">
             {primaryCta && (

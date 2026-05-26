@@ -17,26 +17,28 @@ export function EventsHalls({ section, halls, locale }: Props) {
 
   return (
     <section id="halls" className="bg-surface py-20 md:py-32">
-      <div className="layout-container flex flex-col gap-20">
+      <div className="layout-container flex flex-col gap-12 md:gap-20">
         <Reveal>
-          <header className="flex flex-col gap-6">
+          <header className="flex flex-col gap-4">
             {eyebrow && (
               <p className="text-text text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="text-text max-w-4xl text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text max-w-4xl text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-text max-w-3xl text-xl leading-relaxed">{description}</p>
+              <p className="text-text-muted max-w-3xl text-base leading-[1.2] md:text-lg lg:text-xl">
+                {description}
+              </p>
             )}
           </header>
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {halls.map((hall, i) => (
             <Reveal key={hall._id} delay={i * 80}>
               <HallCard hall={hall} locale={locale} />

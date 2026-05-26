@@ -23,14 +23,14 @@ export function EventsHotelUpsell({ data, locale }: Props) {
     >
       <div className="layout-container flex max-w-[1280px] flex-col items-center gap-10 text-center">
         <Reveal>
-          <header className="flex flex-col items-center gap-3">
+          <header className="flex flex-col items-center gap-4">
             {eyebrow && (
               <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="text-text-inverse max-w-3xl text-4xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text-inverse max-w-3xl text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}
@@ -38,7 +38,9 @@ export function EventsHotelUpsell({ data, locale }: Props) {
         </Reveal>
         {description && (
           <Reveal delay={100}>
-            <p className="max-w-3xl text-lg leading-[normal] text-[#f6f5efcc]">{description}</p>
+            <p className="text-text-inverse/80 max-w-3xl text-base leading-[1.2] md:text-lg">
+              {description}
+            </p>
           </Reveal>
         )}
         {ctaLabel && (

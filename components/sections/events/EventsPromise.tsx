@@ -22,13 +22,13 @@ export function EventsPromise({ data, locale }: Props) {
     <section className="bg-surface flex min-h-[800px] w-full items-center justify-end py-20 md:py-32">
       <div className="layout-container flex flex-col gap-10">
         <Reveal>
-          <p className="text-text text-[32px] leading-tight font-light tracking-[-0.03em]">
-            {lead} {highlight && <span className="font-medium">{highlight}</span>} {tail}
+          <p className="text-text text-[32px] leading-tight font-normal tracking-[-0.03em]">
+            {lead} {highlight && <span className="font-bold">{highlight}</span>} {tail}
           </p>
         </Reveal>
         {ctaLabel && (
           <Reveal delay={150}>
-            <ReservationCtaButton tab="event" variant="outline-dark">
+            <ReservationCtaButton tab="event" variant="outline-dark" className="w-full md:w-auto">
               {ctaLabel}
             </ReservationCtaButton>
           </Reveal>

@@ -24,7 +24,7 @@ export function HallCard({ hall, locale }: Props) {
   const thumbnail = (
     <button
       type="button"
-      className="group relative aspect-square w-full cursor-pointer overflow-hidden"
+      className="group relative -mx-4 aspect-square w-[calc(100%+2rem)] cursor-pointer overflow-hidden sm:mx-0 sm:w-full"
       aria-label={
         locale === 'pl' ? `Otwórz galerię — ${galleryTitle}` : `Open gallery — ${galleryTitle}`
       }
@@ -53,16 +53,16 @@ export function HallCard({ hall, locale }: Props) {
         thumbnail
       )}
       {hall.capacity != null && (
-        <p className="text-text text-base">
+        <p className="text-text-muted text-base leading-[1.2]">
           {hall.capacity} {locale === 'pl' ? 'osób' : 'guests'}
         </p>
       )}
       {hallName && (
-        <h3 className="text-text text-2xl leading-none font-bold tracking-tight md:tracking-[-0.03em]">
+        <h3 className="text-text text-2xl leading-none font-normal tracking-tight md:tracking-[-0.03em]">
           {hallName}
         </h3>
       )}
-      {hallDesc && <p className="text-text text-sm leading-[normal]">{hallDesc}</p>}
+      {hallDesc && <p className="text-text-muted text-base leading-[1.2]">{hallDesc}</p>}
     </article>
   )
 }
