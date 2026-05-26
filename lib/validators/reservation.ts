@@ -13,6 +13,10 @@ export type RoomTypeId = (typeof ROOM_TYPE_IDS)[number]
 export const EVENT_TYPE_IDS = ['wedding', 'communion', 'birthday', 'corporate', 'other'] as const
 export type EventTypeId = (typeof EVENT_TYPE_IDS)[number]
 
+// Rangiownik liczby gości dla zapytań o eventy — wartości to label = wartość.
+export const EVENT_GUEST_RANGES = ['1-10', '10-50', '50-100', '100-200', '200+'] as const
+export type EventGuestRange = (typeof EVENT_GUEST_RANGES)[number]
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const PHONE_REGEX = /^\+?[\d\s\-()]{6,20}$/
 
@@ -40,7 +44,11 @@ export const roomBookingSchema = z
     }),
     checkIn: z.string().regex(ISO_DATE, 'reservationErrors.checkIn.invalid'),
     checkOut: z.string().regex(ISO_DATE, 'reservationErrors.checkOut.invalid'),
-    guests: z.number().int().min(1).max(20),
+    guests: z
+      .number({ error: 'reservationErrors.guests.required' })
+      .int()
+      .min(1)
+      .max(16),
     notes: z.string().trim().max(2000).optional().or(z.literal('')),
   })
   .refine((data) => data.checkOut > data.checkIn, {
@@ -59,7 +67,9 @@ export const eventInquirySchema = z.object({
     error: 'reservationErrors.eventType.required',
   }),
   preferredDate: z.string().regex(ISO_DATE, 'reservationErrors.preferredDate.invalid'),
-  guests: z.number().int().min(1).max(300),
+  guests: z.enum(EVENT_GUEST_RANGES, {
+    error: 'reservationErrors.guests.required',
+  }),
   hall: z.string().trim().max(64).optional().or(z.literal('')),
 })
 

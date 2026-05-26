@@ -81,7 +81,7 @@
     },
     "submit": "Send inquiry",
     "submitting": "Sending…",
-    "disclaimer": "No payment yet — reception will contact you to confirm availability.",
+    "disclaimer": "Reception will contact you to confirm availability.",
     "toasts": {
       "success": "Thanks! Reception will contact you within 24h.",
       "turnstileMissing": "Please wait a moment for the human check to complete.",
@@ -121,6 +121,9 @@
     },
     "preferredDate": {
       "invalid": "Pick a preferred date"
+    },
+    "guests": {
+      "required": "Select number of guests"
     },
     "turnstile": {
       "missing": "Missing anti-spam check"

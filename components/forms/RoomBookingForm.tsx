@@ -39,7 +39,6 @@ export function RoomBookingForm() {
     defaultValues: {
       email: '',
       phone: '',
-      guests: 2,
     },
   })
 
@@ -91,8 +90,9 @@ export function RoomBookingForm() {
           />
         </FieldShell>
 
-        {/* Rodzaj pokoju + Liczba gości w jednym rzędzie — select dostaje 2/3 szerokości,
-            number input 1/3 (przyciasna sama liczba). */}
+        {/* Rodzaj pokoju + Liczba gości w jednym rzędzie — typ dostaje 2/3 szerokości,
+            liczba gości 1/3. Oba selecty; Radix value/onValueChange są stringami,
+            więc konwertujemy do/z number na granicy z RHF. */}
         <div className="grid grid-cols-[2fr_1fr] gap-[10px]">
           <FieldShell error={errors.roomType?.message} tt={tErrors}>
             <Controller
@@ -119,15 +119,26 @@ export function RoomBookingForm() {
           </FieldShell>
 
           <FieldShell error={errors.guests?.message} tt={tErrors}>
-            <input
-              {...register('guests', { valueAsNumber: true })}
-              type="number"
-              min={1}
-              max={20}
-              inputMode="numeric"
-              placeholder={t('guests')}
-              aria-label={t('guests')}
-              className={inputClasses}
+            <Controller
+              control={control}
+              name="guests"
+              render={({ field }) => (
+                <Select
+                  value={field.value != null ? String(field.value) : undefined}
+                  onValueChange={(v) => field.onChange(Number(v))}
+                >
+                  <SelectTrigger className={selectTriggerClasses} aria-label={t('guests')}>
+                    <SelectValue placeholder={t('guests')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 16 }, (_, i) => i + 1).map((n) => (
+                      <SelectItem key={n} value={String(n)}>
+                        {n}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             />
           </FieldShell>
         </div>

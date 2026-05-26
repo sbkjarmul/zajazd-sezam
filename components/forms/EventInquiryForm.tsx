@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import type { TurnstileInstance } from '@marsidev/react-turnstile'
 import {
+  EVENT_GUEST_RANGES,
   EVENT_TYPE_IDS,
   eventInquirySchema,
   type EventInquiryValues,
@@ -38,7 +39,6 @@ export function EventInquiryForm() {
     defaultValues: {
       email: '',
       phone: '',
-      guests: 50,
       hall: '',
     },
   })
@@ -129,15 +129,23 @@ export function EventInquiryForm() {
         </FieldShell>
 
         <FieldShell error={errors.guests?.message} tt={tErrors}>
-          <input
-            {...register('guests', { valueAsNumber: true })}
-            type="number"
-            min={1}
-            max={300}
-            inputMode="numeric"
-            placeholder={t('guests')}
-            aria-label={t('guests')}
-            className={inputClasses}
+          <Controller
+            control={control}
+            name="guests"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger className={selectTriggerClasses} aria-label={t('guests')}>
+                  <SelectValue placeholder={t('guests')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {EVENT_GUEST_RANGES.map((range) => (
+                    <SelectItem key={range} value={range}>
+                      {range}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           />
         </FieldShell>
       </div>

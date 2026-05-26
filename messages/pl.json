@@ -81,7 +81,7 @@
     },
     "submit": "Wyślij zapytanie",
     "submitting": "Wysyłanie…",
-    "disclaimer": "Płatność nie zostanie jeszcze naliczona — recepcja skontaktuje się aby potwierdzić dostępność.",
+    "disclaimer": "Recepcja skontaktuje się, aby potwierdzić dostępność.",
     "toasts": {
       "success": "Dziękujemy! Recepcja skontaktuje się w ciągu 24h.",
       "turnstileMissing": "Poczekaj chwilę aż zostaniesz zweryfikowany jako człowiek.",
@@ -121,6 +121,9 @@
     },
     "preferredDate": {
       "invalid": "Wybierz preferowaną datę"
+    },
+    "guests": {
+      "required": "Wybierz liczbę gości"
     },
     "turnstile": {
       "missing": "Brak weryfikacji antyspamowej"
