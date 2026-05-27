@@ -627,7 +627,11 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 6 | HotelBlock | D | `gap-4` | `gap-6` | `font-normal` | D |
 | 7 | BistroBlock | FH + `py-20` | `gap-4` | `gap-8` | `font-normal` (text-text-inverse) | D (text-text-inverse) |
 | 8 | ReviewsBlock | C | `gap-3 md:gap-4` centered | `gap-10 md:gap-[54px]` | `font-normal` | D |
-| 9 | ContactBlock | C | `gap-2` | `gap-6 md:gap-8` | `font-normal` (text-text-inverse) | D (text-text-inverse) |
+| 9 | ContactBlock | C | `gap-2` | dl `gap-10 md:gap-12`, item `gap-2` | `font-normal` (text-text-inverse), dd `text-lg md:text-xl` (20/24) | D (text-text-inverse) |
+
+**Mobile padding-bottom pattern (rows 4–7)**: sekcje z full-bleed image na dole (EventsBlock, RestaurantBlock, HotelBlock, BistroBlock) mają na mobile tylko `pt-20` (bez `pb`), żeby obraz był flush z następną sekcją bez 80px "footer space" w kolorze sekcji. Od `md:` wraca standardowy padding (`md:py-32` dla EventsBlock/HotelBlock; `md:py-20` + sztywna wysokość dla Restaurant/Bistro). Pattern aplikuje się gdy DOM ma image jako last child (lub `order-last`) i image jest full-bleed via §2.7 wariant B.
+
+**ContactBlock CTA**: link "Zadzwoń" (tel:) ma `my-8` żeby podwoić efektywny margin wokół buttona (32px gap z Reveal + 32px margin = 64px nad/pod). Tylko mobile/md (`lg:hidden`).
 
 ### 7.2 Restauracja (/restauracja)
 
