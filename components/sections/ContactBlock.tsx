@@ -44,13 +44,13 @@ export async function ContactBlock({ data, settings, locale }: Props) {
             )}
           </div>
 
-          <dl className="flex flex-col gap-6 md:gap-8">
+          <dl className="flex flex-col gap-10 md:gap-12">
             {phone && (
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <dt className="text-text-inverse text-sm tracking-normal uppercase">
                   {t('phone')}
                 </dt>
-                <dd className="text-text-inverse text-xl md:text-2xl">
+                <dd className="text-text-inverse text-lg md:text-xl">
                   <a
                     href={`tel:${phone.replace(/\s/g, '')}`}
                     className="hover:text-accent transition-colors"
@@ -61,11 +61,11 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               </div>
             )}
             {email && (
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <dt className="text-text-inverse text-sm tracking-normal uppercase">
                   {t('email')}
                 </dt>
-                <dd className="text-text-inverse text-xl break-all md:text-2xl">
+                <dd className="text-text-inverse text-lg break-all md:text-xl">
                   <a href={`mailto:${email}`} className="hover:text-accent transition-colors">
                     {email}
                   </a>
@@ -73,11 +73,11 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               </div>
             )}
             {address?.street && (
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <dt className="text-text-inverse text-sm tracking-normal uppercase">
                   {t('address')}
                 </dt>
-                <dd className="text-text-inverse text-xl leading-[1.2] md:text-2xl">
+                <dd className="text-text-inverse text-lg leading-[1.2] md:text-xl">
                   {address.street}
                   {address.postalCode && address.city && (
                     <>
@@ -92,7 +92,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
           {phone && (
             <a
               href={`tel:${phone.replace(/\s/g, '')}`}
-              className="bg-text-inverse text-text hover:bg-text-inverse/90 inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px] lg:hidden"
+              className="bg-text-inverse text-text hover:bg-text-inverse/90 my-8 inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px] lg:hidden"
             >
               {locale === 'pl' ? 'Zadzwoń' : 'Call us'}
             </a>

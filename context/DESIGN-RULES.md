@@ -159,7 +159,7 @@ Mini-sekcja-pasek z samym nagłówkiem (eyebrow + h2), bez contentu.
 | top | 32px | 48px |
 | bottom | 48px | 64px |
 
-**Użycie**: ServicesIntro (jedyna obecna).
+**Użycie**: ServicesIntro (jedyna obecna) — z lekkim odjazdem mobile: `py-8 md:pt-12 md:pb-16` (mobile dostaje tylko 32/32 zamiast kanonicznego 32/48, bo sąsiaduje od góry z `min-h-[800px]` AboutSection — dużo oddechu naturalnie — i nie wymaga aż tyle pb).
 
 ### 2.3 `default` — `py-20 md:py-32` ★ KANON dla 80% sekcji
 
@@ -457,7 +457,7 @@ W trzech sytuacjach robimy mniejszą h2 świadomie:
 | `h2-medium` | `text-3xl md:text-4xl lg:text-[48px]` | Header 2-kolumnowy (eyebrow lewo / h2 prawo) — h2 nie wypycha eyebrowa za viewport. HotelAmenities, HotelDiscover. |
 | `h2-sub` | `text-3xl md:text-4xl lg:text-5xl` | h2 jako "tytuł działu" obok bloku tekstu w 5/7 grid. _(Obecnie nieużywany po redukcji /kontakt; zachowany jako dostępny atom.)_ |
 | `h2-large` | `text-4xl md:text-6xl lg:text-[80px]` | Sekcja "manifest brandu". RestaurantCraft, RestaurantAmbiance, RestaurantReservation, MenuCategorySection bez accent image. |
-| `h2-intro` | `text-4xl md:text-5xl lg:text-6xl` | Mini-sekcja typu `header` (§2.2) z samym eyebrowem + h2, bez content body. Mobile `text-2xl` (kanon 32px) byłby za mały samodzielnie na ekranie — bumpujemy do 48px (`text-4xl`), md+ wraca do kanonicznych 64/72px. ServicesIntro. |
+| `h2-intro` | `text-4xl md:text-[77px] lg:text-[86px]` + `tracking-[-0.03em]` (wszystkie BP) | Mini-sekcja typu `header` (§2.2) z samym eyebrowem + h2, bez content body. Mobile `text-2xl` (kanon 32px) byłby za mały samodzielnie na ekranie — bumpujemy do 48px (`text-4xl`); md+ i lg+ są +20% nad kanonem h2 (64→77 / 72→86), bo ta mini-sekcja działa jako "anchor" prowadzący do dalszych bloków i wymaga wagi wizualnej. **Tracking -3% na wszystkich BP** (zamiast standardowego rozjazdu -1% mobile / -3% md+) — przy dużej mobile czcionce 48px standardowe -1% wygląda zbyt luźno. ServicesIntro. |
 
 #### Anti-patterns
 
@@ -496,6 +496,8 @@ Duży, display-style paragraf wprowadzający sekcję.
 | `tracking` | -0.03em (display) |
 
 **Highlight span wewnątrz wariantu highlight** (EventsPromise): `<span className="font-bold">` — przy 32px display kontrast `font-normal` (400) → `font-bold` (700) wyraźniej rozdziela treść neutralną od podkreślonej. Wariant `font-medium` (500) daje zbyt subtelną różnicę. Parent `<p>` zawsze `font-normal` (zgodnie z §4.6).
+
+**Wariant mobile-shrink** (AboutSection): mobile dostaje krótszy copy w `text-xl` (24px) z `leading-[1.2]` + `text-center`, desktop standard 32px lewy-justified. Mobile i desktop renderowane jako dwa `<p>` z `md:hidden` / `hidden md:block`. Sanity ma dwa pola: `intro` (desktop, wymagane) i `introMobile` (opcjonalny override). Wzorzec dwóch wariantów copy jest analogiczny do HeroSection (`headline`/`headlineMobile`, `subheadline`/`subheadlineMobile`).
 
 ### 4.6 Body — large / default / small
 
@@ -618,7 +620,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | # | Sekcja | Padding | Header gap | Section gap | h2 weight | Eyebrow |
 |---|---|---|---|---|---|---|
 | 1 | HeroSection | H | `gap-6` (subheadline) | — | (h1) `font-normal` | — |
-| 2 | AboutSection | D | — | `gap-12 md:gap-20` | (lead) | — |
+| 2 | AboutSection | D + `md:min-h-[800px]` | — | `gap-24 md:gap-40` | (lead — mobile `text-xl` (24px) centered, desktop `text-2xl` (32px) left-aligned, **dwa warianty z Sanity**: `intro` desktop / `introMobile` opcjonalny mobile override) | — |
 | 3 | ServicesIntro | Hd | `mt-4` (h2↔eyebrow) | — | `h2-intro` `font-normal` | D |
 | 4 | EventsBlock | D | `gap-4 md:gap-6` | `gap-8` (lg row) | `font-normal` | D |
 | 5 | RestaurantBlock | FH + `py-20` | `gap-4` | `gap-8` | `font-normal` (text-text-inverse) | D (text-text-inverse) |

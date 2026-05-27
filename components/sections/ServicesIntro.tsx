@@ -14,13 +14,13 @@ export function ServicesIntro({ data, locale }: Props) {
   const title = pickLocale(data.title, locale)
 
   return (
-    <section className="bg-bg pt-8 pb-12 md:pt-12 md:pb-16">
+    <section className="bg-bg py-8 md:pt-12 md:pb-16">
       <Reveal className="layout-container text-center">
         {eyebrow && (
           <p className="text-accent wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
         )}
         {title && (
-          <h2 className="text-text mt-4 text-4xl leading-none font-normal tracking-tight md:text-[77px] md:tracking-[-0.03em] lg:text-[86px]">
+          <h2 className="text-text mt-4 text-4xl leading-none font-normal tracking-[-0.03em] md:text-[77px] lg:text-[86px]">
             {title}
           </h2>
         )}

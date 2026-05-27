@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import type { Locale } from '@/i18n/routing'
 import type { GoogleReview } from '@/lib/googleReviews'
 
@@ -89,25 +88,25 @@ export function ReviewsCarousel({ reviews, locale, placeholderLabel }: Props) {
         ))}
       </div>
 
-      {/* Mobile: okrągłe ciemne strzałki pod scrollerem */}
+      {/* Mobile: outlined okrągłe strzałki pod scrollerem (Figma — cienki border + arrow icon) */}
       <div className="flex items-center justify-center gap-4 md:hidden">
         <button
           type="button"
           onClick={handleLeft}
           disabled={isFirst}
           aria-label={prevAria}
-          className="bg-primary text-primary-foreground hover:bg-primary-hover flex size-14 cursor-pointer items-center justify-center rounded-full transition-colors disabled:bg-gray disabled:cursor-not-allowed disabled:hover:bg-gray"
+          className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:border-gray disabled:text-gray flex size-14 cursor-pointer items-center justify-center rounded-full border-2 transition-colors disabled:cursor-not-allowed disabled:hover:bg-transparent"
         >
-          <ChevronLeft className="size-6" aria-hidden />
+          <ArrowLeft className="size-5" aria-hidden />
         </button>
         <button
           type="button"
           onClick={handleRight}
           disabled={isLast}
           aria-label={nextAria}
-          className="bg-primary text-primary-foreground hover:bg-primary-hover flex size-14 cursor-pointer items-center justify-center rounded-full transition-colors disabled:bg-gray disabled:cursor-not-allowed disabled:hover:bg-gray"
+          className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:border-gray disabled:text-gray flex size-14 cursor-pointer items-center justify-center rounded-full border-2 transition-colors disabled:cursor-not-allowed disabled:hover:bg-transparent"
         >
-          <ChevronRight className="size-6" aria-hidden />
+          <ArrowRight className="size-5" aria-hidden />
         </button>
       </div>
     </div>
@@ -142,33 +141,22 @@ function PlaceholderCard({
         aria-hidden
       />
       <p className="text-text text-2xl leading-[1.2] md:text-[32px]">{label}</p>
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
         <button
           type="button"
           onClick={onLeft}
           disabled={leftDisabled}
           aria-label={leftAria}
-          className={cn(
-            'transition-colors',
-            leftDisabled
-              ? 'text-gray cursor-not-allowed'
-              : 'text-text hover:text-accent cursor-pointer',
-          )}
+          className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:border-gray disabled:text-gray flex size-14 cursor-pointer items-center justify-center rounded-full border-2 transition-colors disabled:cursor-not-allowed disabled:hover:bg-transparent"
         >
           <ArrowLeft className="size-5" />
         </button>
-        <span aria-hidden className="bg-border-subtle h-px w-12" />
         <button
           type="button"
           onClick={onRight}
           disabled={rightDisabled}
           aria-label={rightAria}
-          className={cn(
-            'transition-colors',
-            rightDisabled
-              ? 'text-gray cursor-not-allowed'
-              : 'text-text hover:text-accent cursor-pointer',
-          )}
+          className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:border-gray disabled:text-gray flex size-14 cursor-pointer items-center justify-center rounded-full border-2 transition-colors disabled:cursor-not-allowed disabled:hover:bg-transparent"
         >
           <ArrowRight className="size-5" />
         </button>

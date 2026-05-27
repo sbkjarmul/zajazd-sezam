@@ -24,7 +24,7 @@ export function EventsBlock({ data, locale }: Props) {
   const ctaLabel = pickLocale(data.ctaLabel, locale)
 
   return (
-    <section className="bg-bg py-20 md:py-32">
+    <section className="bg-bg pt-20 md:py-32">
       <div className="layout-container flex flex-col gap-8 lg:flex-row">
         {/* Blok 1: główny obraz */}
         <Reveal

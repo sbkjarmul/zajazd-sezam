@@ -26,7 +26,7 @@ export function RestaurantBlock({ data, locale }: Props) {
 
   return (
     <section
-      className="text-text-inverse py-20 md:min-h-[760px] lg:h-[800px]"
+      className="text-text-inverse pt-20 md:py-20 md:min-h-[760px] lg:h-[800px]"
       style={{ background: 'var(--color-dark-ruby)' }}
     >
       <div className="layout-container flex h-full flex-col gap-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16 lg:!pr-0">

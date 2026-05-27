@@ -25,7 +25,7 @@ export function HotelBlock({ data, locale }: Props) {
   const [hero, second, third] = images
 
   return (
-    <section className="bg-bg py-20 md:py-32">
+    <section className="bg-bg pt-20 md:py-32">
       <div className="layout-container grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-x-36">
         {/* Title — stacked pos 1, desktop col 2 row 1 (top) */}
         <Reveal className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1 lg:self-start">

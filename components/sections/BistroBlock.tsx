@@ -24,7 +24,7 @@ export function BistroBlock({ data, locale }: Props) {
 
   return (
     <section
-      className="text-text-inverse py-20 lg:h-[800px]"
+      className="text-text-inverse pt-20 md:py-20 lg:h-[800px]"
       style={{ background: 'var(--color-secondary)' }}
     >
       <div className="layout-container grid h-full grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center lg:gap-16 lg:!pr-0">
