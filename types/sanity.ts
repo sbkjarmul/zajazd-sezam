@@ -73,33 +73,14 @@ export type ContactPage = {
   _updatedAt: string
   _rev: string
   headerLogo?: ImageWithAlt
-  hero?: {
-    eyebrow?: LocaleString
-    title?: LocaleString
-    subtitle?: LocaleText
-    image?: ImageWithAlt
-  }
+  heroImage?: ImageWithAlt
   contactSection?: {
     eyebrow?: LocaleString
     title?: LocaleString
     addressLabel?: LocaleString
     phoneLabel?: LocaleString
     emailLabel?: LocaleString
-    restaurantHoursLabel?: LocaleString
-    receptionHoursLabel?: LocaleString
   }
-  mapSection?: {
-    eyebrow?: LocaleString
-    title?: LocaleString
-    mapImage?: ImageWithAlt
-    googleMapsLinkLabel?: LocaleString
-  }
-  directionsSection?: {
-    eyebrow?: LocaleString
-    title?: LocaleString
-    content?: LocaleText
-  }
-  finalCta?: CtaBlock
   seo?: SeoMeta
 }
 
@@ -122,13 +103,6 @@ export type SeoMeta = {
     _type: 'image'
   }
   noIndex?: boolean
-}
-
-export type CtaBlock = {
-  _type: 'ctaBlock'
-  title?: LocaleString
-  description?: LocaleText
-  ctaLabel?: LocaleString
 }
 
 export type ImageWithAlt = {
@@ -437,7 +411,9 @@ export type Homepage = {
 export type Hero = {
   _type: 'hero'
   headline?: LocaleString
+  headlineMobile?: LocaleString
   subheadline?: LocaleText
+  subheadlineMobile?: LocaleText
   image?: ImageWithAlt
   primaryCtaLabel?: LocaleString
 }
@@ -605,6 +581,13 @@ export type EventType = {
   order?: number
 }
 
+export type CtaBlock = {
+  _type: 'ctaBlock'
+  title?: LocaleString
+  description?: LocaleText
+  ctaLabel?: LocaleString
+}
+
 export type OpeningHoursEntry = {
   _type: 'openingHoursEntry'
   daysOfWeek?: Array<string>
@@ -719,7 +702,6 @@ export type AllSanitySchemaTypes =
   | ContactPage
   | SanityImageAssetReference
   | SeoMeta
-  | CtaBlock
   | ImageWithAlt
   | EventTypeReference
   | EventHallReference
@@ -740,6 +722,7 @@ export type AllSanitySchemaTypes =
   | MenuItem
   | MenuCategory
   | EventType
+  | CtaBlock
   | OpeningHoursEntry
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -833,9 +816,9 @@ export type HOMEPAGE_QUERY_RESULT = {
   } | null
   hero: {
     headline: LocaleString | null
-    headlineMobile: null
+    headlineMobile: LocaleString | null
     subheadline: LocaleText | null
-    subheadlineMobile: null
+    subheadlineMobile: LocaleText | null
     primaryCtaLabel: LocaleString | null
     image: {
       _type: 'imageWithAlt'
@@ -1599,7 +1582,22 @@ export type CONTACT_PAGE_QUERY_RESULT = {
     crop?: SanityImageCrop
     alt: LocaleString | null
   } | null
-  heroImage: null
+  heroImage: {
+    _type: 'imageWithAlt'
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        dimensions: SanityImageDimensions | null
+        lqip: string | null
+        palette: SanityImagePalette | null
+      } | null
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: LocaleString | null
+  } | null
   contactSection: {
     eyebrow: LocaleString | null
     title: LocaleString | null

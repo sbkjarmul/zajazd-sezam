@@ -297,44 +297,11 @@
         },
         "optional": true
       },
-      "hero": {
+      "heroImage": {
         "type": "objectAttribute",
         "value": {
-          "type": "object",
-          "attributes": {
-            "eyebrow": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "title": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "subtitle": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeText"
-              },
-              "optional": true
-            },
-            "image": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "imageWithAlt"
-              },
-              "optional": true
-            }
-          }
+          "type": "inline",
+          "name": "imageWithAlt"
         },
         "optional": true
       },
@@ -382,106 +349,8 @@
                 "name": "localeString"
               },
               "optional": true
-            },
-            "restaurantHoursLabel": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "receptionHoursLabel": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
             }
           }
-        },
-        "optional": true
-      },
-      "mapSection": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "object",
-          "attributes": {
-            "eyebrow": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "title": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "mapImage": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "imageWithAlt"
-              },
-              "optional": true
-            },
-            "googleMapsLinkLabel": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            }
-          }
-        },
-        "optional": true
-      },
-      "directionsSection": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "object",
-          "attributes": {
-            "eyebrow": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "title": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeString"
-              },
-              "optional": true
-            },
-            "content": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "inline",
-                "name": "localeText"
-              },
-              "optional": true
-            }
-          }
-        },
-        "optional": true
-      },
-      "finalCta": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "ctaBlock"
         },
         "optional": true
       },
@@ -605,46 +474,6 @@
           "type": "objectAttribute",
           "value": {
             "type": "boolean"
-          },
-          "optional": true
-        }
-      }
-    }
-  },
-  {
-    "name": "ctaBlock",
-    "type": "type",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "ctaBlock"
-          }
-        },
-        "title": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "inline",
-            "name": "localeString"
-          },
-          "optional": true
-        },
-        "description": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "inline",
-            "name": "localeText"
-          },
-          "optional": true
-        },
-        "ctaLabel": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "inline",
-            "name": "localeString"
           },
           "optional": true
         }
@@ -2580,7 +2409,23 @@
           },
           "optional": true
         },
+        "headlineMobile": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "localeString"
+          },
+          "optional": true
+        },
         "subheadline": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "localeText"
+          },
+          "optional": true
+        },
+        "subheadlineMobile": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
@@ -3531,6 +3376,46 @@
           "type": "number"
         },
         "optional": true
+      }
+    }
+  },
+  {
+    "name": "ctaBlock",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "ctaBlock"
+          }
+        },
+        "title": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "localeString"
+          },
+          "optional": true
+        },
+        "description": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "localeText"
+          },
+          "optional": true
+        },
+        "ctaLabel": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "localeString"
+          },
+          "optional": true
+        }
       }
     }
   },
