@@ -65,6 +65,7 @@ export const HOMEPAGE_QUERY = defineQuery(`
     hero { ${HERO_FRAGMENT} },
     aboutSection {
       intro,
+      introMobile,
       stats[]{ value, label }
     },
     servicesIntro { eyebrow, title },

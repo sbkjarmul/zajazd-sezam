@@ -25,7 +25,14 @@ export const homepage = defineType({
       title: '2. Sekcja "O nas" + statystyki',
       type: 'object',
       fields: [
-        { name: 'intro', type: 'localeText', title: 'Wprowadzenie' },
+        { name: 'intro', type: 'localeText', title: 'Wprowadzenie — desktop' },
+        {
+          name: 'introMobile',
+          type: 'localeText',
+          title: 'Wprowadzenie — mobile (opcjonalny override)',
+          description:
+            'Krótszy wariant dla < md (768px). Jeśli puste — używa wariantu desktop.',
+        },
         {
           name: 'stats',
           type: 'array',

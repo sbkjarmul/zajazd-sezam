@@ -22,19 +22,29 @@ const INTRO_BUFFER_MS = 300
 const STAT_FULL_DURATION_MS = 1200
 export function AboutSection({ data, locale }: Props) {
   if (!data) return null
-  const intro = pickLocale(data.intro, locale)
+  const introDesktop = pickLocale(data.intro, locale)
+  const introMobile = pickLocale(data.introMobile, locale) ?? introDesktop
   const stats = data.stats ?? []
 
-  const introAnimDurationMs = intro
-    ? intro.length * INTRO_CHAR_STAGGER_MS + INTRO_CHAR_DURATION_MS + INTRO_BUFFER_MS
-    : 0
+  // Stats delay liczony od dłuższego wariantu intro — tak by stats startowały
+  // dopiero gdy ColorizeText skończy się na obu widokach.
+  const longerIntroLen = Math.max(introDesktop?.length ?? 0, introMobile?.length ?? 0)
+  const introAnimDurationMs =
+    longerIntroLen > 0
+      ? longerIntroLen * INTRO_CHAR_STAGGER_MS + INTRO_CHAR_DURATION_MS + INTRO_BUFFER_MS
+      : 0
 
   return (
     <section className="bg-bg py-20 md:flex md:min-h-[800px] md:flex-col md:justify-center md:py-32">
-      <div className="layout-container flex flex-col gap-12 md:gap-20">
-        {intro && (
-          <p className="text-2xl leading-[normal] font-normal tracking-[-0.03em]">
-            <ColorizeText text={intro} />
+      <div className="layout-container flex flex-col gap-24 md:gap-40">
+        {introMobile && (
+          <p className="text-xl leading-[1.2] font-normal text-center md:hidden">
+            <ColorizeText text={introMobile} />
+          </p>
+        )}
+        {introDesktop && (
+          <p className="hidden text-2xl leading-[normal] font-normal tracking-[-0.03em] md:block">
+            <ColorizeText text={introDesktop} />
           </p>
         )}
 

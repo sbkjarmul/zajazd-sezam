@@ -2006,6 +2006,14 @@
               },
               "optional": true
             },
+            "introMobile": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeText"
+              },
+              "optional": true
+            },
             "stats": {
               "type": "objectAttribute",
               "value": {
