@@ -37,9 +37,29 @@ export const eventsPage = defineType({
       title: '2. Sekcja "Obietnica" — pełnoekranowa wiadomość',
       type: 'object',
       fields: [
-        { name: 'leadText', type: 'localeText', title: 'Lead (część zwykła przed wyróżnieniem)' },
-        { name: 'highlightedText', type: 'localeText', title: 'Wyróżniony fragment (medium)' },
-        { name: 'tailText', type: 'localeText', title: 'Tail (część zwykła po wyróżnieniu)' },
+        { name: 'leadText', type: 'localeText', title: 'Lead — desktop' },
+        { name: 'highlightedText', type: 'localeText', title: 'Wyróżniony fragment — desktop' },
+        { name: 'tailText', type: 'localeText', title: 'Tail — desktop' },
+        {
+          name: 'leadTextMobile',
+          type: 'localeText',
+          title: 'Lead — mobile (opcjonalny override)',
+          description:
+            'Krótszy wariant dla < md (768px). Jeśli puste — używa wariantu desktop.',
+        },
+        {
+          name: 'highlightedTextMobile',
+          type: 'localeText',
+          title: 'Wyróżniony fragment — mobile (opcjonalny override)',
+          description: 'Krótszy wariant dla < md (768px). Jeśli puste — używa wariantu desktop.',
+        },
+        {
+          name: 'tailTextMobile',
+          type: 'localeText',
+          title: 'Tail — mobile (opcjonalny override)',
+          description:
+            'Krótszy wariant dla < md (768px). Jeśli puste — używa wariantu desktop. Zostaw puste, by zakończyć wersję mobilną na wyróżnionym fragmencie.',
+        },
         { name: 'ctaLabel', type: 'localeString', title: 'CTA (drawer event)' },
       ],
     }),

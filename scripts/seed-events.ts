@@ -191,6 +191,14 @@ async function main() {
         'Od przygotowania sali, przez pyszne jedzenie, po komfortowy nocleg dla Twoich gości.',
         'From setting the hall, through delicious food, to comfortable rooms for your guests.',
       ),
+      leadTextMobile: lt(
+        'Wiemy, jak bardzo organizacja wydarzeń potrafi stresować. Dlatego mamy prostą umowę.',
+        'We know how stressful planning an event can be. That’s why our promise is simple.',
+      ),
+      highlightedTextMobile: lt(
+        'Ty cieszysz się każdą chwilą i bawisz się z bliskimi, a my zajmujemy się wszystkim.',
+        'You enjoy every moment with your loved ones, and we take care of everything.',
+      ),
       ctaLabel: ls('Zarezerwuj termin', 'Book your date'),
     },
     eventTypesSection: {

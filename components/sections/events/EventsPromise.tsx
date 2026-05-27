@@ -16,13 +16,34 @@ export function EventsPromise({ data, locale }: Props) {
   const tail = pickLocale(data.tailText, locale)
   const ctaLabel = pickLocale(data.ctaLabel, locale)
 
+  // Mobile = osobny copy aktywowany przez leadTextMobile (gdy set, mobile renderuje
+  // własną triadę bez fallbacku do desktop, co pozwala skrócić wersję — np.
+  // zakończyć na highlight, zostawiając tailTextMobile puste).
+  const leadMobileOverride = pickLocale(data.leadTextMobile, locale)
+  const highlightMobile = pickLocale(data.highlightedTextMobile, locale)
+  const tailMobile = pickLocale(data.tailTextMobile, locale)
+  const hasMobileVariant = Boolean(leadMobileOverride)
+  const leadMobile = hasMobileVariant ? leadMobileOverride : lead
+  const highlightMobileRendered = hasMobileVariant ? highlightMobile : highlight
+  const tailMobileRendered = hasMobileVariant ? tailMobile : tail
+
   if (!lead && !highlight && !tail) return null
 
   return (
     <section className="bg-surface flex min-h-[800px] w-full items-center justify-end py-20 md:py-32">
       <div className="layout-container flex flex-col gap-10">
         <Reveal>
-          <p className="text-text text-[32px] leading-tight font-normal tracking-[-0.03em]">
+          <p className="text-text text-xl leading-[1.2] font-normal tracking-[-0.03em] md:hidden">
+            {leadMobile}
+            {highlightMobileRendered && (
+              <>
+                {' '}
+                <span className="font-bold">{highlightMobileRendered}</span>
+              </>
+            )}
+            {tailMobileRendered && <> {tailMobileRendered}</>}
+          </p>
+          <p className="text-text hidden text-[32px] leading-tight font-normal tracking-[-0.03em] md:block">
             {lead} {highlight && <span className="font-bold">{highlight}</span>} {tail}
           </p>
         </Reveal>

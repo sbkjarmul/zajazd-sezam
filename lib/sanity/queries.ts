@@ -197,7 +197,7 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
       eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,
       image { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
-    promiseSection { leadText, highlightedText, tailText, ctaLabel },
+    promiseSection { leadText, highlightedText, tailText, leadTextMobile, highlightedTextMobile, tailTextMobile, ctaLabel },
     eventTypesSection { eyebrow, title, description },
     eventTypes[]->{
       _id,

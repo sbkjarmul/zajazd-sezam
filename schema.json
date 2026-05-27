@@ -724,6 +724,30 @@
               },
               "optional": true
             },
+            "leadTextMobile": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeText"
+              },
+              "optional": true
+            },
+            "highlightedTextMobile": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeText"
+              },
+              "optional": true
+            },
+            "tailTextMobile": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeText"
+              },
+              "optional": true
+            },
             "ctaLabel": {
               "type": "objectAttribute",
               "value": {

@@ -492,13 +492,16 @@ Duży, display-style paragraf wprowadzający sekcję.
 
 | | Wartość |
 |---|---|
-| `font-size` | 32px (mobile + desktop, bez skoku) |
+| `font-size` | 32px desktop (standard, bez skoku) · 24px mobile w wariancie mobile-shrink (patrz niżej) |
 | `leading` | normal (~1.4) lub tight (1.2) wariant highlight |
 | `tracking` | -0.03em (display) |
 
 **Highlight span wewnątrz wariantu highlight** (EventsPromise): `<span className="font-bold">` — przy 32px display kontrast `font-normal` (400) → `font-bold` (700) wyraźniej rozdziela treść neutralną od podkreślonej. Wariant `font-medium` (500) daje zbyt subtelną różnicę. Parent `<p>` zawsze `font-normal` (zgodnie z §4.6).
 
-**Wariant mobile-shrink** (AboutSection): mobile dostaje krótszy copy w `text-xl` (24px) z `leading-[1.2]` + `text-center`, desktop standard 32px lewy-justified. Mobile i desktop renderowane jako dwa `<p>` z `md:hidden` / `hidden md:block`. Sanity ma dwa pola: `intro` (desktop, wymagane) i `introMobile` (opcjonalny override). Wzorzec dwóch wariantów copy jest analogiczny do HeroSection (`headline`/`headlineMobile`, `subheadline`/`subheadlineMobile`).
+**Wariant mobile-shrink** — mobile dostaje krótszy copy w `text-xl` (24px) z `leading-[1.2]`, desktop standard 32px. Mobile i desktop renderowane jako dwa `<p>` z `md:hidden` / `hidden md:block`. Dwa miejsca użycia, każde z drobnym odjazdem:
+
+- **AboutSection** (home) — mobile `text-center`, desktop lewy-justified. Sanity: pojedyncze pole `intro` (desktop, wymagane) + `introMobile` (opcjonalny override z prostym fallbackiem do `intro`). Wzorzec dwóch wariantów copy analogiczny do HeroSection (`headline`/`headlineMobile`, `subheadline`/`subheadlineMobile`).
+- **EventsPromise** (imprezy) — left-aligned na obu BP (bez `text-center` na mobile). Sanity: triplet `leadText` / `highlightedText` / `tailText` (desktop, wymagane) + triplet `leadTextMobile` / `highlightedTextMobile` / `tailTextMobile` (opcjonalne overridy). Mobile mode aktywuje się gdy `leadTextMobile` jest set — wtedy renderuje się **całość triady mobile bez fallbacku do desktop** (puste pola mobile są literalnie puste). Pozwala to skrócić wersję mobilną poprzez pozostawienie np. `tailTextMobile` pustego, kończąc na highlight. Jeśli `leadTextMobile` nie jest set — desktop triplet renderuje się także na mobile.
 
 ### 4.6 Body — large / default / small
 
@@ -630,6 +633,8 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 8 | ReviewsBlock | C | `gap-3 md:gap-4` centered | `gap-10 md:gap-[54px]` | `font-normal` | D |
 | 9 | ContactBlock | C | `gap-2` | dl `gap-10 md:gap-12`, item `gap-2` | `font-normal` (text-text-inverse), dd `text-lg md:text-xl` (20/24) | D (text-text-inverse) |
 
+**Mobile h2 = 40px (świadome odstępstwo od §4.3 kanonu, rows 4–9)**: wszystkie h2 sekcji content (EventsBlock, RestaurantBlock, HotelBlock, BistroBlock, ReviewsBlock, ContactBlock) używają `text-3xl` (40px) zamiast kanonicznego `text-2xl` (32px) na mobile. Tablet/desktop bez zmian (`md:text-5xl lg:text-6xl` = 64/72px). Strony "marketingowe" (home, imprezy — patrz §7.6) dostają większą h2 na mobile, bo czytelność rules mobile preview > spójność ze skalą bazową.
+
 **Mobile padding-bottom pattern (rows 4–7)**: sekcje z full-bleed image na dole (EventsBlock, RestaurantBlock, HotelBlock, BistroBlock) mają na mobile tylko `pt-20` (bez `pb`), żeby obraz był flush z następną sekcją bez 80px "footer space" w kolorze sekcji. Od `md:` wraca standardowy padding (`md:py-32` dla EventsBlock/HotelBlock; `md:py-20` + sztywna wysokość dla Restaurant/Bistro). Pattern aplikuje się gdy DOM ma image jako last child (lub `order-last`) i image jest full-bleed via §2.7 wariant B.
 
 **ContactBlock CTA**: link "Zadzwoń" (tel:) ma `my-8` żeby podwoić efektywny margin wokół buttona (32px gap z Reveal + 32px margin = 64px nad/pod). Tylko mobile/md (`lg:hidden`).
@@ -676,14 +681,16 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | # | Sekcja | Padding | h2 weight | Eyebrow |
 |---|---|---|---|---|
 | 1 | EventsHero | H | (h1 `font-medium text-[64px] md:text-7xl lg:text-[120px]`) | D |
-| 2 | EventsPromise | FH (`min-h-[800px]`) + D | (body-lead-highlight `text-[32px]`) | — |
-| 3 | EventTypesCarousel | D | h2 kanon `font-normal` | D |
-| 4 | EventsHalls | D | h2 kanon `font-normal` | D |
-| 5 | EventsHotelUpsell | S + dark | h2 kanon `font-normal` | D (text-text-inverse) |
-| 6 | EventsCatering | D + §2.7 (mobile image-bottom pattern) | h2 kanon `font-normal` | D |
-| 7 | EventsReviews | C | h2 kanon `font-normal` | D (centered) |
-| 8 | EventsSteps | FH (`min-h-[800px]`) + accent bg | h2 kanon `font-normal` | D (na gold tle) |
-| 9 | EventsReservationCta | S | h2 kanon `font-normal` | D z `text-accent` |
+| 2 | EventsPromise | FH (`min-h-[800px]`) + D | (body-lead-highlight: mobile `text-xl` (24px) / desktop `text-[32px]`, **mobile-shrink wariant** — patrz §4.5) | — |
+| 3 | EventTypesCarousel | D | h2 kanon `font-normal` (mobile 40px — patrz nota) | D |
+| 4 | EventsHalls | D | h2 kanon `font-normal` (mobile 40px — patrz nota) | D |
+| 5 | EventsHotelUpsell | S + dark | h2 kanon `font-normal` (mobile 40px — patrz nota) | D (text-text-inverse) |
+| 6 | EventsCatering | D + §2.7 (mobile image-bottom pattern) | h2 kanon `font-normal` (mobile 40px — patrz nota) | D |
+| 7 | EventsReviews | C | h2 kanon `font-normal` (mobile 40px — patrz nota) | D (centered) |
+| 8 | EventsSteps | FH (`min-h-[800px]`) + accent bg | h2 kanon `font-normal` (mobile 40px — patrz nota) | D (na gold tle) |
+| 9 | EventsReservationCta | S | h2 kanon `font-normal` (mobile 40px — patrz nota) | D z `text-accent` |
+
+**Mobile h2 = 40px (świadome odstępstwo od §4.3 kanonu)**: wszystkie h2 sekcji na /imprezy-okolicznosciowe używają `text-3xl` (40px) zamiast kanonicznego `text-2xl` (32px) na mobile. Tablet/desktop bez zmian (`md:text-5xl lg:text-6xl` = 64/72px). Spójne z home (§7.1) — strony "marketingowe" (home, imprezy) dostają większą h2 na mobile, bo czytelność rules mobile preview > spójność ze skalą bazową. Strony "informacyjne" (Restauracja/Bistro menu, Hotel, Kontakt) zostają przy kanonie 32px.
 
 ### 7.7 Kontakt (/kontakt)
 
