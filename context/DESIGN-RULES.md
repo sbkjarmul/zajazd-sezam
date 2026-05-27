@@ -62,6 +62,7 @@ Wszystkie wartości w [app/globals.css](../app/globals.css) bloku `@theme`. Ten 
 |---|---|---|
 | `tracking-tight` | -0.01em (-1%) | h1/h2/h3 mobile |
 | `tracking-[-0.03em]` | -3% | h1/h2/h3 md+ (zawsze parowane z `tracking-tight` jako baseline) |
+| `tracking-[-0.05em]` | -5% | **Stat numbers** (`AnimatedStat` valueClassName w AboutSection) — przy bardzo dużych liczbach 72/80/100px standardowe -3% wygląda zbyt luźno, -5% daje lepszy "tabular" feel charakterystyczny dla display stat counterów |
 | `tracking-[-0.02em]` | -2% | HotelQuote (świadomy wariant — soft display weight) |
 | `tracking-normal` | 0 | Body, eyebrows |
 | `tracking-widest` | 0.125em | **Wyłącznie** SEZAM wordmark w logo |
@@ -620,7 +621,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | # | Sekcja | Padding | Header gap | Section gap | h2 weight | Eyebrow |
 |---|---|---|---|---|---|---|
 | 1 | HeroSection | H | `gap-6` (subheadline) | — | (h1) `font-normal` | — |
-| 2 | AboutSection | D + `md:min-h-[800px]` | — | `gap-24 md:gap-40` | (lead — mobile `text-xl` (24px) centered, desktop `text-2xl` (32px) left-aligned, **dwa warianty z Sanity**: `intro` desktop / `introMobile` opcjonalny mobile override) | — |
+| 2 | AboutSection | D + `md:min-h-[800px]`, mobile `py-[120px]` | — | `gap-36 md:gap-40` | (lead — mobile `text-xl` (24px) centered, desktop `text-2xl` (32px) left-aligned, **dwa warianty z Sanity**: `intro` desktop / `introMobile` opcjonalny mobile override). Stat values: `text-6xl md:text-7xl lg:text-[100px]` + `tracking-[-0.05em]` (display tight) | — |
 | 3 | ServicesIntro | Hd | `mt-4` (h2↔eyebrow) | — | `h2-intro` `font-normal` | D |
 | 4 | EventsBlock | D | `gap-4 md:gap-6` | `gap-8` (lg row) | `font-normal` | D |
 | 5 | RestaurantBlock | FH + `py-20` | `gap-4` | `gap-8` | `font-normal` (text-text-inverse) | D (text-text-inverse) |

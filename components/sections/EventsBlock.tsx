@@ -51,7 +51,7 @@ export function EventsBlock({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text text-2xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
                 {title}
               </h2>
             )}

@@ -35,8 +35,8 @@ export function AboutSection({ data, locale }: Props) {
       : 0
 
   return (
-    <section className="bg-bg py-20 md:flex md:min-h-[800px] md:flex-col md:justify-center md:py-32">
-      <div className="layout-container flex flex-col gap-24 md:gap-40">
+    <section className="bg-bg py-[120px] md:flex md:min-h-[800px] md:flex-col md:justify-center md:py-32">
+      <div className="layout-container flex flex-col gap-36 md:gap-40">
         {introMobile && (
           <p className="text-xl leading-[1.2] font-normal text-center md:hidden">
             <ColorizeText text={introMobile} />
@@ -57,7 +57,7 @@ export function AboutSection({ data, locale }: Props) {
                 label={pickLocale(stat.label, locale) ?? ''}
                 delayMs={introAnimDurationMs + i * STAT_FULL_DURATION_MS}
                 className="flex flex-col items-center gap-2 md:items-start"
-                valueClassName="text-text text-6xl leading-none font-normal tracking-tight md:text-7xl md:tracking-[-0.03em] lg:text-[100px]"
+                valueClassName="text-text text-6xl leading-none font-normal tracking-[-0.05em] md:text-7xl lg:text-[100px]"
                 labelClassName="text-text-muted text-base md:text-lg lg:text-xl"
               />
             ))}
