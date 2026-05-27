@@ -143,6 +143,7 @@ types/                 ← TypeScript interfaces
 - Dane do strony pobierane przez GROQ w Server Components — nigdy client-side fetch do Sanity
 - ISR revalidacja przez webhook: `POST /api/revalidate` po każdej publikacji w Studio
 - Klient Sanity jest read-only w Next.js — zapis tylko przez Studio
+- **OBOWIĄZKOWO** po każdej zmianie w `sanity/schemas/**` (dodanie/usunięcie/modyfikacja pola, nowy typ dokumentu, zmiana fragmentów GROQ) uruchom `npm run sanity:gen` — to robi `sanity schema extract` (odświeża cached `schema.json`) **plus** `sanity typegen generate` (regeneruje `types/sanity.ts`). Sam `npm run sanity:types` używa starego `schema.json` i da niespójne typy → Vercel build padnie na TS check
 
 ---
 

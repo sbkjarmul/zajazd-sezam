@@ -81,6 +81,7 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
         theme="dark"
         bgColor="#1a2789"
         bigBrand
+        logoImage={logoImage}
       />
     </>
   )
