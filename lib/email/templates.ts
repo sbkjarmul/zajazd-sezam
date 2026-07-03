@@ -52,7 +52,7 @@ function shell(title: string, contentHtml: string): string {
           ${contentHtml}
         </td></tr>
         <tr><td style="padding:24px 32px;background:${BRAND.bg};border-top:1px solid ${BRAND.border};font-size:12px;color:${BRAND.textMuted};">
-          Zajazd Sezam · ul. Komisji Edukacji Narodowej 51, 37-450 Stalowa Wola · +48 15 642 21 06 · recepcja@zajazdsezam.pl
+          Zajazd Sezam · ul. Komisji Edukacji Narodowej 51, 37-450 Stalowa Wola · +48 15 642 21 02 · recepcja@zajazdsezam.pl
         </td></tr>
       </table>
     </td></tr>

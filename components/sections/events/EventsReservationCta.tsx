@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/routing'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { formatPhonePl } from '@/lib/format/phone'
 
 type Props = {
   data: NonNullable<EVENTS_PAGE_QUERY_RESULT>['reservationSection']
@@ -50,7 +51,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
               href={`tel:${phone.replace(/\s+/g, '')}`}
               className="text-text hover:text-accent text-[40px] font-semibold whitespace-nowrap tracking-[-0.03em] transition-colors sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
             >
-              {phone}
+              {formatPhonePl(phone)}
             </a>
           </Reveal>
         )}

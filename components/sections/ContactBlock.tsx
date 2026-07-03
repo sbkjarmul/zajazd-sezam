@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { SanityImage } from '@/components/SanityImage'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { formatPhonePl } from '@/lib/format/phone'
 
 type Props = {
   data: NonNullable<HOMEPAGE_QUERY_RESULT>['contactBlock']
@@ -55,7 +56,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
                     href={`tel:${phone.replace(/\s/g, '')}`}
                     className="hover:text-accent transition-colors"
                   >
-                    {phone}
+                    {formatPhonePl(phone)}
                   </a>
                 </dd>
               </div>

@@ -4,6 +4,7 @@ import { Logo } from './Logo'
 import type { SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
 import type { Locale, Pathname } from '@/i18n/routing'
 import { cn } from '@/lib/utils'
+import { formatPhonePl } from '@/lib/format/phone'
 import type { SanityImage } from '@/components/SanityImage'
 
 type LogoImage = Parameters<typeof SanityImage>[0]['image']
@@ -112,7 +113,7 @@ export async function Footer({
                 hoursText
                   ? { text: hoursText }
                   : phone && {
-                      text: phone,
+                      text: formatPhonePl(phone),
                       href: `tel:${phone.replace(/\s/g, '')}`,
                     },
               ]}
@@ -185,7 +186,7 @@ export async function Footer({
                   ),
                 },
                 phone && {
-                  text: phone,
+                  text: formatPhonePl(phone),
                   href: `tel:${phone.replace(/\s/g, '')}`,
                 },
                 email && {

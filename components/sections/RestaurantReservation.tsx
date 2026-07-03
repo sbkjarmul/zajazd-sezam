@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import type { Locale } from '@/i18n/routing'
+import { formatPhonePl } from '@/lib/format/phone'
 
 type Address = {
   street?: string | null
@@ -79,7 +80,7 @@ export async function RestaurantReservation({
             href={`tel:${phone.replace(/\s/g, '')}`}
             className="text-text-inverse hover:text-accent text-[40px] font-black whitespace-nowrap tracking-[-0.03em] py-4 transition-colors sm:text-5xl md:py-8 md:text-6xl lg:text-[96px] lg:leading-none"
           >
-            {phone}
+            {formatPhonePl(phone)}
           </a>
         )}
 

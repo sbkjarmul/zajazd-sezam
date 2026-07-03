@@ -1,6 +1,7 @@
 import type { CONTACT_PAGE_QUERY_RESULT, SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { formatPhonePl } from '@/lib/format/phone'
 
 type Props = {
   data: NonNullable<CONTACT_PAGE_QUERY_RESULT>['contactSection']
@@ -63,7 +64,7 @@ export function ContactInfo({ data, settings, locale }: Props) {
                   href={`tel:${phone.replace(/\s/g, '')}`}
                   className="hover:text-accent transition-colors"
                 >
-                  {phone}
+                  {formatPhonePl(phone)}
                 </a>
               </dd>
             </div>
