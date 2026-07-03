@@ -10,6 +10,7 @@ import { UIProvider } from '@/components/providers/UIProvider'
 import { BurgerMenu } from '@/components/layout/BurgerMenu'
 import { ReservationDrawer } from '@/components/layout/ReservationDrawer'
 import { Toaster } from '@/components/ui/sonner'
+import { SmoothScroll } from '@/components/SmoothScroll'
 import '../../globals.css'
 
 const inter = Inter({
@@ -63,11 +64,13 @@ export default async function LocaleLayout({
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
         <NextIntlClientProvider>
           <UIProvider phone={settings?.phone}>
-            {/* Header + Footer renderowane per-strona (per-route logo, theme, brand) */}
-            <main className="flex flex-1 flex-col">{children}</main>
-            <BurgerMenu />
-            <ReservationDrawer />
-            <Toaster position="top-center" richColors />
+            <SmoothScroll>
+              {/* Header + Footer renderowane per-strona (per-route logo, theme, brand) */}
+              <main className="flex flex-1 flex-col">{children}</main>
+              <BurgerMenu />
+              <ReservationDrawer />
+              <Toaster position="top-center" richColors />
+            </SmoothScroll>
           </UIProvider>
         </NextIntlClientProvider>
       </body>
