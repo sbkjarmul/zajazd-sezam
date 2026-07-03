@@ -22,6 +22,9 @@ type CommonProps = {
   locale: Locale
   className?: string
   priority?: boolean
+  // 'eager' — ładuj od razu (bez native lazy). Przydatne, gdy obraz jest w
+  // kontenerze z transformem (parallax), przez co lazy bywa zawodne.
+  loading?: 'eager' | 'lazy'
   sizes?: string
 }
 
@@ -29,7 +32,15 @@ type FillProps = CommonProps & { fill: true; width?: never; height?: never }
 type SizedProps = CommonProps & { fill?: false; width?: number; height?: number }
 type Props = FillProps | SizedProps
 
-export function SanityImage({ image, locale, className, priority, sizes, ...rest }: Props) {
+export function SanityImage({
+  image,
+  locale,
+  className,
+  priority,
+  loading,
+  sizes,
+  ...rest
+}: Props) {
   const url = image?.asset?.url
   const alt = pickLocale(image?.alt, locale) ?? ''
   const dims = image?.asset?.metadata?.dimensions
@@ -47,6 +58,7 @@ export function SanityImage({ image, locale, className, priority, sizes, ...rest
         fill
         sizes={sizes}
         priority={priority}
+        loading={priority ? undefined : loading}
         placeholder={lqip ? 'blur' : 'empty'}
         blurDataURL={lqip}
         className={cn('object-cover', className)}

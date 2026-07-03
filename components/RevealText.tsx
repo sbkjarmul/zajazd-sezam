@@ -71,12 +71,21 @@ export function RevealText({
         let tween: gsap.core.Tween | null = null
         const build = () => {
           if (!ref.current) return
-          split = SplitText.create(el, { type: 'lines', mask: 'lines' })
+          // reduceWhiteSpace: false — nie zwijaj/nie normalizuj whitespace, żeby
+          // twarde spacje (nbsp, np. z preventOrphans) przetrwały split i dalej
+          // wiązały wyrazy (jednoliterowe spójniki nie zostają na końcu linii).
+          split = SplitText.create(el, { type: 'lines', mask: 'lines', reduceWhiteSpace: false })
           // Maska (`overflow: clip`) ma wysokość line-box. Przy `leading-none`
           // (line-height 1) ascendery/diakrytyki (Ł, Ś) i descendery (y, j, ą, ę)
           // wystają poza line-box → maska je przycinała. Padding góra/dół
-          // powiększa linię (więc i maskę) o miejsce na wystające glify, a ujemny
-          // margines na maskach kompensuje rytm pionowy (layout bez zmian).
+          // powiększa maskę o miejsce na wystające glify, a ujemny margines
+          // kompensuje go 1:1 — więc odstęp linii pozostaje = line-height (100%).
+          //
+          // Kontener robimy flex-column: maski to flex-items, których marginesy
+          // NIE collapse'ują (inaczej -0.2em góra/dół zwijały się do -0.2em zamiast
+          // -0.4em i między liniami zostawał ~0.2em nadmiarowego odstępu).
+          el.style.display = 'flex'
+          el.style.flexDirection = 'column'
           const GLYPH_PAD = '0.2em'
           gsap.set(split.lines, {
             yPercent: 110,
@@ -101,6 +110,8 @@ export function RevealText({
           tween?.scrollTrigger?.kill()
           tween?.kill()
           split?.revert()
+          el.style.display = ''
+          el.style.flexDirection = ''
         }
       })
 
