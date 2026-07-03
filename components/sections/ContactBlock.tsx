@@ -1,7 +1,8 @@
 import type { HOMEPAGE_QUERY_RESULT, SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
-import { SanityImage } from '@/components/SanityImage'
+import { RevealImage } from '@/components/RevealImage'
+import { RevealText } from '@/components/RevealText'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { formatPhonePl } from '@/lib/format/phone'
@@ -39,9 +40,12 @@ export async function ContactBlock({ data, settings, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <RevealText
+                as="h2"
+                className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+              >
                 {title}
-              </h2>
+              </RevealText>
             )}
           </div>
 
@@ -102,12 +106,10 @@ export async function ContactBlock({ data, settings, locale }: Props) {
 
         <Reveal delay={120} className="flex justify-center lg:flex-1">
           <div className="relative aspect-square w-4/5 overflow-hidden rounded-full">
-            <SanityImage
+            <RevealImage
               image={data.image}
               locale={locale}
-              fill
               sizes="(max-width: 1024px) 80vw, 32vw"
-              className="object-cover"
             />
           </div>
         </Reveal>

@@ -1,6 +1,7 @@
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { SanityImage } from '@/components/SanityImage'
+import { RevealImage } from '@/components/RevealImage'
+import { RevealText } from '@/components/RevealText'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
@@ -31,13 +32,11 @@ export function EventsBlock({ data, locale }: Props) {
           delay={120}
           className="relative order-last -mx-4 aspect-[662/592] w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:order-none lg:w-1/2 lg:shrink-0 lg:self-start"
         >
-          <SanityImage
+          <RevealImage
             image={data.mainImage}
             locale={locale}
-            fill
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
           />
         </Reveal>
 
@@ -51,9 +50,12 @@ export function EventsBlock({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <RevealText
+                as="h2"
+                className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+              >
                 {title}
-              </h2>
+              </RevealText>
             )}
           </div>
 
@@ -62,12 +64,10 @@ export function EventsBlock({ data, locale }: Props) {
           <div className="flex flex-col gap-8 xl:flex-row xl:items-end">
             {data.secondaryImage && (
               <div className="relative hidden aspect-square overflow-hidden xl:block xl:w-1/2 xl:shrink-0">
-                <SanityImage
+                <RevealImage
                   image={data.secondaryImage}
                   locale={locale}
-                  fill
                   sizes="25vw"
-                  className="object-cover"
                 />
               </div>
             )}

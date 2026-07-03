@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { getGoogleReviews } from '@/lib/googleReviews'
 import { Reveal } from '@/components/Reveal'
+import { RevealText } from '@/components/RevealText'
 import { ReviewsCarousel } from './ReviewsCarousel'
 
 type Props = {
@@ -36,9 +37,12 @@ export async function ReviewsBlock({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <RevealText
+                as="h2"
+                className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+              >
                 {title}
-              </h2>
+              </RevealText>
             )}
             <div className="text-text mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl">
               <span>{reviews.rating.toFixed(1)}/5</span>

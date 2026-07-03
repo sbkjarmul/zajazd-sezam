@@ -1,9 +1,17 @@
+'use client'
+
+import { useRef } from 'react'
 import { Star } from 'lucide-react'
+import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+import { useGSAP } from '@gsap/react'
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
-import { HeroParallaxImage } from './HeroParallaxImage'
+import { HomeHeroBackground } from './HomeHeroBackground'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+
+gsap.registerPlugin(SplitText)
 
 type Props = {
   data: NonNullable<HOMEPAGE_QUERY_RESULT>['hero']
@@ -15,79 +23,223 @@ const GUESTS_LABEL: Record<Locale, string> = {
   en: '1100+ happy guests',
 }
 
+const RESERVE_LABEL: Record<Locale, string> = {
+  pl: 'Zarezerwuj termin',
+  en: 'Book your stay',
+}
+
+// Nowe hero (statyczne zdjęcie budynku) — plik dostarczony przez klienta.
+// Zgoda na public/images zamiast Sanity: klient wgrał je bezpośrednio.
+// Używamy zoptymalizowanej wersji 2000px JPG (~600 KB) zamiast źródłowego
+// 2752px PNG (~6,6 MB) — szybsza optymalizacja next/image i lepszy LCP.
+const HERO_IMAGE_SRC = '/images/hero-sezam.jpg'
+const HERO_IMAGE_ALT: Record<Locale, string> = {
+  pl: 'Zajazd Sezam — budynek restauracji i hotelu w Stalowej Woli',
+  en: 'Sezam Inn — restaurant and hotel building in Stalowa Wola',
+}
+
+// Dzieli nagłówek na 3 części:
+//   line1     — słowa poza łącznikiem i akcentem (pierwsza linia)
+//   connector — łącznik przed akcentem (np. „w"), w Inter, przenoszony do 2. linii
+//   accent    — ostatnie 2 słowa („rodzinnej atmosferze") kursywą Westbourne Serif
+// Wymuszony <br> gwarantuje: 1. linia = line1, 2. linia = „w " + akcent (łącznik
+// nie zostaje osierocony na końcu 1. linii).
+function splitHeadline(text: string): { line1: string; connector: string; accent: string } {
+  const parts = text.trim().split(/\s+/).filter(Boolean)
+  if (parts.length < 3) {
+    return { line1: parts.slice(0, -2).join(' '), connector: '', accent: parts.slice(-2).join(' ') }
+  }
+  return {
+    line1: parts.slice(0, -3).join(' '),
+    connector: parts[parts.length - 3],
+    accent: parts.slice(-2).join(' '),
+  }
+}
+
+function Headline({
+  line1,
+  connector,
+  accent,
+}: {
+  line1: string
+  connector: string
+  accent: string
+}) {
+  return (
+    <>
+      {line1}
+      {line1 && <br />}
+      {connector}
+      {connector ? ' ' : ''}
+      <em className="font-accent font-normal italic">{accent}</em>
+    </>
+  )
+}
+
+// 4.5 gwiazdki (4 pełne + 1 połówka). Połówka: bazowa gwiazdka-outline z
+// nałożoną, przyciętą do 50% szerokości gwiazdką wypełnioną.
+function StarRating() {
+  return (
+    <div className="text-text-inverse flex items-center gap-1" aria-hidden>
+      {[0, 1, 2, 3].map((i) => (
+        <Star key={i} className="size-5 fill-current" strokeWidth={1.5} />
+      ))}
+      <span className="relative inline-flex size-5">
+        <Star className="absolute inset-0 size-5" strokeWidth={1.5} />
+        <span className="absolute inset-0 w-1/2 overflow-hidden">
+          <Star className="size-5 fill-current" strokeWidth={1.5} />
+        </span>
+      </span>
+    </div>
+  )
+}
+
 export function HeroSection({ data, locale }: Props) {
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  // Sekwencja wejściowa (load, nie scroll — hero jest nad foldem):
+  //   1. nagłówek — reveal wyraz po wyrazie (SplitText words)
+  //   2. header — fade-in z góry (osobny komponent, delay HERO_HEADER_DELAY_S)
+  //   3. opis (tekst) — wjazd od dołu spod maski
+  //   4. button — wjazd od dołu spod maski
+  //   5. eyebrow (ocena: gwiazdki + liczba gości) — fade + rise, na końcu
+  // Nagłówek dzielimy tylko na WIDOCZNYM wariancie (mobile/desktop) — matchMedia,
+  // bo drugi span jest display:none i SplitText by go nie zmierzył.
+  // Pozycje na osi czasu współdzielone z opóźnieniem headera (HERO_HEADER_DELAY_S).
+  useGSAP(
+    () => {
+      const root = rootRef.current
+      if (!root) return
+
+      const mm = gsap.matchMedia()
+      mm.add(
+        {
+          reduce: '(prefers-reduced-motion: reduce)',
+          desktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+          mobile: '(max-width: 767px) and (prefers-reduced-motion: no-preference)',
+        },
+        (ctx) => {
+          if (ctx.conditions?.reduce) return // brak animacji — treść widoczna
+
+          const isDesktop = ctx.conditions?.desktop
+          const rating = root.querySelector<HTMLElement>('[data-hero-rating]')
+          const subInner = root.querySelector<HTMLElement>('[data-hero-sub]')
+          const ctaInner = root.querySelector<HTMLElement>('[data-hero-cta]')
+          const headlineEl = root.querySelector<HTMLElement>(
+            isDesktop ? '[data-hl="desktop"]' : '[data-hl="mobile"]',
+          )
+
+          let split: SplitText | null = null
+          let tl: gsap.core.Timeline | null = null
+
+          const build = () => {
+            if (!rootRef.current || !headlineEl) return
+            // Nagłówek: subtelny reveal wyraz po wyrazie (fade + delikatny rise).
+            // BEZ maski per-word — kursywa Westbourne ma zwisy/descendery ("j"),
+            // które maska by przycięła. Maska (overflow) zarezerwowana dla opisu
+            // i buttona (wjazd od dołu).
+            split = SplitText.create(headlineEl, { type: 'words' })
+            gsap.set(split.words, { autoAlpha: 0, yPercent: 45 })
+
+            // Pozycje absolutne na osi czasu → deterministyczna kolejność:
+            // nagłówek(0) → tekst(0.7) → button + header (~1.1) → eyebrow(1.45)
+            tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+            tl.to(split.words, { autoAlpha: 1, yPercent: 0, duration: 0.6, stagger: 0.04 }, 0)
+              .from(subInner, { yPercent: 110, duration: 0.7 }, 0.7)
+              .from(ctaInner, { yPercent: 110, duration: 0.6 }, 1.1)
+              .from(rating, { y: 16, autoAlpha: 0, duration: 0.55 }, 1.45)
+          }
+
+          // Split po załadowaniu fontów, żeby słowa (w tym akcent Westbourne)
+          // łamały się i mierzyły poprawnie.
+          if (document.fonts?.status === 'loaded') build()
+          else void document.fonts?.ready.then(build)
+
+          return () => {
+            tl?.kill()
+            split?.revert()
+          }
+        },
+      )
+
+      return () => mm.revert()
+    },
+    { scope: rootRef },
+  )
+
   if (!data) return null
   const headlineDesktop = pickLocale(data.headline, locale)
   const headlineMobile = pickLocale(data.headlineMobile, locale) ?? headlineDesktop
   const subheadlineDesktop = pickLocale(data.subheadline, locale)
   const subheadlineMobile = pickLocale(data.subheadlineMobile, locale) ?? subheadlineDesktop
-  const ctaLabel = pickLocale(data.primaryCtaLabel, locale) ?? GUESTS_LABEL[locale]
+  const ctaLabel = pickLocale(data.primaryCtaLabel, locale) ?? RESERVE_LABEL[locale]
+
+  const deskAccent = headlineDesktop ? splitHeadline(headlineDesktop) : null
+  const mobAccent = headlineMobile ? splitHeadline(headlineMobile) : null
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden">
-      {data.image && (
-        <HeroParallaxImage
-          image={data.image}
-          locale={locale}
-          imageClassName="blur-sm scale-125 object-top md:blur-none md:scale-100 md:object-center"
-        />
-      )}
-      {!data.image && (
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-20"
-          style={{
-            background:
-              'linear-gradient(180deg, var(--color-dark-ruby) 0%, var(--color-gold) 100%)',
-          }}
-        />
-      )}
-
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          backgroundImage:
-            'linear-gradient(212.806deg, rgba(164,146,102,0) 40.814%, rgba(164,146,102,1) 76.688%)',
-        }}
+    <section className="relative flex min-h-screen w-full flex-col overflow-hidden md:min-h-[1119px]">
+      <HomeHeroBackground
+        src={HERO_IMAGE_SRC}
+        alt={HERO_IMAGE_ALT[locale]}
+        imageClassName="object-[center_38%]"
+        priority
       />
 
-      <div className="text-text-inverse layout-container pt-32 pb-16 md:pt-40 md:pb-32">
-        <div className="flex max-w-4xl flex-col gap-8 text-center md:text-left">
-          <div className="flex flex-col items-center gap-3 md:flex-row md:items-center">
-            {/* Mobile: 5 pełnych gwiazdek wycentrowane (Figma 676:2007) */}
-            <div className="text-text-inverse flex items-center gap-1 md:hidden" aria-hidden>
-              <Star className="size-5 fill-current" />
-              <Star className="size-5 fill-current" />
-              <Star className="size-5 fill-current" />
-              <Star className="size-5 fill-current" />
-              <Star className="size-5 fill-current" />
-            </div>
-            {/* Desktop: 3 avatary użytkowników z Google Reviews (Figma 676:1517).
-                Placeholder do czasu F8 — kolorowe kółka z borderem. */}
-            <div className="hidden -space-x-3 md:flex" aria-hidden>
-              <span className="border-text-inverse/60 bg-gold size-10 rounded-full border-2" />
-              <span className="border-text-inverse/60 bg-secondary size-10 rounded-full border-2" />
-              <span className="border-text-inverse/60 bg-dark-ruby size-10 rounded-full border-2" />
-            </div>
-            <span className="text-base md:text-lg">{GUESTS_LABEL[locale]}</span>
-          </div>
+      {/* Subtelne przyciemnienie u góry — poprawa czytelności jasnego tekstu na
+          bladym niebie (górna część zdjęcia). */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 -z-10 h-[70%] bg-gradient-to-b from-black/35 via-black/10 to-transparent"
+      />
 
-          {(headlineMobile || headlineDesktop) && (
-            <h1 className="text-3xl leading-none font-normal tracking-tight md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
-              <span className="md:hidden">{headlineMobile}</span>
-              <span className="hidden md:inline">{headlineDesktop}</span>
-            </h1>
-          )}
+      <div
+        ref={rootRef}
+        className="text-text-inverse layout-container relative flex flex-col items-center gap-6 pt-[110px] pb-24 text-center md:gap-7 md:pt-[150px]"
+      >
+        {/* Ocena: 4.5 gwiazdki + liczba gości — wyśrodkowane, stack pionowy */}
+        <div data-hero-rating className="flex flex-col items-center gap-2">
+          <StarRating />
+          <span className="text-sm md:text-base">{GUESTS_LABEL[locale]}</span>
+        </div>
 
-          {(subheadlineMobile || subheadlineDesktop) && (
-            <p className="mx-auto max-w-2xl text-base leading-[1.2] md:mx-0 md:text-xl">
+        {(mobAccent || deskAccent) && (
+          <h1 className="text-[30px] leading-[1.1] font-normal tracking-tight md:text-[52px] lg:text-[60px] xl:text-[64px]">
+            {mobAccent && (
+              <span data-hl="mobile" className="md:hidden">
+                <Headline
+                  line1={mobAccent.line1}
+                  connector={mobAccent.connector}
+                  accent={mobAccent.accent}
+                />
+              </span>
+            )}
+            {deskAccent && (
+              <span data-hl="desktop" className="hidden md:inline">
+                <Headline
+                  line1={deskAccent.line1}
+                  connector={deskAccent.connector}
+                  accent={deskAccent.accent}
+                />
+              </span>
+            )}
+          </h1>
+        )}
+
+        {(subheadlineMobile || subheadlineDesktop) && (
+          <div className="overflow-hidden">
+            <p
+              data-hero-sub
+              className="text-text-inverse/90 max-w-xl text-base leading-snug md:text-lg"
+            >
               <span className="md:hidden">{subheadlineMobile}</span>
               <span className="hidden md:inline">{subheadlineDesktop}</span>
             </p>
-          )}
+          </div>
+        )}
 
-          <div className="pt-2">
+        <div className="w-full overflow-hidden pt-2 md:w-auto">
+          <div data-hero-cta className="w-full md:w-auto">
             <ReservationCtaButton tab="room" variant="filled-dark" className="w-full md:w-auto">
               {ctaLabel}
             </ReservationCtaButton>

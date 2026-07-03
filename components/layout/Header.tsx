@@ -1,7 +1,10 @@
 'use client'
 
+import { useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Menu } from 'lucide-react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { useUI } from '@/components/providers/UIProvider'
 import { Logo } from './Logo'
@@ -28,6 +31,10 @@ type Props = {
   logoImage?: LogoImage
   locale?: Locale
   nav?: HeaderNavLink[]
+  // Wejściowy fade-in z góry przy montażu (np. na stronie głównej z animowanym hero).
+  animateIn?: boolean
+  // Opóźnienie wejścia (s) — do zsynchronizowania z sekwencją hero.
+  animateInDelay?: number
 }
 
 export function Header({
@@ -36,11 +43,52 @@ export function Header({
   logoImage,
   locale = 'pl',
   nav,
+  animateIn = false,
+  animateInDelay = 0,
 }: Props) {
   const direction = useScrollDirection()
   const t = useTranslations('common')
   const { openReservation, openBurger } = useUI()
   const pathname = usePathname()
+  const headerRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      if (!animateIn) return
+      const el = headerRef.current
+      if (!el) return
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        // Header ma klasę `transition-all duration-300` (dla scroll-hide + tła).
+        // Kłóci się ona z per-frame inline transform/opacity gsapa — rendered
+        // wartości laggują ~300ms i header wygląda na wyblakły/„zawieszony" przez
+        // cały wjazd. Wyłączamy CSS transition na czas animacji, przywracamy po.
+        // clearProps → transform/opacity wracają pod kontrolę klas Tailwinda.
+        el.style.transition = 'none'
+        const restore = () => {
+          gsap.set(el, { clearProps: 'transform,opacity,visibility' })
+          el.style.transition = ''
+        }
+        gsap.set(el, { y: -28, autoAlpha: 0 })
+        const tween = gsap.to(el, {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.9,
+          delay: animateInDelay,
+          ease: 'power3.out',
+          onComplete: restore,
+        })
+        return () => {
+          tween.kill()
+          restore()
+        }
+      })
+      return () => mm.revert()
+    },
+    // Bez `dependencies` — animateIn/animateInDelay to statyczne propsy (nie
+    // zmieniają się po montażu), więc efekt uruchamiamy raz na mount.
+    { scope: headerRef },
+  )
 
   const isTop = direction === 'top'
   const isHidden = direction === 'down'
@@ -51,6 +99,7 @@ export function Header({
 
   return (
     <header
+      ref={headerRef}
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out',
         isHidden && '-translate-y-full',

@@ -1,6 +1,7 @@
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { SanityImage } from '@/components/SanityImage'
+import { RevealImage } from '@/components/RevealImage'
+import { RevealText } from '@/components/RevealText'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
@@ -36,9 +37,12 @@ export function BistroBlock({ data, locale }: Props) {
             </p>
           )}
           {title && (
-            <h2 className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+            <RevealText
+              as="h2"
+              className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+            >
               {title}
-            </h2>
+            </RevealText>
           )}
         </Reveal>
 
@@ -65,12 +69,10 @@ export function BistroBlock({ data, locale }: Props) {
           delay={200}
           className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[640px] lg:w-full lg:self-center"
         >
-          <SanityImage
+          <RevealImage
             image={data.image}
             locale={locale}
-            fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
           />
         </Reveal>
       </div>

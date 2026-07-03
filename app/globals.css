@@ -156,6 +156,13 @@
   --font-sans: var(--font-sans);
 }
 
+/* Westbourne Serif (next/font/local → --font-westbourne). Jawna klasa zamiast
+   mapowania na Tailwindowy `font-serif` — utility nie nadpisywało domyślnego
+   stacku serif. Używana dla akcentowej kursywy w hero ("rodzinnej atmosferze"). */
+.font-accent {
+  font-family: var(--font-westbourne), Georgia, 'Times New Roman', serif;
+}
+
 /* =============================================================================
    Reset / body defaults
    ============================================================================= */

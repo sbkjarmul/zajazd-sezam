@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -17,6 +18,23 @@ const inter = Inter({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-sans',
   display: 'swap',
+})
+
+// Westbourne Serif — akcentowa kursywa dla wyróżnionej frazy w hero
+// ("rodzinnej atmosferze"). Tylko waga 400 (regular + italic). Wystawiana jako
+// --font-westbourne → mapowana na utility `font-serif` w globals.css.
+const westbourne = localFont({
+  src: [
+    { path: '../../../public/font/WestbourneSerif-Regular.ttf', weight: '400', style: 'normal' },
+    { path: '../../../public/font/WestbourneSerif-Italic.ttf', weight: '400', style: 'italic' },
+  ],
+  variable: '--font-westbourne',
+  display: 'swap',
+  // Wyłączamy auto-fallback next/font — generował metric-adjusted `local("Arial")`
+  // (sans), który zawsze jest dostępny, więc w oknie FOUT akcent „rodzinnej
+  // atmosferze" migał prostym sansem zamiast kursywy szeryfowej. Bez niego
+  // łańcuch spada do serif stacku z `.font-accent` (Georgia → serif italic).
+  adjustFontFallback: false,
 })
 
 const DEFAULT_FAVICON = '/images/icons/sezam-hotel-brandmark.svg'
@@ -60,7 +78,10 @@ export default async function LocaleLayout({
   const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY)
 
   return (
-    <html lang={locale} className={`${inter.variable} h-full antialiased`}>
+    <html
+      lang={locale}
+      className={`${inter.variable} ${westbourne.variable} h-full antialiased`}
+    >
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
         <NextIntlClientProvider>
           <UIProvider phone={settings?.phone}>

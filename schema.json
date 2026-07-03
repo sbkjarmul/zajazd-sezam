@@ -2022,6 +2022,14 @@
         "value": {
           "type": "object",
           "attributes": {
+            "eyebrow": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
             "intro": {
               "type": "objectAttribute",
               "value": {

@@ -9,61 +9,61 @@ type Props = {
   locale: Locale
 }
 
-// Wg Figma 676:1535: intro 48px text-dark left-aligned, statystyki 100px text-dark
-// (NIE gold), labels 20px, rozsunięte na pełną szerokość justify-between.
-// Gap 80px między intro a statystykami.
+// Wg Figma 930:40 (nowy landing): eyebrow „O nas" (dark, uppercase, tylko desktop)
+// + intro ~32px left, dark. Statystyki na DOLE, wyrównane do PRAWEJ (justify-end),
+// liczby ~44px (nie 100px), labels ~16px muted. Sekcja 800px wysoka → treść
+// rozłożona góra/dół (justify-between). Mobile: eyebrow ukryty, intro + statystyki
+// w kolumnie, liczby większe (56px) wyrównane do lewej.
 //
 // ColorizeText (intro): 12ms × char + 100ms na znak (2× szybciej niż domyślne).
-// AnimatedStat — counter 800ms + label/suffix równocześnie po counter end.
-// Stagger między statkami: 1200ms (połowa poprzedniego 2400).
-const INTRO_CHAR_STAGGER_MS = 12
-const INTRO_CHAR_DURATION_MS = 100
-const INTRO_BUFFER_MS = 300
-const STAT_FULL_DURATION_MS = 1200
+// AnimatedStat — counter 800ms; liczby ruszają OD RAZU gdy wjadą w viewport
+// (własny IntersectionObserver per stat), z drobnym staggerem — NIE czekają na
+// animację intro (są na dole sekcji, daleko od intro).
+const STAT_STAGGER_MS = 120
 export function AboutSection({ data, locale }: Props) {
   if (!data) return null
+  const eyebrow = pickLocale(data.eyebrow, locale)
   const introDesktop = pickLocale(data.intro, locale)
   const introMobile = pickLocale(data.introMobile, locale) ?? introDesktop
   const stats = data.stats ?? []
 
-  // Stats delay liczony od dłuższego wariantu intro — tak by stats startowały
-  // dopiero gdy ColorizeText skończy się na obu widokach.
-  const longerIntroLen = Math.max(introDesktop?.length ?? 0, introMobile?.length ?? 0)
-  const introAnimDurationMs =
-    longerIntroLen > 0
-      ? longerIntroLen * INTRO_CHAR_STAGGER_MS + INTRO_CHAR_DURATION_MS + INTRO_BUFFER_MS
-      : 0
-
   return (
-    <section className="bg-bg py-[120px] md:flex md:min-h-[800px] md:flex-col md:justify-center md:py-32">
-      <div className="layout-container flex flex-col gap-36 md:gap-40">
+    <section className="bg-bg flex flex-col justify-between gap-28 py-[120px] md:min-h-[800px] md:gap-20 md:py-20">
+      {/* Góra: eyebrow (desktop) + intro */}
+      <div className="layout-container">
+        {eyebrow && (
+          <p className="text-text wide:text-lg hidden text-base tracking-normal uppercase md:block">
+            {eyebrow}
+          </p>
+        )}
         {introMobile && (
-          <p className="text-xl leading-[1.2] font-normal text-center md:hidden">
+          <p className="text-xl leading-[1.3] font-normal md:hidden">
             <ColorizeText text={introMobile} />
           </p>
         )}
         {introDesktop && (
-          <p className="hidden text-2xl leading-[normal] font-normal tracking-[-0.03em] md:block">
+          <p className="mt-8 hidden max-w-[1240px] text-[32px] leading-[1.3] font-normal tracking-[-0.02em] md:block">
             <ColorizeText text={introDesktop} />
           </p>
         )}
-
-        {stats.length > 0 && (
-          <div className="grid grid-cols-1 justify-items-center gap-10 md:grid-cols-2 md:justify-items-start md:gap-x-8 md:gap-y-12 wide:flex wide:flex-row wide:justify-between">
-            {stats.map((stat, i) => (
-              <AnimatedStat
-                key={i}
-                value={stat.value ?? ''}
-                label={pickLocale(stat.label, locale) ?? ''}
-                delayMs={introAnimDurationMs + i * STAT_FULL_DURATION_MS}
-                className="flex flex-col items-center gap-2 md:items-start"
-                valueClassName="text-text text-6xl leading-none font-normal tracking-[-0.05em] md:text-7xl lg:text-[100px]"
-                labelClassName="text-text-muted text-base md:text-lg lg:text-xl"
-              />
-            ))}
-          </div>
-        )}
       </div>
+
+      {/* Dół: statystyki — mobile kolumna (lewo), desktop rząd wyrównany do prawej */}
+      {stats.length > 0 && (
+        <div className="layout-container flex flex-col gap-12 md:flex-row md:flex-wrap md:justify-end md:gap-x-14 md:gap-y-8">
+          {stats.map((stat, i) => (
+            <AnimatedStat
+              key={i}
+              value={stat.value ?? ''}
+              label={pickLocale(stat.label, locale) ?? ''}
+              delayMs={i * STAT_STAGGER_MS}
+              className="flex flex-col items-start gap-1.5"
+              valueClassName="text-text text-[56px] leading-none font-normal tracking-[-0.04em] md:text-[44px]"
+              labelClassName="text-text-muted text-base"
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

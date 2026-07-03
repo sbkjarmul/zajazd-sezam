@@ -45,7 +45,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
 
   return (
     <>
-      <Header logoImage={logoImage} locale={locale} />
+      <Header logoImage={logoImage} locale={locale} animateIn animateInDelay={1.1} />
       <HeroSection data={home?.hero ?? null} locale={locale} />
       <AboutSection data={home?.aboutSection ?? null} locale={locale} />
       <ServicesIntro data={home?.servicesIntro ?? null} locale={locale} />

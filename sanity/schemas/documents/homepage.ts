@@ -25,6 +25,7 @@ export const homepage = defineType({
       title: '2. Sekcja "O nas" + statystyki',
       type: 'object',
       fields: [
+        { name: 'eyebrow', type: 'localeString', title: 'Eyebrow (np. "O nas")' },
         { name: 'intro', type: 'localeText', title: 'Wprowadzenie — desktop' },
         {
           name: 'introMobile',
