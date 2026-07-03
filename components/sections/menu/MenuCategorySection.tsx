@@ -20,6 +20,9 @@ type Props = {
   // Dodatkowe 160px górnego paddingu — pierwsza sekcja pod absolutnie
   // pozycjonowanym MenuFilter, żeby pill kategorii nie nachodził na nagłówek.
   filterOffset?: boolean
+  // Czy pokazywać cenę przy pozycji. Restauracja: true (ceny na karcie).
+  // Bistro: false — menu to same listy dań, ceny podawane osobno.
+  showPrices?: boolean
 }
 
 function sectionTheme(index: number): 'dark' | 'light' {
@@ -35,6 +38,7 @@ export function MenuCategorySection({
   headingWeight = 'bold',
   lightTone = 'ruby-light',
   filterOffset = false,
+  showPrices = true,
 }: Props) {
   const slug = category.slug
   if (!slug) return null
@@ -134,9 +138,11 @@ export function MenuCategorySection({
                           </p>
                         )}
                       </div>
-                      <div className="shrink-0 text-xl tabular-nums md:text-2xl">
-                        {item.price} zł
-                      </div>
+                      {showPrices && (
+                        <div className="shrink-0 text-xl tabular-nums md:text-2xl">
+                          {item.price} zł
+                        </div>
+                      )}
                     </li>
                   )
                 })}
@@ -186,9 +192,11 @@ export function MenuCategorySection({
                         </p>
                       )}
                     </div>
-                    <div className="shrink-0 text-lg tabular-nums md:text-xl">
-                      {item.price} zł
-                    </div>
+                    {showPrices && (
+                      <div className="shrink-0 text-lg tabular-nums md:text-xl">
+                        {item.price} zł
+                      </div>
+                    )}
                   </li>
                 )
               })}

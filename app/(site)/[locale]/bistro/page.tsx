@@ -39,7 +39,8 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
 
   if (!page) notFound()
 
-  // Banner pozycjonowany po sekcji "Dania mięsne" (pierwszej), zgodnie z Figma.
+  // Banner "Czekamy na Ciebie" (godziny otwarcia) renderowany na końcu strony,
+  // tuż przed footerem.
   const first = categories[0]
   const rest = categories.slice(1)
 
@@ -58,10 +59,9 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
           index={0}
           forceTheme="light"
           headingWeight="black"
+          showPrices={false}
         />
       )}
-
-      <BistroBanner text={page.centralBanner} hours={page.hoursText} locale={locale} />
 
       {rest.map((category, i) => (
         <MenuCategorySection
@@ -71,8 +71,11 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
           index={i + 1}
           forceTheme="light"
           headingWeight="black"
+          showPrices={false}
         />
       ))}
+
+      <BistroBanner text={page.centralBanner} hours={page.hoursText} locale={locale} />
 
       <Footer
         settings={settings}

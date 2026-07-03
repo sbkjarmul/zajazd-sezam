@@ -27,8 +27,9 @@ export const menuItem = defineType({
     defineField({
       name: 'price',
       title: 'Cena (PLN)',
+      description: 'Opcjonalna. Restauracja podaje ceny; Bistro serwuje same listy dań bez cen.',
       type: 'number',
-      validation: (r) => r.required().positive(),
+      validation: (r) => r.positive(),
     }),
     defineField({
       name: 'category',
