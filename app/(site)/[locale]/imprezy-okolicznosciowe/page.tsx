@@ -6,7 +6,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
 import { EventsHero } from '@/components/sections/events/EventsHero'
 import { EventsPromise } from '@/components/sections/events/EventsPromise'
-import { EventTypesCarousel } from '@/components/sections/events/EventTypesCarousel'
+import { EventTypesReveal } from '@/components/sections/events/EventTypesReveal'
 import { EventsHalls } from '@/components/sections/events/EventsHalls'
 import { EventsHotelUpsell } from '@/components/sections/events/EventsHotelUpsell'
 import { EventsCatering } from '@/components/sections/events/EventsCatering'
@@ -51,7 +51,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
       <Header logoImage={logoImage} locale={locale} />
       <EventsHero data={page.hero} locale={locale} />
       <EventsPromise data={page.promiseSection} locale={locale} />
-      <EventTypesCarousel
+      <EventTypesReveal
         section={page.eventTypesSection}
         types={page.eventTypes ?? []}
         locale={locale}

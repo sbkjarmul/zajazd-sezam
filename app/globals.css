@@ -52,6 +52,7 @@
   --color-dark: #1f1f1c; /* prawie czarny, ciepły */
   --color-dark-ruby: #111c2a; /* bardzo ciemny granat */
   --color-gold: #a49266; /* złoty akcent marki */
+  --color-dark-gold: #786945; /* przygaszony oliwkowy złoty — linie/akcenty (Figma) */
   --color-ruby: #1c224f; /* granat */
   --color-ruby-light: #1a2789; /* jaśniejszy granat (bistro hero / banner) */
   --color-gray: #9b9b9b; /* generic gray — disabled na light bg, drobne szare elementy poza paletą */
