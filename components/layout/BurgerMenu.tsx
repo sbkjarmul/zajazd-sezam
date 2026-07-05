@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import Image from 'next/image'
 import { X } from 'lucide-react'
+import { useLenis } from 'lenis/react'
 import { Link, useRouter, usePathname } from '@/i18n/navigation'
 import { useUI } from '@/components/providers/UIProvider'
 import { routing, type Locale, type Pathname } from '@/i18n/routing'
@@ -60,6 +61,9 @@ export function BurgerMenu() {
 
   const panelRef = useRef<HTMLDivElement>(null)
   const restoreFocusRef = useRef<HTMLElement | null>(null)
+  // Instancja globalnego Lenis (root smooth-scroll). Może być null przy
+  // prefers-reduced-motion (wtedy SmoothScroll nie montuje Lenis).
+  const lenis = useLenis()
 
   // Zamknięcie przy NAWIGACJI (klik w link / zmiana języka): reset pushu <main>
   // NATYCHMIAST, bez 650ms tranzycji powrotnej. Inaczej nowa strona montuje się
@@ -73,8 +77,14 @@ export function BurgerMenu() {
       main.removeAttribute('inert')
     }
     document.documentElement.style.overflow = ''
+    // Scroll do góry: klik w link do BIEŻĄCEJ trasy (np. „Strona główna" będąc
+    // na home) nie wywoła nawigacji Next.js, więc scroll nie zostałby zresetowany
+    // i strona zostałaby przewinięta. Lenis (root) trzyma własną pozycję, więc
+    // resetujemy przez jego API; fallback na natywny scroll (reduced-motion).
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true })
+    else window.scrollTo(0, 0)
     closeBurger()
-  }, [closeBurger])
+  }, [closeBurger, lenis])
 
   function switchLocale(target: Locale) {
     if (target === locale) return
