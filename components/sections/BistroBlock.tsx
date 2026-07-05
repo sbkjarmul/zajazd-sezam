@@ -1,6 +1,5 @@
 import type { HOMEPAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { RevealImage } from '@/components/RevealImage'
 import { RevealText } from '@/components/RevealText'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/Reveal'
@@ -11,11 +10,10 @@ type Props = {
   locale: Locale
 }
 
-// Sekcja na ruby (#1c224f). Desktop (lg+): 800px wysokości, 80px góra/dół, układ
-// 2-kolumnowy — obraz 50% szerokości przyklejony do prawej krawędzi viewportu
-// (brak prawego paddingu), wysokości 640px. Button gold (accent) z dark tekstem.
-// Tablet/mobile (<lg): jedna kolumna, kolejność DOM — tytuł → opis+CTA → obraz
-// (obraz pod tekstem).
+// Sekcja na ruby (--color-secondary). Bez obrazu — cała treść wyśrodkowana.
+// Desktop (lg+): 800px wysokości, 80px góra/dół; wewnątrz justify-between —
+// tytuł u góry, opis + CTA na dole. Button gold (accent) z białym tekstem.
+// Tablet/mobile (<lg): naturalny stack, wyśrodkowany, mniejsze paddingi.
 export function BistroBlock({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -25,12 +23,12 @@ export function BistroBlock({ data, locale }: Props) {
 
   return (
     <section
-      className="text-text-inverse pt-20 md:py-20 lg:h-[800px]"
+      className="text-text-inverse py-20 md:py-24 lg:h-[800px]"
       style={{ background: 'var(--color-secondary)' }}
     >
-      <div className="layout-container grid h-full grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center lg:gap-16 lg:!pr-0">
-        {/* Title block — stacked pos 1, desktop top-left */}
-        <Reveal className="flex flex-col gap-4 lg:self-start">
+      <div className="layout-container flex h-full flex-col items-center justify-between gap-12 text-center lg:gap-8">
+        {/* Title block — góra */}
+        <Reveal className="flex flex-col items-center gap-4">
           {eyebrow && (
             <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
               {eyebrow}
@@ -39,41 +37,28 @@ export function BistroBlock({ data, locale }: Props) {
           {title && (
             <RevealText
               as="h2"
-              className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+              className="text-text-inverse text-balance text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
             >
               {title}
             </RevealText>
           )}
         </Reveal>
 
-        {/* Description + CTA — stacked pos 2, desktop bottom-left */}
-        <Reveal
-          delay={100}
-          className="flex flex-col gap-8 lg:col-start-1 lg:row-start-2 lg:self-end"
-        >
+        {/* Description + CTA — dół */}
+        <Reveal delay={100} className="flex flex-col items-center gap-8">
           {description && (
-            <p className="text-text-inverse/80 max-w-md text-base leading-[1.2] md:text-lg">{description}</p>
+            <p className="text-text-inverse/80 max-w-2xl text-base leading-[1.4] md:text-lg">
+              {description}
+            </p>
           )}
           {ctaLabel && (
             <Link
               href="/bistro"
-              className="bg-accent text-text hover:bg-accent-hover inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px]"
+              className="bg-accent text-text-inverse hover:bg-accent-hover inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px]"
             >
               {ctaLabel}
             </Link>
           )}
-        </Reveal>
-
-        {/* Image — stacked pos 3 (pod tekstem), desktop right col spanning both rows */}
-        <Reveal
-          delay={200}
-          className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[640px] lg:w-full lg:self-center"
-        >
-          <RevealImage
-            image={data.image}
-            locale={locale}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
         </Reveal>
       </div>
     </section>

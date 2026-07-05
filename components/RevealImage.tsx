@@ -10,6 +10,18 @@ import type { Locale } from '@/i18n/routing'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/** Kierunek rozwijania kadru (clip-path unfold). */
+type Direction = 'up' | 'down' | 'left' | 'right'
+
+// Stan początkowy clip-path per kierunek. inset(top right bottom left) — bok
+// „domknięty" na 100% to krawędź, z której kadr się rozwija.
+const FROM_CLIP: Record<Direction, string> = {
+  up: 'inset(100% 0% 0% 0%)', // rozwija się w górę (od dołu)
+  down: 'inset(0% 0% 100% 0%)', // rozwija się w dół (od góry)
+  left: 'inset(0% 0% 0% 100%)', // rozwija się w lewo (od prawej)
+  right: 'inset(0% 100% 0% 0%)', // rozwija się w prawo (od lewej)
+}
+
 type Props = {
   image: Parameters<typeof SanityImage>[0]['image']
   locale: Locale
@@ -20,6 +32,11 @@ type Props = {
   priority?: boolean
   /** ScrollTrigger start. Default 'top 85%'. */
   start?: string
+  /**
+   * Gdy podane — kadr rozwija się kierunkowo (czysty clip-path unfold, bez
+   * zoomu). Gdy pominięte — domyślna wycieraczka od dołu + zoom 1.3→1 (home).
+   */
+  direction?: Direction
 }
 
 /**
@@ -40,6 +57,7 @@ export function RevealImage({
   sizes,
   priority,
   start = 'top 85%',
+  direction,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLDivElement>(null)
@@ -52,6 +70,22 @@ export function RevealImage({
 
       const mm = gsap.matchMedia()
       mm.add('(prefers-reduced-motion: no-preference)', () => {
+        // Wariant kierunkowy — kadr rozwija się na szerokość/wysokość (bez zoomu).
+        if (direction) {
+          gsap.fromTo(
+            frame,
+            { clipPath: FROM_CLIP[direction] },
+            {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              duration: 1.1,
+              ease: 'power3.out',
+              scrollTrigger: { trigger: frame, start },
+            },
+          )
+          return
+        }
+
+        // Domyślnie — wycieraczka od dołu + zoom 1.3→1 (strona główna).
         const tl = gsap.timeline({ scrollTrigger: { trigger: frame, start } })
         tl.fromTo(
           frame,

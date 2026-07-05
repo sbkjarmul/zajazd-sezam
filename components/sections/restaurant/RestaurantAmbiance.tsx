@@ -1,6 +1,9 @@
 import type { RESTAURANT_PAGE_QUERY_RESULT, SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { SanityImage } from '@/components/SanityImage'
+import { ParallaxImage } from '@/components/ParallaxImage'
+import { RevealText } from '@/components/RevealText'
+import { Reveal } from '@/components/Reveal'
+import { AccentText } from '@/components/AccentText'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -9,6 +12,8 @@ type Props = {
   locale: Locale
 }
 
+// Ambiance (Figma 967:60): serif tytuł z akcentem kursywą po lewej, po prawej
+// krótki opis + pill CTA (tel), pod spodem panoramiczne zdjęcie z parallaxem.
 export function RestaurantAmbiance({ data, settings, locale }: Props) {
   if (!data) return null
   const title = pickLocale(data.title, locale)
@@ -22,33 +27,37 @@ export function RestaurantAmbiance({ data, settings, locale }: Props) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           <div className="md:col-span-7">
             {title && (
-              <h2 className="text-dark-ruby text-4xl leading-none font-bold tracking-tight whitespace-pre-line uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]">
-                {title}
-              </h2>
+              <RevealText
+                as="h2"
+                mode="fade"
+                className="font-accent text-ruby text-[clamp(34px,5vw,64px)] leading-none tracking-[-0.01em] not-italic"
+              >
+                <AccentText text={title} />
+              </RevealText>
             )}
           </div>
-          <div className="flex flex-col items-start gap-6 md:col-span-5 md:items-end md:text-right">
-            {tagline && (
-              <p className="text-dark-ruby max-w-sm text-xl leading-[normal]">{tagline}</p>
-            )}
+          <Reveal
+            delay={120}
+            className="flex flex-col items-start gap-6 md:col-span-5 md:items-end md:text-right"
+          >
+            {tagline && <p className="text-ruby max-w-sm text-lg leading-normal">{tagline}</p>}
             {ctaLabel && phone && (
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}
-                className="border-dark-ruby text-dark-ruby hover:bg-dark-ruby hover:text-text-inverse inline-flex h-[60px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto"
+                className="border-ruby text-ruby hover:bg-ruby hover:text-light inline-flex h-[64px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto"
               >
                 {ctaLabel}
               </a>
             )}
-          </div>
+          </Reveal>
         </div>
 
         <div className="relative -mx-4 aspect-square w-[calc(100%+2rem)] overflow-hidden md:mx-0 md:aspect-[2/1] md:w-full">
-          <SanityImage
+          <ParallaxImage
             image={data.image}
             locale={locale}
-            fill
             sizes="100vw"
-            className="object-cover"
+            imageClassName="object-center"
           />
         </div>
       </div>

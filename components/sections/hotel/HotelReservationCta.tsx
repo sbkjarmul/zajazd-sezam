@@ -28,17 +28,17 @@ export function HotelReservationCta({ data, locale }: Props) {
         <div className="flex flex-col justify-center gap-10">
           <div className="flex flex-col gap-6">
             {eyebrow && (
-              <p className="text-text-inverse text-base tracking-normal uppercase md:text-2xl">
+              <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
             {title && (
-              <h2 className="text-text-inverse text-2xl leading-none font-normal tracking-tight uppercase md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text-inverse text-3xl leading-none font-normal tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-text-inverse max-w-xl text-lg leading-[1.2] md:text-xl lg:text-2xl">
+              <p className="text-text-inverse max-w-xl text-lg leading-[1.2]">
                 {description}
               </p>
             )}

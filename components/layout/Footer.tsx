@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import { StretchWord } from '@/components/StretchWord'
 import { Logo } from './Logo'
 import type { SITE_SETTINGS_QUERY_RESULT } from '@/types/sanity'
 import type { Locale, Pathname } from '@/i18n/routing'
@@ -38,6 +39,9 @@ type Props = {
   bigBrand?: boolean
   // Godziny otwarcia w kolumnie 1 (wariant bigBrand) — zamiast telefonu.
   hoursText?: string
+  // Wielkie hasło dekoracyjne Westbourne Serif na górze stopki (Figma 971:1470).
+  // Akcent kursywą przez marker *…*. Renderowane tylko gdy podane.
+  displayWord?: string
   // Ukrywa opis (shortDescription) obok logo w standardowym wariancie stopki.
   hideDescription?: boolean
   // Obraz logo — to samo co w headerze per-podstrona. Jeśli brak, fallback tekstowy "SEZAM / ZAWSZE ŚWIEŻO".
@@ -54,6 +58,7 @@ export async function Footer({
   hoursText,
   hideDescription = false,
   logoImage,
+  displayWord,
 }: Props) {
   const t = await getTranslations()
   const description = hideDescription ? undefined : settings?.shortDescription?.[locale]
@@ -78,6 +83,22 @@ export async function Footer({
       )}
       style={bgStyle}
     >
+      {displayWord && (
+        <div
+          className={cn(
+            'w-full overflow-hidden pt-16 md:pt-20',
+            isDark ? 'text-text-inverse' : 'text-dark-ruby',
+          )}
+        >
+          {/* Napis dekoracyjny rozciągnięty na całą szerokość — jedna linia,
+              niezależnie od ekranu (StretchWord mierzy glify i dopasowuje SVG). */}
+          <StretchWord
+            text={displayWord.replace(/\*/g, '').replace(/\n/g, ' ').trim()}
+            className="block h-auto w-full"
+          />
+        </div>
+      )}
+
       {bigBrand ? (
         <div className="layout-container flex flex-col items-center gap-12 pt-20 pb-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16 lg:pt-20">
           {/* Powiększone logo (ten sam komponent co w headerze, size="lg") —
@@ -144,11 +165,7 @@ export async function Footer({
         <div className="layout-container flex flex-col items-center gap-12 py-16 text-center md:items-start md:py-20 md:text-left xl:flex-row">
           {/* Left: logo + description (mobile: centered) */}
           <div className="flex flex-col items-center gap-6 md:items-start xl:w-1/3">
-            <Logo
-              variant={isDark ? 'on-dark' : 'on-light'}
-              image={logoImage}
-              locale={locale}
-            />
+            <Logo variant={isDark ? 'on-dark' : 'on-light'} image={logoImage} locale={locale} />
             {description && (
               <p
                 className={cn(
@@ -252,19 +269,13 @@ function FooterColumn({
   // dark-ruby zamiast wyciszonych. Standardowa stopka zostaje przy text-muted.
   strong?: boolean
 }) {
-  const headingClass = isDark
-    ? 'text-text-inverse'
-    : strong
-      ? 'text-dark-ruby'
-      : 'text-text-muted'
+  const headingClass = isDark ? 'text-text-inverse' : strong ? 'text-dark-ruby' : 'text-text-muted'
   const itemClass = isDark ? 'text-text-inverse' : strong ? 'text-dark-ruby' : 'text-text'
   const spanClass = isDark ? 'text-text-inverse' : strong ? 'text-dark-ruby' : 'text-text'
 
   return (
     <div className="flex flex-col items-center gap-3 md:items-start">
-      <h4
-        className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}
-      >
+      <h4 className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}>
         {title}
       </h4>
       {items.filter(Boolean).map((item, i) => {

@@ -71,8 +71,46 @@ export const restaurantPage = defineType({
           type: 'localeText',
           title: 'Opis (np. "Zadzwoń, a nasz zespół…")',
         },
+        { name: 'image', type: 'imageWithAlt', title: 'Zdjęcie obok (kwadratowe, po prawej)' },
         // Telefon, godziny i adres pobierane z siteSettings.
       ],
+    }),
+
+    defineField({
+      name: 'faqSection',
+      title: '6. Sekcja FAQ (Najczęstsze pytania)',
+      type: 'object',
+      fields: [
+        {
+          name: 'heading',
+          type: 'localeString',
+          title: 'Nagłówek (akcent kursywą: *słowo*)',
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Pytania i odpowiedzi',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'question', type: 'localeString', title: 'Pytanie' },
+                { name: 'answer', type: 'localeText', title: 'Odpowiedź' },
+              ],
+              preview: {
+                select: { title: 'question.pl' },
+              },
+            },
+          ],
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'footerTagline',
+      title: 'Hasło dekoracyjne w stopce (np. "*Zjedz zdrowo*")',
+      description: 'Wielki napis Westbourne Serif na górze stopki. Akcent kursywą: *tekst*.',
+      type: 'localeString',
     }),
 
     defineField({ name: 'seo', title: 'SEO', type: 'seoMeta' }),

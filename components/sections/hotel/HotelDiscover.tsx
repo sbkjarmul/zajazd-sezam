@@ -23,7 +23,7 @@ export function HotelDiscover({ data, locale }: Props) {
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
           {eyebrow && (
-            <p className="text-text text-base tracking-normal uppercase md:text-2xl">{eyebrow}</p>
+            <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
           {title && (
             <h2 className="text-text max-w-3xl text-3xl leading-none font-normal tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
@@ -51,7 +51,7 @@ export function HotelDiscover({ data, locale }: Props) {
                 </div>
                 <div className="flex flex-1 flex-col gap-3">
                   {cardEyebrow && (
-                    <p className="text-text text-2xl leading-none font-normal tracking-tight uppercase md:tracking-[-0.03em]">
+                    <p className="text-text text-xl leading-none font-normal tracking-tight uppercase md:tracking-[-0.03em]">
                       {cardEyebrow}
                     </p>
                   )}

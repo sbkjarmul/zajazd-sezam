@@ -81,7 +81,11 @@ export const HOMEPAGE_QUERY = defineQuery(`
     },
     hotelBlock {
       eyebrow, title, description, ctaLabel,
-      images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
+      "rooms": *[_type == "roomType"] | order(order asc) {
+        _id,
+        name,
+        "image": images[0]{ ${IMAGE_WITH_ALT_FRAGMENT} }
+      }
     },
     bistroBlock {
       eyebrow, title, description, ctaLabel,
@@ -113,7 +117,15 @@ export const RESTAURANT_PAGE_QUERY = defineQuery(`
       title, tagline, ctaLabel,
       image { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
-    reservationSection { title, description },
+    reservationSection {
+      title, description,
+      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+    },
+    faqSection {
+      heading,
+      items[]{ question, answer }
+    },
+    footerTagline,
     seo { ${SEO_FRAGMENT} }
   }
 `)

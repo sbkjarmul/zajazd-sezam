@@ -78,6 +78,7 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
             index={i}
             lightTone="dark-ruby"
             filterOffset={i === 0}
+            serifHeadings
           />
         ))}
       </div>

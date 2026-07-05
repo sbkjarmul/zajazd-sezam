@@ -23,6 +23,9 @@ type Props = {
   // Czy pokazywać cenę przy pozycji. Restauracja: true (ceny na karcie).
   // Bistro: false — menu to same listy dań, ceny podawane osobno.
   showPrices?: boolean
+  // Nagłówki kategorii w serifie Westbourne (redesign Restauracji). Bistro
+  // zostaje przy Inter (domyślnie false).
+  serifHeadings?: boolean
 }
 
 function sectionTheme(index: number): 'dark' | 'light' {
@@ -39,6 +42,7 @@ export function MenuCategorySection({
   lightTone = 'ruby-light',
   filterOffset = false,
   showPrices = true,
+  serifHeadings = false,
 }: Props) {
   const slug = category.slug
   if (!slug) return null
@@ -60,6 +64,25 @@ export function MenuCategorySection({
   const isDark = theme === 'dark'
   const imageOnLeft = index % 2 === 0
   const headingWeightClass = headingWeight === 'black' ? 'font-black' : 'font-bold'
+  // Styl nagłówka kategorii (bez rozmiaru): serif Westbourne (Restauracja) albo
+  // Inter bold/black uppercase (Bistro / domyślnie).
+  const headingStyleClass = serifHeadings
+    ? 'font-accent leading-none tracking-[-0.01em] not-italic'
+    : cn('leading-none tracking-tight uppercase md:tracking-[-0.03em]', headingWeightClass)
+  // Rozmiar nagłówka kategorii. Restauracja (Westbourne) — wyraźnie większy;
+  // Bistro/domyślnie — dotychczasowa skala. Wariant przy zdjęciu (pół szerokości)
+  // nieco mniejszy niż pełnoszerokościowy.
+  const headingSizeWithImage = serifHeadings
+    ? 'text-[clamp(48px,6vw,112px)]'
+    : 'text-2xl md:text-5xl lg:text-[64px]'
+  const headingSizeFull = serifHeadings
+    ? 'text-[clamp(52px,9vw,148px)]'
+    : 'text-2xl md:text-6xl lg:text-[80px]'
+  // Nazwy dań: Restauracja — Inter Regular uppercase; Bistro/domyślnie — Inter
+  // bold uppercase.
+  const itemNameStyleClass = serifHeadings
+    ? 'font-normal leading-none uppercase'
+    : 'font-bold leading-none tracking-tight uppercase md:tracking-[-0.03em]'
   const lightText = lightTone === 'dark-ruby' ? 'text-dark-ruby' : 'text-ruby-light'
   // Restauracja (dark-ruby): opisy dań w pełnym kolorze, bez wyciszenia.
   // Bistro (ruby-light): opisy zostają lekko wyciszone (/70) dla hierarchii.
@@ -98,20 +121,9 @@ export function MenuCategorySection({
 
             <div className="flex w-full flex-col gap-8 lg:w-1/2 lg:gap-10">
               <header className="flex flex-col gap-4">
-                <h2
-                  className={cn(
-                    'text-2xl leading-none tracking-tight uppercase md:text-5xl md:tracking-[-0.03em] lg:text-[64px]',
-                    headingWeightClass,
-                  )}
-                >
-                  {name}
-                </h2>
-                {subtitle && (
-                  <p className="text-lg font-normal">{subtitle}</p>
-                )}
-                {description && (
-                  <p className="text-lg leading-[1.2] md:text-2xl">{description}</p>
-                )}
+                <h2 className={cn(headingSizeWithImage, headingStyleClass)}>{name}</h2>
+                {subtitle && <p className="text-lg font-normal">{subtitle}</p>}
+                {description && <p className="text-lg leading-[1.2] md:text-2xl">{description}</p>}
               </header>
 
               <ul className="flex flex-col gap-4">
@@ -119,12 +131,9 @@ export function MenuCategorySection({
                   const itemName = pickLocale(item.name, locale)
                   const itemDesc = pickLocale(item.description, locale)
                   return (
-                    <li
-                      key={item._id}
-                      className="flex items-center justify-between gap-6"
-                    >
+                    <li key={item._id} className="flex items-center justify-between gap-6">
                       <div className="flex min-w-0 flex-1 flex-col">
-                        <h3 className="text-xl leading-none font-bold tracking-tight uppercase md:text-2xl md:tracking-[-0.03em]">
+                        <h3 className={cn('text-xl md:text-2xl', itemNameStyleClass)}>
                           {itemName}
                         </h3>
                         {itemDesc && (
@@ -151,20 +160,11 @@ export function MenuCategorySection({
           </div>
         ) : (
           <div className="flex flex-col gap-12 md:gap-16">
-            <header className="flex max-w-3xl flex-col gap-3 md:gap-4">
-              <h2
-                className={cn(
-                  'text-2xl leading-none tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]',
-                  headingWeightClass,
-                )}
-              >
-                {name}
-              </h2>
-              {subtitle && (
-                <p className="text-lg font-normal">{subtitle}</p>
-              )}
+            <header className={cn('flex flex-col gap-3 md:gap-4', !serifHeadings && 'max-w-3xl')}>
+              <h2 className={cn(headingSizeFull, headingStyleClass)}>{name}</h2>
+              {subtitle && <p className="max-w-3xl text-lg font-normal">{subtitle}</p>}
               {description && (
-                <p className="text-base leading-[1.2] md:text-lg">{description}</p>
+                <p className="max-w-3xl text-base leading-[1.2] md:text-lg">{description}</p>
               )}
             </header>
 
@@ -175,12 +175,10 @@ export function MenuCategorySection({
                 return (
                   <li
                     key={item._id}
-                    className="mb-8 flex items-start justify-between gap-6 break-inside-avoid last:mb-0"
+                    className="mb-8 flex break-inside-avoid items-start justify-between gap-6 last:mb-0"
                   >
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
-                      <h3 className="text-lg leading-none font-bold tracking-tight uppercase md:text-2xl md:tracking-[-0.03em]">
-                        {itemName}
-                      </h3>
+                      <h3 className={cn('text-lg md:text-2xl', itemNameStyleClass)}>{itemName}</h3>
                       {itemDesc && (
                         <p
                           className={cn(
