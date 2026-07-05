@@ -1,18 +1,19 @@
 'use client'
 
 import { useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
+import { SanityImage } from '@/components/SanityImage'
 import { cn } from '@/lib/utils'
+import type { Locale } from '@/i18n/routing'
 
 gsap.registerPlugin(ScrollTrigger)
 
 type Props = {
-  src: string
-  alt: string
-  /** Klasy na <Image> (np. object-position). */
+  image: Parameters<typeof SanityImage>[0]['image']
+  locale: Locale
+  /** Klasy na obraz (np. object-position). */
   imageClassName?: string
   priority?: boolean
 }
@@ -32,7 +33,7 @@ const DRIFT_PERCENT = 10 // % wysokości kadru wewn. (130% sekcji) → ~13% sekc
 const ZOOM_START = 1.12 // skala startowa load reveal (zoom-out do 1.0)
 const ZOOM_DURATION_S = 2.4
 
-export function HomeHeroBackground({ src, alt, imageClassName, priority }: Props) {
+export function HomeHeroBackground({ image, locale, imageClassName, priority }: Props) {
   const frameRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
   const zoomRef = useRef<HTMLDivElement>(null)
@@ -80,9 +81,9 @@ export function HomeHeroBackground({ src, alt, imageClassName, priority }: Props
     <div ref={frameRef} className="absolute inset-0 -z-20 overflow-hidden">
       <div ref={innerRef} className={cn('absolute inset-x-0', INNER_OVERSCAN)}>
         <div ref={zoomRef} className="absolute inset-0">
-          <Image
-            src={src}
-            alt={alt}
+          <SanityImage
+            image={image}
+            locale={locale}
             fill
             priority={priority}
             sizes="100vw"

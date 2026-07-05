@@ -28,15 +28,9 @@ const RESERVE_LABEL: Record<Locale, string> = {
   en: 'Book your stay',
 }
 
-// Nowe hero (statyczne zdjęcie budynku) — plik dostarczony przez klienta.
-// Zgoda na public/images zamiast Sanity: klient wgrał je bezpośrednio.
-// Używamy zoptymalizowanej wersji 2000px JPG (~600 KB) zamiast źródłowego
-// 2752px PNG (~6,6 MB) — szybsza optymalizacja next/image i lepszy LCP.
-const HERO_IMAGE_SRC = '/images/hero-sezam.jpg'
-const HERO_IMAGE_ALT: Record<Locale, string> = {
-  pl: 'Zajazd Sezam — budynek restauracji i hotelu w Stalowej Woli',
-  en: 'Sezam Inn — restaurant and hotel building in Stalowa Wola',
-}
+// Wysokość hero minimalnie 800px, poza tym proporcjonalna do wgranego w Sanity
+// zdjęcia (aspect-ratio z metadata.dimensions) — hero „rośnie" razem z obrazem.
+const HERO_MIN_HEIGHT = '800px'
 
 // Dzieli nagłówek na 3 części:
 //   line1     — słowa poza łącznikiem i akcentem (pierwsza linia)
@@ -177,11 +171,19 @@ export function HeroSection({ data, locale }: Props) {
   const deskAccent = headlineDesktop ? splitHeadline(headlineDesktop) : null
   const mobAccent = headlineMobile ? splitHeadline(headlineMobile) : null
 
+  // Wysokość sekcji: min. 800px + aspect-ratio z wymiarów zdjęcia (jeśli dostępne)
+  // — hero dopasowuje wysokość do wgranego w Sanity obrazka.
+  const dims = data.image?.asset?.metadata?.dimensions
+  const heroStyle: React.CSSProperties = {
+    minHeight: HERO_MIN_HEIGHT,
+    ...(dims?.width && dims?.height ? { aspectRatio: `${dims.width} / ${dims.height}` } : {}),
+  }
+
   return (
-    <section className="relative flex min-h-screen w-full flex-col overflow-hidden md:min-h-[1119px]">
+    <section className="relative flex w-full flex-col overflow-hidden" style={heroStyle}>
       <HomeHeroBackground
-        src={HERO_IMAGE_SRC}
-        alt={HERO_IMAGE_ALT[locale]}
+        image={data.image}
+        locale={locale}
         imageClassName="object-[center_38%]"
         priority
       />
