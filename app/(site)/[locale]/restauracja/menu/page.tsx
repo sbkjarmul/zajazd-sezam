@@ -6,9 +6,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { MenuHero } from '@/components/sections/menu/MenuHero'
-import { MenuPhotoStrip } from '@/components/sections/menu/MenuPhotoStrip'
-import { MenuFilter } from '@/components/sections/menu/MenuFilter'
-import { MenuCategorySection } from '@/components/sections/menu/MenuCategorySection'
+import { MenuCategoryColumns } from '@/components/sections/menu/MenuCategoryColumns'
 import { RestaurantReservation } from '@/components/sections/RestaurantReservation'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -42,13 +40,6 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
 
   if (!page) notFound()
 
-  const nav = categories
-    .filter((c) => c.slug)
-    .map((c) => ({
-      slug: c.slug!,
-      label: pickLocale(c.name, locale) ?? c.slug!,
-    }))
-
   const brandLabel = locale === 'pl' ? 'Restauracja Sezam' : 'Sezam Restaurant'
   const logoImage = page.restaurantHeaderLogo ?? settings?.defaultHeaderLogo ?? undefined
   const tReservation = await getTranslations('restaurant.reservation')
@@ -66,20 +57,10 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
         ]}
       />
       <MenuHero data={page.pageIntro} locale={locale} />
-      <MenuPhotoStrip data={page.photoStrip} locale={locale} />
 
-      <div id="menu" className="relative">
-        <MenuFilter categories={nav} />
-        {categories.map((category, i) => (
-          <MenuCategorySection
-            key={category._id}
-            category={category}
-            locale={locale}
-            index={i}
-            lightTone="dark-ruby"
-            filterOffset={i === 0}
-            serifHeadings
-          />
+      <div id="menu" className="bg-bg pb-12 md:pb-16">
+        {categories.map((category) => (
+          <MenuCategoryColumns key={category._id} category={category} locale={locale} />
         ))}
       </div>
 

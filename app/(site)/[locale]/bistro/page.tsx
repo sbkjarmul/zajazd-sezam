@@ -3,10 +3,11 @@ import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { BISTRO_PAGE_QUERY, BISTRO_MENU_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { pickLocale } from '@/lib/i18n/pickLocale'
 import type { Locale } from '@/i18n/routing'
 import { BistroHero } from '@/components/sections/bistro/BistroHero'
+import { BistroMenuList } from '@/components/sections/bistro/BistroMenuList'
 import { BistroBanner } from '@/components/sections/bistro/BistroBanner'
-import { MenuCategorySection } from '@/components/sections/menu/MenuCategorySection'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 
@@ -39,41 +40,18 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
 
   if (!page) notFound()
 
-  // Banner "Czekamy na Ciebie" (godziny otwarcia) renderowany na końcu strony,
-  // tuż przed footerem.
-  const first = categories[0]
-  const rest = categories.slice(1)
-
+  // Redesign wg Figma 971:1214 — hero na jasnym tle, sekcja "NASZE MENU"
+  // (kategorie + pozycje z Sanity), banner "Czekamy na ciebie" i footer.
+  const menuHeading = pickLocale(page.menuIntroHeading, locale) || 'Nasze menu'
   const brandLabel = locale === 'pl' ? 'Bistro Sezam' : 'Sezam Bistro'
   const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
 
   return (
     <>
-      <Header heroTheme="dark" logoImage={logoImage} locale={locale} />
+      <Header heroTheme="light" logoImage={logoImage} locale={locale} />
       <BistroHero data={page} locale={locale} />
 
-      {first && (
-        <MenuCategorySection
-          category={first}
-          locale={locale}
-          index={0}
-          forceTheme="light"
-          headingWeight="black"
-          showPrices={false}
-        />
-      )}
-
-      {rest.map((category, i) => (
-        <MenuCategorySection
-          key={category._id}
-          category={category}
-          locale={locale}
-          index={i + 1}
-          forceTheme="light"
-          headingWeight="black"
-          showPrices={false}
-        />
-      ))}
+      <BistroMenuList categories={categories} heading={menuHeading} locale={locale} />
 
       <BistroBanner text={page.centralBanner} hours={page.hoursText} locale={locale} />
 

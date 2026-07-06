@@ -54,7 +54,7 @@ export function HotelAmenities({ data, locale }: Props) {
                       </h3>
                     )}
                     {itemDesc && (
-                      <p className="text-text text-base leading-[1.2] md:text-lg lg:text-xl">
+                      <p className="text-text text-lg leading-[1.2]">
                         {itemDesc}
                       </p>
                     )}

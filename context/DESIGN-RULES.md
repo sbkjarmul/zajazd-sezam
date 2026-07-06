@@ -56,6 +56,8 @@ Wszystkie wartości w [app/globals.css](../app/globals.css) bloku `@theme`. Ten 
 | `text-8xl` | 100px | Big numbers, stat values lg+ |
 | `text-[clamp(...)]` / arbitrary | — | Hero h1 fluid (Restaurant), `text-[96px]` (Hotel wide), `text-[120px]` (Events/Restaurant lg+) |
 
+**ZASADA line-height dla tekstu < 20px:** każdy rozmiar poniżej 20px ma `line-height: 120%`. Wpięte w tokeny w `globals.css` (`--text-{xs,sm,base,md}--line-height: 1.2`), więc `text-xs` / `text-sm` / `text-base` / `text-md` niosą leading 1.2 automatycznie — **nie dopisuj `leading-*`** do body-tekstu tej wielkości. Rozmiary ≥ 20px (`text-lg` wzwyż) zachowują własny leading (nagłówki zwykle `leading-none`).
+
 ### 1.2 Tracking (letter-spacing)
 
 | Klasa | Wartość | Użycie |

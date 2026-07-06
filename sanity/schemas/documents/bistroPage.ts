@@ -21,6 +21,14 @@ export const bistroPage = defineType({
       type: 'localeString',
     }),
     defineField({
+      name: 'heroImages',
+      title: '1b. Hero — zdjęcia (2 szt., wg Figmy)',
+      description: 'Dwa zdjęcia dań obok siebie pod nagłówkiem hero. Wgraj dokładnie dwa.',
+      type: 'array',
+      of: [{ type: 'imageWithAlt' }],
+      validation: (Rule) => Rule.max(2),
+    }),
+    defineField({
       name: 'menuIntroHeading',
       title: '2. Intro menu — nagłówek (np. "Menu")',
       type: 'localeString',

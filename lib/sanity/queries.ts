@@ -81,11 +81,8 @@ export const HOMEPAGE_QUERY = defineQuery(`
     },
     hotelBlock {
       eyebrow, title, description, ctaLabel,
-      "rooms": *[_type == "roomType"] | order(order asc) {
-        _id,
-        name,
-        "image": images[0]{ ${IMAGE_WITH_ALT_FRAGMENT} }
-      }
+      mainImage { ${IMAGE_WITH_ALT_FRAGMENT} },
+      sideImage { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
     bistroBlock {
       eyebrow, title, description, ctaLabel,
@@ -147,6 +144,7 @@ export const BISTRO_PAGE_QUERY = defineQuery(`
   *[_type == "bistroPage" && _id == "bistroPage"][0]{
     headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     heroHeadline,
+    heroImages[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
     menuIntroHeading,
     menuIntroBody,
     centralBanner,

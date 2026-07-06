@@ -141,6 +141,16 @@
   --text-md: 1.1875rem; /* 19px — body */
   --text-lg: 1.25rem; /* 20px — body large, button */
   --text-xl: 1.5rem; /* 24px — section subtitle */
+
+  /* ZASADA PROJEKTU: każdy tekst < 20px ma line-height 120%.
+     Sparowane z tokenami rozmiaru — `text-xs` / `text-sm` / `text-base` / `text-md`
+     (12/16/16/19px) automatycznie ustawiają leading 1.2, bez dopisywania `leading-*`.
+     `text-base` = domyślny Tailwind 16px (używany w wielu komponentach) — też objęty.
+     Rozmiary ≥ 20px (lg+) zachowują własny leading (nagłówki bywają ciaśniejsze). */
+  --text-xs--line-height: 1.2;
+  --text-sm--line-height: 1.2;
+  --text-base--line-height: 1.2;
+  --text-md--line-height: 1.2;
   --text-2xl: 2rem; /* 32px — section title small */
   --text-3xl: 2.5rem; /* 40px — section title (i logo wordmark) */
   --text-4xl: 3rem; /* 48px — heading large */

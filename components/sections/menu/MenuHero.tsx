@@ -1,6 +1,5 @@
 import type { MENU_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
-import { AccentText } from '@/components/AccentText'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Props = {
@@ -10,35 +9,15 @@ type Props = {
 
 export function MenuHero({ data, locale }: Props) {
   if (!data) return null
-  const eyebrow = pickLocale(data.eyebrow, locale)
   const title = pickLocale(data.title, locale)
-  const subtitle = pickLocale(data.subtitle, locale)
-  const ctaLabel = pickLocale(data.ctaLabel, locale)
+  if (!title) return null
 
   return (
-    <section className="bg-bg text-dark-ruby pt-40 pb-16 md:pt-48 md:pb-24">
-      <div className="layout-container flex flex-col items-center gap-6 text-center md:gap-8">
-        {eyebrow && (
-          <p className="text-dark-ruby wide:text-lg text-base tracking-normal uppercase">
-            {eyebrow}
-          </p>
-        )}
-        {title && (
-          <h1 className="font-accent text-dark-ruby text-[clamp(42px,7vw,90px)] leading-none tracking-[-0.01em] not-italic">
-            <AccentText text={title} />
-          </h1>
-        )}
-        {subtitle && (
-          <p className="text-dark-ruby max-w-3xl text-lg leading-[1.2] md:text-xl">{subtitle}</p>
-        )}
-        {ctaLabel && (
-          <a
-            href="#menu"
-            className="border-dark-ruby text-dark-ruby hover:bg-dark-ruby hover:text-text-inverse mt-2 inline-flex h-[60px] items-center justify-center rounded-full border-2 px-8 text-lg uppercase transition-colors md:mt-4 md:h-[65px] md:px-10"
-          >
-            {ctaLabel}
-          </a>
-        )}
+    <section className="bg-bg text-ruby pt-40 pb-8 md:pt-48 md:pb-12">
+      <div className="layout-container flex justify-center">
+        <h1 className="font-accent text-ruby text-center text-[clamp(72px,13vw,180px)] leading-[0.95] tracking-normal italic">
+          {title}
+        </h1>
       </div>
     </section>
   )

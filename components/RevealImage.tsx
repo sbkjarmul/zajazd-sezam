@@ -32,6 +32,8 @@ type Props = {
   priority?: boolean
   /** ScrollTrigger start. Default 'top 85%'. */
   start?: string
+  /** Opóźnienie odsłonięcia (s) po odpaleniu triggera — do sekwencji/staggera. */
+  delay?: number
   /**
    * Gdy podane — kadr rozwija się kierunkowo (czysty clip-path unfold, bez
    * zoomu). Gdy pominięte — domyślna wycieraczka od dołu + zoom 1.3→1 (home).
@@ -57,6 +59,7 @@ export function RevealImage({
   sizes,
   priority,
   start = 'top 85%',
+  delay = 0,
   direction,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null)
@@ -79,6 +82,7 @@ export function RevealImage({
               clipPath: 'inset(0% 0% 0% 0%)',
               duration: 1.1,
               ease: 'power3.out',
+              delay,
               scrollTrigger: { trigger: frame, start },
             },
           )
@@ -86,7 +90,7 @@ export function RevealImage({
         }
 
         // Domyślnie — wycieraczka od dołu + zoom 1.3→1 (strona główna).
-        const tl = gsap.timeline({ scrollTrigger: { trigger: frame, start } })
+        const tl = gsap.timeline({ delay, scrollTrigger: { trigger: frame, start } })
         tl.fromTo(
           frame,
           { clipPath: 'inset(0% 0% 100% 0%)' },

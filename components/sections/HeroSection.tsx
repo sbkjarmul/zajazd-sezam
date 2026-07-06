@@ -188,11 +188,11 @@ export function HeroSection({ data, locale }: Props) {
         priority
       />
 
-      {/* Subtelne przyciemnienie u góry — poprawa czytelności jasnego tekstu na
-          bladym niebie (górna część zdjęcia). */}
+      {/* Wtopienie dołu zdjęcia w biel — miękkie przejście hero → sekcja About
+          (białe tło). */}
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 -z-10 h-[70%] bg-gradient-to-b from-black/35 via-black/10 to-transparent"
+        className="absolute inset-x-0 bottom-0 -z-10 h-[30%] bg-gradient-to-t from-white from-22% via-white/80 via-55% to-transparent"
       />
 
       <div

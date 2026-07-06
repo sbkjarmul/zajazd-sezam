@@ -144,8 +144,8 @@ export function Header({
                 isActive ? 'font-bold' : 'font-normal',
                 onLightContrast
                   ? isActive
-                    ? 'text-primary'
-                    : 'text-primary/80 hover:text-primary'
+                    ? 'text-ruby'
+                    : 'text-ruby/80 hover:text-ruby'
                   : isActive
                     ? 'text-text-inverse'
                     : 'text-text-inverse/80 hover:text-text-inverse',
@@ -172,7 +172,7 @@ export function Header({
               // dopiero od lg, gdy mamy dość miejsca obok nawigacji.
               'hidden cursor-pointer items-center justify-center rounded-full border-2 font-normal whitespace-nowrap transition-colors lg:inline-flex lg:h-[60px] lg:px-6 lg:text-lg',
               onLightContrast
-                ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground'
+                ? 'border-ruby text-ruby hover:bg-ruby hover:text-text-inverse'
                 : 'border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',
             )}
           >
@@ -186,12 +186,12 @@ export function Header({
               'inline-flex aspect-square h-12 cursor-pointer items-center justify-center rounded-full border-2 transition-colors md:h-[60px]',
               // Mobile (bazowo): zależnie od mobileHeroTheme (lub heroTheme jeśli niepodane)
               mobileOnLightContrast
-                ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground'
+                ? 'border-ruby text-ruby hover:bg-ruby hover:text-text-inverse'
                 : 'border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',
               // Desktop (md+): override gdy warianty się różnią
               variantsDiffer &&
                 (onLightContrast
-                  ? 'md:border-primary md:text-primary md:hover:bg-primary md:hover:text-primary-foreground'
+                  ? 'md:border-ruby md:text-ruby md:hover:bg-ruby md:hover:text-text-inverse'
                   : 'md:border-text-inverse md:text-text-inverse md:hover:bg-text-inverse md:hover:text-text'),
             )}
           >
