@@ -49,7 +49,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
           <Reveal delay={180}>
             <a
               href={`tel:${phone.replace(/\s+/g, '')}`}
-              className="text-text hover:text-accent text-[40px] font-semibold whitespace-nowrap tracking-[-0.03em] transition-colors sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
+              className="text-accent text-[40px] font-semibold whitespace-nowrap tracking-[-0.03em] transition-opacity hover:opacity-80 sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
             >
               {formatPhonePl(phone)}
             </a>
