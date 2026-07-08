@@ -6,7 +6,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
 import { HotelHero } from '@/components/sections/hotel/HotelHero'
 import { HotelQuote } from '@/components/sections/hotel/HotelQuote'
-import { HotelRoomCard } from '@/components/sections/hotel/HotelRoomCard'
+import { HotelRoomsShowcase } from '@/components/sections/hotel/HotelRoomsShowcase'
 import { HotelAmenities } from '@/components/sections/hotel/HotelAmenities'
 import { HotelReservationCta } from '@/components/sections/hotel/HotelReservationCta'
 import { HotelReviews } from '@/components/sections/hotel/HotelReviews'
@@ -60,10 +60,8 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
       <HotelHero data={page.hero} locale={locale} />
       <HotelQuote data={page.quote} locale={locale} />
 
-      <div id="rooms" className="scroll-mt-24">
-        {rooms.map((room, i) => (
-          <HotelRoomCard key={room._id} room={room} locale={locale} index={i} />
-        ))}
+      <div id="rooms" className="scroll-mt-24 bg-bg">
+        <HotelRoomsShowcase rooms={rooms} locale={locale} />
       </div>
 
       <HotelAmenities data={page.amenitiesSection} locale={locale} />
