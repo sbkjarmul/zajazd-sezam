@@ -29,6 +29,12 @@ export const eventType = defineType({
       type: 'imageWithAlt',
     }),
     defineField({
+      name: 'gallery',
+      title: 'Galeria zdjęć (lightbox + losowy kadr na hover)',
+      type: 'array',
+      of: [{ type: 'imageWithAlt' }],
+    }),
+    defineField({
       name: 'order',
       title: 'Kolejność wyświetlania',
       type: 'number',

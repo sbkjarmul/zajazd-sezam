@@ -1,14 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { Reveal } from '@/components/Reveal'
+import { Lightbox } from '@/components/ui/Lightbox'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { cn } from '@/lib/utils'
 
 type EventType = NonNullable<NonNullable<EVENTS_PAGE_QUERY_RESULT>['eventTypes']>[number]
+type GalleryImage = Parameters<typeof SanityImage>[0]['image']
+
+// Pula zdjęć danego typu: galeria ze Studio, a gdy pusta — pojedyncze zdjęcie
+// reprezentacyjne (brak regresji, gdy galeria jeszcze nieuzupełniona).
+function galleryOf(type: EventType): GalleryImage[] {
+  if (type.gallery && type.gallery.length) return type.gallery
+  return type.image ? [type.image] : []
+}
 
 type Props = {
   section: NonNullable<EVENTS_PAGE_QUERY_RESULT>['eventTypesSection']
@@ -25,8 +34,33 @@ type Props = {
 
 export function EventTypesReveal({ section, types, locale }: Props) {
   const [active, setActive] = useState(0)
+  // Który kadr z galerii pokazać w ramce podglądu (per typ) — losowany na hover.
+  const [previewIdx, setPreviewIdx] = useState<number[]>(() => types.map(() => 0))
+  // Typ, którego galeria jest otwarta w lightboxie (null = zamknięty).
+  const [openIdx, setOpenIdx] = useState<number | null>(null)
+
+  // Hover/focus wiersza: aktywacja + losowy kadr z galerii tego typu.
+  const handleEnter = useCallback(
+    (i: number) => {
+      setActive(i)
+      const count = galleryOf(types[i]).length
+      if (count > 1) {
+        setPreviewIdx((prev) => {
+          const next = [...prev]
+          next[i] = Math.floor(Math.random() * count)
+          return next
+        })
+      }
+    },
+    [types],
+  )
 
   if (!types.length) return null
+
+  const openGalleryLabel = locale === 'pl' ? 'Otwórz galerię zdjęć' : 'Open photo gallery'
+  const galleryImages = openIdx !== null ? galleryOf(types[openIdx]) : []
+  const galleryTitle =
+    openIdx !== null ? (pickLocale(types[openIdx].name, locale) ?? undefined) : undefined
 
   const eyebrow = pickLocale(section?.eyebrow, locale)
   const title = pickLocale(section?.title, locale)
@@ -38,7 +72,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
         <header className="flex flex-col items-start gap-8 lg:flex-row lg:justify-between">
           <Reveal className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-text wide:text-lg text-base leading-[normal] tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -60,22 +94,31 @@ export function EventTypesReveal({ section, types, locale }: Props) {
         <div className="mt-14 grid grid-cols-1 gap-12 md:mt-20 lg:grid-cols-2 lg:items-start lg:gap-16">
           {/* Desktop: stała ramka zdjęcia (zakotwiczona u góry, nie skacze przy
               rozwijaniu opisów), crossfade wg aktywnego wiersza */}
-          <div className="hidden lg:block lg:mt-36">
-            <div className="relative aspect-[253/332] w-full max-w-[280px] overflow-hidden">
-              {types.map((type, i) => (
-                <SanityImage
-                  key={i}
-                  image={type.image}
-                  locale={locale}
-                  fill
-                  sizes="280px"
-                  className={cn(
-                    'origin-center object-cover transition-[opacity,scale] duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
-                    i === active ? 'scale-100 opacity-100' : 'scale-90 opacity-0',
-                  )}
-                />
-              ))}
-            </div>
+          <div className="hidden lg:mt-36 lg:block">
+            <button
+              type="button"
+              onClick={() => setOpenIdx(active)}
+              aria-label={openGalleryLabel}
+              className="group/frame relative block aspect-[253/332] w-full max-w-[280px] cursor-pointer overflow-hidden"
+            >
+              {types.map((type, i) => {
+                const imgs = galleryOf(type)
+                const preview = imgs[previewIdx[i]] ?? type.image
+                return (
+                  <SanityImage
+                    key={i}
+                    image={preview}
+                    locale={locale}
+                    fill
+                    sizes="280px"
+                    className={cn(
+                      'origin-center object-cover transition-[opacity,scale] duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/frame:scale-105 motion-reduce:transition-none',
+                      i === active ? 'scale-100 opacity-100' : 'scale-90 opacity-0',
+                    )}
+                  />
+                )
+              })}
+            </button>
           </div>
 
           {/* Lista typów imprez */}
@@ -88,18 +131,20 @@ export function EventTypesReveal({ section, types, locale }: Props) {
               return (
                 <li
                   key={i}
-                  onMouseEnter={() => setActive(i)}
-                  onFocus={() => setActive(i)}
+                  onMouseEnter={() => handleEnter(i)}
                   className="border-dark-gold/50 border-t"
                 >
-                  <div
-                    tabIndex={0}
-                    className="group focus-visible:outline-none py-7 md:py-8 lg:cursor-default"
+                  <button
+                    type="button"
+                    onFocus={() => handleEnter(i)}
+                    onClick={() => setOpenIdx(i)}
+                    aria-label={openGalleryLabel}
+                    className="group block w-full cursor-pointer py-7 text-left focus-visible:outline-none md:py-8"
                   >
                     {name && (
                       <h3
                         className={cn(
-                          'font-accent text-text text-3xl italic leading-none transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:text-4xl lg:text-5xl motion-reduce:transition-none',
+                          'font-accent text-text text-3xl leading-none italic transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none md:text-4xl lg:text-5xl',
                           'lg:group-hover:text-dark-gold',
                           isActive && 'lg:text-dark-gold',
                         )}
@@ -120,7 +165,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
                         <div className="overflow-hidden">
                           <p
                             className={cn(
-                              'text-text-muted mt-4 max-w-xl text-base leading-[1.35] transition-opacity duration-500 md:text-lg lg:mt-0 lg:pt-4 motion-reduce:transition-none',
+                              'text-text-muted mt-4 max-w-xl text-base leading-[1.35] transition-opacity duration-500 motion-reduce:transition-none md:text-lg lg:mt-0 lg:pt-4',
                               isActive ? 'lg:opacity-100' : 'lg:opacity-0',
                             )}
                           >
@@ -129,7 +174,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </button>
                 </li>
               )
             })}
@@ -137,6 +182,16 @@ export function EventTypesReveal({ section, types, locale }: Props) {
           </ul>
         </div>
       </div>
+
+      <Lightbox
+        images={galleryImages}
+        locale={locale}
+        open={openIdx !== null}
+        onOpenChange={(next) => {
+          if (!next) setOpenIdx(null)
+        }}
+        title={galleryTitle}
+      />
     </section>
   )
 }

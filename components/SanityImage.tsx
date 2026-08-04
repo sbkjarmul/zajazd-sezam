@@ -26,6 +26,8 @@ type CommonProps = {
   // kontenerze z transformem (parallax), przez co lazy bywa zawodne.
   loading?: 'eager' | 'lazy'
   sizes?: string
+  // Callback po pełnym załadowaniu obrazu (np. do efektu blur-up w lightboxie).
+  onLoad?: () => void
 }
 
 type FillProps = CommonProps & { fill: true; width?: never; height?: never }
@@ -39,6 +41,7 @@ export function SanityImage({
   priority,
   loading,
   sizes,
+  onLoad,
   ...rest
 }: Props) {
   const url = image?.asset?.url
@@ -61,6 +64,7 @@ export function SanityImage({
         loading={priority ? undefined : loading}
         placeholder={lqip ? 'blur' : 'empty'}
         blurDataURL={lqip}
+        onLoad={onLoad}
         className={cn('object-cover', className)}
       />
     )
@@ -76,6 +80,7 @@ export function SanityImage({
       priority={priority}
       placeholder={lqip ? 'blur' : 'empty'}
       blurDataURL={lqip}
+      onLoad={onLoad}
       className={className}
     />
   )

@@ -1,10 +1,9 @@
 'use client'
 
-import { Expand } from 'lucide-react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
-import { LightboxGallery } from '@/components/ui/LightboxGallery'
+import { Lightbox } from '@/components/ui/Lightbox'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Hall = NonNullable<NonNullable<EVENTS_PAGE_QUERY_RESULT>['halls']>[number]
@@ -36,19 +35,13 @@ export function HallCard({ hall, locale }: Props) {
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      {images.length > 1 && (
-        <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-3 py-1.5 text-xs text-white">
-          <Expand className="size-3.5" aria-hidden />
-          {images.length}
-        </span>
-      )}
     </button>
   )
 
   return (
     <article className="flex flex-col gap-3">
       {images.length > 0 ? (
-        <LightboxGallery images={images} locale={locale} trigger={thumbnail} title={galleryTitle} />
+        <Lightbox images={images} locale={locale} trigger={thumbnail} title={galleryTitle} />
       ) : (
         thumbnail
       )}
