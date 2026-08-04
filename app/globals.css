@@ -288,3 +288,33 @@ body {
     padding-inline: 4rem; /* 64px desktop */
   }
 }
+
+/* "Pelne panele" ze snapem - strony z wrapperem .snap-panels (imprezy, home).
+   Natywny CSS scroll-snap na oknie (klasa snap-y-page na <html> z SnapController).
+   Na tych stronach Lenis jest wylaczony (SmoothScroll), wiec natywny snap dziala
+   czysto - jak na satius.app. Kazda sekcja = panel min 100svh z wysrodkowana
+   trescia; footer = punkt snapu. prefers-reduced-motion -> off. */
+html.snap-y-page {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-panels > section {
+  /* !important bije inline min-height/height poszczegolnych sekcji (np. hero ma
+     inline min-height:800px) - panel snapu musi wypelnic ekran, inaczej mandatory
+     snap "drga" na krotszej sekcji. */
+  min-height: 100svh !important;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.snap-panels > footer {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.snap-y-page {
+    scroll-snap-type: none;
+  }
+}

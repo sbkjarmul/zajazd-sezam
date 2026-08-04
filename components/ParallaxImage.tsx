@@ -80,7 +80,10 @@ export function ParallaxImage({
 
       return () => mm.revert()
     },
-    { dependencies: [driftPercent], scope: frameRef },
+    // Bez `dependencies`: driftPercent jest staly per uzycie (nie zmienia sie w
+    // runtime), a niepuste dependencies w useGSAP wlaczaja warunkowy hook
+    // (deferCleanup) -> "change in order of Hooks". Tween tworzony raz.
+    { scope: frameRef },
   )
 
   return (

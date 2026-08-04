@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { ReactLenis } from 'lenis/react'
 import 'lenis/dist/lenis.css'
 
@@ -15,6 +16,7 @@ import 'lenis/dist/lenis.css'
  */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const [smooth, setSmooth] = useState(true)
+  const pathname = usePathname()
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -24,7 +26,17 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => mq.removeEventListener('change', update)
   }, [])
 
-  if (!smooth) return <>{children}</>
+  // Strony z pelnoekranowym snapem (home + imprezy) uzywaja natywnego CSS
+  // scroll-snap (jak satius.app) -> wylaczamy tam Lenisa, bo smooth-scroll bije
+  // sie z natywnym snapem (JS vs compositor). Pozostale strony zachowuja
+  // globalny smooth-scroll.
+  const nativeScrollPage =
+    pathname === '/pl' ||
+    pathname === '/en' ||
+    pathname.endsWith('/imprezy-okolicznosciowe') ||
+    pathname.endsWith('/events')
+
+  if (!smooth || nativeScrollPage) return <>{children}</>
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>

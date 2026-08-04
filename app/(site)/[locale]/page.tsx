@@ -14,6 +14,7 @@ import { ReviewsBlock } from '@/components/sections/ReviewsBlock'
 import { ContactBlock } from '@/components/sections/ContactBlock'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { SnapController } from '@/components/SnapController'
 
 type Params = { locale: string }
 
@@ -46,16 +47,19 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
   return (
     <>
       <Header logoImage={logoImage} locale={locale} animateIn animateInDelay={1.1} />
-      <HeroSection data={home?.hero ?? null} locale={locale} />
-      <AboutSection data={home?.aboutSection ?? null} locale={locale} />
-      <ServicesIntro data={home?.servicesIntro ?? null} locale={locale} />
-      <EventsBlock data={home?.eventsBlock ?? null} locale={locale} />
-      <RestaurantBlock data={home?.restaurantBlock ?? null} locale={locale} />
-      <HotelBlock data={home?.hotelBlock ?? null} locale={locale} />
-      <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
-      <ReviewsBlock data={home?.reviewsBlock ?? null} locale={locale} />
-      <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />
-      <Footer settings={settings} locale={locale} logoImage={logoImage} />
+      <SnapController />
+      <div className="snap-panels">
+        <HeroSection data={home?.hero ?? null} locale={locale} />
+        <AboutSection data={home?.aboutSection ?? null} locale={locale} />
+        <ServicesIntro data={home?.servicesIntro ?? null} locale={locale} />
+        <EventsBlock data={home?.eventsBlock ?? null} locale={locale} />
+        <RestaurantBlock data={home?.restaurantBlock ?? null} locale={locale} />
+        <HotelBlock data={home?.hotelBlock ?? null} locale={locale} />
+        <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
+        <ReviewsBlock data={home?.reviewsBlock ?? null} locale={locale} />
+        <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />
+        <Footer settings={settings} locale={locale} logoImage={logoImage} />
+      </div>
     </>
   )
 }

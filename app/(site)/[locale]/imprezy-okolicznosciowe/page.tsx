@@ -13,6 +13,7 @@ import { EventsCatering } from '@/components/sections/events/EventsCatering'
 import { EventsReviews } from '@/components/sections/events/EventsReviews'
 import { EventsSteps } from '@/components/sections/events/EventsSteps'
 import { EventsReservationCta } from '@/components/sections/events/EventsReservationCta'
+import { SnapController } from '@/components/SnapController'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 
@@ -49,24 +50,27 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
   return (
     <>
       <Header logoImage={logoImage} locale={locale} />
-      <EventsHero data={page.hero} locale={locale} />
-      <EventsPromise data={page.promiseSection} locale={locale} />
-      <EventTypesReveal
-        section={page.eventTypesSection}
-        types={page.eventTypes ?? []}
-        locale={locale}
-      />
-      <EventsHalls section={page.hallsSection} halls={page.halls ?? []} locale={locale} />
-      <EventsHotelUpsell
-        data={page.hotelUpsellSection}
-        image={page.hotelUpsellImage}
-        locale={locale}
-      />
-      <EventsCatering data={page.cateringSection} locale={locale} />
-      <EventsReviews data={page.reviewsSection} locale={locale} />
-      <EventsSteps data={page.stepsSection} locale={locale} />
-      <EventsReservationCta data={page.reservationSection} settings={settings} locale={locale} />
-      <Footer settings={settings} locale={locale} logoImage={logoImage} />
+      <SnapController />
+      <div className="snap-panels">
+        <EventsHero data={page.hero} locale={locale} />
+        <EventsPromise data={page.promiseSection} locale={locale} />
+        <EventTypesReveal
+          section={page.eventTypesSection}
+          types={page.eventTypes ?? []}
+          locale={locale}
+        />
+        <EventsHalls section={page.hallsSection} halls={page.halls ?? []} locale={locale} />
+        <EventsHotelUpsell
+          data={page.hotelUpsellSection}
+          image={page.hotelUpsellImage}
+          locale={locale}
+        />
+        <EventsCatering data={page.cateringSection} locale={locale} />
+        <EventsReviews data={page.reviewsSection} locale={locale} />
+        <EventsSteps data={page.stepsSection} locale={locale} />
+        <EventsReservationCta data={page.reservationSection} settings={settings} locale={locale} />
+        <Footer settings={settings} locale={locale} logoImage={logoImage} />
+      </div>
     </>
   )
 }
