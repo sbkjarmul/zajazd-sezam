@@ -11,8 +11,8 @@ import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Hall = NonNullable<NonNullable<EVENTS_PAGE_QUERY_RESULT>['halls']>[number]
 
-// Prędkość dryfu taśmy w px/s — spokojny, powolny ruch.
-const SPEED = 20
+// Prędkość dryfu taśmy w px/s — spokojny ruch.
+const SPEED = 30
 // Powiększenie kafla po najechaniu — 1.5× (skala elementu, nie zoom-kadr).
 const SCALE = 1.5
 // Odstęp między powiększonym zdjęciem a tekstem (px) — żeby tekst nie nachodził.
@@ -31,6 +31,7 @@ type Hovered = { i: number; w: number; h: number } | null
 function HallMarqueeItem({
   index,
   hovered,
+  captionOn,
   hall,
   locale,
   onEnter,
@@ -39,6 +40,7 @@ function HallMarqueeItem({
 }: {
   index: number
   hovered: Hovered
+  captionOn: boolean
   hall: Hall
   locale: Locale
   onEnter: (i: number, box: HTMLElement) => void
@@ -66,19 +68,36 @@ function HallMarqueeItem({
   const push = halfW + GAP
   const shiftX = isShifted ? (index < hovered.i ? -push : push) : 0
 
+  // Opis widoczny tylko, gdy kafel aktywny ORAZ captionOn = true. Przy zjeździe
+  // hoveru captionOn schodzi na false, ale `hovered` (a więc isActive i geometria)
+  // trwa jeszcze chwilę — dzięki temu napis GAŚNIE W MIEJSCU (nie skacze do pozycji
+  // małego zdjęcia), a dopiero potem — po wyczyszczeniu `hovered` — maleje zdjęcie.
+  const showCaption = isActive && captionOn
+
   // Opisy przy aktywnym kaflu: dociągnięte do lewej krawędzi powiększonego zdjęcia
   // (−halfW), rozciągnięte na jego szerokość (w·SCALE); pojemność nad, reszta pod.
+  // Geometria (left/width/translateY) trwa przez cały czas isActive → brak skoku.
   const capStyle = hovered
     ? { left: `${-halfW}px`, width: `${hovered.w * SCALE}px` }
     : undefined
-  // Fade z opacity 0 z opóźnieniem — napisy wchodzą dopiero, gdy zdjęcie zdąży
-  // się powiększyć (skala trwa 0.6s, więc opóźnienie ~0.35s).
-  const capReveal = { transition: 'opacity 0.4s ease 0.35s' }
+  // Wejście: fade z opóźnieniem (po powiększeniu zdjęcia). Wyjście: natychmiastowy
+  // fade, bez opóźnienia — napis znika pierwszy.
+  const capTransition = captionOn ? 'opacity 0.4s ease 0.35s' : 'opacity 0.3s ease'
   const topActive = isActive
-    ? { ...capStyle, ...capReveal, opacity: 1, transform: `translateY(${-(halfH + GAP)}px)` }
+    ? {
+        ...capStyle,
+        opacity: showCaption ? 1 : 0,
+        transform: `translateY(${-(halfH + GAP)}px)`,
+        transition: capTransition,
+      }
     : undefined
   const bottomActive = isActive
-    ? { ...capStyle, ...capReveal, opacity: 1, transform: `translateY(${halfH + GAP}px)` }
+    ? {
+        ...capStyle,
+        opacity: showCaption ? 1 : 0,
+        transform: `translateY(${halfH + GAP}px)`,
+        transition: capTransition,
+      }
     : undefined
 
   return (
@@ -97,7 +116,7 @@ function HallMarqueeItem({
     >
       {/* Pojemność — nad zdjęciem (desktop: absolutna, wjeżdża na hoverze) */}
       <div
-        aria-hidden={!isActive}
+        aria-hidden={!showCaption}
         className="mb-2 text-left lg:absolute lg:bottom-full lg:left-0 lg:mb-0 lg:opacity-0 lg:transition-opacity lg:duration-300"
         style={topActive}
       >
@@ -127,7 +146,7 @@ function HallMarqueeItem({
 
       {/* Nazwa + opis — pod zdjęciem, do lewej (desktop: absolutne, wjeżdżają na hoverze) */}
       <div
-        aria-hidden={!isActive}
+        aria-hidden={!showCaption}
         className="mt-3 flex flex-col items-start gap-1 text-left lg:absolute lg:top-full lg:left-0 lg:mt-0 lg:pt-1 lg:opacity-0 lg:transition-opacity lg:duration-300"
         style={bottomActive}
       >
@@ -155,8 +174,13 @@ export function HallsMarquee({ halls, locale }: Props) {
 
   const [copies, setCopies] = useState(1)
   const [hovered, setHovered] = useState<Hovered>(null)
+  // Widoczność opisu rozdzielona od `hovered` — pozwala wygasić napis PRZED
+  // zmniejszeniem zdjęcia (patrz onLeave).
+  const [captionOn, setCaptionOn] = useState(false)
   const [active, setActive] = useState<Hall | null>(null)
   const [open, setOpen] = useState(false)
+  // Timer opóźniający zmniejszenie zdjęcia do momentu, aż napis zgaśnie.
+  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
@@ -164,6 +188,10 @@ export function HallsMarquee({ halls, locale }: Props) {
     apply()
     mq.addEventListener('change', apply)
     return () => mq.removeEventListener('change', apply)
+  }, [])
+
+  useEffect(() => () => {
+    if (leaveTimer.current) clearTimeout(leaveTimer.current)
   }, [])
 
   useGSAP(
@@ -200,13 +228,25 @@ export function HallsMarquee({ halls, locale }: Props) {
   const onEnter = useCallback((i: number, box: HTMLElement) => {
     // Hover-interakcja tylko na desktopie (dotyk otwiera galerię przez klik).
     if (!window.matchMedia('(min-width: 1024px)').matches) return
+    if (leaveTimer.current) {
+      clearTimeout(leaveTimer.current)
+      leaveTimer.current = null
+    }
     tweenRef.current?.pause()
     setHovered({ i, w: box.offsetWidth, h: box.offsetHeight })
+    setCaptionOn(true)
   }, [])
 
   const onLeave = useCallback(() => {
-    setHovered(null)
-    tweenRef.current?.resume()
+    // 1) napis gaśnie od razu, w miejscu (zdjęcie wciąż powiększone),
+    setCaptionOn(false)
+    // 2) dopiero po wygaśnięciu napisu zdjęcie maleje i sąsiedzi wracają.
+    if (leaveTimer.current) clearTimeout(leaveTimer.current)
+    leaveTimer.current = setTimeout(() => {
+      setHovered(null)
+      tweenRef.current?.resume()
+      leaveTimer.current = null
+    }, 320)
   }, [])
 
   const openHall = useCallback((hall: Hall) => {
@@ -228,6 +268,7 @@ export function HallsMarquee({ halls, locale }: Props) {
                   key={`${s}-${hall._id}`}
                   index={index}
                   hovered={hovered}
+                  captionOn={captionOn}
                   hall={hall}
                   locale={locale}
                   onEnter={onEnter}
