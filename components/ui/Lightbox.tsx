@@ -19,10 +19,11 @@ const SLIDE_DURATION = 1.0
 
 type GalleryImage = Parameters<typeof SanityImage>[0]['image']
 
-// Pojedynczy slajd taśmy. Traktowanie zależne od orientacji zdjęcia:
-//  - poziome → object-cover, na cały ekran (nadmiar przycięty),
-//  - pionowe → kadr 9:16 wyśrodkowany (object-cover do 9:16), a reszta ekranu
-//    to to samo zdjęcie rozjechane na cały ekran z mocnym blurem.
+// Pojedynczy slajd taśmy. Traktowanie zależne od urządzenia i orientacji:
+//  - mobile (<lg): zdjęcie w naturalnych wymiarach (object-contain), oba orientacje,
+//  - desktop poziome → object-cover na cały ekran (nadmiar przycięty),
+//  - desktop pionowe → kadr 9:16 wyśrodkowany (object-cover), a reszta ekranu to
+//    to samo zdjęcie rozjechane z mocnym blurem.
 // Blur-up: dopóki zdjęcie się nie załaduje, jest rozmyte w swoich kolorach (LQIP);
 // po załadowaniu blur schodzi do zera. Kadr startowy (priority) startuje jako
 // załadowany — dzięki temu wejście galerii jest czystym fade, bez blura.
@@ -41,48 +42,75 @@ function LightboxSlide({
   const dims = image?.asset?.metadata?.dimensions
   const isPortrait = !!dims && (dims.height ?? 0) > (dims.width ?? 0)
 
-  const foreground = (
-    <SanityImage
-      image={image}
-      locale={locale}
-      fill
-      priority={priority}
-      sizes="100vw"
-      onLoad={() => setLoaded(true)}
-      className={cn(
-        'object-cover transition-[filter,scale] duration-700 ease-out motion-reduce:transition-none',
-        loaded ? 'blur-0 scale-100' : 'scale-105 blur-2xl',
-      )}
-    />
-  )
+  const fitClass = (fit: 'object-cover' | 'object-contain') =>
+    cn(
+      fit,
+      'transition-[filter,scale] duration-700 ease-out motion-reduce:transition-none',
+      loaded ? 'blur-0 scale-100' : 'scale-105 blur-2xl',
+    )
 
   // overflow-hidden — blur-2xl doładowującego się sąsiada nie wylewa się poza
   // swój slajd (inaczej widać go na krawędzi bieżącego kadru).
   return (
     <div className="relative h-full w-full flex-none overflow-hidden" aria-hidden={!active}>
-      {isPortrait ? (
-        <>
-          {/* Rozmyte tło z tego samego zdjęcia */}
-          <div className="absolute inset-0 overflow-hidden" aria-hidden>
-            <SanityImage
-              image={image}
-              locale={locale}
-              fill
-              sizes="100vw"
-              className="scale-110 object-cover blur-2xl"
-            />
-            <div className="absolute inset-0 bg-black/30" />
-          </div>
-          {/* Kadr 9:16 wyśrodkowany */}
+      {/* Rozmyte tło z tego samego zdjęcia — wypełnia miejsce, którego nie zajmuje
+          kadr. Widoczne na mobile (zawsze) i na desktopie dla pionowych; na
+          desktopowych poziomych ukryte (object-cover i tak wypełnia ekran). */}
+      <div
+        className={cn('absolute inset-0 overflow-hidden', !isPortrait && 'lg:hidden')}
+        aria-hidden
+      >
+        <SanityImage
+          image={image}
+          locale={locale}
+          fill
+          sizes="100vw"
+          className="scale-110 object-cover blur-2xl"
+        />
+        <div className="absolute inset-0 bg-black/30" />
+      </div>
+
+      {/* Mobile: naturalne wymiary — object-contain, oba orientacje */}
+      <div className="absolute inset-0 lg:hidden">
+        <SanityImage
+          image={image}
+          locale={locale}
+          fill
+          priority={priority}
+          sizes="100vw"
+          onLoad={() => setLoaded(true)}
+          className={fitClass('object-contain')}
+        />
+      </div>
+
+      {/* Desktop: poziome cover / pionowe kadr 9:16 wyśrodkowany */}
+      <div className="absolute inset-0 hidden lg:block">
+        {isPortrait ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative aspect-[9/16] h-full max-w-full overflow-hidden">
-              {foreground}
+              <SanityImage
+                image={image}
+                locale={locale}
+                fill
+                priority={priority}
+                sizes="100vw"
+                onLoad={() => setLoaded(true)}
+                className={fitClass('object-cover')}
+              />
             </div>
           </div>
-        </>
-      ) : (
-        foreground
-      )}
+        ) : (
+          <SanityImage
+            image={image}
+            locale={locale}
+            fill
+            priority={priority}
+            sizes="100vw"
+            onLoad={() => setLoaded(true)}
+            className={fitClass('object-cover')}
+          />
+        )}
+      </div>
     </div>
   )
 }
@@ -126,6 +154,16 @@ function LightboxContent({
   // taśmy (na wypadek przerwania kolejnym kliknięciem przed onComplete).
   const pendingReset = useRef<number | null>(null)
 
+  // Pasek miniatur: cień z prawej, gdy są jeszcze niewidoczne miniatury do
+  // przescrollowania (znika po dojechaniu do końca).
+  const thumbsRef = useRef<HTMLDivElement>(null)
+  const [canScrollThumbs, setCanScrollThumbs] = useState(false)
+  const updateThumbsHint = useCallback(() => {
+    const el = thumbsRef.current
+    if (!el) return
+    setCanScrollThumbs(el.scrollLeft + el.clientWidth < el.scrollWidth - 1)
+  }, [])
+
   // Pozycja slajdu realnego #i na taśmie: z klonami-bookendami przesunięta o 1.
   const posOf = (i: number) => (hasClones ? i + 1 : i)
 
@@ -158,6 +196,16 @@ function LightboxContent({
     window.addEventListener('keydown', handle)
     return () => window.removeEventListener('keydown', handle)
   }, [goNext, goPrev])
+
+  // Aktualizacja cienia miniatur po zamontowaniu i przy zmianie rozmiaru okna.
+  useEffect(() => {
+    const raf = requestAnimationFrame(updateThumbsHint)
+    window.addEventListener('resize', updateThumbsHint)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', updateThumbsHint)
+    }
+  }, [updateThumbsHint])
 
   // Taśma: track i slajdy mają szerokość kontenera (w-full), więc xPercent = -pos*100
   // przesuwa o pełny kadr (bez 100vw → bez problemu ze znikającym scrollbarem).
@@ -258,39 +306,54 @@ function LightboxContent({
         <X className="size-6" aria-hidden />
       </DialogPrimitive.Close>
 
-      {/* Miniatury — dół, środek (bez radiusa; aktywna = jaśniejsza, bez ramki) */}
+      {/* Miniatury — dół, środek (bez radiusa; aktywna = jaśniejsza, bez ramki).
+          Scrollbar ukryty; cień z prawej sygnalizuje ukryte miniatury. */}
       {total > 1 && (
-        <div className="absolute bottom-6 left-1/2 z-10 flex max-w-[calc(100%-9rem)] -translate-x-1/2 gap-2 overflow-x-auto px-1">
-          {images.map((image, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => {
-                lastNav.current = 'jump'
-                setIndex(i)
-              }}
-              aria-label={`${i + 1}`}
-              aria-current={i === index}
-              className={cn(
-                'relative size-18 flex-none cursor-pointer overflow-hidden transition-opacity duration-200 md:size-22',
-                i === index ? 'opacity-100' : 'opacity-40 hover:opacity-80',
-              )}
-            >
-              <SanityImage
-                image={image}
-                locale={locale}
-                fill
-                sizes="88px"
-                className="object-cover"
-              />
-            </button>
-          ))}
+        <div className="absolute bottom-6 left-1/2 z-10 max-w-[calc(100%-1.5rem)] -translate-x-1/2 lg:max-w-[calc(100%-9rem)]">
+          <div
+            ref={thumbsRef}
+            onScroll={updateThumbsHint}
+            className="flex [scrollbar-width:none] gap-2 overflow-x-auto px-1 [&::-webkit-scrollbar]:hidden"
+          >
+            {images.map((image, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => {
+                  lastNav.current = 'jump'
+                  setIndex(i)
+                }}
+                aria-label={`${i + 1}`}
+                aria-current={i === index}
+                className={cn(
+                  'relative size-18 flex-none cursor-pointer overflow-hidden transition-opacity duration-200 md:size-22',
+                  i === index ? 'opacity-100' : 'opacity-40 hover:opacity-80',
+                )}
+              >
+                <SanityImage
+                  image={image}
+                  locale={locale}
+                  fill
+                  sizes="88px"
+                  className="object-cover"
+                />
+              </button>
+            ))}
+          </div>
+          {/* Prawy cień — sygnalizuje ukryte miniatury do przescrollowania */}
+          <div
+            aria-hidden
+            className={cn(
+              'pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black to-transparent transition-opacity duration-300',
+              canScrollThumbs ? 'opacity-100' : 'opacity-0',
+            )}
+          />
         </div>
       )}
 
       {/* Nasze strzałki — prawy dolny róg */}
       {total > 1 && (
-        <div className="absolute right-6 bottom-6 z-10 flex items-center gap-3">
+        <div className="absolute right-6 bottom-6 z-10 hidden items-center gap-3 lg:flex">
           <button
             type="button"
             onClick={goPrev}
