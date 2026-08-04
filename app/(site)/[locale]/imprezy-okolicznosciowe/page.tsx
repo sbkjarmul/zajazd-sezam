@@ -57,7 +57,11 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
         locale={locale}
       />
       <EventsHalls section={page.hallsSection} halls={page.halls ?? []} locale={locale} />
-      <EventsHotelUpsell data={page.hotelUpsellSection} locale={locale} />
+      <EventsHotelUpsell
+        data={page.hotelUpsellSection}
+        image={page.hotelUpsellImage}
+        locale={locale}
+      />
       <EventsCatering data={page.cateringSection} locale={locale} />
       <EventsReviews data={page.reviewsSection} locale={locale} />
       <EventsSteps data={page.stepsSection} locale={locale} />

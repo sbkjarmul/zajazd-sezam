@@ -19,16 +19,18 @@ type Props = {
   sizes?: string
   priority?: boolean
   loading?: 'eager' | 'lazy'
+  /** Siła parallaxu — ±yPercent dryfu kadru wewn. Default 8 (subtelny). */
+  driftPercent?: number
 }
 
-// Parallax zdjęcia na scroll — ten sam charakter co tło hero (subtelny dryf Y,
-// tło porusza się wolniej niż treść). Dla sekcji w środku strony: dryf ±DRIFT
-// rozłożony na czas przechodzenia sekcji przez viewport (scrub).
+// Parallax zdjęcia na scroll — ten sam charakter co tło hero (dryf Y, tło porusza
+// się wolniej niż treść). Dryf ±driftPercent rozłożony na czas przechodzenia
+// sekcji przez viewport (scrub).
 //
-// Kadr wewnętrzny jest o 30% wyższy i wysunięty o -15%, więc dryf nigdy nie
-// odsłania krawędzi obrazu. `prefers-reduced-motion` → brak animacji.
-const INNER_OVERSCAN = '-top-[15%] h-[130%]'
-const DRIFT_PERCENT = 8 // % wysokości kadru wewn. (130% sekcji)
+// Kadr wewnętrzny jest wyższy i wysunięty w górę tak, by dryf nigdy nie odsłaniał
+// krawędzi — overscan skaluje się z driftem (dla drift=8 → h-130%/-top-15%, jak
+// dotąd). `prefers-reduced-motion` → brak animacji.
+const DEFAULT_DRIFT = 8
 
 export function ParallaxImage({
   image,
@@ -38,9 +40,15 @@ export function ParallaxImage({
   sizes,
   priority,
   loading,
+  driftPercent = DEFAULT_DRIFT,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
+
+  // Overscan wyliczony z driftu (bezpieczny margines > realny dryf): dla drift=8
+  // daje height 130% / top -15% (zgodnie z dotychczasowym zachowaniem).
+  const innerHeightPercent = 100 + 3.75 * driftPercent
+  const innerTopPercent = -(innerHeightPercent - 100) / 2
 
   useGSAP(
     () => {
@@ -52,9 +60,9 @@ export function ParallaxImage({
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         const tween = gsap.fromTo(
           inner,
-          { yPercent: -DRIFT_PERCENT },
+          { yPercent: -driftPercent },
           {
-            yPercent: DRIFT_PERCENT,
+            yPercent: driftPercent,
             ease: 'none',
             scrollTrigger: {
               trigger: frame,
@@ -72,12 +80,16 @@ export function ParallaxImage({
 
       return () => mm.revert()
     },
-    { scope: frameRef },
+    { dependencies: [driftPercent], scope: frameRef },
   )
 
   return (
     <div ref={frameRef} className={cn('absolute inset-0 overflow-hidden', className)}>
-      <div ref={innerRef} className={cn('absolute inset-x-0', INNER_OVERSCAN)}>
+      <div
+        ref={innerRef}
+        className="absolute inset-x-0"
+        style={{ top: `${innerTopPercent}%`, height: `${innerHeightPercent}%` }}
+      >
         <SanityImage
           image={image}
           locale={locale}

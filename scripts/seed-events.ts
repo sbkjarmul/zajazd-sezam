@@ -234,8 +234,8 @@ async function main() {
       _key: `hall-${h.slug}`,
     })),
     hotelUpsellSection: {
-      eyebrow: ls('Nocleg na miejscu', 'Stay on-site'),
-      title: ls('Goście z daleka? Zarezerwuj nocleg.', 'Out-of-town guests? Book their rooms.'),
+      eyebrow: ls('Goście z daleka?', 'Out-of-town guests?'),
+      title: ls('Zarezerwuj nocleg.', 'Book a room.'),
       description: lt(
         'Zapomnij o logistyce i szukaniu noclegów. Dysponujemy 70 komfortowymi pokojami. Zarezerwuj salę, wyśmienite jedzenie oraz nocleg dla Twoich gości w Stalowej Woli.',
         'Forget the logistics of finding hotels. We have 70 comfortable rooms on-site. Book the hall, the food and the rooms for your guests in Stalowa Wola in one place.',

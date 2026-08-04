@@ -231,6 +231,7 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
       images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
     } | order(order asc),
     hotelUpsellSection { eyebrow, title, description, ctaLabel },
+    "hotelUpsellImage": *[_type == "hotelPage" && _id == "hotelPage"][0].hero.image { ${IMAGE_WITH_ALT_FRAGMENT} },
     cateringSection {
       eyebrow, title, description,
       image { ${IMAGE_WITH_ALT_FRAGMENT} }
