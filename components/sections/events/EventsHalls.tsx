@@ -2,7 +2,7 @@ import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { Reveal } from '@/components/Reveal'
-import { HallCard } from './HallCard'
+import { HallsMarquee } from './HallsMarquee'
 
 type Props = {
   section: NonNullable<EVENTS_PAGE_QUERY_RESULT>['hallsSection']
@@ -17,7 +17,7 @@ export function EventsHalls({ section, halls, locale }: Props) {
 
   return (
     <section id="halls" className="bg-surface py-20 md:py-32">
-      <div className="layout-container flex flex-col gap-12 md:gap-20">
+      <div className="layout-container">
         <Reveal>
           <header className="flex flex-col gap-4">
             {eyebrow && (
@@ -26,7 +26,7 @@ export function EventsHalls({ section, halls, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text max-w-4xl text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text max-w-4xl text-2xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em] lg:max-w-6xl lg:text-5xl">
                 {title}
               </h2>
             )}
@@ -37,14 +37,10 @@ export function EventsHalls({ section, halls, locale }: Props) {
             )}
           </header>
         </Reveal>
+      </div>
 
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-          {halls.map((hall, i) => (
-            <Reveal key={hall._id} delay={i * 80}>
-              <HallCard hall={hall} locale={locale} />
-            </Reveal>
-          ))}
-        </div>
+      <div className="mt-10 md:mt-14 lg:pt-20 lg:pb-44">
+        <HallsMarquee halls={halls} locale={locale} />
       </div>
     </section>
   )
