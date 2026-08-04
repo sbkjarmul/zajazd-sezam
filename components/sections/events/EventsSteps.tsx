@@ -8,10 +8,14 @@ type Props = {
   locale: Locale
 }
 
-// Sekcja `min-h-[800px]` na złotym tle. Kroki w jednej ramce (`border`)
-// z wewnętrznymi dzielnikami (`divide-*`) — na mobile i tablecie ułożone
-// pionowo (3 rzędy), dopiero na desktopie (`lg`) 3 kolumny.
-// Ramka wypełnia wysokość sekcji pod nagłówkiem (`flex-1`).
+// Sekcja `h-[800px]` (desktop) na złotym tle. Nagłówek u góry (wyśrodkowany),
+// pod nim oś czasu:
+//  - desktop (`lg`): pozioma, pełnoszerokościowa linia z 3 kropkami w kolumnach,
+//    opis pod każdą kropką (do lewej),
+//  - mobile + tablet (`<lg`): pionowa linia przyklejona do lewej krawędzi (na całą
+//    wysokość sekcji), kropki na niej, a opis POZIOMO obok — po prawej od kropki.
+// Kropki na mobile/tablecie leżą na content-left `.layout-container` (16/64px) +
+// promień 7px → linia na 23px (mobile) / 71px (tablet).
 export function EventsSteps({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -21,12 +25,18 @@ export function EventsSteps({ data, locale }: Props) {
 
   return (
     <section
-      className="flex min-h-[800px] w-full flex-col"
+      className="relative flex min-h-[800px] w-full flex-col lg:h-[800px]"
       style={{ background: 'var(--color-gold)' }}
     >
-      <div className="layout-container flex flex-1 flex-col gap-10 py-16 md:gap-12 md:py-20">
+      {/* Mobile + tablet: pionowa linia przy lewej krawędzi, na całą wysokość sekcji */}
+      <div
+        aria-hidden
+        className="absolute inset-y-0 left-[23px] w-px bg-white/30 md:left-[71px] lg:hidden"
+      />
+
+      <div className="layout-container flex flex-1 flex-col py-16 md:py-20">
         <Reveal>
-          <header className="flex flex-col items-center gap-4 text-center text-white">
+          <header className="flex flex-col items-center gap-3 text-center text-white">
             {eyebrow && (
               <p className="text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
@@ -40,20 +50,35 @@ export function EventsSteps({ data, locale }: Props) {
           </header>
         </Reveal>
 
-        <Reveal delay={120} className="flex flex-1 flex-col">
-          <div className="grid flex-1 grid-cols-1 divide-y divide-white/60 border border-white/60 text-white lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-            {steps.map((step, i) => {
-              const text = pickLocale(step.text, locale)
-              return (
-                <div
-                  key={i}
-                  className="flex min-h-[280px] flex-col justify-between gap-12 p-8 md:p-10"
-                >
-                  <p className="text-7xl leading-none md:text-8xl lg:text-9xl">{i + 1}</p>
-                  {text && <p className="text-xl leading-[1.2] md:text-2xl">{text}</p>}
-                </div>
-              )
-            })}
+        {/* Oś czasu — wyśrodkowana pionowo w przestrzeni pod nagłówkiem */}
+        <Reveal delay={120} className="flex flex-1 items-center">
+          <div className="relative w-full">
+            {/* Desktop: pozioma, pełnoszerokościowa linia przez środki kropek */}
+            <div
+              aria-hidden
+              className="absolute top-[7px] left-1/2 hidden h-px w-screen -translate-x-1/2 bg-white/30 lg:block"
+            />
+            <ol className="flex flex-col gap-y-24 md:gap-y-32 lg:grid lg:grid-cols-3 lg:gap-y-0">
+              {steps.map((step, i) => {
+                const text = pickLocale(step.text, locale)
+                return (
+                  <li
+                    key={i}
+                    className="flex items-start gap-5 lg:flex-col lg:gap-10"
+                  >
+                    <span
+                      aria-hidden
+                      className="relative z-10 mt-1 block size-3.5 shrink-0 rounded-full bg-[var(--color-light)] lg:mx-auto lg:mt-0"
+                    />
+                    {text && (
+                      <p className="text-lg leading-[1.2] text-white/90 md:text-xl lg:max-w-xs">
+                        {text}
+                      </p>
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
           </div>
         </Reveal>
       </div>
