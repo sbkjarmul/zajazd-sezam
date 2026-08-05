@@ -41,6 +41,11 @@ type Props = {
   // sekcję aktualnie pod headerem — sekcje deklarują `data-header-theme`
   // (+ opcjonalnie `data-header-surface`). Gradient znika na samej górze strony.
   adaptive?: boolean
+  // Nadpisanie CTA (domyślnie „Zarezerwuj termin" → otwiera drawer rezerwacji).
+  // ctaLabel zmienia etykietę; ctaHref (np. `tel:…`) renderuje link zamiast
+  // przycisku otwierającego drawer (Bistro → „Zadzwoń").
+  ctaLabel?: string
+  ctaHref?: string
 }
 
 export function Header({
@@ -52,6 +57,8 @@ export function Header({
   animateIn = false,
   animateInDelay = 0,
   adaptive = true,
+  ctaLabel,
+  ctaHref,
 }: Props) {
   const direction = useScrollDirection()
   // heroTheme = motyw startowy (fallback, gdy nic jeszcze nie wykryte / SSR) —
@@ -212,20 +219,31 @@ export function Header({
         )}
 
         <div className="flex items-center gap-3 md:gap-4">
-          <button
-            type="button"
-            onClick={() => openReservation('room')}
-            className={cn(
+          {(() => {
+            const ctaClassName = cn(
               // Ukryty na mobile + tablet (kolidował z nav na md). Pokazujemy
               // dopiero od lg, gdy mamy dość miejsca obok nawigacji.
               'hidden cursor-pointer items-center justify-center rounded-full border-2 font-normal whitespace-nowrap transition-colors lg:inline-flex lg:h-[60px] lg:px-6 lg:text-lg',
               onLightContrast
                 ? 'border-ruby text-ruby hover:bg-ruby hover:text-text-inverse'
                 : 'border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',
-            )}
-          >
-            {t('reserve')}
-          </button>
+            )
+            const label = ctaLabel ?? t('reserve')
+            // ctaHref (np. `tel:…`) → link zamiast przycisku otwierającego drawer.
+            return ctaHref ? (
+              <a href={ctaHref} className={ctaClassName}>
+                {label}
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => openReservation('room')}
+                className={ctaClassName}
+              >
+                {label}
+              </button>
+            )
+          })()}
           <button
             type="button"
             onClick={openBurger}

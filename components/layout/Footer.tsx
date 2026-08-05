@@ -40,11 +40,21 @@ type Props = {
   bgColor?: string
   // Wariant z powiększonym logo na górze + kolumny right-aligned (bistro/restauracja).
   bigBrand?: boolean
+  // Wariant bigBrand bez logo (Figma 1010:104 — Bistro): zamiast logo góra to
+  // wyłącznie wielki napis `displayWord` (StretchWord), a kolumny są dociśnięte
+  // do prawej krawędzi.
+  hideBrandLogo?: boolean
   // Godziny otwarcia w kolumnie 1 (wariant bigBrand) — zamiast telefonu.
   hoursText?: string
   // Wielkie hasło dekoracyjne Westbourne Serif na górze stopki (Figma 971:1470).
   // Akcent kursywą przez marker *…*. Renderowane tylko gdy podane.
   displayWord?: string
+  // Nadpisanie kroju napisu `displayWord` (StretchWord). Domyślnie Westbourne
+  // kursywą; Bistro (Figma 1010:104) używa Inter Bold.
+  displayWordClassName?: string
+  // Margines wokół napisu `displayWord` (ułamek wysokości glifów) — odsuwa
+  // skrajne litery od krawędzi, żeby ich nie ucinało na pełnej szerokości.
+  displayWordPad?: number
   // Ukrywa opis (shortDescription) obok logo w standardowym wariancie stopki.
   hideDescription?: boolean
   // Obraz logo — to samo co w headerze per-podstrona. Jeśli brak, fallback tekstowy "SEZAM / ZAWSZE ŚWIEŻO".
@@ -59,10 +69,13 @@ export async function Footer({
   theme = 'light',
   bgColor,
   bigBrand = false,
+  hideBrandLogo = false,
   hoursText,
   hideDescription = false,
   logoImage,
   displayWord,
+  displayWordClassName,
+  displayWordPad,
 }: Props) {
   const t = await getTranslations()
   const description = hideDescription ? undefined : settings?.shortDescription?.[locale]
@@ -100,21 +113,32 @@ export async function Footer({
           <StretchWord
             text={displayWord.replace(/\*/g, '').replace(/\n/g, ' ').trim()}
             className="block h-auto w-full"
+            textClassName={displayWordClassName}
+            pad={displayWordPad}
           />
         </div>
       )}
 
       {bigBrand ? (
-        <div className="layout-container flex flex-col items-center gap-12 pt-20 pb-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16 lg:pt-20">
+        <div
+          className={cn(
+            'layout-container flex flex-col items-center gap-12 pt-20 pb-12 lg:flex-row lg:items-start lg:gap-16 lg:pt-20',
+            // hideBrandLogo (Figma 1010:104 — Bistro): brak logo, kolumny dociśnięte
+            // do prawej. W przeciwnym razie logo po lewej, kolumny po prawej.
+            hideBrandLogo ? 'lg:justify-end' : 'lg:justify-between',
+          )}
+        >
           {/* Powiększone logo (ten sam komponent co w headerze, size="lg") —
               naturalne proporcje, bez naciągania SVG. Mobile + tablet: wycentrowane
               nad kolumnami (2 rzędy); desktop lg+: po lewej, kolumny po prawej. */}
-          <Logo
-            size="lg"
-            variant={isDark ? 'on-dark' : 'on-light'}
-            image={logoImage}
-            locale={locale}
-          />
+          {!hideBrandLogo && (
+            <Logo
+              size="lg"
+              variant={isDark ? 'on-dark' : 'on-light'}
+              image={logoImage}
+              locale={locale}
+            />
+          )}
 
           {/* Kolumny nawigacji — centrowane na mobile, rząd na desktop */}
           <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-10">

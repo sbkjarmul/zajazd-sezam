@@ -1,6 +1,7 @@
 {
   "common": {
     "reserve": "Book now",
+    "call": "Call",
     "menu": "Menu",
     "close": "Close",
     "openMenu": "Open menu",

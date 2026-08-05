@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { BISTRO_PAGE_QUERY, BISTRO_MENU_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
@@ -42,27 +42,44 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
 
   // Redesign wg Figma 971:1214 — hero na jasnym tle, sekcja "NASZE MENU"
   // (kategorie + pozycje z Sanity), banner "Czekamy na ciebie" i footer.
+  const t = await getTranslations('common')
   const menuHeading = pickLocale(page.menuIntroHeading, locale) || 'Nasze menu'
   const brandLabel = locale === 'pl' ? 'Bistro Sezam' : 'Sezam Bistro'
   const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+  const bistroPhone = settings?.phoneBistro ?? settings?.phone
+  const hoursText = page.hoursText ? pickLocale(page.hoursText, locale) : undefined
 
   return (
     <>
-      <Header heroTheme="light" logoImage={logoImage} locale={locale} />
+      <Header
+        heroTheme="light"
+        logoImage={logoImage}
+        locale={locale}
+        // Bistro: CTA headera to „Zadzwoń" z linkiem tel: zamiast drawera rezerwacji.
+        ctaLabel={t('call')}
+        ctaHref={bistroPhone ? `tel:${bistroPhone.replace(/\s/g, '')}` : undefined}
+      />
       <BistroHero data={page} locale={locale} />
 
       <BistroMenuList categories={categories} heading={menuHeading} locale={locale} />
 
       <BistroBanner text={page.centralBanner} hours={page.hoursText} locale={locale} />
 
+      {/* Stopka wg Figma 1010:104 — wielki napis „SEZAM" (StretchWord) na górze,
+          bez logo, kolumny dociśnięte do prawej. */}
       <Footer
         settings={settings}
         locale={locale}
-        phone={settings?.phoneBistro ?? settings?.phone}
+        phone={bistroPhone}
         brandLabel={brandLabel}
         theme="dark"
         bgColor="#1a2789"
         bigBrand
+        hideBrandLogo
+        displayWord="SEZAM"
+        displayWordClassName="fill-current font-sans font-black tracking-[-0.06em]"
+        displayWordPad={0.06}
+        hoursText={hoursText}
         logoImage={logoImage}
       />
     </>
