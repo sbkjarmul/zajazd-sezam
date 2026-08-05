@@ -1,11 +1,12 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, type CSSProperties } from 'react'
 import { useTranslations } from 'next-intl'
 import { Menu } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
+import { useActiveHeaderTheme } from '@/hooks/useActiveHeaderTheme'
 import { useUI } from '@/components/providers/UIProvider'
 import { Logo } from './Logo'
 import { SanityImage } from '@/components/SanityImage'
@@ -35,6 +36,11 @@ type Props = {
   animateIn?: boolean
   // Opóźnienie wejścia (s) — do zsynchronizowania z sekwencją hero.
   animateInDelay?: number
+  // Header „section-aware" (mobile + desktop): zawsze widoczny (bez chowania
+  // przy scrollu), z gradientem, którego motyw (ciemny/jasny) i kolor śledzą
+  // sekcję aktualnie pod headerem — sekcje deklarują `data-header-theme`
+  // (+ opcjonalnie `data-header-surface`). Gradient znika na samej górze strony.
+  adaptive?: boolean
 }
 
 export function Header({
@@ -45,8 +51,10 @@ export function Header({
   nav,
   animateIn = false,
   animateInDelay = 0,
+  adaptive = false,
 }: Props) {
   const direction = useScrollDirection()
+  const { theme: activeTheme, surface: activeSurface } = useActiveHeaderTheme(adaptive)
   const t = useTranslations('common')
   const { openReservation, openBurger } = useUI()
   const pathname = usePathname()
@@ -93,8 +101,12 @@ export function Header({
   const isTop = direction === 'top'
   const isHidden = direction === 'down'
 
-  const onLightContrast = !isTop || heroTheme === 'light'
-  const mobileOnLightContrast = !isTop || (mobileHeroTheme ?? heroTheme) === 'light'
+  // W trybie adaptacyjnym kontrast (i gradient) sterowane sekcją pod headerem —
+  // jednakowo dla mobile i desktop. Inaczej — jak dotąd (solid bg po scrollu).
+  const onLightContrast = adaptive ? activeTheme === 'light' : !isTop || heroTheme === 'light'
+  const mobileOnLightContrast = adaptive
+    ? activeTheme === 'light'
+    : !isTop || (mobileHeroTheme ?? heroTheme) === 'light'
   const variantsDiffer = mobileOnLightContrast !== onLightContrast
 
   return (
@@ -102,11 +114,41 @@ export function Header({
       ref={headerRef}
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out',
-        isHidden && '-translate-y-full',
-        !isTop && 'bg-bg/85 backdrop-blur-md',
+        // Tryb adaptacyjny: header ZAWSZE widoczny, bez solidnego tła — tłem jest
+        // gradient (poniżej). Bez trybu adaptacyjnego — zachowanie jak dotąd.
+        !adaptive && isHidden && '-translate-y-full',
+        !adaptive && !isTop && 'bg-bg/85 backdrop-blur-md',
       )}
       data-state={direction}
     >
+      {adaptive && (
+        // Gradient headera (mobile + desktop) — kryje pod sobą przewijaną treść
+        // na wysokości headera. Dwie warstwy (jasna/ciemna) krzyżowo wygaszane,
+        // bo CSS nie animuje przejścia między gradientami. Cały gradient znika na
+        // samej górze strony (isTop) — czysty hero bez przyciemnienia.
+        <div
+          aria-hidden
+          className={cn(
+            'pointer-events-none absolute inset-0 transition-opacity duration-300 ease-out',
+            isTop ? 'opacity-0' : 'opacity-100',
+          )}
+        >
+          <div
+            style={{ '--hdr-light-from': activeSurface ?? 'var(--color-light)' } as CSSProperties}
+            className={cn(
+              'absolute inset-0 bg-gradient-to-b from-[var(--hdr-light-from)] from-30% to-transparent transition-opacity duration-500 ease-out',
+              mobileOnLightContrast ? 'opacity-100' : 'opacity-0',
+            )}
+          />
+          <div
+            className={cn(
+              'absolute inset-0 bg-gradient-to-b from-[var(--color-dark-ruby)] from-30% to-transparent transition-opacity duration-500 ease-out',
+              mobileOnLightContrast ? 'opacity-0' : 'opacity-100',
+            )}
+          />
+        </div>
+      )}
+
       <div className="layout-container relative flex items-center justify-between gap-6 py-5 md:py-6">
         {variantsDiffer ? (
           <>

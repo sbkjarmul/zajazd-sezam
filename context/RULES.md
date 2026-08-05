@@ -29,3 +29,9 @@
 ## Planowanie i analiza
 
 11. **Analiza istniejącego kodu**: Gdy podajesz plan wdrożenia nowej funkcji, zawsze przeanalizuj aktualny kod i dostosuj do niego swój plan.
+
+## Zgodność z DESIGN-RULES
+
+12. **Weryfikacja przed zakończeniem**: Po KAŻDEJ zmianie w UI (typografia, kolory, paddingi, layout) sprawdź, czy jest zgodna z [DESIGN-RULES.md](DESIGN-RULES.md), ZANIM zakończysz turę. Nie kończ zadania bez tego kroku.
+
+13. **Opisy = 16px**: Każdy opis / dłuższy akapit (NIE heading, NIE button, NIE accent-text) ma `text-base` (16px), normalny line-height, normalny tracking — nigdy większy. Pełna reguła i wyjątki (lead 24/32px, caption): [DESIGN-RULES.md §4.6](DESIGN-RULES.md).

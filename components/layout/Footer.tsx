@@ -77,6 +77,7 @@ export async function Footer({
 
   return (
     <footer
+      data-header-theme={isDark ? 'dark' : 'light'}
       className={cn(
         'border-t',
         isDark ? 'text-text-inverse border-white/15' : 'bg-bg text-text border-border-subtle',

@@ -5,6 +5,7 @@ import { getGoogleReviews } from '@/lib/googleReviews'
 import { Reveal } from '@/components/Reveal'
 import { RevealText } from '@/components/RevealText'
 import { ReviewsCarousel } from './ReviewsCarousel'
+import { ReviewsMarquee } from './ReviewsMarquee'
 
 type Props = {
   data: NonNullable<HOMEPAGE_QUERY_RESULT>['reviewsBlock']
@@ -27,7 +28,7 @@ export async function ReviewsBlock({ data, locale }: Props) {
       : `Based on ${reviews.userRatingsTotal}+ reviews.`
 
   return (
-    <section className="bg-bg py-16 md:py-20">
+    <section data-header-theme="light" className="bg-bg py-16 md:py-20">
       <div className="layout-container flex flex-col gap-10 md:gap-[54px]">
         <Reveal>
           <header className="mx-auto flex max-w-[874px] flex-col items-center gap-3 text-center md:gap-4">
@@ -44,7 +45,7 @@ export async function ReviewsBlock({ data, locale }: Props) {
                 {title}
               </RevealText>
             )}
-            <div className="text-text mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl">
+            <div className="text-text mt-2 hidden flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl lg:flex">
               <span>{reviews.rating.toFixed(1)}/5</span>
               <span className="font-bold">Google</span>
               <span>{basedOnLabel}</span>
@@ -53,11 +54,18 @@ export async function ReviewsBlock({ data, locale }: Props) {
         </Reveal>
 
         <Reveal delay={120}>
-          <ReviewsCarousel
-            reviews={reviews.reviews}
-            locale={locale}
-            placeholderLabel={ratingLabel}
-          />
+          {/* Mobile: samo-przesuwajaca sie tasma opinii. Desktop: karuzela ze
+              scroll handlerami + strzalki. */}
+          <div className="lg:hidden">
+            <ReviewsMarquee reviews={reviews.reviews} locale={locale} />
+          </div>
+          <div className="hidden lg:block">
+            <ReviewsCarousel
+              reviews={reviews.reviews}
+              locale={locale}
+              placeholderLabel={ratingLabel}
+            />
+          </div>
         </Reveal>
       </div>
     </section>

@@ -28,9 +28,12 @@ const RESERVE_LABEL: Record<Locale, string> = {
   en: 'Book your stay',
 }
 
-// Wysokość hero minimalnie 800px, poza tym proporcjonalna do wgranego w Sanity
-// zdjęcia (aspect-ratio z metadata.dimensions) — hero „rośnie" razem z obrazem.
+// Wysokość hero minimalnie 800px, poza tym proporcja stała wg Figmy (930:6 —
+// 1512x1119). Wcześniej hero „rósł" wg proporcji zdjęcia (2752x2590, prawie
+// kwadrat) i był o ~250px za wysoki: dużo pustego nieba, budynek ledwo wystawał.
+// Stała proporcja skraca sekcję — pełny budynek mieści się w kadrze jak w Figmie.
 const HERO_MIN_HEIGHT = '800px'
+const HERO_ASPECT = '1512 / 1119'
 
 // Dzieli nagłówek na 3 części:
 //   line1     — słowa poza łącznikiem i akcentem (pierwsza linia)
@@ -171,16 +174,23 @@ export function HeroSection({ data, locale }: Props) {
   const deskAccent = headlineDesktop ? splitHeadline(headlineDesktop) : null
   const mobAccent = headlineMobile ? splitHeadline(headlineMobile) : null
 
-  // Wysokość sekcji: min. 800px + aspect-ratio z wymiarów zdjęcia (jeśli dostępne)
-  // — hero dopasowuje wysokość do wgranego w Sanity obrazka.
-  const dims = data.image?.asset?.metadata?.dimensions
+  // Wysokość sekcji: min. 800px + stała proporcja wg Figmy (nie wg wymiarów
+  // zdjęcia) — krótsza sekcja, pełny budynek w kadrze.
   const heroStyle: React.CSSProperties = {
     minHeight: HERO_MIN_HEIGHT,
-    ...(dims?.width && dims?.height ? { aspectRatio: `${dims.width} / ${dims.height}` } : {}),
+    aspectRatio: HERO_ASPECT,
   }
 
   return (
-    <section className="relative flex w-full flex-col overflow-hidden" style={heroStyle}>
+    // justify-start! nadpisuje wysrodkowanie z `.snap-panels > section`
+    // (justify-content:center). Hero jest wyzszy niz viewport (proporcja
+    // sekcji), wiec wysrodkowana tresc ladowala na dachach budynku. Tresc
+    // przypieta do gory => napisy w niebie, NAD budynkiem (mobile i desktop).
+    <section
+      data-header-theme="light"
+      className="relative flex w-full flex-col justify-start! overflow-hidden"
+      style={heroStyle}
+    >
       <HomeHeroBackground
         image={data.image}
         locale={locale}

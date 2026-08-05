@@ -9,18 +9,19 @@ type Props = {
   locale: Locale
 }
 
-// Wg Figma 930:40 (nowy landing): eyebrow „O NAS" (dark, uppercase, tylko desktop)
-// przy LEWEJ krawędzi + intro ~32px WCIĘTE do 33.4% (x=462/1384), w jednej linii
-// z eyebrow (nie pod nim). Statystyki na DOLE, wyrównane do PRAWEJ (justify-end,
-// gap 40px), liczby ~44px, labels ~16px muted. Sekcja 800px wysoka → treść
-// rozłożona góra/dół (justify-between). Mobile: eyebrow ukryty, intro + statystyki
-// w kolumnie, liczby większe (56px) wyrównane do lewej.
+// Mobile i desktop to DWIE niezalezne sekcje (mobile `lg:hidden!`, desktop
+// `hidden! lg:flex!`), zeby zmiany w jednej rozdzielczosci nie ruszaly drugiej.
+// `!` (Tailwind v4 important) bije `.snap-panels > section { display:flex }`
+// z globals.css (wyzsza specyficznosc niz zwykle `hidden`).
 //
-// ColorizeText (intro): 12ms × char + 100ms na znak (2× szybciej niż domyślne).
-// AnimatedStat — counter 800ms; liczby ruszają OD RAZU gdy wjadą w viewport
-// (własny IntersectionObserver per stat), z drobnym staggerem — NIE czekają na
-// animację intro (są na dole sekcji, daleko od intro).
+// Mobile (Figma 936:31): intro 24px + liczby 40px / label 16px, wysrodkowane w
+// panelu (snap). Desktop (Figma 930:40): eyebrow „O NAS" przy lewej + intro 32px
+// wciete do 33.4%; liczby 48px wyrownane do prawej, tresc gora/dol (justify-between).
+//
+// ColorizeText (intro): reveal znak po znaku. AnimatedStat — counter 800ms,
+// rusza gdy stat wjedzie w viewport, z drobnym staggerem.
 const STAT_STAGGER_MS = 120
+
 export function AboutSection({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -29,42 +30,74 @@ export function AboutSection({ data, locale }: Props) {
   const stats = data.stats ?? []
 
   return (
-    <section className="flex flex-col justify-between gap-28 bg-white py-[120px] md:min-h-[800px] md:gap-20 md:py-20">
-      {/* Góra: eyebrow przy lewej + intro wcięte do 33.4% (jedna linia na desktop) */}
-      <div className="layout-container md:flex md:items-start">
-        {eyebrow && (
-          <p className="text-text wide:text-lg hidden text-base tracking-normal uppercase md:block md:w-[33.4%] md:shrink-0">
-            {eyebrow}
-          </p>
-        )}
-        {introMobile && (
-          <p className="text-xl leading-[1.3] font-normal md:hidden">
-            <ColorizeText text={introMobile} />
-          </p>
-        )}
-        {introDesktop && (
-          <p className="hidden max-w-[922px] text-[32px] leading-[1.3] font-normal tracking-[-0.02em] md:block md:flex-1">
-            <ColorizeText text={introDesktop} />
-          </p>
-        )}
-      </div>
-
-      {/* Dół: statystyki — mobile kolumna (lewo), desktop rząd wyrównany do prawej */}
-      {stats.length > 0 && (
-        <div className="layout-container flex flex-col gap-12 md:flex-row md:flex-wrap md:justify-end md:gap-x-10 md:gap-y-8">
-          {stats.map((stat, i) => (
-            <AnimatedStat
-              key={i}
-              value={stat.value ?? ''}
-              label={pickLocale(stat.label, locale) ?? ''}
-              delayMs={i * STAT_STAGGER_MS}
-              className="flex flex-col items-start gap-1.5"
-              valueClassName="text-text text-[56px] leading-none font-normal tracking-[-0.04em] md:text-[48px] md:tracking-[-2.4px]"
-              labelClassName="text-text text-lg"
-            />
-          ))}
+    <>
+      {/* MOBILE (Figma 936:31) */}
+      <section
+        data-header-theme="light"
+        data-header-surface="#ffffff"
+        className="text-text relative w-full bg-white lg:hidden!"
+      >
+        <div className="layout-container mb-auto flex flex-col gap-10 pt-[120px] pb-20">
+          {introMobile && (
+            <p className="text-[24px] leading-[1.2] font-normal">
+              <ColorizeText text={introMobile} />
+            </p>
+          )}
+          {stats.length > 0 && (
+            <div className="flex flex-col gap-6">
+              {stats.map((stat, i) => (
+                <AnimatedStat
+                  key={i}
+                  value={stat.value ?? ''}
+                  label={pickLocale(stat.label, locale) ?? ''}
+                  delayMs={i * STAT_STAGGER_MS}
+                  className="flex flex-col items-start gap-1"
+                  valueClassName="text-text text-[40px] leading-none font-normal tracking-[-0.04em]"
+                  labelClassName="text-text text-base"
+                />
+              ))}
+            </div>
+          )}
         </div>
-      )}
-    </section>
+      </section>
+
+      {/* DESKTOP (bez zmian - tylko bramkowanie widocznosci) */}
+      <section
+        data-header-theme="light"
+        data-header-surface="#ffffff"
+        className="hidden! flex-col justify-between gap-20 bg-white py-20 lg:flex! lg:min-h-[800px]"
+      >
+        {/* Gora: eyebrow przy lewej + intro wciete do 33.4% (jedna linia) */}
+        <div className="layout-container flex items-start">
+          {eyebrow && (
+            <p className="text-text wide:text-lg w-[33.4%] shrink-0 text-base tracking-normal uppercase">
+              {eyebrow}
+            </p>
+          )}
+          {introDesktop && (
+            <p className="max-w-[922px] flex-1 text-[32px] leading-[1.3] font-normal tracking-[-0.02em]">
+              <ColorizeText text={introDesktop} />
+            </p>
+          )}
+        </div>
+
+        {/* Dol: statystyki — rzad wyrownany do prawej */}
+        {stats.length > 0 && (
+          <div className="layout-container flex flex-row flex-wrap justify-end gap-x-10 gap-y-8">
+            {stats.map((stat, i) => (
+              <AnimatedStat
+                key={i}
+                value={stat.value ?? ''}
+                label={pickLocale(stat.label, locale) ?? ''}
+                delayMs={i * STAT_STAGGER_MS}
+                className="flex flex-col items-start gap-1.5"
+                valueClassName="text-text text-[48px] leading-none font-normal tracking-[-2.4px]"
+                labelClassName="text-text text-lg"
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    </>
   )
 }

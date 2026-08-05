@@ -309,6 +309,28 @@ Kluczowe elementy:
 - **EventsSteps** — padding wewnątrz layout-container; sekcja ma `min-h-[800px] flex flex-col`.
 - **EventsReservationCta** — `layout-container` z override `px-4 md:!px-4` (16px na wszystkich breakpointach zamiast standardowych 16→64). Numer telefonu (`text-[96px]` na lg+) z `whitespace-nowrap` wymaga pełnej szerokości viewportu by nie zostać ucięty po prawej.
 
+### 2.9 Mobilne panele snap (home) — 100svh, 80px, top-align ★
+
+Redesign strony głównej (mobile) — każda sekcja to **pełnoekranowy panel scroll-snap** (jak satius.app). Sekcje są direct-children `.snap-panels`, więc dostają `min-height: 100svh` + `scroll-snap-align: start` z globals.css (panel dosuwa się górą do viewportu przy scrollu).
+
+**Reguła (każda mobilna sekcja home):**
+- **Wysokość**: `min-height: 100svh` (z snap CSS) — panel rośnie pod content, ale min. pełny ekran.
+- **Padding**: **min. 120px góra** (`pt-[120px]`) + **80px dół** (`pb-20`) na wrapperze treści.
+- **Content top-align**: treść **dosunięta do góry** (`mb-auto` na wrapperze — bije snapowe `justify-content: center`), pierwszy tekst (eyebrow) **120px od góry** (minimum). NIGDY wyśrodkowane w pionie.
+- Zdjęcie tła (`SectionBleedImage`) jest `absolute` i bleeduje pełną szerokością — padding dotyczy tylko treści; tekst leży na litym tle/gradiencie, a na samym zdjęciu ląduje tylko button.
+- **Sekcje ze zdjęciem u dołu (Imprezy, Restauracja) = wyższe niż 100svh** (jak Hotel): zdjęcie jest **in-flow** (`SectionBleedImage` z `relative z-0 -mt-12 min-h-[60svh] flex-1`, treść `z-10` nad nim), więc panel rośnie ponad 100svh — user może przescrollować kawałek, żeby zobaczyć pełne zdjęcie, i **dopiero potem snap** do następnej (scroll-snap-align:start na wyższej sekcji). Wzorzec z satius.app.
+
+```tsx
+<section className="relative w-full overflow-hidden lg:hidden!" /* bg */>
+  <SectionBleedImage className="inset-x-0 top-[42%] bottom-0" /* lub inset-0 */ />
+  <div className="layout-container relative z-10 mb-auto flex flex-col gap-10 pt-[120px] pb-20">
+    {/* eyebrow (80px od góry) → h2 → opis(16px) → button */}
+  </div>
+</section>
+```
+
+**Wyjątki (stan na teraz):** `BistroBlock` — celowo wyśrodkowany (bez `mb-auto`), decyzja usera. Reszta (Events/Imprezy, Restaurant, Hotel, About) — top-align wg reguły.
+
 ---
 
 ## 3. Skala gapów
@@ -518,6 +540,12 @@ Duży, display-style paragraf wprowadzający sekcję.
 | `body-subtitle-hero` | `text-base leading-[1.2] md:text-xl` lub wariant Hotel `text-base wide:text-xl md:text-lg` | Podtytuł pod h1 hero |
 
 **Reguła**: body zawsze `font-normal` (400), `tracking-normal` (0), `leading-[1.2]` (lub `leading-[normal]` dla lead, `leading-[1.4]` dla quote review).
+
+> ⛔ **ŻELAZNA REGUŁA — opisy = 16px.** Każdy tekst na stronie głównej (i wszędzie), który jest **opisem / dłuższym akapitem** — czyli NIE jest headingiem, buttonem ani accent-textem (`.font-accent`/`AccentText`) — MUSI mieć **`text-base` (16px), normalny line-height, normalny tracking**. Nigdy `text-lg`/`text-xl`/`text-2xl` ani custom `leading-*`/`tracking-*` na opisie. Nie powiększać opisów „bo w makiecie wyglądają większe" — makieta w px ≠ nasze tokeny; heading rośnie, opis zostaje 16px.
+> - Wyjątek 1: **lead / intro** (§4.5, np. AboutSection intro) — osobna rola, 24px mobile / 32px desktop. To NIE jest „opis sekcji".
+> - Wyjątek 2: **caption / label w karcie** (§4.7, np. podpis pod nazwą pokoju) — krótki jednowierszowy podpis, nie akapit.
+>
+> **Każdą zmianę typografii sprawdzaj względem tej reguły PRZED zakończeniem** (patrz [RULES.md](RULES.md) — checklist zgodności z DESIGN-RULES).
 
 ### 4.7 Caption / dt label
 

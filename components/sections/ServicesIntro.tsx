@@ -14,8 +14,11 @@ export function ServicesIntro({ data, locale }: Props) {
   const eyebrow = pickLocale(data.eyebrow, locale)
   const title = pickLocale(data.title, locale)
 
+  // Tylko desktop. Na mobile „Odkryj Sezam" lezy w panelu Imprez (EventsBlock),
+  // bo krotka sekcja uslug nie zasluguje na wlasny pelnoekranowy panel snap.
+  // `hidden! lg:flex!` bije `.snap-panels > section { display:flex }`.
   return (
-    <section className="bg-bg py-8 md:pt-12 md:pb-16">
+    <section data-header-theme="light" className="bg-bg hidden! py-8 md:pt-12 md:pb-16 lg:flex!">
       <Reveal className="layout-container text-center">
         {eyebrow && (
           <p className="text-accent wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>

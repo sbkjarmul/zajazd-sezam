@@ -12,9 +12,18 @@ import { HotelBlock } from '@/components/sections/HotelBlock'
 import { BistroBlock } from '@/components/sections/BistroBlock'
 import { ReviewsBlock } from '@/components/sections/ReviewsBlock'
 import { ContactBlock } from '@/components/sections/ContactBlock'
+import { SectionConnector } from '@/components/sections/SectionConnector'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { SnapController } from '@/components/SnapController'
+
+// Laczniki miedzy sekcjami (mobile) - gora = kolor sekcji powyzej, dol = kolor
+// sekcji ponizej. Nie snapuja (patrz SectionConnector).
+const CONNECTOR_IMPREZY_RESTAURACJA =
+  'linear-gradient(to bottom, var(--color-light), var(--color-dark-ruby))'
+const CONNECTOR_RESTAURACJA_HOTEL =
+  'linear-gradient(to bottom, var(--color-dark-ruby), var(--color-dark))'
+const CONNECTOR_HOTEL_BISTRO = 'linear-gradient(to bottom, var(--color-dark), var(--color-light))'
 
 type Params = { locale: string }
 
@@ -46,15 +55,22 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
 
   return (
     <>
-      <Header logoImage={logoImage} locale={locale} animateIn animateInDelay={1.1} />
+      <Header logoImage={logoImage} locale={locale} animateIn animateInDelay={1.1} adaptive />
       <SnapController />
       <div className="snap-panels">
         <HeroSection data={home?.hero ?? null} locale={locale} />
         <AboutSection data={home?.aboutSection ?? null} locale={locale} />
         <ServicesIntro data={home?.servicesIntro ?? null} locale={locale} />
-        <EventsBlock data={home?.eventsBlock ?? null} locale={locale} />
+        <EventsBlock
+          data={home?.eventsBlock ?? null}
+          servicesData={home?.servicesIntro ?? null}
+          locale={locale}
+        />
+        <SectionConnector gradient={CONNECTOR_IMPREZY_RESTAURACJA} />
         <RestaurantBlock data={home?.restaurantBlock ?? null} locale={locale} />
+        <SectionConnector gradient={CONNECTOR_RESTAURACJA_HOTEL} />
         <HotelBlock data={home?.hotelBlock ?? null} locale={locale} />
+        <SectionConnector gradient={CONNECTOR_HOTEL_BISTRO} />
         <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
         <ReviewsBlock data={home?.reviewsBlock ?? null} locale={locale} />
         <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />
