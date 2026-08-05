@@ -26,7 +26,7 @@ export function EventsHalls({ section, halls, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text max-w-4xl text-2xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em] lg:max-w-6xl lg:text-5xl">
+              <h2 className="text-text max-w-4xl text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em] lg:max-w-6xl">
                 {title}
               </h2>
             )}

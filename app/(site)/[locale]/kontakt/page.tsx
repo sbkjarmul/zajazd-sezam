@@ -4,7 +4,6 @@ import { sanityClient } from '@/lib/sanity/client'
 import { CONTACT_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
-import { ContactHero } from '@/components/sections/contact/ContactHero'
 import { ContactInfo } from '@/components/sections/contact/ContactInfo'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -42,7 +41,6 @@ export default async function ContactPage({ params }: { params: Promise<Params> 
   return (
     <>
       <Header logoImage={logoImage} locale={locale} />
-      <ContactHero image={page.heroImage} locale={locale} />
       <ContactInfo data={page.contactSection} settings={settings} locale={locale} />
       <Footer settings={settings} locale={locale} logoImage={logoImage} />
     </>

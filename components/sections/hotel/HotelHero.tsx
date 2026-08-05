@@ -20,7 +20,9 @@ export function HotelHero({ data, locale }: Props) {
   return (
     <section
       data-header-theme="dark"
-      className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden"
+      // justify-end! nadpisuje wysrodkowanie z `.snap-panels > section`
+      // (justify-content:center) - hero trzyma tresc przy dole nad zdjeciem.
+      className="relative flex min-h-screen w-full flex-col justify-end! overflow-hidden"
     >
       {data.image ? (
         <HeroParallaxImage image={data.image} locale={locale} />
@@ -38,7 +40,11 @@ export function HotelHero({ data, locale }: Props) {
         aria-hidden
         className="absolute inset-0 -z-10"
         style={{
-          background: 'linear-gradient(180deg, rgba(31,31,28,0) 50%, rgba(31,31,28,0.65) 100%)',
+          // Zmniejszona ekspozycja zdjecia: staly ~30% ciemny welon na calym
+          // kadrze (przyciemnia prześwietlone tlo), pogłebiony do 72% u dolu pod
+          // tekstem/CTA dla czytelnosci.
+          background:
+            'linear-gradient(180deg, rgba(31,31,28,0.30) 0%, rgba(31,31,28,0.30) 50%, rgba(31,31,28,0.72) 100%)',
         }}
       />
 

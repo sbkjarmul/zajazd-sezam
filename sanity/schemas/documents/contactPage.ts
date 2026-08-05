@@ -16,22 +16,21 @@ export const contactPage = defineType({
     }),
 
     defineField({
-      name: 'heroImage',
-      title: 'Hero — zdjęcie (wysokość 400px na pełną szerokość)',
-      description:
-        'Wyświetla się na samej górze strony /kontakt jako sekcja-blok obrazowy bez tekstu, z parallax-animacją (load reveal + scroll). Jeśli puste, sekcja nie renderuje się.',
-      type: 'imageWithAlt',
-    }),
-
-    defineField({
       name: 'contactSection',
       title: 'Sekcja kontakt (NAP)',
       type: 'object',
+      description:
+        'Ciemna sekcja "Skontaktuj się": eyebrow + tytuł (serif akcentowy), tabela telefonów per branża oraz adres i email. Numery, adres i email pobierane z siteSettings — tutaj tylko etykiety.',
       fields: [
-        { name: 'eyebrow', type: 'localeString', title: 'Eyebrow (np. "Skontaktuj się")' },
-        { name: 'title', type: 'localeString', title: 'Tytuł' },
+        { name: 'eyebrow', type: 'localeString', title: 'Eyebrow (np. "Porozmawiajmy")' },
+        { name: 'title', type: 'localeString', title: 'Tytuł (serif akcentowy, np. "Skontaktuj się")' },
+        { name: 'phoneLabel', type: 'localeString', title: 'Nagłówek kolumny telefonów (np. "Telefony")' },
+        { name: 'receptionLabel', type: 'localeString', title: 'Etykieta linii — Recepcja' },
+        { name: 'restaurantLabel', type: 'localeString', title: 'Etykieta linii — Restauracja' },
+        { name: 'bistroLabel', type: 'localeString', title: 'Etykieta linii — Bistro' },
+        { name: 'hotelLabel', type: 'localeString', title: 'Etykieta linii — Hotel' },
+        { name: 'eventsLabel', type: 'localeString', title: 'Etykieta linii — Imprezy' },
         { name: 'addressLabel', type: 'localeString', title: 'Etykieta adresu' },
-        { name: 'phoneLabel', type: 'localeString', title: 'Etykieta telefonu' },
         { name: 'emailLabel', type: 'localeString', title: 'Etykieta emaila' },
       ],
     }),

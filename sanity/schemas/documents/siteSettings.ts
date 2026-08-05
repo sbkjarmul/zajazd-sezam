@@ -33,9 +33,25 @@ export const siteSettings = defineType({
 
     defineField({
       name: 'phone',
-      title: 'Numer telefonu (E.164, np. +48155551234)',
+      title: 'Numer telefonu — Recepcja / główny (E.164, np. +48155551234)',
+      description:
+        'Numer domyślny dla całej witryny: recepcja, stopka, Hotel, Imprezy, Kontakt, JSON-LD. Restauracja i Bistro mają własne linie poniżej.',
       type: 'string',
       validation: (r) => r.required(),
+    }),
+    defineField({
+      name: 'phoneRestaurant',
+      title: 'Numer telefonu — Restauracja (E.164)',
+      description:
+        'Bezpośrednia linia Restauracji. Używana na stronie Restauracji i w menu (stopka, rezerwacja stolika). Pusty → fallback do numeru głównego.',
+      type: 'string',
+    }),
+    defineField({
+      name: 'phoneBistro',
+      title: 'Numer telefonu — Bistro (E.164)',
+      description:
+        'Bezpośrednia linia Bistro. Używana na stronie Bistro (stopka). Pusty → fallback do numeru głównego.',
+      type: 'string',
     }),
     defineField({
       name: 'receptionEmail',

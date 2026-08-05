@@ -9,17 +9,19 @@ import { pickLocale } from '@/lib/i18n/pickLocale'
 type Props = {
   data: NonNullable<RESTAURANT_PAGE_QUERY_RESULT>['ambianceSection']
   settings: SITE_SETTINGS_QUERY_RESULT | null
+  // Numer Restauracji (fallback do settings.phone). Bezpośrednia linia stolikowa.
+  phone?: string | null
   locale: Locale
 }
 
 // Ambiance (Figma 967:60): serif tytuł z akcentem kursywą po lewej, po prawej
 // krótki opis + pill CTA (tel), pod spodem panoramiczne zdjęcie z parallaxem.
-export function RestaurantAmbiance({ data, settings, locale }: Props) {
+export function RestaurantAmbiance({ data, settings, phone: phoneOverride, locale }: Props) {
   if (!data) return null
   const title = pickLocale(data.title, locale)
   const tagline = pickLocale(data.tagline, locale)
   const ctaLabel = pickLocale(data.ctaLabel, locale)
-  const phone = settings?.phone
+  const phone = phoneOverride ?? settings?.phone
 
   return (
     <section data-header-theme="light" className="bg-bg pt-32 md:pt-40 md:pb-20">

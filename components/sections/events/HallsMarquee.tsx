@@ -206,11 +206,12 @@ export function HallsMarquee({ halls, locale }: Props) {
       const setWidth = track.scrollWidth / copies
       if (!setWidth) return
 
-      // Start przesunięty o jeden zestaw w lewo, animacja do 0 → ruch od lewej
-      // do prawej; przy zawinięciu skok 0 → -setWidth jest niewidoczny (klony).
-      gsap.set(track, { x: -setWidth })
+      // Start w 0, animacja do -setWidth → ruch z prawej do lewej (jak reszta
+      // poziomych animacji); przy zawinięciu skok -setWidth → 0 jest niewidoczny
+      // (identyczny zestaw sklejony `copies` razy = klony).
+      gsap.set(track, { x: 0 })
       const tween = gsap.to(track, {
-        x: 0,
+        x: -setWidth,
         duration: setWidth / SPEED,
         ease: 'none',
         repeat: -1,

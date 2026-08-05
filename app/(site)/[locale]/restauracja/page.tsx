@@ -44,6 +44,8 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
 
   const brandLabel = locale === 'pl' ? 'Restauracja Sezam' : 'Sezam Restaurant'
   const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+  // Bezpośrednia linia Restauracji (fallback do numeru głównego/recepcji).
+  const restaurantPhone = settings?.phoneRestaurant ?? settings?.phone
   const tReservation = await getTranslations('restaurant.reservation')
 
   return (
@@ -62,11 +64,16 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
       <RestaurantHero data={page} locale={locale} />
       <RestaurantPitch data={page.pitchSection} locale={locale} />
       <RestaurantCraft data={page.craftSection} locale={locale} />
-      <RestaurantAmbiance data={page.ambianceSection} settings={settings} locale={locale} />
+      <RestaurantAmbiance
+        data={page.ambianceSection}
+        settings={settings}
+        phone={restaurantPhone}
+        locale={locale}
+      />
       <RestaurantReservation
         title={pickLocale(page.reservationSection?.title, locale)}
         description={pickLocale(page.reservationSection?.description, locale)}
-        phone={settings?.phone}
+        phone={restaurantPhone}
         address={settings?.address}
         locale={locale}
         image={page.reservationSection?.image}
@@ -75,6 +82,7 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
       <Footer
         settings={settings}
         locale={locale}
+        phone={restaurantPhone}
         brandLabel={brandLabel}
         logoImage={logoImage}
         theme="dark"

@@ -48,7 +48,7 @@ export function RestaurantBlock({ data, locale }: Props) {
           <Reveal className="flex flex-col gap-2">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="max-w-[14ch] text-[40px] leading-[40px] font-normal tracking-[-3px]">
+              <h2 className="max-w-[14ch] text-[40px] leading-[40px] font-normal tracking-[-3px] text-balance">
                 {titleNoOrphans}
               </h2>
             )}
@@ -107,7 +107,7 @@ export function RestaurantBlock({ data, locale }: Props) {
             {title && (
               <RevealText
                 as="h2"
-                className="max-w-[14ch] text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
+                className="max-w-[14ch] text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]"
               >
                 {titleNoOrphans}
               </RevealText>

@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { HeroParallaxImage } from '@/components/sections/HeroParallaxImage'
@@ -7,6 +8,25 @@ import { pickLocale } from '@/lib/i18n/pickLocale'
 type Props = {
   data: NonNullable<EVENTS_PAGE_QUERY_RESULT>['hero']
   locale: Locale
+}
+
+// Tytul hero (Figma 997:28): baza Inter, a fragment w markerach `*...*` renderowany
+// kursywa Westbourne Serif (akcent, jak w hero strony glownej). Marker `*` zgodny
+// z konwencja AccentText. Bez markerow -> caly tytul w Inter (graceful).
+function HeroTitle({ text }: { text: string }) {
+  return (
+    <>
+      {text.split('*').map((seg, i) =>
+        i % 2 === 1 ? (
+          <em key={i} className="font-accent font-normal italic">
+            {seg}
+          </em>
+        ) : (
+          <Fragment key={i}>{seg}</Fragment>
+        ),
+      )}
+    </>
+  )
 }
 
 export function EventsHero({ data, locale }: Props) {
@@ -51,8 +71,8 @@ export function EventsHero({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h1 className="text-text-inverse text-[64px] leading-none font-medium tracking-tight md:text-7xl md:tracking-[-0.03em] lg:text-[120px]">
-                {title}
+              <h1 className="text-text-inverse text-[64px] leading-none font-normal tracking-tight md:text-7xl md:tracking-[-0.03em] lg:text-[120px]">
+                <HeroTitle text={title} />
               </h1>
             )}
           </div>

@@ -58,6 +58,7 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
       <Footer
         settings={settings}
         locale={locale}
+        phone={settings?.phoneBistro ?? settings?.phone}
         brandLabel={brandLabel}
         theme="dark"
         bgColor="#1a2789"

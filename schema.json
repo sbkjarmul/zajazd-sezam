@@ -297,14 +297,6 @@
         },
         "optional": true
       },
-      "heroImage": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "imageWithAlt"
-        },
-        "optional": true
-      },
       "contactSection": {
         "type": "objectAttribute",
         "value": {
@@ -326,7 +318,7 @@
               },
               "optional": true
             },
-            "addressLabel": {
+            "phoneLabel": {
               "type": "objectAttribute",
               "value": {
                 "type": "inline",
@@ -334,7 +326,47 @@
               },
               "optional": true
             },
-            "phoneLabel": {
+            "receptionLabel": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
+            "restaurantLabel": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
+            "bistroLabel": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
+            "hotelLabel": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
+            "eventsLabel": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
+            "addressLabel": {
               "type": "objectAttribute",
               "value": {
                 "type": "inline",
@@ -2655,6 +2687,20 @@
         "optional": true
       },
       "phone": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "phoneRestaurant": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "phoneBistro": {
         "type": "objectAttribute",
         "value": {
           "type": "string"

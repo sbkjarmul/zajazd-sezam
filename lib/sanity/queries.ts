@@ -41,6 +41,8 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     shortDescription,
     address,
     phone,
+    phoneRestaurant,
+    phoneBistro,
     receptionEmail,
     publicEmail,
     openingHoursRestaurant,
@@ -252,10 +254,10 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
 export const CONTACT_PAGE_QUERY = defineQuery(`
   *[_type == "contactPage" && _id == "contactPage"][0]{
     headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
-    heroImage { ${IMAGE_WITH_ALT_FRAGMENT} },
     contactSection {
-      eyebrow, title,
-      addressLabel, phoneLabel, emailLabel
+      eyebrow, title, phoneLabel,
+      receptionLabel, restaurantLabel, bistroLabel, hotelLabel, eventsLabel,
+      addressLabel, emailLabel
     },
     seo { ${SEO_FRAGMENT} }
   }

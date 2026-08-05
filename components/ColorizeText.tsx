@@ -11,10 +11,17 @@ type Props = {
   charDurationMs?: number
   /** Threshold IntersectionObservera — 0–1. Default 0.3. */
   threshold?: number
+  /**
+   * Przesunięcie indeksu startowego fali (liczba znaków). Pozwala skleić kilka
+   * sąsiadujących ColorizeText w jedną ciągłą falę (np. lead + bold + tail),
+   * kontynuując `transitionDelay` zamiast restartować od zera. Default 0.
+   */
+  startIndex?: number
 }
 
-// Tekst animowany znak po znaku — start `color/gray`, kolejne znaki
-// "pokolorują" się na `color/text` (dark). Trigger: IntersectionObserver gdy
+// Tekst animowany znak po znaku — start `color/text-faded` (wyblakly, wtopiony
+// w tlo), kolejne znaki "pokoloruja" sie na `color/text` (dark). Trigger:
+// IntersectionObserver gdy
 // wrapper wjedzie w viewport. `prefers-reduced-motion` → pełen kolor od razu.
 //
 // `aria-label` z pełnym tekstem dla screen-readerów; per-char spany są
@@ -25,6 +32,7 @@ export function ColorizeText({
   charDelayMs = 12,
   charDurationMs = 100,
   threshold = 0.3,
+  startIndex = 0,
 }: Props) {
   const ref = useRef<HTMLSpanElement>(null)
   const [animated, setAnimated] = useState(false)
@@ -66,9 +74,9 @@ export function ColorizeText({
           key={i}
           aria-hidden
           style={{
-            color: animated ? 'var(--color-text)' : 'var(--color-gray)',
+            color: animated ? 'var(--color-text)' : 'var(--color-text-faded)',
             transition: `color ${charDurationMs}ms ease-out`,
-            transitionDelay: `${i * charDelayMs}ms`,
+            transitionDelay: `${(startIndex + i) * charDelayMs}ms`,
           }}
         >
           {char}

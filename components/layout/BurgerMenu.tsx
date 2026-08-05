@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useRef } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import Image from 'next/image'
 import { X } from 'lucide-react'
@@ -215,7 +215,8 @@ export function BurgerMenu() {
             style={{ transitionDelay: burgerOpen ? '120ms' : '0ms' }}
             className={cn(
               // Rozmiar + line-height w JEDNEJ klasie — patrz uwaga niżej o tailwind-merge.
-              'text-text font-normal tracking-tight text-[clamp(3rem,9vw,7.5rem)]/[0.95]',
+              // font-accent = Westbourne Serif, italic (jak akcenty hero).
+              'font-accent text-text font-normal italic tracking-tight text-[clamp(3rem,9vw,7.5rem)]/[0.95]',
               REVEAL,
               burgerOpen ? REVEAL_IN : REVEAL_OUT,
             )}
@@ -256,34 +257,37 @@ export function BurgerMenu() {
         <div
           style={{ transitionDelay: burgerOpen ? '560ms' : '0ms' }}
           className={cn(
-            'flex w-full flex-col items-start gap-[10px] md:flex-row md:items-center md:justify-between',
+            'flex w-full items-center justify-start md:justify-end',
             REVEAL,
             burgerOpen ? REVEAL_IN : REVEAL_OUT,
           )}
         >
-          <span className="text-text-muted text-base tracking-normal uppercase md:text-xl">
-            {t('burgerMenu.languageLabel')}
-          </span>
           <div
             role="group"
             aria-label={t('languageSwitcher.ariaLabel')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-base md:text-lg"
           >
-            {routing.locales.map((loc) => {
+            {routing.locales.map((loc, i) => {
               const active = loc === locale
               return (
-                <button
-                  key={loc}
-                  type="button"
-                  onClick={() => switchLocale(loc)}
-                  aria-current={active ? 'true' : undefined}
-                  className={cn(
-                    'flex cursor-pointer items-center justify-center rounded-full px-5 py-3 text-2xl transition-colors md:text-[32px]',
-                    active ? 'text-accent' : 'text-gray hover:text-text',
+                <Fragment key={loc}>
+                  {i > 0 && (
+                    <span className="text-text-muted" aria-hidden>
+                      /
+                    </span>
                   )}
-                >
-                  {t(`languageSwitcher.${loc}`)}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => switchLocale(loc)}
+                    aria-current={active ? 'true' : undefined}
+                    className={cn(
+                      'cursor-pointer font-medium uppercase transition-colors',
+                      active ? 'text-accent' : 'text-gray hover:text-text',
+                    )}
+                  >
+                    {loc}
+                  </button>
+                </Fragment>
               )
             })}
           </div>

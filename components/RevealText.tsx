@@ -63,35 +63,49 @@ export function RevealText({
         }
 
         // SplitText: dzielimy na linie z maską (overflow-clip wrapper). Stan
-        // schowany wymuszamy przez gsap.set (nie polegamy na immediateRender
-        // `from` — przy Lenis/layout-shift bywał gubiony), a reveal robi gsap.to
-        // na ScrollTrigger. Split po załadowaniu fontów, żeby linie łamały się
-        // poprawnie.
+        // schowany wymuszamy przez gsap.set, a reveal robi gsap.to na
+        // ScrollTrigger.
+        //
+        // KLUCZOWE: SplitText mierzy łamanie linii w BIEŻĄCYM `display` hosta.
+        // Nasz reveal ustawia na hoście `display:flex; flex-direction:column`
+        // (patrz niżej — zapobiega collapse marginesów masek). Gdyby SplitText
+        // mierzył przy już ustawionym flex-column, każde SŁOWO trafiłoby jako
+        // osobny flex-item do osobnej linii → tytuł łamany po słowie. Dlatego
+        // `rebuild()` NAJPIERW `teardown()` (reset display) — pomiar zawsze w bloku.
+        //
+        // ResizeObserver: re-split przy zmianie szerokości (responsywność ORAZ
+        // dojście layoutu do finalnej szerokości po ewentualnym wyścigu przy
+        // montażu) — chwilowo zwężona szerokość przy pierwszym pomiarze sama się
+        // koryguje. reduceWhiteSpace:false — twarde spacje (nbsp) przeżyją split.
+        const GLYPH_PAD = '0.2em'
         let split: SplitText | null = null
         let tween: gsap.core.Tween | null = null
-        const build = () => {
+        let ro: ResizeObserver | null = null
+        let lastWidth = -1
+
+        const teardown = () => {
+          tween?.scrollTrigger?.kill()
+          tween?.kill()
+          tween = null
+          split?.revert()
+          split = null
+          el.style.display = ''
+          el.style.flexDirection = ''
+        }
+
+        const rebuild = () => {
           if (!ref.current) return
-          // reduceWhiteSpace: false — nie zwijaj/nie normalizuj whitespace, żeby
-          // twarde spacje (nbsp, np. z preventOrphans) przetrwały split i dalej
-          // wiązały wyrazy (jednoliterowe spójniki nie zostają na końcu linii).
+          teardown() // reset display → SplitText mierzy w bloku (nie flex-column)
           split = SplitText.create(el, { type: 'lines', mask: 'lines', reduceWhiteSpace: false })
-          // Maska (`overflow: clip`) ma wysokość line-box. Przy `leading-none`
-          // (line-height 1) ascendery/diakrytyki (Ł, Ś) i descendery (y, j, ą, ę)
-          // wystają poza line-box → maska je przycinała. Padding góra/dół
-          // powiększa maskę o miejsce na wystające glify, a ujemny margines
-          // kompensuje go 1:1 — więc odstęp linii pozostaje = line-height (100%).
-          //
-          // Kontener robimy flex-column: maski to flex-items, których marginesy
-          // NIE collapse'ują (inaczej -0.2em góra/dół zwijały się do -0.2em zamiast
-          // -0.4em i między liniami zostawał ~0.2em nadmiarowego odstępu).
+          // Kontener flex-column: maski to flex-items, których marginesy NIE
+          // collapse'ują (inaczej -0.2em góra/dół zwijały się do -0.2em zamiast
+          // -0.4em i między liniami zostawał ~0.2em nadmiarowego odstępu). Maska
+          // (`overflow: clip`) ma wysokość line-box; przy `leading-none` ascendery/
+          // diakrytyki (Ł, Ś) i descendery (y, j, ą, ę) wystają → padding powiększa
+          // maskę o miejsce na glify, a ujemny margines kompensuje go 1:1.
           el.style.display = 'flex'
           el.style.flexDirection = 'column'
-          const GLYPH_PAD = '0.2em'
-          gsap.set(split.lines, {
-            yPercent: 110,
-            paddingTop: GLYPH_PAD,
-            paddingBottom: GLYPH_PAD,
-          })
+          gsap.set(split.lines, { yPercent: 110, paddingTop: GLYPH_PAD, paddingBottom: GLYPH_PAD })
           const masks = (split as SplitText & { masks?: Element[] }).masks
           if (masks?.length) gsap.set(masks, { marginTop: `-${GLYPH_PAD}`, marginBottom: `-${GLYPH_PAD}` })
           tween = gsap.to(split.lines, {
@@ -103,15 +117,28 @@ export function RevealText({
             scrollTrigger: { trigger: el, start },
           })
         }
-        if (document.fonts?.status === 'loaded') build()
-        else void document.fonts?.ready.then(build)
+
+        const startObserving = () => {
+          if (!ref.current) return
+          rebuild()
+          lastWidth = el.getBoundingClientRect().width
+          ro = new ResizeObserver(() => {
+            const w = el.getBoundingClientRect().width
+            if (Math.abs(w - lastWidth) < 1) return // ignoruj zmiany samej wysokości
+            lastWidth = w
+            rebuild()
+          })
+          ro.observe(el)
+        }
+
+        // Split po załadowaniu fontów, żeby linie łamały się poprawnie.
+        if (document.fonts?.status === 'loaded') startObserving()
+        else void document.fonts?.ready.then(startObserving)
 
         return () => {
-          tween?.scrollTrigger?.kill()
-          tween?.kill()
-          split?.revert()
-          el.style.display = ''
-          el.style.flexDirection = ''
+          ro?.disconnect()
+          ro = null
+          teardown()
         }
       })
 

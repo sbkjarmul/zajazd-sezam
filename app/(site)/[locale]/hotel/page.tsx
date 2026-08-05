@@ -11,6 +11,7 @@ import { HotelAmenities } from '@/components/sections/hotel/HotelAmenities'
 import { HotelReservationCta } from '@/components/sections/hotel/HotelReservationCta'
 import { Reviews } from '@/components/sections/reviews/Reviews'
 import { HotelDiscover } from '@/components/sections/hotel/HotelDiscover'
+import { SnapController } from '@/components/SnapController'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 
@@ -57,18 +58,25 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
           { label: locale === 'pl' ? 'Dlaczego my' : 'Why us', hash: 'amenities' },
         ]}
       />
-      <HotelHero data={page.hero} locale={locale} />
-      <HotelQuote data={page.quote} locale={locale} />
+      <SnapController />
+      <div className="snap-panels">
+        <HotelHero data={page.hero} locale={locale} />
+        <HotelQuote data={page.quote} locale={locale} />
 
-      <div id="rooms" data-header-theme="light" className="scroll-mt-24 bg-bg">
-        <HotelRoomsShowcase rooms={rooms} locale={locale} />
+        {/* Pokoje = wyspa scrollytellingu wolna od snapu. `snap-start` na tym
+            wysokim (kilka ekranow) wrapperze robi z niego "przerosniety" obszar
+            snapu: mandatory snap dosuwa gore pokoi po HotelQuote, po czym pozwala
+            przewijac swobodnie w srodku, a na koncu snapuje do HotelAmenities. */}
+        <div id="rooms" data-header-theme="light" className="snap-start bg-bg">
+          <HotelRoomsShowcase rooms={rooms} locale={locale} />
+        </div>
+
+        <HotelAmenities data={page.amenitiesSection} locale={locale} />
+        <Reviews data={page.reviewsSection} locale={locale} />
+        <HotelDiscover data={page.discoverSection} locale={locale} />
+        <HotelReservationCta data={page.reservationSection} locale={locale} />
+        <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />
       </div>
-
-      <HotelAmenities data={page.amenitiesSection} locale={locale} />
-      <Reviews data={page.reviewsSection} locale={locale} />
-      <HotelDiscover data={page.discoverSection} locale={locale} />
-      <HotelReservationCta data={page.reservationSection} locale={locale} />
-      <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />
     </>
   )
 }

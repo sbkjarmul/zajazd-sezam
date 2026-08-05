@@ -170,7 +170,7 @@ async function main() {
     _type: 'eventsPage',
     hero: {
       eyebrow: ls('Najlepsze imprezy', 'Best celebrations'),
-      title: ls('Świętuj bez stresu.', 'Celebrate without the stress.'),
+      title: ls('Świętuj *bez stresu.*', 'Celebrate *without the stress.*'),
       subtitle: lt(
         'Ty cieszysz się każdą chwilą, my zajmujemy się resztą.',
         'You enjoy every moment — we handle the rest.',

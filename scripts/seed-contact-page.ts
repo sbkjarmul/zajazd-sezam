@@ -27,11 +27,28 @@ const ls = (pl: string, en: string) => ({ _type: 'localeString', pl, en })
 const doc = {
   _id: 'contactPage',
   _type: 'contactPage',
+  // To samo logo co na stronie glownej (homepage.headerLogo) — wspolny SVG.
+  headerLogo: {
+    _type: 'imageWithAlt',
+    asset: {
+      _type: 'reference',
+      _ref: 'image-82818311467dab9cfa91874f5098f362c9d15b8f-255x39-svg',
+    },
+    alt: ls(
+      'Zajazd Sezam — restauracja, hotel i sale weselne w Stalowej Woli',
+      'Zajazd Sezam — restaurant, hotel and wedding venues in Stalowa Wola',
+    ),
+  },
   contactSection: {
-    eyebrow: ls('Skontaktuj się', 'Get in touch'),
-    title: ls('Porozmawiajmy', "Let's talk"),
+    eyebrow: ls('Porozmawiajmy', "Let's talk"),
+    title: ls('Skontaktuj się', 'Get in touch'),
+    phoneLabel: ls('Telefony', 'Phones'),
+    receptionLabel: ls('Recepcja', 'Reception'),
+    restaurantLabel: ls('Restauracja', 'Restaurant'),
+    bistroLabel: ls('Bistro', 'Bistro'),
+    hotelLabel: ls('Hotel', 'Hotel'),
+    eventsLabel: ls('Imprezy', 'Events'),
     addressLabel: ls('Adres', 'Address'),
-    phoneLabel: ls('Telefon', 'Phone'),
     emailLabel: ls('Email', 'Email'),
   },
   seo: {

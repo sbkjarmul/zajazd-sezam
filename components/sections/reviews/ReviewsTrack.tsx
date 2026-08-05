@@ -16,8 +16,9 @@ type Props = {
   locale: Locale
 }
 
-// Tasma opinii - karty same przesuwaja sie w PRAWO w nieskonczonej, bezszwowej
-// petli (GSAP). Wspolny wzorzec dla wszystkich stron (home / hotel / imprezy).
+// Tasma opinii - karty same przesuwaja sie w LEWO (z prawej do lewej) w
+// nieskonczonej, bezszwowej petli (GSAP). Wspolny wzorzec dla wszystkich stron
+// (home / hotel / imprezy).
 // Pauza na hover (desktop) i dotkniecie (mobile) - mozna doczytac opinie.
 // `prefers-reduced-motion: reduce` -> bez animacji (statyczny rzad).
 export function ReviewsTrack({ reviews, locale }: Props) {
@@ -36,12 +37,13 @@ export function ReviewsTrack({ reviews, locale }: Props) {
       const setWidth = track.scrollWidth / COPIES
       if (!setWidth) return
 
-      // Ruch w PRAWO: start przesuniety o -setWidth, animacja do 0, powrot do
-      // -setWidth (identyczny zestaw) -> bezszwowa petla przesuwajaca w prawo.
+      // Ruch w LEWO (z prawej do lewej, jak reszta poziomych animacji): start 0,
+      // animacja do -setWidth, powrot do 0 (identyczny zestaw sklejony COPIES
+      // razy) -> bezszwowa petla przesuwajaca tresc w lewo.
       const tween = gsap.fromTo(
         track,
-        { x: -setWidth },
-        { x: 0, duration: setWidth / SPEED, ease: 'none', repeat: -1 },
+        { x: 0 },
+        { x: -setWidth, duration: setWidth / SPEED, ease: 'none', repeat: -1 },
       )
       tweenRef.current = tween
       return () => {
@@ -94,7 +96,7 @@ function ReviewCard({
   const time = review.relativeTimeDescription[locale]
   return (
     <article
-      className="border-border-subtle bg-surface mr-4 flex h-[340px] w-[300px] shrink-0 flex-col justify-between rounded-2xl border p-6 md:mr-6 md:h-[360px] md:w-[380px] md:p-8"
+      className="mr-[10px] flex h-[353px] w-[338px] shrink-0 flex-col justify-between rounded-2xl border border-white bg-transparent p-8 md:w-[406px]"
       {...rest}
     >
       <p className="text-text line-clamp-[8] text-base leading-[1.4]">{text}</p>

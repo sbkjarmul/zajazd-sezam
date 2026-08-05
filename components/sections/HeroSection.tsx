@@ -192,7 +192,7 @@ export function HeroSection({ data, locale }: Props) {
     // sekcji), wiec wysrodkowana tresc ladowala na dachach budynku. Tresc
     // przypieta do gory => napisy w niebie, NAD budynkiem (mobile i desktop).
     <section
-      data-header-theme="light"
+      data-header-theme="dark"
       className="relative flex w-full flex-col justify-start! overflow-hidden"
       style={heroStyle}
     >

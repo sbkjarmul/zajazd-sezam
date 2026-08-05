@@ -19,7 +19,13 @@ export function HotelDiscover({ data, locale }: Props) {
   if (!cards.length) return null
 
   return (
-    <section data-header-theme="light" className="bg-bg py-20 md:py-32">
+    <section
+      data-header-theme="light"
+      // Panel snapu 100svh z trescia wysrodkowana w pionie (justify-content:center
+      // z `.snap-panels > section`). Tresc jest nizsza niz ekran, wiec centrowanie
+      // trzyma ja z dala od fixed headera - bez potrzeby gornego paddingu.
+      className="bg-bg py-16 md:py-20"
+    >
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
           {eyebrow && (
@@ -32,14 +38,19 @@ export function HotelDiscover({ data, locale }: Props) {
           )}
         </header>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        {/* Poziomy slider: karty w jednym rzedzie, snap-x, swipe/scroll w poziomie.
+            Szerokosci: mobile ~80% (podglad kolejnej), sm 45%, lg 4 karty na ekran
+            (jak dawna siatka grid-cols-4, gap-6 = 1.5rem -> 3 przerwy = 4.5rem). */}
+        <div className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-6 px-6 pb-4 [scrollbar-width:none] md:mx-0 md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden">
           {cards.map((card, i) => {
             const cardEyebrow = pickLocale(card.eyebrow, locale)
-            const cardTitle = pickLocale(card.title, locale)
             const cardDesc = pickLocale(card.description, locale)
             const cardCta = pickLocale(card.ctaLabel, locale)
             return (
-              <article key={i} className="group flex flex-col gap-6">
+              <article
+                key={i}
+                className="group flex w-[80%] shrink-0 snap-start flex-col gap-6 sm:w-[45%] lg:w-[calc((100%-4.5rem)/4)]"
+              >
                 <div className="relative aspect-square overflow-hidden">
                   <SanityImage
                     image={card.image}
@@ -54,9 +65,6 @@ export function HotelDiscover({ data, locale }: Props) {
                     <p className="text-text text-xl leading-none font-normal tracking-tight uppercase md:tracking-[-0.03em]">
                       {cardEyebrow}
                     </p>
-                  )}
-                  {cardTitle && (
-                    <p className="text-text text-base tracking-normal uppercase">{cardTitle}</p>
                   )}
                   {cardDesc && <p className="text-text text-base leading-[1.2]">{cardDesc}</p>}
                 </div>

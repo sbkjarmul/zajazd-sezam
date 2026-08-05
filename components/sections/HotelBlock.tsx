@@ -56,7 +56,9 @@ export function HotelBlock({ data, locale }: Props) {
           <Reveal className="flex flex-col gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="text-[40px] leading-[40px] font-normal tracking-[-3px]">{title}</h2>
+              <h2 className="text-[40px] leading-[40px] font-normal tracking-[-3px] text-balance">
+                {title}
+              </h2>
             )}
           </Reveal>
           {description && <p className="text-text-inverse/90 text-base">{description}</p>}
@@ -107,12 +109,12 @@ export function HotelBlock({ data, locale }: Props) {
       <section data-header-theme="light" className="bg-bg hidden! pt-20 md:pt-32 lg:flex!">
         <div className="layout-container flex h-full flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-[5.5%]">
           {/* Header — 25.5%, tytuł u góry */}
-          <Reveal className="flex flex-col gap-4 lg:w-[25.5%] lg:shrink-0 lg:pt-1">
+          <Reveal className="flex flex-col gap-4 lg:w-[30%] lg:shrink-0 lg:pt-1">
             {eyebrow && <p className="text-text text-lg tracking-normal uppercase">{eyebrow}</p>}
             {title && (
               <RevealText
                 as="h2"
-                className="text-text text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
+                className="text-text text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]"
               >
                 {title}
               </RevealText>

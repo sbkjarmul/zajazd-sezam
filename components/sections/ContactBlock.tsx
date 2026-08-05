@@ -43,7 +43,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
             {title && (
               <RevealText
                 as="h2"
-                className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
+                className="text-text-inverse text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]"
               >
                 {title}
               </RevealText>

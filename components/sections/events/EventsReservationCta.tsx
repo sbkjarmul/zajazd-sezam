@@ -32,7 +32,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text max-w-4xl text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text max-w-4xl text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]">
                 {title}
               </h2>
             )}
@@ -49,7 +49,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
           <Reveal delay={180}>
             <a
               href={`tel:${phone.replace(/\s+/g, '')}`}
-              className="text-accent text-[40px] font-semibold whitespace-nowrap tracking-[-0.03em] transition-opacity hover:opacity-80 sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
+              className="font-accent text-accent text-[40px] font-semibold whitespace-nowrap tracking-normal transition-opacity hover:opacity-80 sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
             >
               {formatPhonePl(phone)}
             </a>

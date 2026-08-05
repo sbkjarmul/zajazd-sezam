@@ -61,7 +61,7 @@ export function EventsHotelUpsell({ data, image, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="text-text-inverse max-w-3xl text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="text-text-inverse max-w-3xl text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]">
                 {title}
               </h2>
             )}

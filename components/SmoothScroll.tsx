@@ -26,15 +26,16 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => mq.removeEventListener('change', update)
   }, [])
 
-  // Strony z pelnoekranowym snapem (home + imprezy) uzywaja natywnego CSS
-  // scroll-snap (jak satius.app) -> wylaczamy tam Lenisa, bo smooth-scroll bije
-  // sie z natywnym snapem (JS vs compositor). Pozostale strony zachowuja
+  // Strony z pelnoekranowym snapem (home + imprezy + hotel) uzywaja natywnego
+  // CSS scroll-snap (jak satius.app) -> wylaczamy tam Lenisa, bo smooth-scroll
+  // bije sie z natywnym snapem (JS vs compositor). Pozostale strony zachowuja
   // globalny smooth-scroll.
   const nativeScrollPage =
     pathname === '/pl' ||
     pathname === '/en' ||
     pathname.endsWith('/imprezy-okolicznosciowe') ||
-    pathname.endsWith('/events')
+    pathname.endsWith('/events') ||
+    pathname.endsWith('/hotel')
 
   if (!smooth || nativeScrollPage) return <>{children}</>
 

@@ -55,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
   return (
     <>
       <Header
-        heroTheme="light"
+        heroTheme="dark"
         logoImage={logoImage}
         locale={locale}
         animateIn

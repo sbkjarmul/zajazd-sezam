@@ -21,8 +21,14 @@ export function HotelAmenities({ data, locale }: Props) {
   const items = data.items ?? []
 
   return (
-    <section id="amenities" data-header-theme="light" className="bg-bg scroll-mt-24 py-20 md:py-32">
-      <div className="layout-container flex flex-col gap-12 md:gap-20">
+    <section
+      id="amenities"
+      data-header-theme="light"
+      // Panel snapu 100svh: 120px górnego paddingu spod fixed headera + tresc
+      // dosunieta do gory (justify-start! bije center z `.snap-panels > section`).
+      className="bg-bg justify-start! h-[100svh]! overflow-hidden pt-[120px] pb-8 md:pb-10"
+    >
+      <div className="layout-container flex flex-col gap-6 md:gap-8">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
           {eyebrow && (
             <Reveal>
@@ -40,13 +46,13 @@ export function HotelAmenities({ data, locale }: Props) {
           )}
         </header>
 
-        <ul className="ml-auto grid w-full grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-2 md:gap-y-10 lg:max-w-[849px]">
+        <ul className="ml-auto grid w-full grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2 md:gap-y-5 lg:max-w-[849px]">
           {items.map((item, i) => {
             const itemTitle = pickLocale(item.title, locale)
             const itemDesc = pickLocale(item.description, locale)
             return (
               <Reveal key={i} delay={i * 80}>
-                <li className="border-text flex flex-col items-start justify-between gap-6 border-b pb-6 md:min-h-[182px]">
+                <li className="border-text flex flex-col items-start justify-between gap-3 border-b pb-4 md:min-h-0">
                   <div className="flex flex-col gap-3">
                     {itemTitle && (
                       <h3 className="text-text text-xl leading-none font-normal tracking-tight uppercase md:text-2xl md:tracking-[-0.03em] lg:text-[32px]">

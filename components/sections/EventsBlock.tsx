@@ -45,7 +45,9 @@ export function EventsBlock({ data, locale }: Props) {
             <Reveal className="flex flex-col gap-2">
               {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
               {title && (
-                <h2 className="text-[40px] leading-[40px] font-normal tracking-[-3px]">{title}</h2>
+                <h2 className="text-[40px] leading-[40px] font-normal tracking-[-3px] text-balance">
+                  {title}
+                </h2>
               )}
             </Reveal>
             <Reveal delay={100} className="flex flex-col gap-10">
@@ -99,7 +101,7 @@ export function EventsBlock({ data, locale }: Props) {
               {title && (
                 <RevealText
                   as="h2"
-                  className="text-text text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
+                  className="text-text max-w-[11ch] text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]"
                 >
                   {title}
                 </RevealText>

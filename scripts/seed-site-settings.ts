@@ -51,7 +51,9 @@ const siteSettings = {
     region: 'podkarpackie',
     country: 'PL',
   },
-  phone: '+48156422102',
+  phone: '+48156422106', // Recepcja / główny (Hotel, Imprezy, Kontakt, stopka domyślna)
+  phoneRestaurant: '+48156422104', // Bezpośrednia linia Restauracji
+  phoneBistro: '+48156422102', // Bezpośrednia linia Bistro
   receptionEmail: 'recepcja@zajazdsezam.pl',
   publicEmail: 'recepcja@zajazdsezam.pl',
   openingHoursRestaurant: [

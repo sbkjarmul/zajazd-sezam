@@ -29,6 +29,9 @@ export type FooterTheme = 'light' | 'dark'
 type Props = {
   settings: SITE_SETTINGS_QUERY_RESULT | null
   locale: Locale
+  // Nadpisanie numeru telefonu per-podstrona (Restauracja/Bistro mają własne
+  // linie). Fallback do siteSettings.phone (recepcja).
+  phone?: string | null
   // Per-page brand label w kolumnie 1. Fallback do siteSettings.companyName.
   brandLabel?: string
   // Per-page kolor tła stopki. Domyślnie 'light' (cream + dark text).
@@ -51,6 +54,7 @@ type Props = {
 export async function Footer({
   settings,
   locale,
+  phone: phoneOverride,
   brandLabel,
   theme = 'light',
   bgColor,
@@ -65,7 +69,7 @@ export async function Footer({
   const defaultBrand = settings?.companyName?.[locale] ?? 'Zajazd Sezam'
   const resolvedBrand = brandLabel ?? defaultBrand
   const address = settings?.address
-  const phone = settings?.phone
+  const phone = phoneOverride ?? settings?.phone
   const email = settings?.publicEmail ?? settings?.receptionEmail
   const year = new Date().getFullYear()
   const isDark = theme === 'dark'

@@ -114,6 +114,7 @@
   /* Tekst */
   --color-text: #1f1f1c; /* główny tekst na light */
   --color-text-muted: color-mix(in srgb, #1f1f1c 65%, transparent);
+  --color-text-faded: color-mix(in srgb, #1f1f1c 22%, transparent); /* wyblakly start ColorizeText — litery wtapiaja sie w light bg, potem "wypelniaja" do color-text */
   --color-text-inverse: #f6f5ef; /* tekst na dark surface */
 
   /* CTA / przyciski — dark to primary w designie */
@@ -234,6 +235,12 @@ body {
    (`focus-visible:outline-none` na formularzowych inputach) mogły to nadpisać —
    nielayerowe CSS wygrywałoby w kaskadzie warstw nad `@layer utilities`. */
 @layer base {
+  /* Every h2 heading wraps into balanced (roughly equal) lines app-wide.
+     In @layer base so a Tailwind utility (e.g. text-nowrap) can still override. */
+  h2 {
+    text-wrap: balance;
+  }
+
   *:focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
@@ -304,6 +311,9 @@ html.snap-y-page {
      snap "drga" na krotszej sekcji. */
   min-height: 100svh !important;
   scroll-snap-align: start;
+  /* Twardy stop na poczatku KAZDEJ sekcji - szybki scroll nie przeskakuje
+     przez panele, kazdy start jest gwarantowanym punktem zatrzymania. */
+  scroll-snap-stop: always;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -311,6 +321,7 @@ html.snap-y-page {
 
 .snap-panels > footer {
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 @media (prefers-reduced-motion: reduce) {

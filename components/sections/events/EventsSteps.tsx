@@ -12,8 +12,9 @@ type Props = {
 // (wyśrodkowany), pod nim lista kroków rozdzielonych złotymi liniami. Każdy krok:
 //  - numer (accent, kursywa) przyklejony do lewej krawędzi, złoty,
 //  - nagłówek kroku (accent, kursywa) wyśrodkowany — WIDOCZNY domyślnie,
-//  - opis (16px, dark-gold) — DOMYŚLNIE PRZYGASZONY na desktopie (opacity 0.25),
-//    rozjaśnia się do 1 na hover (CSS-only). Na mobile (brak hovera) opis pełny.
+//  - opis (16px, dark-gold) — DOMYŚLNIE UKRYTY na desktopie (opacity 0),
+//    pojawia się (opacity 1) na hover kroku (CSS-only). Na mobile (brak hovera)
+//    opis pełny.
 export function EventsSteps({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -26,7 +27,7 @@ export function EventsSteps({ data, locale }: Props) {
       data-header-theme="light"
       className="relative flex min-h-[800px] w-full flex-col bg-light lg:h-[800px]"
     >
-      <div className="layout-container flex flex-1 flex-col py-16 md:py-20">
+      <div className="layout-container flex flex-col pt-[120px] pb-16 md:pb-20">
         <Reveal>
           <header className="flex flex-col items-center gap-2 text-center text-dark">
             {eyebrow && (
@@ -35,15 +36,15 @@ export function EventsSteps({ data, locale }: Props) {
               </p>
             )}
             {title && (
-              <h2 className="max-w-3xl text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl">
+              <h2 className="max-w-3xl text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]">
                 {title}
               </h2>
             )}
           </header>
         </Reveal>
 
-        {/* Lista kroków — wyśrodkowana pionowo w przestrzeni pod nagłówkiem */}
-        <Reveal delay={120} className="flex flex-1 items-center">
+        {/* Lista kroków — 40px pod nagłówkiem (nie wyśrodkowana pionowo). */}
+        <Reveal delay={120} className="mt-10">
           <ol className="w-full">
             {steps.map((step, i) => {
               const stepTitle = pickLocale(step.title, locale)
@@ -68,12 +69,19 @@ export function EventsSteps({ data, locale }: Props) {
                     )}
                   </div>
 
-                  {/* Opis — przygaszony (opacity 0.25) domyślnie na lg, rozjaśnia się
-                      do 1 na hover; na mobile (brak hovera) zawsze pełna widoczność. */}
+                  {/* Opis — DOMYŚLNIE ZWINIĘTY na lg (grid-rows 0fr → wysokość 0, widać
+                      tylko numer + tytuł). Na hover kroku wiersz ROZSZERZA się
+                      (0fr → 1fr, robi miejsce), a opis pojawia się przez FADE (opacity
+                      0 → 1) z opóźnieniem, żeby wjeżdżał po rozsunięciu — bez efektu
+                      "reveal"/odsłaniania spod maski. Mobile (brak hovera) = widoczny. */}
                   {text && (
-                    <p className="pt-4 text-base text-dark-gold opacity-100 transition-opacity duration-500 ease-out lg:opacity-25 lg:group-hover:opacity-100">
-                      {text}
-                    </p>
+                    <div className="grid grid-rows-[1fr] transition-[grid-template-rows] duration-300 ease-out lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr]">
+                      <div className="overflow-hidden">
+                        <p className="pt-4 text-base text-dark-gold transition-opacity duration-300 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-hover:delay-200">
+                          {text}
+                        </p>
+                      </div>
+                    </div>
                   )}
                 </li>
               )

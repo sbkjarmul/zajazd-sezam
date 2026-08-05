@@ -18,10 +18,11 @@ function splitTitle(raw: string | null | undefined) {
   return [raw.slice(0, idx), raw.slice(idx + 3)] as const
 }
 
-// Redesign wg Figma 971:1214 — sekcja "NASZE MENU" na jasnym tle. Każda
+// Redesign wg Figma 1010:2 — sekcja "NASZE MENU" na jasnym tle. Każda
 // kategoria to wiersz: po lewej nazwa (ruby-light, font-black uppercase) +
-// ewentualny podtytuł, po prawej lista pozycji (uppercase, ruby-light). Wiersze
-// rozdzielone pełnej szerokości liniami 4px (ruby-light #1a2789 — wg Figmy).
+// ewentualny podtytuł, po prawej lista pozycji (uppercase, ruby-light, waga
+// regular). Wiersze rozdzielone pełnej szerokości liniami 1px (ruby-light
+// #1a2789 — wg Figmy).
 // Animacje: nagłówek fade, nazwy kategorii i pozycje odsłaniane spod maski
 // (RevealText mode="lines" — SplitText, linia wyjeżdża spod niewidzialnej maski).
 export function BistroMenuList({ categories, heading, locale }: Props) {
@@ -40,13 +41,13 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
         </RevealText>
       </div>
 
-      {/* Linie pełnej szerokości (full-bleed), 4px, ruby-light (#1a2789 — Figma). */}
-      <div className="border-ruby-light mt-10 border-t-4 md:mt-16">
+      {/* Linie pełnej szerokości (full-bleed), 1px, ruby-light (#1a2789 — Figma). */}
+      <div className="border-ruby-light mt-10 border-t md:mt-16">
         {rendered.map((category) => {
           const [name, subtitle] = splitTitle(pickLocale(category.name, locale))
           const items = category.items ?? []
           return (
-            <div key={category._id} className="border-ruby-light border-b-4">
+            <div key={category._id} className="border-ruby-light border-b">
               <div
                 id={category.slug ?? undefined}
                 className="layout-container grid scroll-mt-32 grid-cols-1 gap-4 py-8 md:grid-cols-[1fr_minmax(0,436px)] md:items-start md:gap-16 md:py-10"
@@ -74,7 +75,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
                       mode="lines"
                       delay={idx * 0.08}
                       start="top 90%"
-                      className="text-lg leading-tight font-semibold tracking-tight uppercase md:text-xl"
+                      className="text-lg leading-tight font-normal tracking-tight uppercase md:text-xl"
                     >
                       {pickLocale(item.name, locale)}
                     </RevealText>

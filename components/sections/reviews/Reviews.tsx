@@ -35,17 +35,11 @@ export async function Reviews({ data, locale }: Props) {
 
   if (reviews.reviews.length === 0 && !title) return null
 
-  // Podsumowanie oceny: preferuj tresc z Sanity, w razie braku wylicz z mocka.
-  const ratingValue = data.ratingValue || `${reviews.rating.toFixed(1)}/5`
-  const ratingSource = data.ratingSource || 'Google'
-  const ratingCount =
-    pickLocale(data.ratingCount, locale) ||
-    (locale === 'pl'
-      ? `Na podstawie ${reviews.userRatingsTotal}+ opinii.`
-      : `Based on ${reviews.userRatingsTotal}+ reviews.`)
-
   return (
-    <section data-header-theme="light" className="bg-bg py-16 md:py-20">
+    <section
+      data-header-theme="light"
+      className="bg-bg flex min-h-[100svh] flex-col pt-[120px] pb-16 max-md:justify-start! md:block md:min-h-0 md:py-20"
+    >
       <div className="flex flex-col gap-10 md:gap-[54px]">
         <Reveal>
           <div className="layout-container">
@@ -58,16 +52,11 @@ export async function Reviews({ data, locale }: Props) {
               {title && (
                 <RevealText
                   as="h2"
-                  className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+                  className="text-text w-full text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]"
                 >
                   {title}
                 </RevealText>
               )}
-              <div className="text-text mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-base md:text-xl">
-                <span>{ratingValue}</span>
-                <span className="font-bold">{ratingSource}</span>
-                <span>{ratingCount}</span>
-              </div>
             </header>
           </div>
         </Reveal>

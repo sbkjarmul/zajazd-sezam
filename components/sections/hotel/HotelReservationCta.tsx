@@ -22,7 +22,7 @@ export function HotelReservationCta({ data, locale }: Props) {
     <section
       id="reservation"
       data-header-theme="dark"
-      className="text-text-inverse scroll-mt-24 py-20 md:py-32"
+      className="text-text-inverse py-20 md:py-32"
       style={{ background: 'var(--color-primary)' }}
     >
       <div className="layout-container grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-20">
