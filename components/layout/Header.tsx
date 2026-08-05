@@ -51,10 +51,16 @@ export function Header({
   nav,
   animateIn = false,
   animateInDelay = 0,
-  adaptive = false,
+  adaptive = true,
 }: Props) {
   const direction = useScrollDirection()
-  const { theme: activeTheme, surface: activeSurface } = useActiveHeaderTheme(adaptive)
+  // heroTheme = motyw startowy (fallback, gdy nic jeszcze nie wykryte / SSR) —
+  // strony z ciemnym hero mają heroTheme='dark', z jasnym 'light'.
+  const { theme: activeTheme, surface: activeSurface } = useActiveHeaderTheme(
+    adaptive,
+    48,
+    heroTheme,
+  )
   const t = useTranslations('common')
   const { openReservation, openBurger } = useUI()
   const pathname = usePathname()

@@ -30,7 +30,11 @@ export function EventsPromise({ data, locale }: Props) {
   if (!lead && !highlight && !tail) return null
 
   return (
-    <section className="bg-surface flex min-h-[800px] w-full items-center justify-end py-20 md:py-32">
+    <section
+      data-header-theme="light"
+      data-header-surface="#ffffff"
+      className="bg-surface flex min-h-[800px] w-full items-center justify-end py-20 md:py-32"
+    >
       <div className="layout-container flex flex-col gap-10">
         <Reveal>
           <p className="text-text text-xl leading-[1.2] font-normal tracking-[-0.03em] md:hidden">

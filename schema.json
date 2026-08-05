@@ -1027,6 +1027,14 @@
                 "of": {
                   "type": "object",
                   "attributes": {
+                    "title": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "inline",
+                        "name": "localeString"
+                      },
+                      "optional": true
+                    },
                     "text": {
                       "type": "objectAttribute",
                       "value": {

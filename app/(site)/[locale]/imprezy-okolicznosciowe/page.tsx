@@ -10,7 +10,7 @@ import { EventTypesReveal } from '@/components/sections/events/EventTypesReveal'
 import { EventsHalls } from '@/components/sections/events/EventsHalls'
 import { EventsHotelUpsell } from '@/components/sections/events/EventsHotelUpsell'
 import { EventsCatering } from '@/components/sections/events/EventsCatering'
-import { EventsReviews } from '@/components/sections/events/EventsReviews'
+import { Reviews } from '@/components/sections/reviews/Reviews'
 import { EventsSteps } from '@/components/sections/events/EventsSteps'
 import { EventsReservationCta } from '@/components/sections/events/EventsReservationCta'
 import { SnapController } from '@/components/SnapController'
@@ -66,7 +66,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
           locale={locale}
         />
         <EventsCatering data={page.cateringSection} locale={locale} />
-        <EventsReviews data={page.reviewsSection} locale={locale} />
+        <Reviews data={page.reviewsSection} locale={locale} />
         <EventsSteps data={page.stepsSection} locale={locale} />
         <EventsReservationCta data={page.reservationSection} settings={settings} locale={locale} />
         <Footer settings={settings} locale={locale} logoImage={logoImage} />

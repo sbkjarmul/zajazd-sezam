@@ -29,7 +29,7 @@ export function RestaurantFaq({ data, locale }: Props) {
   if (!items.length) return null
 
   return (
-    <section className="bg-bg py-16 md:py-24">
+    <section data-header-theme="light" className="bg-bg py-16 md:py-24">
       <div className="layout-container grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
         {heading && (
           <RevealText

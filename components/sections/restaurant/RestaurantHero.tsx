@@ -16,7 +16,7 @@ export function RestaurantHero({ data, locale }: Props) {
   const headline = pickLocale(data.heroHeadline, locale)
 
   return (
-    <section className="bg-bg relative w-full">
+    <section data-header-theme="light" className="bg-bg relative w-full">
       <div className="layout-container flex min-h-[60vh] flex-col justify-end pt-40 pb-10 md:min-h-[541px] md:pt-56 md:pb-12">
         {headline && (
           <Reveal>

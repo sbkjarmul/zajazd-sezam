@@ -19,7 +19,10 @@ export function BistroHero({ data, locale }: Props) {
   const images = (data.heroImages ?? []).filter((img) => img?.asset?.url)
 
   return (
-    <section className="bg-bg text-ruby-light pt-32 pb-12 md:pt-40 md:pb-20">
+    <section
+      data-header-theme="light"
+      className="bg-bg text-ruby-light pt-32 pb-12 md:pt-40 md:pb-20"
+    >
       <div className="layout-container flex flex-col items-center gap-10 md:gap-14">
         <div className="flex flex-col items-center gap-6 text-center md:gap-8">
           {headline && (

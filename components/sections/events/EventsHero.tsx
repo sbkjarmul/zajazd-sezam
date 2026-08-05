@@ -18,7 +18,10 @@ export function EventsHero({ data, locale }: Props) {
   const secondaryCta = pickLocale(data.secondaryCtaLabel, locale)
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden">
+    <section
+      data-header-theme="dark"
+      className="relative flex min-h-screen w-full flex-col justify-end overflow-hidden"
+    >
       {data.image ? (
         <HeroParallaxImage image={data.image} locale={locale} />
       ) : (

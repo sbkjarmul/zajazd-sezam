@@ -8,14 +8,12 @@ type Props = {
   locale: Locale
 }
 
-// Sekcja `h-[800px]` (desktop) na złotym tle. Nagłówek u góry (wyśrodkowany),
-// pod nim oś czasu:
-//  - desktop (`lg`): pozioma, pełnoszerokościowa linia z 3 kropkami w kolumnach,
-//    opis pod każdą kropką (do lewej),
-//  - mobile + tablet (`<lg`): pionowa linia przyklejona do lewej krawędzi (na całą
-//    wysokość sekcji), kropki na niej, a opis POZIOMO obok — po prawej od kropki.
-// Kropki na mobile/tablecie leżą na content-left `.layout-container` (16/64px) +
-// promień 7px → linia na 23px (mobile) / 71px (tablet).
+// Sekcja "Proces rezerwacji" na jasnym tle (Figma 1060:107). Nagłówek u góry
+// (wyśrodkowany), pod nim lista kroków rozdzielonych złotymi liniami. Każdy krok:
+//  - numer (accent, kursywa) przyklejony do lewej krawędzi, złoty,
+//  - nagłówek kroku (accent, kursywa) wyśrodkowany — WIDOCZNY domyślnie,
+//  - opis (16px, dark-gold) — DOMYŚLNIE PRZYGASZONY na desktopie (opacity 0.25),
+//    rozjaśnia się do 1 na hover (CSS-only). Na mobile (brak hovera) opis pełny.
 export function EventsSteps({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -25,18 +23,12 @@ export function EventsSteps({ data, locale }: Props) {
 
   return (
     <section
-      className="relative flex min-h-[800px] w-full flex-col lg:h-[800px]"
-      style={{ background: 'var(--color-gold)' }}
+      data-header-theme="light"
+      className="relative flex min-h-[800px] w-full flex-col bg-light lg:h-[800px]"
     >
-      {/* Mobile + tablet: pionowa linia przy lewej krawędzi, na całą wysokość sekcji */}
-      <div
-        aria-hidden
-        className="absolute inset-y-0 left-[23px] w-px bg-white/30 md:left-[71px] lg:hidden"
-      />
-
       <div className="layout-container flex flex-1 flex-col py-16 md:py-20">
         <Reveal>
-          <header className="flex flex-col items-center gap-3 text-center text-white">
+          <header className="flex flex-col items-center gap-2 text-center text-dark">
             {eyebrow && (
               <p className="text-base wide:text-lg tracking-normal uppercase leading-[normal]">
                 {eyebrow}
@@ -50,36 +42,43 @@ export function EventsSteps({ data, locale }: Props) {
           </header>
         </Reveal>
 
-        {/* Oś czasu — wyśrodkowana pionowo w przestrzeni pod nagłówkiem */}
+        {/* Lista kroków — wyśrodkowana pionowo w przestrzeni pod nagłówkiem */}
         <Reveal delay={120} className="flex flex-1 items-center">
-          <div className="relative w-full">
-            {/* Desktop: pozioma, pełnoszerokościowa linia przez środki kropek */}
-            <div
-              aria-hidden
-              className="absolute top-[7px] left-1/2 hidden h-px w-screen -translate-x-1/2 bg-white/30 lg:block"
-            />
-            <ol className="flex flex-col gap-y-24 md:gap-y-32 lg:grid lg:grid-cols-3 lg:gap-y-0">
-              {steps.map((step, i) => {
-                const text = pickLocale(step.text, locale)
-                return (
-                  <li
-                    key={i}
-                    className="flex items-start gap-5 lg:flex-col lg:gap-10"
-                  >
+          <ol className="w-full">
+            {steps.map((step, i) => {
+              const stepTitle = pickLocale(step.title, locale)
+              const text = pickLocale(step.text, locale)
+              return (
+                <li
+                  key={i}
+                  className="group relative border-b border-dark-gold py-8 text-center md:py-9"
+                >
+                  {/* Nagłówek + numer (numer wyrównany do środka nagłówka) */}
+                  <div className="relative">
                     <span
                       aria-hidden
-                      className="relative z-10 mt-1 block size-3.5 shrink-0 rounded-full bg-[var(--color-light)] lg:mx-auto lg:mt-0"
-                    />
-                    {text && (
-                      <p className="text-lg leading-[1.2] text-white/90 md:text-xl lg:max-w-xs">
-                        {text}
-                      </p>
+                      className="absolute top-1/2 left-0 -translate-y-1/2 font-accent text-2xl italic text-gold lg:text-[2rem]"
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {stepTitle && (
+                      <h3 className="font-accent text-3xl leading-[1.1] italic text-dark md:text-4xl lg:text-5xl">
+                        {stepTitle}
+                      </h3>
                     )}
-                  </li>
-                )
-              })}
-            </ol>
-          </div>
+                  </div>
+
+                  {/* Opis — przygaszony (opacity 0.25) domyślnie na lg, rozjaśnia się
+                      do 1 na hover; na mobile (brak hovera) zawsze pełna widoczność. */}
+                  {text && (
+                    <p className="pt-4 text-base text-dark-gold opacity-100 transition-opacity duration-500 ease-out lg:opacity-25 lg:group-hover:opacity-100">
+                      {text}
+                    </p>
+                  )}
+                </li>
+              )
+            })}
+          </ol>
         </Reveal>
       </div>
     </section>

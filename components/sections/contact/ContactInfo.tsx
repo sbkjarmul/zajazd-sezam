@@ -21,7 +21,7 @@ export function ContactInfo({ data, settings, locale }: Props) {
   const email = settings?.publicEmail ?? settings?.receptionEmail
 
   return (
-    <section className="bg-light py-20 md:py-32">
+    <section data-header-theme="light" className="bg-light py-20 md:py-32">
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col gap-4">
           {eyebrow && (

@@ -156,8 +156,11 @@ export const eventsPage = defineType({
             {
               type: 'object',
               name: 'step',
-              fields: [{ name: 'text', type: 'localeText', title: 'Treść kroku' }],
-              preview: { select: { title: 'text.pl' } },
+              fields: [
+                { name: 'title', type: 'localeString', title: 'Nagłówek kroku (accent)' },
+                { name: 'text', type: 'localeText', title: 'Opis kroku (widoczny na hover)' },
+              ],
+              preview: { select: { title: 'title.pl', subtitle: 'text.pl' } },
             },
           ],
         },

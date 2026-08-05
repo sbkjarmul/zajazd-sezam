@@ -19,7 +19,10 @@ export function RestaurantPitch({ data, locale }: Props) {
   const ctaLabel = pickLocale(data.ctaLabel, locale)
 
   return (
-    <section className="bg-bg flex min-h-[600px] items-center py-16 md:min-h-[800px] md:py-24">
+    <section
+      data-header-theme="light"
+      className="bg-bg flex min-h-[600px] items-center py-16 md:min-h-[800px] md:py-24"
+    >
       <div className="layout-container flex flex-col items-center gap-10 text-center">
         {text && (
           <RevealText

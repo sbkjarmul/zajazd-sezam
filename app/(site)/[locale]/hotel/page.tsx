@@ -9,7 +9,7 @@ import { HotelQuote } from '@/components/sections/hotel/HotelQuote'
 import { HotelRoomsShowcase } from '@/components/sections/hotel/HotelRoomsShowcase'
 import { HotelAmenities } from '@/components/sections/hotel/HotelAmenities'
 import { HotelReservationCta } from '@/components/sections/hotel/HotelReservationCta'
-import { HotelReviews } from '@/components/sections/hotel/HotelReviews'
+import { Reviews } from '@/components/sections/reviews/Reviews'
 import { HotelDiscover } from '@/components/sections/hotel/HotelDiscover'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -60,12 +60,12 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
       <HotelHero data={page.hero} locale={locale} />
       <HotelQuote data={page.quote} locale={locale} />
 
-      <div id="rooms" className="scroll-mt-24 bg-bg">
+      <div id="rooms" data-header-theme="light" className="scroll-mt-24 bg-bg">
         <HotelRoomsShowcase rooms={rooms} locale={locale} />
       </div>
 
       <HotelAmenities data={page.amenitiesSection} locale={locale} />
-      <HotelReviews data={page.reviewsSection} locale={locale} />
+      <Reviews data={page.reviewsSection} locale={locale} />
       <HotelDiscover data={page.discoverSection} locale={locale} />
       <HotelReservationCta data={page.reservationSection} locale={locale} />
       <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />

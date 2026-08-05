@@ -19,7 +19,7 @@ export function HotelDiscover({ data, locale }: Props) {
   if (!cards.length) return null
 
   return (
-    <section className="bg-bg py-20 md:py-32">
+    <section data-header-theme="light" className="bg-bg py-20 md:py-32">
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
           {eyebrow && (

@@ -18,7 +18,10 @@ export function BistroBanner({ text, hours, locale }: Props) {
   if (!value && !hoursValue) return null
 
   return (
-    <section className="bg-bg text-ruby-light flex items-center justify-center py-24 md:py-36">
+    <section
+      data-header-theme="light"
+      className="bg-bg text-ruby-light flex items-center justify-center py-24 md:py-36"
+    >
       <div className="layout-container flex flex-col items-center gap-8 text-center md:gap-10">
         {value && (
           <RevealText

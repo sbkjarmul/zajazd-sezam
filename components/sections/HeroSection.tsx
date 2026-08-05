@@ -57,10 +57,15 @@ function Headline({
   line1,
   connector,
   accent,
+  plain = false,
 }: {
   line1: string
   connector: string
   accent: string
+  // plain=true -> akcent renderowany zwyklym Interem (bez kursywy Westbourne).
+  // Desktop (Figma 930:6) uzywa akcentu; mobile (Figma 936:14) ma caly tytul w
+  // jednym kroju sans, bez kursywy - stad plain na wariancie mobilnym.
+  plain?: boolean
 }) {
   return (
     <>
@@ -68,7 +73,7 @@ function Headline({
       {line1 && <br />}
       {connector}
       {connector ? ' ' : ''}
-      <em className="font-accent font-normal italic">{accent}</em>
+      {plain ? accent : <em className="font-accent font-normal italic">{accent}</em>}
     </>
   )
 }
@@ -223,6 +228,7 @@ export function HeroSection({ data, locale }: Props) {
                   line1={mobAccent.line1}
                   connector={mobAccent.connector}
                   accent={mobAccent.accent}
+                  plain
                 />
               </span>
             )}

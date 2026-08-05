@@ -16,7 +16,11 @@ export function EventsCatering({ data, locale }: Props) {
   const description = pickLocale(data.description, locale)
 
   return (
-    <section className="bg-surface pt-20 md:py-32">
+    <section
+      data-header-theme="light"
+      data-header-surface="#ffffff"
+      className="bg-surface pt-20 md:py-32"
+    >
       <div className="layout-container grid grid-cols-1 items-center gap-12 px-0 lg:grid-cols-2">
         <Reveal className="flex flex-col gap-10 px-4 md:px-16">
           <div className="flex flex-col gap-4">

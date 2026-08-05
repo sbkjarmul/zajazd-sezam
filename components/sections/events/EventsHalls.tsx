@@ -16,7 +16,7 @@ export function EventsHalls({ section, halls, locale }: Props) {
   const description = pickLocale(section?.description, locale)
 
   return (
-    <section id="halls" className="bg-surface py-20 md:py-32">
+    <section id="halls" data-header-theme="light" data-header-surface="#ffffff" className="bg-surface py-20 md:py-32">
       <div className="layout-container">
         <Reveal>
           <header className="flex flex-col gap-4">

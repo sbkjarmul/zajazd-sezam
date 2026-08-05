@@ -21,7 +21,7 @@ export function HotelAmenities({ data, locale }: Props) {
   const items = data.items ?? []
 
   return (
-    <section id="amenities" className="bg-bg scroll-mt-24 py-20 md:py-32">
+    <section id="amenities" data-header-theme="light" className="bg-bg scroll-mt-24 py-20 md:py-32">
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
           {eyebrow && (

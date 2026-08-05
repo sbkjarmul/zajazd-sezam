@@ -29,7 +29,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
   if (rendered.length === 0) return null
 
   return (
-    <section className="bg-bg text-ruby-light">
+    <section data-header-theme="light" className="bg-bg text-ruby-light">
       <div className="layout-container pt-16 md:pt-24">
         <RevealText
           as="h2"

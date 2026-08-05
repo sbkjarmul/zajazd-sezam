@@ -16,7 +16,7 @@ export function ContactHero({ image, locale }: Props) {
   if (!image) return null
 
   return (
-    <section className="relative h-[400px] w-full overflow-hidden">
+    <section data-header-theme="dark" className="relative h-[400px] w-full overflow-hidden">
       <HeroParallaxImage image={image} locale={locale} imageClassName="object-bottom" />
     </section>
   )

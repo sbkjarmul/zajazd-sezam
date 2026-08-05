@@ -22,7 +22,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
   const phone = settings?.phone
 
   return (
-    <section className="bg-bg w-full py-24 md:py-40">
+    <section data-header-theme="light" className="bg-bg w-full py-24 md:py-40">
       <div className="layout-container flex max-w-[1280px] flex-col items-center gap-10 px-4 text-center md:!px-4">
         <Reveal>
           <header className="flex flex-col items-center gap-4">

@@ -266,13 +266,12 @@ async function main() {
       steps: [
         {
           _key: 'step-1',
-          text: lt(
-            'Zadzwoń lub napisz. Ustalimy termin i szczegóły.',
-            'Call or write. We’ll agree on the date and details.',
-          ),
+          title: ls('Zadzwoń lub napisz', 'Call or write'),
+          text: lt('Ustalimy termin i szczegóły.', 'We’ll agree on the date and details.'),
         },
         {
           _key: 'step-2',
+          title: ls('Odzwonimy do Ciebie', 'We’ll call you back'),
           text: lt(
             'Dopasujemy ofertę do Twoich potrzeb i budżetu.',
             'We tailor the offer to your needs and budget.',
@@ -280,9 +279,10 @@ async function main() {
         },
         {
           _key: 'step-3',
+          title: ls('Zarezerwuj i świętuj', 'Book and celebrate'),
           text: lt(
-            'Przyjedź i świętuj. Resztą zajmuje się Sezam.',
-            'Just arrive and celebrate. Sezam handles the rest.',
+            'Przyjedź na gotowe. Resztą zajmuje się Sezam.',
+            'Just arrive — Sezam handles the rest.',
           ),
         },
       ],

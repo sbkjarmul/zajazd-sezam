@@ -41,6 +41,7 @@ export async function RestaurantReservation({
 
   return (
     <section
+      data-header-theme="dark"
       className="text-text-inverse w-full py-20 md:py-24"
       style={{ background: 'var(--color-dark-ruby)' }}
     >

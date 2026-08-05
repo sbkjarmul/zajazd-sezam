@@ -5,12 +5,11 @@ import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { AboutSection } from '@/components/sections/AboutSection'
-import { ServicesIntro } from '@/components/sections/ServicesIntro'
 import { EventsBlock } from '@/components/sections/EventsBlock'
 import { RestaurantBlock } from '@/components/sections/RestaurantBlock'
 import { HotelBlock } from '@/components/sections/HotelBlock'
 import { BistroBlock } from '@/components/sections/BistroBlock'
-import { ReviewsBlock } from '@/components/sections/ReviewsBlock'
+import { Reviews } from '@/components/sections/reviews/Reviews'
 import { ContactBlock } from '@/components/sections/ContactBlock'
 import { SectionConnector } from '@/components/sections/SectionConnector'
 import { Footer } from '@/components/layout/Footer'
@@ -55,24 +54,25 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
 
   return (
     <>
-      <Header logoImage={logoImage} locale={locale} animateIn animateInDelay={1.1} adaptive />
+      <Header
+        heroTheme="light"
+        logoImage={logoImage}
+        locale={locale}
+        animateIn
+        animateInDelay={1.1}
+      />
       <SnapController />
       <div className="snap-panels">
         <HeroSection data={home?.hero ?? null} locale={locale} />
         <AboutSection data={home?.aboutSection ?? null} locale={locale} />
-        <ServicesIntro data={home?.servicesIntro ?? null} locale={locale} />
-        <EventsBlock
-          data={home?.eventsBlock ?? null}
-          servicesData={home?.servicesIntro ?? null}
-          locale={locale}
-        />
+        <EventsBlock data={home?.eventsBlock ?? null} locale={locale} />
         <SectionConnector gradient={CONNECTOR_IMPREZY_RESTAURACJA} />
         <RestaurantBlock data={home?.restaurantBlock ?? null} locale={locale} />
         <SectionConnector gradient={CONNECTOR_RESTAURACJA_HOTEL} />
         <HotelBlock data={home?.hotelBlock ?? null} locale={locale} />
         <SectionConnector gradient={CONNECTOR_HOTEL_BISTRO} />
         <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
-        <ReviewsBlock data={home?.reviewsBlock ?? null} locale={locale} />
+        <Reviews data={home?.reviewsBlock ?? null} locale={locale} />
         <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />
         <Footer settings={settings} locale={locale} logoImage={logoImage} />
       </div>

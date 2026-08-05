@@ -37,7 +37,7 @@ export function AboutSection({ data, locale }: Props) {
         data-header-surface="#ffffff"
         className="text-text relative w-full bg-white lg:hidden!"
       >
-        <div className="layout-container mb-auto flex flex-col gap-10 pt-[120px] pb-20">
+        <div className="layout-container flex flex-col items-center gap-10 py-24 text-center">
           {introMobile && (
             <p className="text-[24px] leading-[1.2] font-normal">
               <ColorizeText text={introMobile} />
@@ -51,7 +51,7 @@ export function AboutSection({ data, locale }: Props) {
                   value={stat.value ?? ''}
                   label={pickLocale(stat.label, locale) ?? ''}
                   delayMs={i * STAT_STAGGER_MS}
-                  className="flex flex-col items-start gap-1"
+                  className="flex flex-col items-center gap-1"
                   valueClassName="text-text text-[40px] leading-none font-normal tracking-[-0.04em]"
                   labelClassName="text-text text-base"
                 />

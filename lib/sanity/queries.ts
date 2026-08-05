@@ -239,7 +239,7 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
     reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },
     stepsSection {
       eyebrow, title,
-      steps[]{ text }
+      steps[]{ title, text }
     },
     reservationSection {
       eyebrow, title, description,

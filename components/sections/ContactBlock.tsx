@@ -43,7 +43,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
             {title && (
               <RevealText
                 as="h2"
-                className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+                className="text-text-inverse text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
               >
                 {title}
               </RevealText>
@@ -98,7 +98,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
           {phone && (
             <a
               href={`tel:${phone.replace(/\s/g, '')}`}
-              className="bg-text-inverse text-text hover:bg-text-inverse/90 my-8 inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px] lg:hidden"
+              className="bg-accent text-accent-foreground hover:bg-accent-hover my-8 inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px] lg:hidden"
             >
               {locale === 'pl' ? 'Zadzwoń' : 'Call us'}
             </a>
@@ -106,7 +106,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
         </Reveal>
 
         <Reveal delay={120} className="flex justify-center lg:flex-1">
-          <div className="relative aspect-square w-4/5 overflow-hidden rounded-full">
+          <div className="relative aspect-square w-full overflow-hidden rounded-full lg:w-4/5">
             <RevealImage
               image={data.image}
               locale={locale}

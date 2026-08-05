@@ -22,7 +22,7 @@ export function RestaurantAmbiance({ data, settings, locale }: Props) {
   const phone = settings?.phone
 
   return (
-    <section className="bg-bg pt-32 md:pt-40 md:pb-20">
+    <section data-header-theme="light" className="bg-bg pt-32 md:pt-40 md:pb-20">
       <div className="layout-container flex flex-col gap-10">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           <div className="md:col-span-7">

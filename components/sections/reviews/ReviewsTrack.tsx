@@ -7,7 +7,7 @@ import type { GoogleReview } from '@/lib/googleReviews'
 import type { Locale } from '@/i18n/routing'
 
 // Predkosc dryfu tasmy opinii (px/s) - spokojny, ciagly ruch.
-const SPEED = 35
+const SPEED = 40
 // Ile zestawow opinii sklejonych w tasme (>=2 dla bezszwowej petli).
 const COPIES = 3
 
@@ -16,10 +16,11 @@ type Props = {
   locale: Locale
 }
 
-// Mobilna tasma opinii - karty same przesuwaja sie w lewo w nieskonczonej,
-// bezszwowej petli (GSAP; ten sam wzorzec co HallsMarquee). `prefers-reduced-motion`
-// -> bez animacji (statyczny, przewijalny rzad). Desktop uzywa ReviewsCarousel.
-export function ReviewsMarquee({ reviews, locale }: Props) {
+// Tasma opinii - karty same przesuwaja sie w PRAWO w nieskonczonej, bezszwowej
+// petli (GSAP). Wspolny wzorzec dla wszystkich stron (home / hotel / imprezy).
+// Pauza na hover (desktop) i dotkniecie (mobile) - mozna doczytac opinie.
+// `prefers-reduced-motion: reduce` -> bez animacji (statyczny rzad).
+export function ReviewsTrack({ reviews, locale }: Props) {
   const rootRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const tweenRef = useRef<gsap.core.Tween | null>(null)
@@ -35,10 +36,12 @@ export function ReviewsMarquee({ reviews, locale }: Props) {
       const setWidth = track.scrollWidth / COPIES
       if (!setWidth) return
 
+      // Ruch w PRAWO: start przesuniety o -setWidth, animacja do 0, powrot do
+      // -setWidth (identyczny zestaw) -> bezszwowa petla przesuwajaca w prawo.
       const tween = gsap.fromTo(
         track,
-        { x: 0 },
-        { x: -setWidth, duration: setWidth / SPEED, ease: 'none', repeat: -1 },
+        { x: -setWidth },
+        { x: 0, duration: setWidth / SPEED, ease: 'none', repeat: -1 },
       )
       tweenRef.current = tween
       return () => {
@@ -49,7 +52,6 @@ export function ReviewsMarquee({ reviews, locale }: Props) {
     { scope: rootRef, dependencies: [reviews.length] },
   )
 
-  // Dotkniecie zatrzymuje tasme (mozna doczytac opinie), puszczenie wznawia.
   const pause = () => tweenRef.current?.pause()
   const resume = () => tweenRef.current?.resume()
 
@@ -59,24 +61,20 @@ export function ReviewsMarquee({ reviews, locale }: Props) {
   return (
     <div
       ref={rootRef}
-      className="-mx-4 overflow-hidden"
+      className="overflow-hidden"
+      onPointerEnter={pause}
+      onPointerLeave={resume}
       onPointerDown={pause}
       onPointerUp={resume}
-      onPointerLeave={resume}
       onPointerCancel={resume}
     >
       <div
         ref={trackRef}
-        className="flex w-max [transform:translateZ(0)] pl-4 will-change-transform"
+        className="flex w-max px-4 [transform:translateZ(0)] will-change-transform"
       >
         {sets.map((_, s) =>
           reviews.map((review, i) => (
-            <MarqueeReviewCard
-              key={`${s}-${i}`}
-              review={review}
-              locale={locale}
-              aria-hidden={s > 0}
-            />
+            <ReviewCard key={`${s}-${i}`} review={review} locale={locale} aria-hidden={s > 0} />
           )),
         )}
       </div>
@@ -84,7 +82,7 @@ export function ReviewsMarquee({ reviews, locale }: Props) {
   )
 }
 
-function MarqueeReviewCard({
+function ReviewCard({
   review,
   locale,
   ...rest
@@ -96,14 +94,25 @@ function MarqueeReviewCard({
   const time = review.relativeTimeDescription[locale]
   return (
     <article
-      className="border-border-subtle mr-4 flex h-[340px] w-[300px] shrink-0 flex-col justify-between rounded-2xl border p-6"
+      className="border-border-subtle bg-surface mr-4 flex h-[340px] w-[300px] shrink-0 flex-col justify-between rounded-2xl border p-6 md:mr-6 md:h-[360px] md:w-[380px] md:p-8"
       {...rest}
     >
-      <p className="text-text line-clamp-[9] text-base leading-[1.4]">{text}</p>
+      <p className="text-text line-clamp-[8] text-base leading-[1.4]">{text}</p>
       <div className="flex items-start gap-3">
         <Avatar name={review.authorName} photoUrl={review.profilePhotoUrl} />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className="text-text text-base font-bold">{review.authorName}</span>
+          {review.authorUrl ? (
+            <a
+              href={review.authorUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text text-base font-bold underline-offset-2 hover:underline"
+            >
+              {review.authorName}
+            </a>
+          ) : (
+            <span className="text-text text-base font-bold">{review.authorName}</span>
+          )}
           <span className="text-gray text-xs">{time}</span>
         </div>
       </div>
@@ -118,7 +127,7 @@ function Avatar({ name, photoUrl }: { name: string; photoUrl?: string }) {
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={photoUrl}
-        alt=""
+        alt={name}
         width={40}
         height={40}
         className="size-10 shrink-0 rounded-full object-cover"

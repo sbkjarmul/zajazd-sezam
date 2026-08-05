@@ -112,7 +112,7 @@ export function HotelBlock({ data, locale }: Props) {
             {title && (
               <RevealText
                 as="h2"
-                className="text-text text-3xl leading-none font-normal tracking-tight md:text-4xl lg:text-[48px] lg:tracking-[-3px]"
+                className="text-text text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
               >
                 {title}
               </RevealText>

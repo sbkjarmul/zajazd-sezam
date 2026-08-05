@@ -107,7 +107,7 @@ export function RestaurantBlock({ data, locale }: Props) {
             {title && (
               <RevealText
                 as="h2"
-                className="max-w-[14ch] text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+                className="max-w-[14ch] text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
               >
                 {titleNoOrphans}
               </RevealText>

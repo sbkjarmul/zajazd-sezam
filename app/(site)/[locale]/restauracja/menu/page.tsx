@@ -58,7 +58,7 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
       />
       <MenuHero data={page.pageIntro} locale={locale} />
 
-      <div id="menu" className="bg-bg pb-12 md:pb-16">
+      <div id="menu" data-header-theme="light" className="bg-bg pb-12 md:pb-16">
         {categories.map((category) => (
           <MenuCategoryColumns key={category._id} category={category} locale={locale} />
         ))}

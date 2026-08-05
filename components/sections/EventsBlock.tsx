@@ -9,10 +9,6 @@ import { SectionBleedImage } from './SectionBleedImage'
 
 type Props = {
   data: NonNullable<HOMEPAGE_QUERY_RESULT>['eventsBlock']
-  // Naglowek „Odkryj Sezam" (ServicesIntro) - na mobile lezy w TYM samym panelu
-  // snap co Imprezy (krotka sekcja uslug nie zasluguje na wlasny pelny ekran).
-  // Na desktopie ServicesIntro renderuje sie osobno (patrz ServicesIntro).
-  servicesData?: NonNullable<HOMEPAGE_QUERY_RESULT>['servicesIntro']
   locale: Locale
 }
 
@@ -27,42 +23,25 @@ const IMPREZY_GRADIENT =
 // w Sanity, opis+CTA (flex-1) automatycznie wypełnia cały rząd.
 // Poniżej lg: bloki ułożone pionowo (content → obraz) — obraz pod tekstem
 // dzięki order-last; na lg wraca do DOM order (obraz po lewej).
-export function EventsBlock({ data, servicesData, locale }: Props) {
+export function EventsBlock({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
   const title = pickLocale(data.title, locale)
   const description = pickLocale(data.description, locale)
   const ctaLabel = pickLocale(data.ctaLabel, locale)
-  const servicesEyebrow = pickLocale(servicesData?.eyebrow, locale)
-  const servicesTitle = pickLocale(servicesData?.title, locale)
 
   return (
     <>
-      {/* MOBILE (Figma 936:47 + 936:51) - JEDEN panel snap: naglowek uslug
-          „Odkryj Sezam" (wysrodkowany) + Imprezy (do lewej) + zdjecie u dolu.
-          Tresc dosunieta do gory (mb-auto) - tekst lezy na kremowym gradiencie,
-          a na samym zdjeciu ląduje dopiero button. `lg:hidden!` bije snap. */}
+      {/* MOBILE (Figma 936:51) - panel snap: Imprezy (do lewej) + zdjecie u dolu.
+          Tresc dosunieta do gory - tekst lezy na kremowym gradiencie, a na samym
+          zdjeciu ląduje dopiero button. `lg:hidden!` bije snap. */}
       <section
         data-header-theme="light"
         className="bg-bg text-text relative flex w-full flex-col overflow-hidden lg:hidden!"
       >
         <div className="layout-container relative z-10 flex flex-col pt-[120px]">
-          {/* Naglowek uslug „Odkryj Sezam" - wysrodkowany */}
-          {(servicesEyebrow || servicesTitle) && (
-            <Reveal className="flex flex-col items-center gap-4 text-center">
-              {servicesEyebrow && (
-                <p className="text-accent text-base tracking-normal uppercase">{servicesEyebrow}</p>
-              )}
-              {servicesTitle && (
-                <h2 className="text-text text-4xl leading-none font-normal tracking-[-0.03em]">
-                  {servicesTitle}
-                </h2>
-              )}
-            </Reveal>
-          )}
-
-          {/* Imprezy - do lewej, 64px pod uslugami */}
-          <div className="mt-16 flex flex-col gap-10">
+          {/* Imprezy - do lewej */}
+          <div className="flex flex-col gap-10">
             <Reveal className="flex flex-col gap-2">
               {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
               {title && (
@@ -120,7 +99,7 @@ export function EventsBlock({ data, servicesData, locale }: Props) {
               {title && (
                 <RevealText
                   as="h2"
-                  className="text-text text-3xl leading-none font-normal tracking-tight md:text-5xl md:tracking-[-0.03em] lg:text-6xl"
+                  className="text-text text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]"
                 >
                   {title}
                 </RevealText>

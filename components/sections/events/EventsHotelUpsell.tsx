@@ -23,6 +23,7 @@ export function EventsHotelUpsell({ data, image, locale }: Props) {
 
   return (
     <section
+      data-header-theme="dark"
       className="text-text-inverse relative flex min-h-[max(100svh,800px)] w-full items-center overflow-hidden py-24"
       style={{ background: 'var(--color-dark-ruby)' }}
     >

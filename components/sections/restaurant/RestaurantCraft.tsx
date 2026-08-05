@@ -29,7 +29,7 @@ export function RestaurantCraft({ data, locale }: Props) {
     'border-ruby text-ruby hover:bg-ruby hover:text-light inline-flex h-[64px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto'
 
   return (
-    <section className="bg-bg py-10 md:py-16">
+    <section data-header-theme="light" className="bg-bg py-10 md:py-16">
       {/* Mobile + tablet: heading → primary (mobile full-bleed) → opis → button → secondary (mobile, po buttonie) */}
       <div className="layout-container flex flex-col gap-10 md:gap-12 lg:hidden">
         {title && (
