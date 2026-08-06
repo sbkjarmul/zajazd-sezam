@@ -21,10 +21,12 @@ export function HotelDiscover({ data, locale }: Props) {
   return (
     <section
       data-header-theme="light"
-      // Panel snapu 100svh z trescia wysrodkowana w pionie (justify-content:center
-      // z `.snap-panels > section`). Tresc jest nizsza niz ekran, wiec centrowanie
-      // trzyma ja z dala od fixed headera - bez potrzeby gornego paddingu.
-      className="bg-bg py-16 md:py-20"
+      // Panel snapu 100svh (min-height z `.snap-panels > section`) z trescia
+      // wysrodkowana w pionie. Desktop (md+): tresc miesci sie w kadrze, centrowanie
+      // trzyma ja z dala od fixed headera. Mobile: karty (aspect-square + tekst) sa
+      // wyzsze niz ekran, wiec tresc wyplywa do gory - pt-[120px] daje odstep pod
+      // fixed headerem.
+      className="bg-bg pt-[120px] pb-16 md:py-20"
     >
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
@@ -41,7 +43,7 @@ export function HotelDiscover({ data, locale }: Props) {
         {/* Poziomy slider: karty w jednym rzedzie, snap-x, swipe/scroll w poziomie.
             Szerokosci: mobile ~80% (podglad kolejnej), sm 45%, lg 4 karty na ekran
             (jak dawna siatka grid-cols-4, gap-6 = 1.5rem -> 3 przerwy = 4.5rem). */}
-        <div className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-6 px-6 pb-4 [scrollbar-width:none] md:mx-0 md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-4 px-4 pb-4 [scrollbar-width:none] md:mx-0 md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden">
           {cards.map((card, i) => {
             const cardEyebrow = pickLocale(card.eyebrow, locale)
             const cardDesc = pickLocale(card.description, locale)

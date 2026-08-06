@@ -55,7 +55,7 @@ export function ContactInfo({ data, settings, locale }: Props) {
       <Reveal className="flex flex-col items-start gap-16 md:gap-24">
         {phoneLines.length > 0 && (
           <div className="grid grid-cols-[auto_auto] items-center gap-x-8 gap-y-4 sm:gap-x-16 md:gap-x-28 md:gap-y-5">
-            <span aria-hidden className="hidden md:block" />
+            <span aria-hidden className="block" />
             {phonesLabel && (
               <p className="text-sm tracking-normal uppercase md:text-base">{phonesLabel}</p>
             )}

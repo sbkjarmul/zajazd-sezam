@@ -177,6 +177,32 @@ function LightboxContent({
     setIndex((i) => (i - 1 + total) % total)
   }, [total])
 
+  // Swipe palcem (mobile/touch) — przełącza kadr po poziomym przeciągnięciu.
+  // Rejestrujemy tylko gest przeważająco poziomy (żeby nie kolidował z pionowym
+  // scrollem strony), z progiem długości, by przypadkowy tap nie zmieniał kadru.
+  const touchStart = useRef<{ x: number; y: number } | null>(null)
+  const SWIPE_THRESHOLD = 40
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchStart.current = { x: t.clientX, y: t.clientY }
+  }, [])
+
+  const onTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const start = touchStart.current
+      touchStart.current = null
+      if (!start || total < 2) return
+      const t = e.changedTouches[0]
+      const dx = t.clientX - start.x
+      const dy = t.clientY - start.y
+      if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+      if (dx < 0) goNext()
+      else goPrev()
+    },
+    [goNext, goPrev, total],
+  )
+
   // Klawiatura: strzałki przełączają, ESC obsługuje Radix.
   useEffect(() => {
     function handle(e: KeyboardEvent) {
@@ -266,7 +292,12 @@ function LightboxContent({
           xPercent = -pos*100 przesuwa o pełny kadr. Skrajne slajdy to klony
           (bookendy) dla płynnego zawinięcia „w kółko". Pozycję startową ustawia
           setTrackRef (GSAP przed paintem) — bez inline transformu React. */}
-      <div ref={setTrackRef} className="flex h-full w-full will-change-transform">
+      <div
+        ref={setTrackRef}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        className="flex h-full w-full touch-pan-y will-change-transform"
+      >
         {slides.map((s, i) => (
           <LightboxSlide
             key={i}

@@ -29,7 +29,7 @@ export function BistroHero({ data, locale }: Props) {
             <RevealText
               as="h1"
               mode="fade"
-              className="text-ruby-light text-[clamp(34px,6.5vw,64px)] leading-[1.05] font-black tracking-tight whitespace-pre-line uppercase md:tracking-[-0.02em]"
+              className="text-ruby-light text-[clamp(34px,6.5vw,64px)] leading-[1.1] font-black tracking-tight whitespace-pre-line uppercase md:tracking-[-0.02em]"
             >
               {headline}
             </RevealText>
@@ -39,7 +39,7 @@ export function BistroHero({ data, locale }: Props) {
               as="p"
               mode="fade"
               delay={0.1}
-              className="text-ruby-light/90 max-w-[820px] text-base leading-[1.5] font-normal whitespace-pre-line md:text-lg"
+              className="text-ruby-light/90 max-w-[820px] text-base leading-[1.1] font-normal whitespace-pre-line md:text-lg"
             >
               {intro}
             </RevealText>

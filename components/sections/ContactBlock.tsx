@@ -29,7 +29,7 @@ export async function ContactBlock({ data, settings, locale }: Props) {
   return (
     <section
       data-header-theme="dark"
-      className="text-text-inverse py-16 md:py-20"
+      className="text-text-inverse pt-[120px] pb-16 md:py-20"
       style={{ background: 'var(--color-primary)' }}
     >
       <div className="layout-container flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-20">

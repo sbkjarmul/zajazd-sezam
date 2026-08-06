@@ -27,7 +27,7 @@ export function BistroBanner({ text, hours, locale }: Props) {
           <RevealText
             as="p"
             mode="fade"
-            className="text-ruby-light text-4xl leading-none font-black tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]"
+            className="text-ruby-light text-4xl leading-[1.1] font-black tracking-tight uppercase md:text-6xl md:tracking-[-0.03em] lg:text-[80px]"
           >
             {value}
           </RevealText>
@@ -37,7 +37,7 @@ export function BistroBanner({ text, hours, locale }: Props) {
             as="p"
             mode="fade"
             delay={0.1}
-            className="text-ruby-light/90 mx-auto max-w-2xl text-lg leading-[1.5] font-normal whitespace-pre-line md:text-xl"
+            className="text-ruby-light/90 mx-auto max-w-2xl text-lg leading-[1.1] font-normal whitespace-pre-line md:text-xl"
           >
             {hoursValue}
           </RevealText>

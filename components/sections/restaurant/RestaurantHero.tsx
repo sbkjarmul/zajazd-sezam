@@ -17,10 +17,10 @@ export function RestaurantHero({ data, locale }: Props) {
 
   return (
     <section data-header-theme="light" className="bg-bg relative w-full">
-      <div className="layout-container flex min-h-[60vh] flex-col justify-end pt-40 pb-10 md:min-h-[541px] md:pt-56 md:pb-12">
+      <div className="layout-container flex min-h-[48vh] flex-col justify-end pt-32 pb-10 md:min-h-[541px] md:pt-56 md:pb-12">
         {headline && (
           <Reveal>
-            <h1 className="font-accent text-ruby text-[clamp(56px,13vw,160px)] leading-[0.9] tracking-[-0.01em] not-italic">
+            <h1 className="font-accent text-ruby text-[clamp(72px,18vw,160px)] leading-[0.9] tracking-[-0.01em] not-italic">
               <AccentText text={headline} />
             </h1>
           </Reveal>

@@ -35,7 +35,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
         <RevealText
           as="h2"
           mode="fade"
-          className="text-ruby-light text-center text-[clamp(44px,9vw,110px)] leading-none font-black tracking-tight uppercase md:tracking-[-0.03em]"
+          className="text-ruby-light text-center text-[clamp(44px,9vw,110px)] leading-[1.1] font-black tracking-tight uppercase md:tracking-[-0.03em]"
         >
           {heading}
         </RevealText>
@@ -56,12 +56,12 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
                   <RevealText
                     as="h3"
                     mode="lines"
-                    className="text-ruby-light text-3xl leading-none font-black tracking-tight uppercase md:text-4xl md:tracking-[-0.02em] lg:text-[64px]"
+                    className="text-ruby-light text-3xl leading-[1.1] font-black tracking-tight uppercase md:text-4xl md:tracking-[-0.02em] lg:text-[64px]"
                   >
                     {name}
                   </RevealText>
                   {subtitle && (
-                    <p className="text-ruby-light text-base font-normal tracking-normal uppercase md:text-lg">
+                    <p className="text-ruby-light text-base leading-[1.1] font-normal tracking-normal uppercase md:text-lg">
                       {subtitle}
                     </p>
                   )}
@@ -75,7 +75,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
                       mode="lines"
                       delay={idx * 0.08}
                       start="top 90%"
-                      className="text-lg leading-tight font-normal tracking-tight uppercase md:text-xl"
+                      className="text-lg leading-[1.1] font-normal tracking-tight uppercase md:text-xl"
                     >
                       {pickLocale(item.name, locale)}
                     </RevealText>

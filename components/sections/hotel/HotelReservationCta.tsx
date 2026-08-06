@@ -25,7 +25,7 @@ export function HotelReservationCta({ data, locale }: Props) {
       className="text-text-inverse py-20 md:py-32"
       style={{ background: 'var(--color-primary)' }}
     >
-      <div className="layout-container grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-20">
+      <div className="layout-container grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">
         <div className="flex flex-col justify-center gap-10">
           <div className="flex flex-col gap-6">
             {eyebrow && (
@@ -55,12 +55,12 @@ export function HotelReservationCta({ data, locale }: Props) {
           )}
         </div>
 
-        <div className="relative hidden aspect-[4/3] overflow-hidden md:block md:aspect-auto md:min-h-[514px]">
+        <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:min-h-[514px]">
           <SanityImage
             image={data.image}
             locale={locale}
             fill
-            sizes="50vw"
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
         </div>

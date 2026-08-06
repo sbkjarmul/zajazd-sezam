@@ -24,13 +24,15 @@ export function HotelAmenities({ data, locale }: Props) {
     <section
       id="amenities"
       data-header-theme="light"
-      // Panel snapu = dokladnie 100svh (h-[100svh]!), tresc wysrodkowana w pionie
-      // (justify-content:center z `.snap-panels > section`). Content jest kompaktowy,
-      // wiec centrowanie trzyma naglowek ponizej fixed headera.
-      className="bg-bg h-[100svh]! overflow-hidden"
+      // Desktop (lg+): panel snapu = dokladnie 100svh (h-[100svh]!), 2-kolumnowa
+      // siatka miesci sie w kadrze, tresc wysrodkowana w pionie (justify-content:center
+      // z `.snap-panels > section`). Mobile/tablet (<lg): 6 itemow w 1 kolumnie
+      // przekracza ekran, wiec naturalna wysokosc (min-h 100svh z globalnej reguly) +
+      // pt-[120px] pod fixed headerem, bez clipowania.
+      className="bg-bg pt-[120px] pb-16 lg:h-[100svh]! lg:overflow-hidden lg:py-0"
     >
       <div className="layout-container flex flex-col gap-10">
-        <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
+        <header className="flex flex-col items-center gap-4 text-center lg:flex-row lg:items-baseline lg:justify-between lg:gap-12 lg:text-left">
           {eyebrow && (
             <Reveal>
               <p className="text-text wide:text-lg text-base tracking-normal uppercase">
@@ -56,12 +58,12 @@ export function HotelAmenities({ data, locale }: Props) {
                 <li className="border-text flex flex-col items-start justify-between gap-3 border-b pb-4 md:min-h-0">
                   <div className="flex flex-col gap-3">
                     {itemTitle && (
-                      <h3 className="text-text text-xl leading-none font-normal tracking-tight uppercase md:text-2xl md:tracking-[-0.03em] lg:text-[32px]">
+                      <h3 className="text-text text-base font-normal tracking-tight uppercase md:text-2xl md:leading-none md:tracking-[-0.03em] lg:text-[32px]">
                         {itemTitle}
                       </h3>
                     )}
                     {itemDesc && (
-                      <p className="text-text text-lg leading-[1.2]">
+                      <p className="text-text text-base md:text-lg md:leading-[1.2]">
                         {itemDesc}
                       </p>
                     )}
