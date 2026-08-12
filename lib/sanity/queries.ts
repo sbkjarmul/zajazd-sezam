@@ -263,14 +263,24 @@ export const CONTACT_PAGE_QUERY = defineQuery(`
   }
 `)
 
+// Meta strony galerii + LICZBA zdjec (bez samej tablicy — te dociagane sa
+// partiami przez GALLERY_IMAGES_QUERY, infinite scroll).
 export const GALLERY_PAGE_QUERY = defineQuery(`
   *[_type == "galleryPage" && _id == "galleryPage"][0]{
     headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
     eyebrow,
     title,
     intro,
-    images[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
+    "total": count(images),
     seo { ${SEO_FRAGMENT} }
+  }
+`)
+
+// Partia zdjec galerii — slice tablicy images[$start...$end] (koniec wylaczny).
+// Uzywane i przez pierwszy render (start 0), i przez Route Handler /api/gallery.
+export const GALLERY_IMAGES_QUERY = defineQuery(`
+  *[_type == "galleryPage" && _id == "galleryPage"][0].images[$start...$end]{
+    ${IMAGE_WITH_ALT_FRAGMENT}
   }
 `)
 

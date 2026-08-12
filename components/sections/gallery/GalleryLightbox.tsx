@@ -4,13 +4,13 @@ import { useCallback, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import type { Locale } from '@/i18n/routing'
-import type { GALLERY_PAGE_QUERY_RESULT } from '@/types/sanity'
+import type { GALLERY_IMAGES_QUERY_RESULT } from '@/types/sanity'
 
 // YARL doladowywany leniwie — chunk pobiera sie dopiero po pierwszym klik w kafel
 // (patrz `activated`). Wejscie na strone galerii = zero JS lightboxa.
 const LightboxInner = dynamic(() => import('./LightboxInner'), { ssr: false })
 
-type GalleryImage = NonNullable<NonNullable<GALLERY_PAGE_QUERY_RESULT>['images']>[number]
+type GalleryImage = NonNullable<GALLERY_IMAGES_QUERY_RESULT>[number]
 
 // Szerokosci generowane przez Sanity CDN dla srcSet — na mobile pobierany jest
 // maly wariant, na desktop wiekszy; `auto=format` = AVIF/WebP gdy wspierane.

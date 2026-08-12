@@ -1,9 +1,9 @@
 import { SanityImage } from '@/components/SanityImage'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import type { Locale } from '@/i18n/routing'
-import type { GALLERY_PAGE_QUERY_RESULT } from '@/types/sanity'
+import type { GALLERY_IMAGES_QUERY_RESULT } from '@/types/sanity'
 
-type GalleryImage = NonNullable<NonNullable<GALLERY_PAGE_QUERY_RESULT>['images']>[number]
+type GalleryImage = NonNullable<GALLERY_IMAGES_QUERY_RESULT>[number]
 
 type Props = {
   images: GalleryImage[]
@@ -14,16 +14,16 @@ type Props = {
 // obrazki leniwie przez next/image + blur-up z LQIP. Interakcja (otwarcie
 // podgladu) obsluzona delegacja w GalleryLightbox, ktory owija te siatke.
 //
-// Uklad: kwadraty (aspect-square). 2 kolumny (mobile) -> 4 (md) -> 6 (desktop).
+// Uklad: kwadraty (aspect-square). 4 kolumny (mobile+tablet) -> 6 (desktop).
 // "Lekko przesuniete" — co druga kolumna (parzyste kafle: nth-child(2n)) zjezdza
-// lekko w dol. Przy 2 / 4 / 6 kolumnach (wszystkie parzyste) nth-child(2n) trafia
-// dokladnie w kolumny parzyste, wiec offset czyta sie jak przesuniecie calych
-// kolumn, nie zygzak. Odstepy male (dense mozaika), offset delikatny.
+// lekko w dol. Przy 4 / 6 kolumnach (parzyste) nth-child(2n) trafia dokladnie w
+// kolumny parzyste, wiec offset czyta sie jak przesuniecie calych kolumn, nie
+// zygzak. Odstepy male (dense mozaika), offset delikatny.
 export function GalleryGrid({ images, locale }: Props) {
   return (
     <div
       className={[
-        'grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3 lg:grid-cols-6',
+        'grid grid-cols-4 gap-2 md:gap-3 lg:grid-cols-6',
         // Offset parzystych kafli: ~16px mobile, ~32px desktop.
         '[&>*:nth-child(2n)]:translate-y-4 lg:[&>*:nth-child(2n)]:translate-y-8',
         // Zapas na dole, zeby przesuniete kafle nie byly przyciete.
@@ -46,7 +46,7 @@ export function GalleryGrid({ images, locale }: Props) {
               fill
               // Pierwszy rzad (6 kafli) nad foldem: priority (LCP); reszta leniwie.
               priority={i < 6}
-              sizes="(min-width: 1024px) 16vw, (min-width: 768px) 25vw, 50vw"
+              sizes="(min-width: 1024px) 16vw, 25vw"
               className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
             />
           </button>

@@ -1775,7 +1775,7 @@ export type CONTACT_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: GALLERY_PAGE_QUERY
-// Query: *[_type == "galleryPage" && _id == "galleryPage"][0]{    headerLogo {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    eyebrow,    title,    intro,    images[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
+// Query: *[_type == "galleryPage" && _id == "galleryPage"][0]{    headerLogo {   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt },    eyebrow,    title,    intro,    "total": count(images),    seo {   metaTitle,  metaDescription,  ogImage { ..., asset->{ _id, url } },  noIndex }  }
 export type GALLERY_PAGE_QUERY_RESULT = {
   headerLogo: {
     _type: 'imageWithAlt'
@@ -1796,23 +1796,7 @@ export type GALLERY_PAGE_QUERY_RESULT = {
   eyebrow: LocaleString | null
   title: LocaleString | null
   intro: LocaleText | null
-  images: Array<{
-    asset: {
-      _id: string
-      url: string | null
-      metadata: {
-        dimensions: SanityImageDimensions | null
-        lqip: string | null
-        palette: SanityImagePalette | null
-      } | null
-    } | null
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    alt: LocaleString | null
-    _type: 'image'
-    _key: string
-  }> | null
+  total: number | null
   seo: {
     metaTitle: MetaTitle | null
     metaDescription: MetaDescription | null
@@ -1829,6 +1813,27 @@ export type GALLERY_PAGE_QUERY_RESULT = {
     noIndex: boolean | null
   } | null
 } | null
+
+// Source: lib/sanity/queries.ts
+// Variable: GALLERY_IMAGES_QUERY
+// Query: *[_type == "galleryPage" && _id == "galleryPage"][0].images[$start...$end]{      ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt  }
+export type GALLERY_IMAGES_QUERY_RESULT = Array<{
+  asset: {
+    _id: string
+    url: string | null
+    metadata: {
+      dimensions: SanityImageDimensions | null
+      lqip: string | null
+      palette: SanityImagePalette | null
+    } | null
+  } | null
+  media?: unknown
+  hotspot?: SanityImageHotspot
+  crop?: SanityImageCrop
+  alt: LocaleString | null
+  _type: 'image'
+  _key: string
+}> | null
 
 // Source: lib/sanity/queries.ts
 // Variable: LEGAL_PAGE_QUERY
@@ -1969,7 +1974,8 @@ declare module '@sanity/client' {
     '\n  *[_type == "hotelPage" && _id == "hotelPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    hero {\n      eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    quote,\n    amenitiesSection {\n      eyebrow, title,\n      items[]{ title, description, icon }\n    },\n    reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },\n    discoverSection {\n      eyebrow, title,\n      cards[]{\n        eyebrow, title, description, ctaLabel, ctaHref,\n        image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n      }\n    },\n    reservationSection {\n      eyebrow, title, description, ctaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': HOTEL_PAGE_QUERY_RESULT
     '\n  *[_type == "eventsPage" && _id == "eventsPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    hero {\n      eyebrow, title, subtitle, primaryCtaLabel, secondaryCtaLabel,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    promiseSection { leadText, highlightedText, tailText, leadTextMobile, highlightedTextMobile, tailTextMobile, ctaLabel },\n    eventTypesSection { eyebrow, title, description },\n    eventTypes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      description,\n      order,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n      gallery[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    } | order(order asc),\n    hallsSection { eyebrow, title, description },\n    halls[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      capacity,\n      description,\n      amenities,\n      order,\n      images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    } | order(order asc),\n    hotelUpsellSection { eyebrow, title, description, ctaLabel },\n    "hotelUpsellImage": *[_type == "hotelPage" && _id == "hotelPage"][0].hero.image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    cateringSection {\n      eyebrow, title, description,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    },\n    reviewsSection { eyebrow, title, ratingValue, ratingSource, ratingCount },\n    stepsSection {\n      eyebrow, title,\n      steps[]{ title, text }\n    },\n    reservationSection {\n      eyebrow, title, description,\n      formInvitationTitle, formInvitationText, ctaLabel\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': EVENTS_PAGE_QUERY_RESULT
     '\n  *[_type == "contactPage" && _id == "contactPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    contactSection {\n      eyebrow, title, phoneLabel,\n      receptionLabel, restaurantLabel, bistroLabel, hotelLabel, eventsLabel,\n      addressLabel, emailLabel\n    },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': CONTACT_PAGE_QUERY_RESULT
-    '\n  *[_type == "galleryPage" && _id == "galleryPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    eyebrow,\n    title,\n    intro,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': GALLERY_PAGE_QUERY_RESULT
+    '\n  *[_type == "galleryPage" && _id == "galleryPage"][0]{\n    headerLogo { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n },\n    eyebrow,\n    title,\n    intro,\n    "total": count(images),\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': GALLERY_PAGE_QUERY_RESULT
+    '\n  *[_type == "galleryPage" && _id == "galleryPage"][0].images[$start...$end]{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n\n  }\n': GALLERY_IMAGES_QUERY_RESULT
     '\n  *[_type == "legalPage" && _id == $id][0]{\n    title,\n    intro,\n    body,\n    seo { \n  metaTitle,\n  metaDescription,\n  ogImage { ..., asset->{ _id, url } },\n  noIndex\n }\n  }\n': LEGAL_PAGE_QUERY_RESULT
     '\n  *[_type == "menuCategory" && cuisine == "restaurant"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    description,\n    order,\n    "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {\n      _id,\n      name,\n      description,\n      price,\n      diet,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    }\n  }\n': MENU_BY_CATEGORY_QUERY_RESULT
     '\n  *[_type == "eventHall"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_EVENT_HALLS_QUERY_RESULT

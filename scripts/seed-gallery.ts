@@ -66,8 +66,9 @@ const combined = interleave(
   RAW.eventMain ?? [],
 )
 
-// Dedup po asset._ref, odrzuc bez refa. Cap na spokojna, przegladalna galerie.
-const MAX_IMAGES = 18
+// Dedup po asset._ref, odrzuc bez refa. Bierzemy wszystkie unikalne dostepne
+// (infinite scroll je porcjuje) — cap tylko jako bezpiecznik.
+const MAX_IMAGES = 200
 const seen = new Set<string>()
 const images = combined
   .filter((img): img is NonNullable<SourceImage> => {
