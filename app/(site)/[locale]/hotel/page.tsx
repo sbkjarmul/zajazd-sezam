@@ -51,6 +51,8 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
       <Header
         logoImage={logoImage}
         locale={locale}
+        lightAccent="dark"
+        darkGradient="dark"
         nav={[
           { label: locale === 'pl' ? 'Hotel' : 'Hotel', href: '/hotel' },
           { label: locale === 'pl' ? 'Pokoje' : 'Rooms', hash: 'rooms' },
@@ -72,7 +74,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
         </div>
 
         <HotelAmenities data={page.amenitiesSection} locale={locale} />
-        <Reviews data={page.reviewsSection} locale={locale} />
+        <Reviews data={page.reviewsSection} locale={locale} uppercaseTitle />
         <HotelDiscover data={page.discoverSection} locale={locale} />
         <HotelReservationCta data={page.reservationSection} locale={locale} />
         <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />

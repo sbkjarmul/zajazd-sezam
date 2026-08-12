@@ -55,7 +55,7 @@ export function HotelReservationCta({ data, locale }: Props) {
           )}
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:min-h-[514px]">
+        <div className="relative aspect-square overflow-hidden">
           <SanityImage
             image={data.image}
             locale={locale}

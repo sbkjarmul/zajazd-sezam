@@ -46,6 +46,15 @@ type Props = {
   // przycisku otwierającego drawer (Bistro → „Zadzwoń").
   ctaLabel?: string
   ctaHref?: string
+  // Kolor akcentu headera w trybie light-contrast (jasne tło pod headerem):
+  // domyślnie 'ruby' (granat). 'dark' = sezam dark (#1f1f1c) — np. strona hotelu,
+  // gdzie granat kłóci się z charakterem sekcji. Nie dotyczy trybu dark-contrast
+  // (tam tekst zawsze cream = text-inverse).
+  lightAccent?: 'ruby' | 'dark'
+  // Kolor tła headera w trybie dark-contrast (gradient nad ciemnymi sekcjami):
+  // domyślnie 'ruby' (dark-ruby #111c2a). 'dark' = sezam dark (#1f1f1c) — np. hotel,
+  // spójnie z lightAccent='dark'.
+  darkGradient?: 'ruby' | 'dark'
 }
 
 export function Header({
@@ -59,6 +68,8 @@ export function Header({
   adaptive = true,
   ctaLabel,
   ctaHref,
+  lightAccent = 'ruby',
+  darkGradient = 'ruby',
 }: Props) {
   const direction = useScrollDirection()
   // heroTheme = motyw startowy (fallback, gdy nic jeszcze nie wykryte / SSR) —
@@ -122,6 +133,23 @@ export function Header({
     : !isTop || (mobileHeroTheme ?? heroTheme) === 'light'
   const variantsDiffer = mobileOnLightContrast !== onLightContrast
 
+  // Akcent trybu light-contrast (ruby|dark). Pełne literały klas, bo Tailwind nie
+  // wykrywa dynamicznych `text-${x}`. Tryb dark-contrast bez zmian (zawsze cream).
+  const isDarkAccent = lightAccent === 'dark'
+  const lightNavActive = isDarkAccent ? 'text-dark' : 'text-ruby'
+  const lightNavIdle = isDarkAccent
+    ? 'text-dark/80 hover:text-dark'
+    : 'text-ruby/80 hover:text-ruby'
+  const lightBtn = isDarkAccent
+    ? 'border-dark text-dark hover:bg-dark hover:text-text-inverse'
+    : 'border-ruby text-ruby hover:bg-ruby hover:text-text-inverse'
+  const lightBtnMd = isDarkAccent
+    ? 'md:border-dark md:text-dark md:hover:bg-dark md:hover:text-text-inverse'
+    : 'md:border-ruby md:text-ruby md:hover:bg-ruby md:hover:text-text-inverse'
+  // Warstwa gradientu dark-contrast (tło headera nad ciemnymi sekcjami).
+  const darkGradientFrom =
+    darkGradient === 'dark' ? 'from-[var(--color-dark)]' : 'from-[var(--color-dark-ruby)]'
+
   return (
     <header
       ref={headerRef}
@@ -155,7 +183,8 @@ export function Header({
           />
           <div
             className={cn(
-              'absolute inset-0 bg-gradient-to-b from-[var(--color-dark-ruby)] from-30% to-transparent transition-opacity duration-500 ease-out',
+              'absolute inset-0 bg-gradient-to-b from-30% to-transparent transition-opacity duration-500 ease-out',
+              darkGradientFrom,
               mobileOnLightContrast ? 'opacity-0' : 'opacity-100',
             )}
           />
@@ -199,8 +228,8 @@ export function Header({
                 isActive ? 'font-bold' : 'font-normal',
                 onLightContrast
                   ? isActive
-                    ? 'text-ruby'
-                    : 'text-ruby/80 hover:text-ruby'
+                    ? lightNavActive
+                    : lightNavIdle
                   : isActive
                     ? 'text-text-inverse'
                     : 'text-text-inverse/80 hover:text-text-inverse',
@@ -225,7 +254,7 @@ export function Header({
               // dopiero od lg, gdy mamy dość miejsca obok nawigacji.
               'hidden cursor-pointer items-center justify-center rounded-full border-2 font-normal whitespace-nowrap transition-colors lg:inline-flex lg:h-[60px] lg:px-6 lg:text-lg',
               onLightContrast
-                ? 'border-ruby text-ruby hover:bg-ruby hover:text-text-inverse'
+                ? lightBtn
                 : 'border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',
             )
             const label = ctaLabel ?? t('reserve')
@@ -252,12 +281,12 @@ export function Header({
               'inline-flex aspect-square h-12 cursor-pointer items-center justify-center rounded-full border-2 transition-colors md:h-[60px]',
               // Mobile (bazowo): zależnie od mobileHeroTheme (lub heroTheme jeśli niepodane)
               mobileOnLightContrast
-                ? 'border-ruby text-ruby hover:bg-ruby hover:text-text-inverse'
+                ? lightBtn
                 : 'border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',
               // Desktop (md+): override gdy warianty się różnią
               variantsDiffer &&
                 (onLightContrast
-                  ? 'md:border-ruby md:text-ruby md:hover:bg-ruby md:hover:text-text-inverse'
+                  ? lightBtnMd
                   : 'md:border-text-inverse md:text-text-inverse md:hover:bg-text-inverse md:hover:text-text'),
             )}
           >
