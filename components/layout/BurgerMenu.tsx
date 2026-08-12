@@ -23,6 +23,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/restauracja', label: { pl: 'Restauracja', en: 'Restaurant' } },
   { href: '/bistro', label: { pl: 'Bistro', en: 'Bistro' } },
   { href: '/imprezy-okolicznosciowe', label: { pl: 'Imprezy', en: 'Events' } },
+  { href: '/galeria', label: { pl: 'Galeria', en: 'Gallery' } },
   { href: '/kontakt', label: { pl: 'Kontakt', en: 'Contact' } },
 ]
 

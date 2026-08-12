@@ -20,9 +20,21 @@ export const routing = defineRouting({
     },
     '/bistro': '/bistro',
     '/hotel': '/hotel',
+    '/galeria': {
+      pl: '/galeria',
+      en: '/gallery',
+    },
     '/kontakt': {
       pl: '/kontakt',
       en: '/contact',
+    },
+    '/regulamin': {
+      pl: '/regulamin',
+      en: '/terms',
+    },
+    '/polityka-prywatnosci': {
+      pl: '/polityka-prywatnosci',
+      en: '/privacy-policy',
     },
   },
 })

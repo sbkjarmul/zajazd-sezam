@@ -40,6 +40,15 @@
     },
     "copyright": "© {year} Zajazd Sezam. All rights reserved."
   },
+  "legal": {
+    "termsTitle": "Terms & Conditions",
+    "privacyTitle": "Privacy Policy",
+    "placeholder": "Content coming soon."
+  },
+  "gallery": {
+    "title": "Gallery",
+    "empty": "Photos coming soon."
+  },
   "reservationDrawer": {
     "title": "BOOK",
     "tabs": {

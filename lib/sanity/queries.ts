@@ -263,6 +263,28 @@ export const CONTACT_PAGE_QUERY = defineQuery(`
   }
 `)
 
+export const GALLERY_PAGE_QUERY = defineQuery(`
+  *[_type == "galleryPage" && _id == "galleryPage"][0]{
+    headerLogo { ${IMAGE_WITH_ALT_FRAGMENT} },
+    eyebrow,
+    title,
+    intro,
+    images[]{ ${IMAGE_WITH_ALT_FRAGMENT} },
+    seo { ${SEO_FRAGMENT} }
+  }
+`)
+
+// Strona prawna (Regulamin / Polityka prywatności) — parametr $id = stałe ID
+// dokumentu ('regulamin' lub 'polityka-prywatnosci', patrz LEGAL_PAGE_IDS).
+export const LEGAL_PAGE_QUERY = defineQuery(`
+  *[_type == "legalPage" && _id == $id][0]{
+    title,
+    intro,
+    body,
+    seo { ${SEO_FRAGMENT} }
+  }
+`)
+
 // =============================================================================
 // Listy — używane przez konkretne sekcje (np. menu, sale)
 // =============================================================================

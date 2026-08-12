@@ -21,12 +21,12 @@ export function HotelDiscover({ data, locale }: Props) {
   return (
     <section
       data-header-theme="light"
-      // Panel snapu 100svh (min-height z `.snap-panels > section`) z trescia
-      // wysrodkowana w pionie. Desktop (md+): tresc miesci sie w kadrze, centrowanie
-      // trzyma ja z dala od fixed headera. Mobile: karty (aspect-square + tekst) sa
-      // wyzsze niz ekran, wiec tresc wyplywa do gory - pt-[120px] daje odstep pod
-      // fixed headerem.
-      className="bg-bg pt-[120px] pb-16 md:py-20"
+      // Panel snapu 100svh (min-height z `.snap-panels > section`). Desktop (md+):
+      // tresc od GORY (justify-start! bije globalne justify-center) z pt-40 (160px) -
+      // staly przeswit pod fixed headerem, zamiast centrowania, ktore wpychalo naglowek
+      // pod header. Mobile: karty (aspect-square + tekst) sa wyzsze niz ekran, wiec
+      // tresc wyplywa do gory - pt-[120px] daje odstep pod fixed headerem.
+      className="bg-bg pt-[120px] pb-16 md:justify-start! md:pt-40 md:pb-20"
     >
       <div className="layout-container flex flex-col gap-12 md:gap-20">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">

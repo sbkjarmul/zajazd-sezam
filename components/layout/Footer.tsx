@@ -183,9 +183,13 @@ export async function Footer({
               isDark={isDark}
               strong
               items={[
-                { text: t('footer.links.privacy') },
+                {
+                  text: t('footer.links.privacy'),
+                  href: '/polityka-prywatnosci',
+                  isInternal: true,
+                },
                 { text: t('footer.links.cookies') },
-                { text: t('footer.links.terms') },
+                { text: t('footer.links.terms'), href: '/regulamin', isInternal: true },
               ]}
             />
           </div>
@@ -254,9 +258,13 @@ export async function Footer({
               title={t('footer.termsHeading')}
               isDark={isDark}
               items={[
-                { text: t('footer.links.privacy') },
+                {
+                  text: t('footer.links.privacy'),
+                  href: '/polityka-prywatnosci',
+                  isInternal: true,
+                },
                 { text: t('footer.links.cookies') },
-                { text: t('footer.links.terms') },
+                { text: t('footer.links.terms'), href: '/regulamin', isInternal: true },
               ]}
             />
           </div>

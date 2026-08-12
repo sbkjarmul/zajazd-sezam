@@ -21,8 +21,8 @@ type Props = {
 // tracking, leading i odstępy, żeby layout/typografia zostały bez zmian.
 const H3_CLASS =
   'text-text text-2xl leading-none font-normal tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]'
-const DESC_CLASS = 'text-text text-base leading-[1.2] md:text-lg'
-const LI_CLASS = 'text-text text-base leading-[1.5] md:text-lg'
+const DESC_CLASS = 'text-text text-base leading-[1.2]'
+const LI_CLASS = 'text-text text-base leading-[1.5]'
 
 // Prezentacja pokoi na /hotel jako scroll-driven "scrollytelling":
 //

@@ -1,4 +1,8 @@
 @import 'tailwindcss';
+/* Utility animacji wejscia/wyjscia (animate-in, slide-in-from-right, fade-in-0...)
+   uzywane przez komponent Sheet (Radix drawer). Port tailwindcss-animate pod
+   Tailwind v4 - bez tego panel/overlay drawera pojawiaja sie bez animacji. */
+@import 'tw-animate-css';
 
 /* Wyłączamy systemowy dark mode (domyślny w Tailwind 4 = @media prefers-color-scheme).
    Projekt ma jedną paletę (CLAUDE.md: "Paleta wspólna dla wszystkich trzech branż"),

@@ -11,6 +11,12 @@ type Props = {
   gradient: string
   // Klasy pozycjonowania ramki (absolute + inset/top/bottom).
   className?: string
+  // Domyslnie full-bleed (rozwiazuje sie do 100vw dla kazdego viewportu). Forma
+  // media-conditioned zamiast golego '100vw' celowo: te obrazy zyja w sekcjach
+  // bramkowanych breakpointem (mobile/desktop), wiec jedna kopia jest zawsze
+  // display:none. Next mierzy jej boundingWidth = 0 i przy golym '100vw' odpala
+  // falszywy warning "not rendered at full viewport width". Efektywny rozmiar
+  // identyczny, ostrzezenie znika.
   sizes?: string
   // Gdy true - zdjecie dryfuje na scroll (ParallaxImage) zamiast statycznego kadru.
   parallax?: boolean
@@ -25,7 +31,7 @@ export function SectionBleedImage({
   locale,
   gradient,
   className,
-  sizes = '100vw',
+  sizes = '(min-width: 0px) 100vw',
   parallax = false,
 }: Props) {
   return (

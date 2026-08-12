@@ -5,6 +5,7 @@ import type {
 } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { cn } from '@/lib/utils'
 import { getGoogleReviews } from '@/lib/googleReviews'
 import { Reveal } from '@/components/Reveal'
 import { RevealText } from '@/components/RevealText'
@@ -21,13 +22,16 @@ type ReviewsData =
 type Props = {
   data: ReviewsData
   locale: Locale
+  // Tytuł UPPERCASE — tylko tam, gdzie o to prosi makieta (np. hotel). Domyślnie
+  // sentence case (home / imprezy).
+  uppercaseTitle?: boolean
 }
 
 // Jeden komponent opinii dla calej strony (Figma 1134:43). Naglowek wysrodkowany
 // z Sanity, pod nim pelnoszerokosciowa tasma kart, ktora sama przesuwa sie w
 // prawo w zapetlonej animacji (ReviewsTrack). Zastapil osobne ReviewsBlock /
 // HotelReviews / EventsReviews.
-export async function Reviews({ data, locale }: Props) {
+export async function Reviews({ data, locale, uppercaseTitle = false }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
   const title = pickLocale(data.title, locale)
@@ -52,7 +56,10 @@ export async function Reviews({ data, locale }: Props) {
               {title && (
                 <RevealText
                   as="h2"
-                  className="text-text w-full text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]"
+                  className={cn(
+                    'text-text w-full text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]',
+                    uppercaseTitle && 'uppercase',
+                  )}
                 >
                   {title}
                 </RevealText>

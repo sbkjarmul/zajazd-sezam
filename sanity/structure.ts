@@ -1,5 +1,5 @@
 import type { StructureResolver } from 'sanity/structure'
-import { SINGLETON_IDS } from './schemas'
+import { SINGLETON_IDS, LEGAL_PAGE_IDS } from './schemas'
 
 // Singleton schemas — zawsze otwierane jako jeden dokument o stałym ID.
 const SINGLETON_SCHEMA_NAMES = Object.keys(SINGLETON_IDS) as Array<keyof typeof SINGLETON_IDS>
@@ -22,7 +22,21 @@ export const structure: StructureResolver = (S) =>
               singletonItem(S, 'bistroPage', 'Bistro'),
               singletonItem(S, 'hotelPage', 'Hotel'),
               singletonItem(S, 'eventsPage', 'Imprezy okolicznościowe'),
+              singletonItem(S, 'galleryPage', 'Galeria'),
               singletonItem(S, 'contactPage', 'Kontakt'),
+            ]),
+        ),
+
+      // === Strony prawne (jeden typ, dwie stałe instancje) ===
+      S.listItem()
+        .title('Strony prawne')
+        .id('legalPages')
+        .child(
+          S.list()
+            .title('Strony prawne')
+            .items([
+              legalItem(S, LEGAL_PAGE_IDS.terms, 'Regulamin'),
+              legalItem(S, LEGAL_PAGE_IDS.privacy, 'Polityka prywatności'),
             ]),
         ),
 
@@ -95,6 +109,7 @@ export const structure: StructureResolver = (S) =>
             'eventHall',
             'roomType',
             'conferenceRoom',
+            'legalPage',
           ].includes(item.getId()!),
       ),
     ])
@@ -105,4 +120,13 @@ function singletonItem(S: any, schemaType: keyof typeof SINGLETON_IDS, title: st
     .title(title)
     .id(schemaType)
     .child(S.document().schemaType(schemaType).documentId(SINGLETON_IDS[schemaType]).title(title))
+}
+
+// Stała instancja typu `legalPage` o zadanym ID (regulamin / polityka-prywatnosci).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function legalItem(S: any, id: string, title: string) {
+  return S.listItem()
+    .title(title)
+    .id(id)
+    .child(S.document().schemaType('legalPage').documentId(id).title(title))
 }

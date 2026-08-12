@@ -25,6 +25,8 @@ import { bistroPage } from './documents/bistroPage'
 import { hotelPage } from './documents/hotelPage'
 import { eventsPage } from './documents/eventsPage'
 import { contactPage } from './documents/contactPage'
+import { galleryPage } from './documents/galleryPage'
+import { legalPage } from './documents/legalPage'
 
 // Szkielety (poza zakresem v1)
 import { conferenceRoom } from './documents/conferenceRoom'
@@ -54,6 +56,8 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   hotelPage,
   eventsPage,
   contactPage,
+  galleryPage,
+  legalPage,
   // Out-of-scope-v1 skeletons
   conferenceRoom,
 ]
@@ -68,6 +72,15 @@ export const SINGLETON_IDS = {
   hotelPage: 'hotelPage',
   eventsPage: 'eventsPage',
   contactPage: 'contactPage',
+  galleryPage: 'galleryPage',
 } as const
 
 export type SingletonId = (typeof SINGLETON_IDS)[keyof typeof SINGLETON_IDS]
+
+// Strony prawne: jeden typ `legalPage`, dwie stałe instancje (stałe ID = slug PL).
+export const LEGAL_PAGE_IDS = {
+  terms: 'regulamin',
+  privacy: 'polityka-prywatnosci',
+} as const
+
+export type LegalPageId = (typeof LEGAL_PAGE_IDS)[keyof typeof LEGAL_PAGE_IDS]

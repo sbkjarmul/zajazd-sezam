@@ -11,7 +11,10 @@ const SITE_PATHS = [
   '/bistro',
   '/hotel',
   '/imprezy-okolicznosciowe',
+  '/galeria',
   '/kontakt',
+  '/regulamin',
+  '/polityka-prywatnosci',
 ] as const satisfies readonly Pathname[]
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -1,7 +1,10 @@
 'use client'
 
+import { useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { X } from 'lucide-react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { useUI } from '@/components/providers/UIProvider'
 import { VisuallyHidden } from 'radix-ui'
@@ -14,9 +17,7 @@ import { EventInquiryForm } from '@/components/forms/EventInquiryForm'
 // Tabs gap-[16px], aktywny = border-b-1 text-bold, oba 20px.
 // Backdrop: backdrop-blur-[6px] bg-[rgba(31,31,28,0.5)].
 export function ReservationDrawer() {
-  const t = useTranslations('reservationDrawer')
-  const { reservationOpen, closeReservation, reservationTab, setReservationTab } = useUI()
-  const tCommon = useTranslations('common')
+  const { reservationOpen, closeReservation } = useUI()
 
   return (
     <Sheet open={reservationOpen} onOpenChange={(open) => (open ? null : closeReservation())}>
@@ -32,56 +33,104 @@ export function ReservationDrawer() {
           </SheetDescription>
         </VisuallyHidden.Root>
 
-        <div className="flex items-start justify-between">
-          <SheetTitle className="text-text text-[40px] font-light tracking-normal">
-            {t('title')}
-          </SheetTitle>
-          <button
-            type="button"
-            onClick={closeReservation}
-            aria-label={tCommon('close')}
-            className="text-text hover:text-accent cursor-pointer transition-colors"
-          >
-            <X className="size-8" />
-          </button>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <div role="tablist" className="flex items-center gap-4">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={reservationTab === 'room'}
-              onClick={() => setReservationTab('room')}
-              className={cn(
-                'text-text cursor-pointer py-1 text-lg transition-all',
-                reservationTab === 'room'
-                  ? 'border-text border-b font-bold'
-                  : 'font-normal',
-              )}
-            >
-              {t('tabs.room')}
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={reservationTab === 'event'}
-              onClick={() => setReservationTab('event')}
-              className={cn(
-                'text-text cursor-pointer py-1 text-lg transition-all',
-                reservationTab === 'event'
-                  ? 'border-text border-b font-bold'
-                  : 'font-normal',
-              )}
-            >
-              {t('tabs.event')}
-            </button>
-          </div>
-          <div className="border-text border-t" aria-hidden />
-        </div>
-
-        {reservationTab === 'room' ? <RoomBookingForm /> : <EventInquiryForm />}
+        {/* Cialo drawera jako osobny komponent: montuje sie DOPIERO gdy Radix
+            otwiera Content (Presence). Dzieki temu useGSAP (layout effect na mount)
+            widzi juz przypiety DOM — animacja odpala sie przy kazdym otwarciu.
+            Sterowanie animacja z rodzica po `reservationOpen` NIE dziala, bo ref
+            jest jeszcze null gdy Content nie jest zamontowany. */}
+        <DrawerBody />
       </SheetContent>
     </Sheet>
+  )
+}
+
+// Wewnetrzne bloki (naglowek -> zakladki -> formularz) pojawiaja sie staggerem
+// GSAP zsynchronizowanym z wjazdem panelu (CSS Radix slide-in-from-right).
+// useGSAP bez zaleznosci = odpala raz na mount tego komponentu, czyli przy kazdym
+// otwarciu drawera (Radix odmontowuje Content po zamknieciu). reduced-motion:
+// fromTo nie odpala, wiec nic nie chowamy — tresc od razu widoczna.
+function DrawerBody() {
+  const t = useTranslations('reservationDrawer')
+  const tCommon = useTranslations('common')
+  const { closeReservation, reservationTab, setReservationTab } = useUI()
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      const el = contentRef.current
+      if (!el) return
+      const items = el.querySelectorAll<HTMLElement>('[data-reveal]')
+      if (!items.length) return
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.fromTo(
+          items,
+          { autoAlpha: 0, y: 20 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            ease: 'power3.out',
+            stagger: 0.08,
+            delay: 0.12,
+            clearProps: 'opacity,visibility,transform',
+          },
+        )
+      })
+      return () => mm.revert()
+    },
+    { scope: contentRef },
+  )
+
+  return (
+    <div ref={contentRef} className="flex flex-col gap-10">
+      <div data-reveal className="flex items-start justify-between">
+        <SheetTitle className="text-text text-[40px] font-light tracking-normal">
+          {t('title')}
+        </SheetTitle>
+        <button
+          type="button"
+          onClick={closeReservation}
+          aria-label={tCommon('close')}
+          className="text-text hover:text-accent cursor-pointer transition-colors"
+        >
+          <X className="size-8" />
+        </button>
+      </div>
+
+      <div data-reveal className="flex flex-col gap-6">
+        <div role="tablist" className="flex items-center gap-4">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={reservationTab === 'room'}
+            onClick={() => setReservationTab('room')}
+            className={cn(
+              'text-text cursor-pointer py-1 text-lg transition-all',
+              reservationTab === 'room' ? 'border-text border-b font-bold' : 'font-normal',
+            )}
+          >
+            {t('tabs.room')}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={reservationTab === 'event'}
+            onClick={() => setReservationTab('event')}
+            className={cn(
+              'text-text cursor-pointer py-1 text-lg transition-all',
+              reservationTab === 'event' ? 'border-text border-b font-bold' : 'font-normal',
+            )}
+          >
+            {t('tabs.event')}
+          </button>
+        </div>
+        <div className="border-text border-t" aria-hidden />
+      </div>
+
+      <div data-reveal>
+        {reservationTab === 'room' ? <RoomBookingForm /> : <EventInquiryForm />}
+      </div>
+    </div>
   )
 }

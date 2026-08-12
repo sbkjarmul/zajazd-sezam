@@ -40,11 +40,11 @@ export function HotelHero({ data, locale }: Props) {
         aria-hidden
         className="absolute inset-0 -z-10"
         style={{
-          // Zmniejszona ekspozycja zdjecia: staly ~30% ciemny welon na calym
-          // kadrze (przyciemnia prześwietlone tlo), pogłebiony do 72% u dolu pod
+          // Zmniejszona ekspozycja zdjecia: staly ~42% ciemny welon na calym
+          // kadrze (przyciemnia prześwietlone tlo), pogłebiony do 80% u dolu pod
           // tekstem/CTA dla czytelnosci.
           background:
-            'linear-gradient(180deg, rgba(31,31,28,0.30) 0%, rgba(31,31,28,0.30) 50%, rgba(31,31,28,0.72) 100%)',
+            'linear-gradient(180deg, rgba(31,31,28,0.42) 0%, rgba(31,31,28,0.42) 50%, rgba(31,31,28,0.80) 100%)',
         }}
       />
 

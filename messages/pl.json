@@ -40,6 +40,15 @@
     },
     "copyright": "© {year} Zajazd Sezam. Wszystkie prawa zastrzeżone."
   },
+  "legal": {
+    "termsTitle": "Regulamin",
+    "privacyTitle": "Polityka prywatności",
+    "placeholder": "Treść w przygotowaniu."
+  },
+  "gallery": {
+    "title": "Galeria",
+    "empty": "Zdjęcia pojawią się wkrótce."
+  },
   "reservationDrawer": {
     "title": "REZERWUJ",
     "tabs": {
