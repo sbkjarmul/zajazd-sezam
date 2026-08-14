@@ -4,6 +4,7 @@ import { sanityClient } from '@/lib/sanity/client'
 import { EVENTS_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import { eventVenueJsonLd, faqPageJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import { FaqSection } from '@/components/sections/FaqSection'
 import type { Locale } from '@/i18n/routing'
@@ -60,6 +61,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
         })}
       />
       {faqJsonLd && <JsonLd data={faqJsonLd} />}
+      <Breadcrumbs locale={locale} pathname="/imprezy-okolicznosciowe" />
       <Header logoImage={logoImage} locale={locale} />
       <SnapController />
       <div className="snap-panels">

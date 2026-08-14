@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { CONTACT_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import type { Locale } from '@/i18n/routing'
 import { ContactInfo } from '@/components/sections/contact/ContactInfo'
 import { Footer } from '@/components/layout/Footer'
@@ -40,6 +41,7 @@ export default async function ContactPage({ params }: { params: Promise<Params> 
 
   return (
     <>
+      <Breadcrumbs locale={locale} pathname="/kontakt" />
       <Header logoImage={logoImage} locale={locale} />
       <ContactInfo data={page.contactSection} settings={settings} locale={locale} />
       <Footer settings={settings} locale={locale} logoImage={logoImage} />

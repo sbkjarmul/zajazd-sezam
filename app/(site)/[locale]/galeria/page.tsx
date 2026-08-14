@@ -2,6 +2,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { sanityClient } from '@/lib/sanity/client'
 import { GALLERY_IMAGES_QUERY, GALLERY_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import type { Locale } from '@/i18n/routing'
 import { GalleryInfinite } from '@/components/sections/gallery/GalleryInfinite'
@@ -61,6 +62,7 @@ export default async function GaleriaPage({ params }: { params: Promise<Params> 
       {/* Jasne tlo -> header w wariancie light z ciemnym akcentem (spojnie z reszta
           jasnych podstron). Bez nawigacji - na galerii nie powinno jej byc
           (tylko logo + CTA + burger). */}
+      <Breadcrumbs locale={locale} pathname="/galeria" />
       <Header logoImage={logoImage} locale={locale} heroTheme="light" lightAccent="dark" />
 
       <div className="bg-bg min-h-screen">

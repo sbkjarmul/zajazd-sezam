@@ -2,6 +2,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { sanityClient } from '@/lib/sanity/client'
 import { LEGAL_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import type { Locale } from '@/i18n/routing'
 import { LegalArticle } from '@/components/sections/legal/LegalArticle'
@@ -45,6 +46,7 @@ export default async function PrivacyPage({ params }: { params: Promise<Params> 
 
   return (
     <>
+      <Breadcrumbs locale={locale} pathname="/polityka-prywatnosci" />
       <Header logoImage={logoImage} locale={locale} heroTheme="light" lightAccent="dark" />
       <LegalArticle title={title} intro={intro} body={body} />
       <Footer settings={settings} locale={locale} logoImage={logoImage} />

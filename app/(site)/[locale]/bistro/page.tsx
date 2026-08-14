@@ -4,6 +4,7 @@ import { sanityClient } from '@/lib/sanity/client'
 import { BISTRO_PAGE_QUERY, BISTRO_MENU_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import { bistroJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import type { Locale } from '@/i18n/routing'
@@ -56,6 +57,7 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
       <JsonLd
         data={bistroJsonLd({ settings: (settings ?? {}) as SiteSettingsForJsonLd, locale })}
       />
+      <Breadcrumbs locale={locale} pathname="/bistro" />
       <Header
         heroTheme="light"
         logoImage={logoImage}

@@ -4,6 +4,7 @@ import { sanityClient } from '@/lib/sanity/client'
 import { RESTAURANT_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import { restaurantJsonLd, faqPageJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import type { Locale } from '@/i18n/routing'
 import { RestaurantHero } from '@/components/sections/restaurant/RestaurantHero'
@@ -61,6 +62,7 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
         })}
       />
       {faqJsonLd && <JsonLd data={faqJsonLd} />}
+      <Breadcrumbs locale={locale} pathname="/restauracja" />
       <Header
         heroTheme="light"
         mobileHeroTheme="light"

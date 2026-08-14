@@ -4,6 +4,7 @@ import { sanityClient } from '@/lib/sanity/client'
 import { ALL_ROOM_TYPES_QUERY, HOTEL_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 import { lodgingBusinessJsonLd, faqPageJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import { FaqSection } from '@/components/sections/FaqSection'
 import type { Locale } from '@/i18n/routing'
@@ -59,6 +60,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
         })}
       />
       {faqJsonLd && <JsonLd data={faqJsonLd} />}
+      <Breadcrumbs locale={locale} pathname="/hotel" />
       <Header
         logoImage={logoImage}
         locale={locale}

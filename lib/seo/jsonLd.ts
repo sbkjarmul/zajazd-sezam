@@ -262,6 +262,22 @@ export function menuJsonLd({
   }
 }
 
+// BreadcrumbList — sciezka nawigacji w SERP (ladniejszy wynik, wyzszy CTR).
+// items juz z gotowymi, absolutnymi, zlokalizowanymi URL-ami (buildBreadcrumb w metadata.ts).
+export function breadcrumbListJsonLd({ items }: { items: Array<{ name: string; url: string }> }) {
+  if (items.length === 0) return undefined
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  }
+}
+
 // === Pomocnicze ===
 
 function pickName(s: SiteSettingsForJsonLd, locale: Locale): string | undefined {

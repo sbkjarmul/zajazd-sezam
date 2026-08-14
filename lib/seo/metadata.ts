@@ -106,3 +106,44 @@ function buildHreflangAlternates(pathname: Pathname): Record<string, string> {
 function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`
 }
+
+// === Breadcrumbs (okruchy nawigacji dla BreadcrumbList JSON-LD) ===
+
+const BREADCRUMB_LABEL: Record<Pathname, Record<Locale, string>> = {
+  '/': { pl: 'Strona główna', en: 'Home' },
+  '/restauracja': { pl: 'Restauracja', en: 'Restaurant' },
+  '/restauracja/menu': { pl: 'Menu', en: 'Menu' },
+  '/bistro': { pl: 'Bistro', en: 'Bistro' },
+  '/hotel': { pl: 'Hotel', en: 'Hotel' },
+  '/imprezy-okolicznosciowe': { pl: 'Imprezy okolicznościowe', en: 'Events' },
+  '/galeria': { pl: 'Galeria', en: 'Gallery' },
+  '/kontakt': { pl: 'Kontakt', en: 'Contact' },
+  '/regulamin': { pl: 'Regulamin', en: 'Terms & Conditions' },
+  '/polityka-prywatnosci': { pl: 'Polityka prywatności', en: 'Privacy Policy' },
+}
+
+// Rodzic w drzewie nawigacji — tylko sciezki glebsze niz 1. poziom.
+// Reszta ma domyslnie rodzica '/' (dodawany w buildBreadcrumb).
+const BREADCRUMB_PARENT: Partial<Record<Pathname, Pathname>> = {
+  '/restauracja/menu': '/restauracja',
+}
+
+// Zwraca lancuch okruchow od strony glownej do biezacej strony, z absolutnymi
+// zlokalizowanymi URL-ami. Dla '/' zwraca [] (breadcrumb 1-elementowy nie ma sensu).
+export function buildBreadcrumb(
+  locale: Locale,
+  pathname: Pathname,
+): Array<{ name: string; url: string }> {
+  if (pathname === '/') return []
+  const chain: Pathname[] = []
+  let current: Pathname | undefined = pathname
+  while (current && current !== '/') {
+    chain.unshift(current)
+    current = BREADCRUMB_PARENT[current]
+  }
+  chain.unshift('/')
+  return chain.map((p) => ({
+    name: BREADCRUMB_LABEL[p][locale],
+    url: absoluteUrl(localizedPathname(p, locale)),
+  }))
+}
