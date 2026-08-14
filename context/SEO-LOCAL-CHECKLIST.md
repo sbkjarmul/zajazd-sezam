@@ -115,6 +115,19 @@
 - [ ] **P2** GBP Insights — telefony, kliknięcia „trasa", wyświetlenia w mapce
 - [ ] **P2** Core Web Vitals (LCP/CLS/INP) w GSC — szybkość wpływa na ranking
 
+## 9. Migracja starej strony (Joomla) — przekierowania
+
+> Zweryfikowane 2026-08-14 przez crawl żywej `http://zajazdsezam.pl` (stara Joomla nadal online).
+
+- [x] **P0** Redirecty 301/308 kompletne — 21 realnych URL-i starej strony pokrytych w `next.config.ts`
+  (menu + warianty `index.php`/SEF; podtypy imprez; `/rodo`, `/zajazd/regulamin`)
+- [x] Potwierdzone: brak osieroconych URL-i treściowych (19 prób → 404); cele redirectów istnieją
+- [ ] **P1 launch** ⚠️ Stara strona ma ZEPSUTE HTTPS (działa tylko `http://`) — po wdrożeniu
+  upewnić się, że `https://zajazdsezam.pl` działa i `http→https` się przekierowuje
+- [ ] **P1 launch** Po deployu: GSC → Strony → 404 — dorobić redirecty dla ewentualnych orphanów
+- [ ] (opcjonalne) `/index.php/component/search` (200, wyszukiwarka Joomli) — noindex/ignore
+- [ ] (opcjonalne) 308 → literalne 301 przez `vercel.json` `statusCode: 301` (Google traktuje równoważnie)
+
 ---
 
 ## Kolejność ataku (rekomendacja)
