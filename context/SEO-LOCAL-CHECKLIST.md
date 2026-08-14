@@ -30,8 +30,16 @@
 
 ## 2. Google Business Profile (GBP) — NAJWAŻNIEJSZE dla mapki
 
-- [ ] **P0** Przejąć/zweryfikować wizytówkę (właściciel) — [business.google.com](https://business.google.com)
-- [ ] **P0** Kategoria główna + dodatkowe: `Restauracja`, `Hotel`, `Sala weselna`, `Bistro`, `Organizacja imprez`
+> ✅ Profil ISTNIEJE od dawna (staż = przewaga). Praca = AUDYT i optymalizacja, nie zakładanie.
+
+- [x] **P0** Wizytówka istnieje i zweryfikowana (własność potwierdzona)
+- [x] **P0** `sameAs` w kodzie (share.google/JU9WU9Wq2y2irrfpC) prowadzi do TEGO profilu ✔
+- [x] **P0** NAP na GBP zgodne z adresem na stronie (potwierdzone przez klienta)
+- [ ] **P0** Kategorie do ustawienia w GBP (edycja na koncie właściciela — nie po stronie kodu):
+  - Główna (jedna, najwięcej wagi): **Restauracja** — rekomendacja (rdzeń „zajazdu")
+  - Dodatkowe: **Hotel**, **Dom weselny / Sala bankietowa**, **Bar** (bistro),
+    **Firma cateringowa**, **Organizator imprez i eventów**
+  - ⚠️ Główną wybrać wg priorytetu biznesu (jeśli #1 to wesela → główna „Dom weselny")
 - [ ] **P0** NAP identyczne co na stronie (znak w znak) + strona WWW `https://zajazdsezam.pl`
 - [ ] **P0** Godziny otwarcia (restauracja 12–22, recepcja 24/7) + godziny świąteczne
 - [ ] **P0** Obszar działania / adres widoczny (nie ukrywać — to obiekt stacjonarny)
