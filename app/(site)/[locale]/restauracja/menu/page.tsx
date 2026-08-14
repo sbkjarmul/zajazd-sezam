@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { MENU_BY_CATEGORY_QUERY, MENU_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { menuJsonLd, type MenuCategoryInput } from '@/lib/seo/jsonLd'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { MenuHero } from '@/components/sections/menu/MenuHero'
@@ -46,8 +48,16 @@ export default async function MenuPage({ params }: { params: Promise<Params> }) 
   const restaurantPhone = settings?.phoneRestaurant ?? settings?.phone
   const tReservation = await getTranslations('restaurant.reservation')
 
+  const menuName = locale === 'pl' ? 'Menu — Restauracja Sezam' : 'Menu — Sezam Restaurant'
+  const menuLd = menuJsonLd({
+    categories: (categories ?? []) as MenuCategoryInput[],
+    locale,
+    name: menuName,
+  })
+
   return (
     <>
+      {menuLd && <JsonLd data={menuLd} />}
       <Header
         heroTheme="light"
         logoImage={logoImage}

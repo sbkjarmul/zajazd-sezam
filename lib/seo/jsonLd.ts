@@ -24,7 +24,24 @@ export type SiteSettingsForJsonLd = {
   openingHoursRestaurant?: OpeningHoursEntryInput[] | null
   openingHoursReception?: OpeningHoursEntryInput[] | null
   googleBusinessProfileUrl?: string | null
+  googleMapsUrl?: string | null
 }
+
+// Obszar obslugi — silny sygnal GEO ("obslugujemy caly region", nie tylko adres).
+// Potwierdzic realny zasieg z klientem; latwo edytowac te liste.
+const AREA_SERVED_CITIES = [
+  'Stalowa Wola',
+  'Rozwadów',
+  'Nisko',
+  'Tarnobrzeg',
+  'Nowa Dęba',
+  'Zaklików',
+  'Radomyśl nad Sanem',
+  'Pysznica',
+  'Bojanów',
+] as const
+
+const areaServed = AREA_SERVED_CITIES.map((name) => ({ '@type': 'City', name }))
 
 type OpeningHoursEntryInput = {
   daysOfWeek?: string[] | null
@@ -60,6 +77,9 @@ export function localBusinessJsonLd({ settings, locale }: Args) {
     image: `${SITE_URL}/images/og/og-default.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
+    hasMap: mapUrl(settings),
+    areaServed,
+    priceRange: '$$',
     telephone: settings.phone ?? undefined,
     email: settings.publicEmail ?? settings.receptionEmail ?? undefined,
     openingHoursSpecification: openingHoursSpec(settings.openingHoursReception),
@@ -78,6 +98,9 @@ export function restaurantJsonLd({ settings, locale }: Args) {
     image: `${SITE_URL}/images/og/og-restauracja.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
+    hasMap: mapUrl(settings),
+    areaServed,
+    priceRange: '$$',
     telephone: settings.phone ?? undefined,
     openingHoursSpecification: openingHoursSpec(settings.openingHoursRestaurant),
     hasMenu: `${SITE_URL}/${locale}/${locale === 'pl' ? 'restauracja/menu' : 'restaurant/menu'}`,
@@ -95,6 +118,9 @@ export function bistroJsonLd({ settings, locale }: Args) {
     image: `${SITE_URL}/images/og/og-bistro.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
+    hasMap: mapUrl(settings),
+    areaServed,
+    priceRange: '$',
     // Bezposrednia linia Bistro (fallback do numeru glownego).
     telephone: settings.phoneBistro ?? settings.phone ?? undefined,
     openingHoursSpecification: openingHoursSpec(settings.openingHoursRestaurant),
@@ -111,6 +137,9 @@ export function lodgingBusinessJsonLd({ settings, locale }: Args) {
     image: `${SITE_URL}/images/og/og-hotel.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
+    hasMap: mapUrl(settings),
+    areaServed,
+    priceRange: '$$',
     telephone: settings.phone ?? undefined,
     email: settings.receptionEmail ?? undefined,
     checkinTime: '14:00',
@@ -129,6 +158,8 @@ export function eventVenueJsonLd({ settings, locale }: Args) {
     image: `${SITE_URL}/images/og/og-default.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
+    hasMap: mapUrl(settings),
+    areaServed,
     telephone: settings.phone ?? undefined,
     email: settings.receptionEmail ?? undefined,
   }
@@ -170,6 +201,68 @@ function pickLocaleText(value: LocaleText, locale: Locale): string | undefined {
   return value?.[locale] ?? value?.pl ?? undefined
 }
 
+type MenuItemInput = {
+  name?: LocaleText
+  description?: LocaleText
+  price?: number | null
+} | null
+
+export type MenuCategoryInput = {
+  name?: LocaleText
+  description?: LocaleText
+  items?: MenuItemInput[] | null
+} | null
+
+// Menu -> MenuSection -> MenuItem (z Offer/cena PLN). Rich result menu w SERP.
+// Pomija sekcje bez nazwy lub bez pozycji; undefined gdy cale menu puste.
+export function menuJsonLd({
+  categories,
+  locale,
+  name = 'Menu',
+}: {
+  categories: MenuCategoryInput[]
+  locale: Locale
+  name?: string
+}) {
+  const sections = (categories ?? [])
+    .map((cat) => {
+      const sectionName = pickLocaleText(cat?.name, locale)
+      const items = (cat?.items ?? [])
+        .map((item) => {
+          const itemName = pickLocaleText(item?.name, locale)
+          if (!itemName) return null
+          const price = typeof item?.price === 'number' ? item.price : undefined
+          return {
+            '@type': 'MenuItem',
+            name: itemName,
+            description: pickLocaleText(item?.description, locale),
+            offers:
+              price !== undefined ? { '@type': 'Offer', price, priceCurrency: 'PLN' } : undefined,
+          }
+        })
+        .filter((i): i is NonNullable<typeof i> => i !== null)
+
+      if (!sectionName || items.length === 0) return null
+      return {
+        '@type': 'MenuSection',
+        name: sectionName,
+        description: pickLocaleText(cat?.description, locale),
+        hasMenuItem: items,
+      }
+    })
+    .filter((s): s is NonNullable<typeof s> => s !== null)
+
+  if (sections.length === 0) return undefined
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Menu',
+    '@id': `${SITE_URL}/${locale}/restauracja/menu#menu`,
+    name,
+    inLanguage: locale,
+    hasMenuSection: sections,
+  }
+}
+
 // === Pomocnicze ===
 
 function pickName(s: SiteSettingsForJsonLd, locale: Locale): string | undefined {
@@ -201,6 +294,15 @@ function geoCoordinates(s: SiteSettingsForJsonLd) {
     latitude: s.address.latitude,
     longitude: s.address.longitude,
   }
+}
+
+// hasMap: preferuj jawny googleMapsUrl z CMS; inaczej zbuduj z geo (deterministyczny
+// deep-link Map). Brak geo -> pomijamy pole.
+function mapUrl(s: SiteSettingsForJsonLd): string | undefined {
+  if (s.googleMapsUrl) return s.googleMapsUrl
+  const { latitude, longitude } = s.address ?? {}
+  if (typeof latitude !== 'number' || typeof longitude !== 'number') return undefined
+  return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
 }
 
 function openingHoursSpec(entries: OpeningHoursEntryInput[] | null | undefined) {
