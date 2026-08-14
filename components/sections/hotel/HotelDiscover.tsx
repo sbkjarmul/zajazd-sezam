@@ -34,7 +34,7 @@ export function HotelDiscover({ data, locale }: Props) {
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
           {title && (
-            <h2 className="text-text max-w-3xl text-3xl leading-none font-normal tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
+            <h2 className="text-text max-w-3xl text-3xl leading-none font-light tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
               {title}
             </h2>
           )}

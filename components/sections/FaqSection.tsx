@@ -22,14 +22,31 @@ export type FaqSectionData =
 type Props = {
   data: FaqSectionData
   locale: Locale
+  /**
+   * 'serif' (default) — serif naglowek Westbourne z akcentem kursywa, kolor
+   * ruby (restauracja). 'plain' — naglowek Inter uppercase w kolorze dark
+   * (`text-text`): /hotel uzywa font-light, /imprezy font-normal.
+   */
+  variant?: 'serif' | 'plain'
+  /** Grubosc naglowka w wariancie 'plain'. Default 'light' (hotel). */
+  headingWeight?: 'light' | 'regular'
 }
 
 // Wspoldzielony FAQ (bazowo Figma 971:1509 z restauracji): serif naglowek z
 // akcentem kursywa po lewej, akordeon pytan/odpowiedzi po prawej; pierwszy
 // rozwiniety. Jasny motyw (ruby na cream) — pasuje do jasnych sekcji tresci
 // restauracji, hotelu i imprez. Reuzywany na wszystkich trzech stronach.
-export function FaqSection({ data, locale }: Props) {
+// Wariant 'plain' zamienia serif+ruby na Inter+dark, zeby wtopic sie w /hotel.
+export function FaqSection({
+  data,
+  locale,
+  variant = 'serif',
+  headingWeight = 'light',
+}: Props) {
   if (!data) return null
+  const isPlain = variant === 'plain'
+  const textColor = isPlain ? 'text-text' : 'text-ruby'
+  const plainWeight = headingWeight === 'regular' ? 'font-normal' : 'font-light'
   const heading = pickLocale(data.heading, locale)
   const items = (data.items ?? [])
     .map((item, i) => ({
@@ -44,15 +61,24 @@ export function FaqSection({ data, locale }: Props) {
   return (
     <section data-header-theme="light" className="bg-bg py-16 md:py-24">
       <div className="layout-container grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-        {heading && (
-          <RevealText
-            as="h2"
-            mode="fade"
-            className="font-accent text-ruby text-[clamp(34px,5vw,64px)] leading-none tracking-[-0.01em] not-italic"
-          >
-            <AccentText text={heading} />
-          </RevealText>
-        )}
+        {heading &&
+          (isPlain ? (
+            <RevealText
+              as="h2"
+              mode="fade"
+              className={`text-text text-3xl leading-none ${plainWeight} tracking-tight whitespace-pre-line uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]`}
+            >
+              {heading.replace(/\*/g, '')}
+            </RevealText>
+          ) : (
+            <RevealText
+              as="h2"
+              mode="fade"
+              className="font-accent text-ruby text-[clamp(34px,5vw,64px)] leading-none tracking-[-0.01em] not-italic"
+            >
+              <AccentText text={heading} />
+            </RevealText>
+          ))}
 
         <Reveal delay={120} className="w-full">
           <Accordion.Root
@@ -68,7 +94,9 @@ export function FaqSection({ data, locale }: Props) {
                 className="border-b border-[var(--color-gray)]"
               >
                 <Accordion.Header>
-                  <Accordion.Trigger className="group text-ruby flex w-full items-center justify-between gap-6 py-6 text-left">
+                  <Accordion.Trigger
+                    className={`group ${textColor} flex w-full items-center justify-between gap-6 py-6 text-left`}
+                  >
                     <span className="text-lg leading-snug">{item.question}</span>
                     <span
                       aria-hidden
@@ -80,7 +108,7 @@ export function FaqSection({ data, locale }: Props) {
                 </Accordion.Header>
                 <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
                   {item.answer && (
-                    <p className="text-ruby pb-6 text-lg leading-normal">{item.answer}</p>
+                    <p className={`${textColor} pb-6 text-lg leading-normal`}>{item.answer}</p>
                   )}
                 </Accordion.Content>
               </Accordion.Item>

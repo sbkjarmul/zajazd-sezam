@@ -47,7 +47,7 @@ export function HotelAmenities({ data, locale }: Props) {
           )}
           {title && (
             <Reveal delay={100}>
-              <h2 className="text-text text-3xl leading-none font-normal tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
+              <h2 className="text-text text-3xl leading-none font-light tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
                 {title}
               </h2>
             </Reveal>
@@ -63,7 +63,7 @@ export function HotelAmenities({ data, locale }: Props) {
                 <li className="border-gold flex flex-col items-start justify-between gap-3 border-b pb-4 md:min-h-0">
                   <div className="flex flex-col gap-3">
                     {itemTitle && (
-                      <h3 className="text-text text-base font-normal tracking-tight uppercase md:text-2xl md:leading-none md:tracking-[-0.03em] lg:text-[32px]">
+                      <h3 className="text-text text-base font-light tracking-tight uppercase md:text-2xl md:leading-none md:tracking-[-0.03em] lg:text-[32px]">
                         {itemTitle}
                       </h3>
                     )}
