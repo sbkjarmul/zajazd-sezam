@@ -77,7 +77,7 @@
 - [ ] **P2** Blog/aktualności: „gdzie zjeść w Stalowej Woli", „sala na komunię Stalowa Wola",
       „hotel na wesele Podkarpacie" — treść odpowiadająca na realne zapytania
 - [ ] **P2** Strona/sekcja „Dojazd" — z okolic (Nisko, Tarnobrzeg, Nowa Dęba), parking, koordynaty
-- [ ] **P1** FAQ pod long-tail lokalny (mamy już FAQPage na restauracji — rozszerzyć na hotel/imprezy)
+- [x] **P1** FAQ + FAQPage pod long-tail lokalny — restauracja, hotel, imprezy (wspólny `FaqSection`)
 
 ### Frazy docelowe (przykłady — do rank-trackingu)
 | Branża | Główne | Long-tail lokalny |
