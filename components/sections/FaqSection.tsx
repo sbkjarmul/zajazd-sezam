@@ -1,28 +1,41 @@
 'use client'
 
 import { Accordion } from 'radix-ui'
-import type { RESTAURANT_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { AccentText } from '@/components/AccentText'
 import { RevealText } from '@/components/RevealText'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
+type LocaleValue = { pl?: string | null; en?: string | null } | null | undefined
+
+type FaqItem = { question?: LocaleValue; answer?: LocaleValue } | null
+
+export type FaqSectionData =
+  | {
+      heading?: LocaleValue
+      items?: FaqItem[] | null
+    }
+  | null
+  | undefined
+
 type Props = {
-  data: NonNullable<RESTAURANT_PAGE_QUERY_RESULT>['faqSection']
+  data: FaqSectionData
   locale: Locale
 }
 
-// FAQ (Figma 971:1509): serif nagłówek z akcentem kursywą po lewej, po prawej
-// akcordeon pytań i odpowiedzi. Pierwszy element rozwinięty domyślnie.
-export function RestaurantFaq({ data, locale }: Props) {
+// Wspoldzielony FAQ (bazowo Figma 971:1509 z restauracji): serif naglowek z
+// akcentem kursywa po lewej, akordeon pytan/odpowiedzi po prawej; pierwszy
+// rozwiniety. Jasny motyw (ruby na cream) — pasuje do jasnych sekcji tresci
+// restauracji, hotelu i imprez. Reuzywany na wszystkich trzech stronach.
+export function FaqSection({ data, locale }: Props) {
   if (!data) return null
   const heading = pickLocale(data.heading, locale)
   const items = (data.items ?? [])
     .map((item, i) => ({
       value: `faq-${i}`,
-      question: pickLocale(item.question, locale),
-      answer: pickLocale(item.answer, locale),
+      question: pickLocale(item?.question, locale),
+      answer: pickLocale(item?.answer, locale),
     }))
     .filter((item) => item.question)
 

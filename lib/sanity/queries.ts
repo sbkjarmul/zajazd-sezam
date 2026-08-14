@@ -199,6 +199,10 @@ export const HOTEL_PAGE_QUERY = defineQuery(`
       eyebrow, title, description, ctaLabel,
       image { ${IMAGE_WITH_ALT_FRAGMENT} }
     },
+    faqSection {
+      heading,
+      items[]{ question, answer }
+    },
     seo { ${SEO_FRAGMENT} }
   }
 `)
@@ -246,6 +250,10 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
     reservationSection {
       eyebrow, title, description,
       formInvitationTitle, formInvitationText, ctaLabel
+    },
+    faqSection {
+      heading,
+      items[]{ question, answer }
     },
     seo { ${SEO_FRAGMENT} }
   }

@@ -44,8 +44,7 @@ export const eventsPage = defineType({
           name: 'leadTextMobile',
           type: 'localeText',
           title: 'Lead — mobile (opcjonalny override)',
-          description:
-            'Krótszy wariant dla < md (768px). Jeśli puste — używa wariantu desktop.',
+          description: 'Krótszy wariant dla < md (768px). Jeśli puste — używa wariantu desktop.',
         },
         {
           name: 'highlightedTextMobile',
@@ -182,6 +181,34 @@ export const eventsPage = defineType({
         },
         { name: 'formInvitationText', type: 'localeText', title: 'Tekst zaproszenia (formularz)' },
         { name: 'ctaLabel', type: 'localeString', title: 'Etykieta CTA (drawer event)' },
+      ],
+    }),
+
+    defineField({
+      name: 'faqSection',
+      title: 'Sekcja FAQ (Najczęstsze pytania)',
+      type: 'object',
+      fields: [
+        {
+          name: 'heading',
+          type: 'localeString',
+          title: 'Nagłówek (akcent kursywą: *słowo*)',
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Pytania i odpowiedzi',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'question', type: 'localeString', title: 'Pytanie' },
+                { name: 'answer', type: 'localeText', title: 'Odpowiedź' },
+              ],
+              preview: { select: { title: 'question.pl' } },
+            },
+          ],
+        },
       ],
     }),
 

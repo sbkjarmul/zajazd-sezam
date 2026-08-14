@@ -4,7 +4,8 @@ import { sanityClient } from '@/lib/sanity/client'
 import { ALL_ROOM_TYPES_QUERY, HOTEL_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { lodgingBusinessJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
+import { lodgingBusinessJsonLd, faqPageJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
+import { FaqSection } from '@/components/sections/FaqSection'
 import type { Locale } from '@/i18n/routing'
 import { HotelHero } from '@/components/sections/hotel/HotelHero'
 import { HotelQuote } from '@/components/sections/hotel/HotelQuote'
@@ -47,6 +48,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
   if (!page) notFound()
 
   const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+  const faqJsonLd = faqPageJsonLd({ items: page.faqSection?.items ?? [], locale })
 
   return (
     <>
@@ -56,6 +58,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
           locale,
         })}
       />
+      {faqJsonLd && <JsonLd data={faqJsonLd} />}
       <Header
         logoImage={logoImage}
         locale={locale}
@@ -84,6 +87,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
         <HotelAmenities data={page.amenitiesSection} locale={locale} />
         <Reviews data={page.reviewsSection} locale={locale} uppercaseTitle />
         <HotelDiscover data={page.discoverSection} locale={locale} />
+        <FaqSection data={page.faqSection} locale={locale} />
         <HotelReservationCta data={page.reservationSection} locale={locale} />
         <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />
       </div>

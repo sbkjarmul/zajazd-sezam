@@ -140,6 +140,34 @@ export const hotelPage = defineType({
       ],
     }),
 
+    defineField({
+      name: 'faqSection',
+      title: '8. Sekcja FAQ (Najczęstsze pytania)',
+      type: 'object',
+      fields: [
+        {
+          name: 'heading',
+          type: 'localeString',
+          title: 'Nagłówek (akcent kursywą: *słowo*)',
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Pytania i odpowiedzi',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'question', type: 'localeString', title: 'Pytanie' },
+                { name: 'answer', type: 'localeText', title: 'Odpowiedź' },
+              ],
+              preview: { select: { title: 'question.pl' } },
+            },
+          ],
+        },
+      ],
+    }),
+
     defineField({ name: 'seo', title: 'SEO', type: 'seoMeta' }),
   ],
   preview: { prepare: () => ({ title: 'Hotel' }) },

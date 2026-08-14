@@ -10,7 +10,7 @@ import { RestaurantHero } from '@/components/sections/restaurant/RestaurantHero'
 import { RestaurantPitch } from '@/components/sections/restaurant/RestaurantPitch'
 import { RestaurantCraft } from '@/components/sections/restaurant/RestaurantCraft'
 import { RestaurantAmbiance } from '@/components/sections/restaurant/RestaurantAmbiance'
-import { RestaurantFaq } from '@/components/sections/restaurant/RestaurantFaq'
+import { FaqSection } from '@/components/sections/FaqSection'
 import { RestaurantReservation } from '@/components/sections/RestaurantReservation'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { Footer } from '@/components/layout/Footer'
@@ -89,7 +89,7 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
         locale={locale}
         image={page.reservationSection?.image}
       />
-      <RestaurantFaq data={page.faqSection} locale={locale} />
+      <FaqSection data={page.faqSection} locale={locale} />
       <Footer
         settings={settings}
         locale={locale}

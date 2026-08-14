@@ -4,7 +4,8 @@ import { sanityClient } from '@/lib/sanity/client'
 import { EVENTS_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { eventVenueJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
+import { eventVenueJsonLd, faqPageJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
+import { FaqSection } from '@/components/sections/FaqSection'
 import type { Locale } from '@/i18n/routing'
 import { EventsHero } from '@/components/sections/events/EventsHero'
 import { EventsPromise } from '@/components/sections/events/EventsPromise'
@@ -48,6 +49,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
   if (!page) notFound()
 
   const logoImage = page.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
+  const faqJsonLd = faqPageJsonLd({ items: page.faqSection?.items ?? [], locale })
 
   return (
     <>
@@ -57,6 +59,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
           locale,
         })}
       />
+      {faqJsonLd && <JsonLd data={faqJsonLd} />}
       <Header logoImage={logoImage} locale={locale} />
       <SnapController />
       <div className="snap-panels">
@@ -76,6 +79,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
         <EventsCatering data={page.cateringSection} locale={locale} />
         <Reviews data={page.reviewsSection} locale={locale} />
         <EventsSteps data={page.stepsSection} locale={locale} />
+        <FaqSection data={page.faqSection} locale={locale} />
         <EventsReservationCta data={page.reservationSection} settings={settings} locale={locale} />
         <Footer settings={settings} locale={locale} logoImage={logoImage} />
       </div>
