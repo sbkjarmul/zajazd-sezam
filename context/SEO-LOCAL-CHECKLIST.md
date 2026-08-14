@@ -103,7 +103,7 @@
 - [x] **P1** `priceRange` — Restauracja/Hotel `$$`, Bistro `$` (do korekty z klientem)
 - [x] **P1** `Menu` + `hasMenuSection`/`MenuItem` z Sanity (ceny PLN) na `/restauracja/menu`
 - [ ] **P1** Embedded mapa na `/kontakt` (Google Maps Embed API — Faza 8)
-- [ ] **P2** `BreadcrumbList` JSON-LD na podstronach (nawigacja w SERP)
+- [x] **P2** `BreadcrumbList` JSON-LD na wszystkich podstronach (ścieżka w SERP, PL/EN)
 - [ ] **P2** Landing pages per miejscowość (jeśli zdecydujemy — §5)
 
 ## 8. Pomiar i monitoring
