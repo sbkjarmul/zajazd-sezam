@@ -89,7 +89,7 @@
 ## 7. Boostery GEO w kodzie (do implementacji — mogę zrobić)
 
 - [x] **P1** `areaServed` w `LocalBusiness`/`Restaurant`/`Bistro`/`EventVenue`/`LodgingBusiness` —
-      **Stalowa Wola, Rozwadów, Nisko, Tarnobrzeg, Nowa Dęba, Zaklików, Radomyśl nad Sanem,
+      **Stalowa Wola, Nisko, Tarnobrzeg, Nowa Dęba, Zaklików, Radomyśl nad Sanem,
       Pysznica, Bojanów** ⚠️ POTWIERDZIĆ realny zasięg z klientem (lista w `lib/seo/jsonLd.ts`)
 - [x] **P1** `hasMap` → deep-link Google Maps (z geo; nadpisywalny przez `siteSettings.googleMapsUrl`)
 - [x] **P1** `priceRange` — Restauracja/Hotel `$$`, Bistro `$` (do korekty z klientem)

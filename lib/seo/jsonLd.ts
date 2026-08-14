@@ -31,7 +31,6 @@ export type SiteSettingsForJsonLd = {
 // Potwierdzic realny zasieg z klientem; latwo edytowac te liste.
 const AREA_SERVED_CITIES = [
   'Stalowa Wola',
-  'Rozwadów',
   'Nisko',
   'Tarnobrzeg',
   'Nowa Dęba',
