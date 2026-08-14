@@ -237,8 +237,8 @@ async function main() {
       eyebrow: ls('Goście z daleka?', 'Out-of-town guests?'),
       title: ls('Zarezerwuj nocleg.', 'Book a room.'),
       description: lt(
-        'Zapomnij o logistyce i szukaniu noclegów. Dysponujemy 70 komfortowymi pokojami. Zarezerwuj salę, wyśmienite jedzenie oraz nocleg dla Twoich gości w Stalowej Woli.',
-        'Forget the logistics of finding hotels. We have 70 comfortable rooms on-site. Book the hall, the food and the rooms for your guests in Stalowa Wola in one place.',
+        'Zapomnij o logistyce i szukaniu noclegów. Dysponujemy 70 komfortowymi miejscami noclegowymi. Zarezerwuj salę, wyśmienite jedzenie oraz nocleg dla Twoich gości w Stalowej Woli.',
+        'Forget the logistics of finding hotels. We have 70 comfortable beds on-site. Book the hall, the food and the rooms for your guests in Stalowa Wola in one place.',
       ),
       ctaLabel: ls('Zarezerwuj nocleg', 'Book a room'),
     },
@@ -311,8 +311,8 @@ async function main() {
         en: 'Sezam — weddings, communions, birthdays in Stalowa Wola',
       },
       metaDescription: {
-        pl: 'Wesela do 200 osób, komunie, urodziny i imprezy firmowe w Zajeździe Sezam w Stalowej Woli. Cztery sale, autorska kuchnia i 70 pokoi w jednym kompleksie.',
-        en: 'Weddings up to 200 guests, communions, birthdays and corporate events at Zajazd Sezam in Stalowa Wola. Four halls, in-house cuisine and 70 rooms in one place.',
+        pl: 'Wesela do 200 osób, komunie, urodziny i imprezy firmowe w Zajeździe Sezam w Stalowej Woli. Cztery sale, autorska kuchnia i nocleg dla 70 osób.',
+        en: 'Weddings up to 200 guests, communions, birthdays and corporate events at Zajazd Sezam in Stalowa Wola. Four halls, in-house cuisine and lodging for 70 guests.',
       },
       noIndex: false,
     },

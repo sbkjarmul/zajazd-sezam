@@ -18,6 +18,7 @@ export type SiteSettingsForJsonLd = {
     longitude?: number | null
   } | null
   phone?: string | null
+  phoneBistro?: string | null
   publicEmail?: string | null
   receptionEmail?: string | null
   openingHoursRestaurant?: OpeningHoursEntryInput[] | null
@@ -40,7 +41,7 @@ export function organizationJsonLd({ settings, locale }: Args) {
     name: pickName(settings, locale),
     legalName: settings.legalName ?? undefined,
     url: SITE_URL,
-    logo: `${SITE_URL}/images/og/og-default.webp`,
+    logo: `${SITE_URL}/images/og/og-default.jpg`,
     address: postalAddress(settings),
     telephone: settings.phone ?? undefined,
     email: settings.publicEmail ?? settings.receptionEmail ?? undefined,
@@ -56,7 +57,7 @@ export function localBusinessJsonLd({ settings, locale }: Args) {
     name: pickName(settings, locale),
     description: pickDescription(settings, locale),
     url: SITE_URL,
-    image: `${SITE_URL}/images/og/og-default.webp`,
+    image: `${SITE_URL}/images/og/og-default.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
     telephone: settings.phone ?? undefined,
@@ -74,12 +75,29 @@ export function restaurantJsonLd({ settings, locale }: Args) {
     name: `Restauracja ${pickName(settings, locale) ?? 'Sezam'}`,
     servesCuisine: ['Polish'],
     url: `${SITE_URL}/${locale}/${locale === 'pl' ? 'restauracja' : 'restaurant'}`,
-    image: `${SITE_URL}/images/og/og-restauracja.webp`,
+    image: `${SITE_URL}/images/og/og-restauracja.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
     telephone: settings.phone ?? undefined,
     openingHoursSpecification: openingHoursSpec(settings.openingHoursRestaurant),
     hasMenu: `${SITE_URL}/${locale}/${locale === 'pl' ? 'restauracja/menu' : 'restaurant/menu'}`,
+  }
+}
+
+export function bistroJsonLd({ settings, locale }: Args) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    '@id': `${SITE_URL}/${locale}/bistro#bistro`,
+    name: `Bistro ${pickName(settings, locale) ?? 'Sezam'}`,
+    servesCuisine: ['Polish'],
+    url: `${SITE_URL}/${locale}/bistro`,
+    image: `${SITE_URL}/images/og/og-bistro.jpg`,
+    address: postalAddress(settings),
+    geo: geoCoordinates(settings),
+    // Bezposrednia linia Bistro (fallback do numeru glownego).
+    telephone: settings.phoneBistro ?? settings.phone ?? undefined,
+    openingHoursSpecification: openingHoursSpec(settings.openingHoursRestaurant),
   }
 }
 
@@ -90,7 +108,7 @@ export function lodgingBusinessJsonLd({ settings, locale }: Args) {
     '@id': `${SITE_URL}/${locale}/hotel#lodging`,
     name: `Hotel ${pickName(settings, locale) ?? 'Sezam'}`,
     url: `${SITE_URL}/${locale}/hotel`,
-    image: `${SITE_URL}/images/og/og-hotel.webp`,
+    image: `${SITE_URL}/images/og/og-hotel.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
     telephone: settings.phone ?? undefined,
@@ -108,11 +126,48 @@ export function eventVenueJsonLd({ settings, locale }: Args) {
     '@id': `${SITE_URL}/${locale}/imprezy-okolicznosciowe#venue`,
     name: pickName(settings, locale),
     url: `${SITE_URL}/${locale}/${locale === 'pl' ? 'imprezy-okolicznosciowe' : 'events'}`,
+    image: `${SITE_URL}/images/og/og-default.jpg`,
     address: postalAddress(settings),
     geo: geoCoordinates(settings),
     telephone: settings.phone ?? undefined,
     email: settings.receptionEmail ?? undefined,
   }
+}
+
+type LocaleText = { pl?: string | null; en?: string | null } | null | undefined
+
+export type FaqItemInput = {
+  question?: LocaleText
+  answer?: LocaleText
+} | null
+
+// FAQPage — rich result z rozwijanymi pytaniami w SERP (wieksze CTR).
+// Zwraca undefined gdy brak wypelnionych par pytanie/odpowiedz, zeby nie
+// emitowac pustego (niewaznego) schematu.
+export function faqPageJsonLd({ items, locale }: { items: FaqItemInput[]; locale: Locale }) {
+  const entries = (items ?? [])
+    .map((item) => {
+      const question = pickLocaleText(item?.question, locale)
+      const answer = pickLocaleText(item?.answer, locale)
+      if (!question || !answer) return null
+      return {
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: { '@type': 'Answer', text: answer },
+      }
+    })
+    .filter((e): e is NonNullable<typeof e> => e !== null)
+
+  if (entries.length === 0) return undefined
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: entries,
+  }
+}
+
+function pickLocaleText(value: LocaleText, locale: Locale): string | undefined {
+  return value?.[locale] ?? value?.pl ?? undefined
 }
 
 // === Pomocnicze ===

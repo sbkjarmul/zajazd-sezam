@@ -29,6 +29,20 @@ type BuildMetadataArgs = {
 
 const OG_LOCALE: Record<Locale, string> = { pl: 'pl_PL', en: 'en_US' }
 
+// Statyczny fallback og:image per strona (public/images/og/*.jpg) — uzywany gdy
+// dokument nie ma wlasnego seo.ogImage ani defaultSeo.ogImage. Gwarantuje grafike
+// przy udostepnianiu linku na kazdej podstronie. Nieujete sciezki -> og-default.jpg.
+const OG_FALLBACK_FILE: Partial<Record<Pathname, string>> = {
+  '/restauracja': 'og-restauracja.jpg',
+  '/restauracja/menu': 'og-restauracja.jpg',
+  '/hotel': 'og-hotel.jpg',
+  '/bistro': 'og-bistro.jpg',
+}
+
+function staticOgFallback(pathname: Pathname): string {
+  return `${SITE_URL}/images/og/${OG_FALLBACK_FILE[pathname] ?? 'og-default.jpg'}`
+}
+
 export function buildMetadata({
   locale,
   pathname,
@@ -39,7 +53,7 @@ export function buildMetadata({
   const title = pickLocale(seo?.metaTitle, locale) ?? pickLocale(defaultSeo?.metaTitle, locale)
   const description =
     pickLocale(seo?.metaDescription, locale) ?? pickLocale(defaultSeo?.metaDescription, locale)
-  const ogImageUrl = ogImageFromSeo(seo) ?? ogImageFromSeo(defaultSeo)
+  const ogImageUrl = ogImageFromSeo(seo) ?? ogImageFromSeo(defaultSeo) ?? staticOgFallback(pathname)
   const noIndex = Boolean(seo?.noIndex)
 
   const canonical = absoluteUrl(localizedPathname(pathname, locale))

@@ -50,6 +50,9 @@ const siteSettings = {
     city: 'Stalowa Wola',
     region: 'podkarpackie',
     country: 'PL',
+    // Geo-pin obiektu — GeoCoordinates w Schema.org (silny sygnal SEO lokalnego).
+    latitude: 50.569069946242486,
+    longitude: 22.0381256459378,
   },
   phone: '+48156422106', // Recepcja / główny (Hotel, Imprezy, Kontakt, stopka domyślna)
   phoneRestaurant: '+48156422104', // Bezpośrednia linia Restauracji
@@ -74,6 +77,24 @@ const siteSettings = {
       closes: '23:59',
     },
   ],
+  // Wizytowka Google → sameAs w Schema.org (powiazanie strony z profilem lokalnym).
+  googleBusinessProfileUrl: 'https://share.google/JU9WU9Wq2y2irrfpC',
+  // Domyslne SEO — siatka bezpieczenstwa dla stron bez wlasnego pola `seo`
+  // (galeria, menu, strony prawne). ogImage dokladany osobno po wgraniu grafiki OG.
+  defaultSeo: {
+    _type: 'seoMeta',
+    metaTitle: {
+      _type: 'localeString',
+      pl: 'Zajazd Sezam Stalowa Wola — hotel, restauracja, imprezy',
+      en: 'Zajazd Sezam Stalowa Wola — hotel, restaurant, events',
+    },
+    metaDescription: {
+      _type: 'localeText',
+      pl: 'Hotel, restauracja, bistro i sale na imprezy pod jednym dachem w Stalowej Woli. Noclegi, wesela i uroczystości rodzinne w jednym miejscu.',
+      en: 'Hotel, restaurant, bistro and event halls under one roof in Stalowa Wola. Lodging, weddings and family celebrations in one place.',
+    },
+    noIndex: false,
+  },
 }
 
 const result = await client.createOrReplace(siteSettings)

@@ -12,7 +12,17 @@ import { BurgerMenu } from '@/components/layout/BurgerMenu'
 import { ReservationDrawer } from '@/components/layout/ReservationDrawer'
 import { Toaster } from '@/components/ui/sonner'
 import { SmoothScroll } from '@/components/SmoothScroll'
+import { JsonLd } from '@/components/seo/JsonLd'
+import {
+  organizationJsonLd,
+  localBusinessJsonLd,
+  type SiteSettingsForJsonLd,
+} from '@/lib/seo/jsonLd'
+import type { Locale } from '@/i18n/routing'
 import '../../globals.css'
+
+// html lang wg BCP 47 (region) — precyzyjniejszy sygnal jezykowy niz samo "pl"/"en".
+const HTML_LANG: Record<Locale, string> = { pl: 'pl-PL', en: 'en-US' }
 
 const inter = Inter({
   subsets: ['latin', 'latin-ext'],
@@ -77,12 +87,18 @@ export default async function LocaleLayout({
   // tap-to-call (tel:) na mobile zamiast otwierania drawer formularza.
   const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY)
 
+  // Dane strukturalne obowiazujace na kazdej stronie (spojne NAP dla SEO lokalnego).
+  // Strony branzowe dokladaja wlasny typ (Restaurant/LodgingBusiness/EventVenue).
+  const settingsForJsonLd = (settings ?? {}) as SiteSettingsForJsonLd
+
   return (
     <html
-      lang={locale}
+      lang={HTML_LANG[locale]}
       className={`${inter.variable} ${westbourne.variable} h-full antialiased`}
     >
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
+        <JsonLd data={organizationJsonLd({ settings: settingsForJsonLd, locale })} />
+        <JsonLd data={localBusinessJsonLd({ settings: settingsForJsonLd, locale })} />
         <NextIntlClientProvider>
           <UIProvider phone={settings?.phone}>
             <SmoothScroll>

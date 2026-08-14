@@ -255,7 +255,7 @@ async function main() {
     seo: {
       _type: 'seoMeta',
       metaTitle: {
-        pl: 'Hotel Sezam Stalowa Wola — 70+ pokoi, sauna, recepcja 24/7',
+        pl: 'Hotel Sezam Stalowa Wola — 70+ miejsc, sauna, recepcja 24/7',
         en: 'Hotel Sezam Stalowa Wola — 70+ beds, sauna, 24/7 reception',
       },
       metaDescription: {

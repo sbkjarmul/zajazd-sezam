@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { RESTAURANT_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { restaurantJsonLd, faqPageJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import type { Locale } from '@/i18n/routing'
 import { RestaurantHero } from '@/components/sections/restaurant/RestaurantHero'
 import { RestaurantPitch } from '@/components/sections/restaurant/RestaurantPitch'
@@ -48,8 +50,17 @@ export default async function RestaurantPage({ params }: { params: Promise<Param
   const restaurantPhone = settings?.phoneRestaurant ?? settings?.phone
   const tReservation = await getTranslations('restaurant.reservation')
 
+  const faqJsonLd = faqPageJsonLd({ items: page.faqSection?.items ?? [], locale })
+
   return (
     <>
+      <JsonLd
+        data={restaurantJsonLd({
+          settings: (settings ?? {}) as SiteSettingsForJsonLd,
+          locale,
+        })}
+      />
+      {faqJsonLd && <JsonLd data={faqJsonLd} />}
       <Header
         heroTheme="light"
         mobileHeroTheme="light"

@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { EVENTS_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { eventVenueJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import type { Locale } from '@/i18n/routing'
 import { EventsHero } from '@/components/sections/events/EventsHero'
 import { EventsPromise } from '@/components/sections/events/EventsPromise'
@@ -49,6 +51,12 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
 
   return (
     <>
+      <JsonLd
+        data={eventVenueJsonLd({
+          settings: (settings ?? {}) as SiteSettingsForJsonLd,
+          locale,
+        })}
+      />
       <Header logoImage={logoImage} locale={locale} />
       <SnapController />
       <div className="snap-panels">

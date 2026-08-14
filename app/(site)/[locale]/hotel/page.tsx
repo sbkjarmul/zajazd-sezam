@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { sanityClient } from '@/lib/sanity/client'
 import { ALL_ROOM_TYPES_QUERY, HOTEL_PAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { lodgingBusinessJsonLd, type SiteSettingsForJsonLd } from '@/lib/seo/jsonLd'
 import type { Locale } from '@/i18n/routing'
 import { HotelHero } from '@/components/sections/hotel/HotelHero'
 import { HotelQuote } from '@/components/sections/hotel/HotelQuote'
@@ -48,6 +50,12 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
 
   return (
     <>
+      <JsonLd
+        data={lodgingBusinessJsonLd({
+          settings: (settings ?? {}) as SiteSettingsForJsonLd,
+          locale,
+        })}
+      />
       <Header
         logoImage={logoImage}
         locale={locale}
