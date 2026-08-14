@@ -5,7 +5,7 @@ import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { Reveal } from '@/components/Reveal'
-import { Lightbox } from '@/components/ui/Lightbox'
+import { SanityLightbox } from '@/components/sections/gallery/SanityLightbox'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { cn } from '@/lib/utils'
 
@@ -59,8 +59,6 @@ export function EventTypesReveal({ section, types, locale }: Props) {
 
   const openGalleryLabel = locale === 'pl' ? 'Otwórz galerię zdjęć' : 'Open photo gallery'
   const galleryImages = openIdx !== null ? galleryOf(types[openIdx]) : []
-  const galleryTitle =
-    openIdx !== null ? (pickLocale(types[openIdx].name, locale) ?? undefined) : undefined
 
   const eyebrow = pickLocale(section?.eyebrow, locale)
   const title = pickLocale(section?.title, locale)
@@ -183,14 +181,13 @@ export function EventTypesReveal({ section, types, locale }: Props) {
         </div>
       </div>
 
-      <Lightbox
+      <SanityLightbox
         images={galleryImages}
         locale={locale}
         open={openIdx !== null}
         onOpenChange={(next) => {
           if (!next) setOpenIdx(null)
         }}
-        title={galleryTitle}
       />
     </section>
   )

@@ -19,7 +19,7 @@ export default function LightboxInner(props: Props) {
       plugins={[Zoom]}
       // Pinch + double-tap na mobile (powod wyboru YARL zamiast naszego lightboxa).
       zoom={{ maxZoomPixelRatio: 3, doubleTapDelay: 250, scrollToZoom: true }}
-      // Spokojny, "premium" przesuw taśmy — jak w istniejacym ui/Lightbox.
+      // Spokojny, "premium" przesuw taśmy.
       animation={{ fade: 300, swipe: 500 }}
       carousel={{ finite: false, padding: 0, spacing: 0, preload: 2 }}
       // Gest w dol zamyka (mobile), klik w tlo zamyka (desktop).

@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
-import { Lightbox } from '@/components/ui/Lightbox'
+import { SanityLightbox } from '@/components/sections/gallery/SanityLightbox'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 
 type Hall = NonNullable<NonNullable<EVENTS_PAGE_QUERY_RESULT>['halls']>[number]
@@ -282,12 +282,11 @@ export function HallsMarquee({ halls, locale }: Props) {
         </div>
       </div>
 
-      <Lightbox
+      <SanityLightbox
         images={active?.images ?? []}
         locale={locale}
         open={open}
         onOpenChange={setOpen}
-        title={pickLocale(active?.name, locale) ?? undefined}
       />
     </div>
   )
