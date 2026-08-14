@@ -161,7 +161,20 @@ export async function Footer({
                   ),
                 },
                 hoursText
-                  ? { text: hoursText }
+                  ? {
+                      // Godziny bywaja wieloliniowe (\n miedzy zakresami dni) —
+                      // HTML zwija \n do spacji, wiec renderujemy z <br/> (jak adres).
+                      text: (
+                        <>
+                          {hoursText.split('\n').map((line, i) => (
+                            <span key={i}>
+                              {i > 0 && <br />}
+                              {line}
+                            </span>
+                          ))}
+                        </>
+                      ),
+                    }
                   : phone && {
                       text: formatPhonePl(phone),
                       href: `tel:${phone.replace(/\s/g, '')}`,
