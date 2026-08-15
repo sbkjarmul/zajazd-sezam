@@ -171,6 +171,8 @@
   "hotel": {
     "bookRoom": "Book",
     "prevImage": "Previous image",
-    "nextImage": "Next image"
+    "nextImage": "Next image",
+    "prevRoom": "Previous room",
+    "nextRoom": "Next room"
   }
 }

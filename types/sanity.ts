@@ -1991,6 +1991,32 @@ export type ALL_ROOM_TYPES_QUERY_RESULT = Array<{
   }> | null
 }>
 
+// Source: lib/sanity/queries.ts
+// Variable: HOME_ROOM_TYPES_QUERY
+// Query: *[_type == "roomType"] | order(order asc) {    _id,    name,    description,    "wideImages": select(      count(images[asset->metadata.dimensions.aspectRatio > 1.2]) > 0        => images[asset->metadata.dimensions.aspectRatio > 1.2][0...4],      images[0...4]    )[]{   ...,  asset->{    _id,    url,    metadata { dimensions, lqip, palette }  },  alt }  }
+export type HOME_ROOM_TYPES_QUERY_RESULT = Array<{
+  _id: string
+  name: LocaleString | null
+  description: LocaleText | null
+  wideImages: Array<{
+    _key: string
+    _type: 'imageWithAlt'
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        dimensions: SanityImageDimensions | null
+        lqip: string | null
+        palette: SanityImagePalette | null
+      } | null
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: LocaleString | null
+  }> | null
+}>
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
@@ -2010,5 +2036,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "menuCategory" && cuisine == "restaurant"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    description,\n    order,\n    "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {\n      _id,\n      name,\n      description,\n      price,\n      diet,\n      image { \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n    }\n  }\n': MENU_BY_CATEGORY_QUERY_RESULT
     '\n  *[_type == "eventHall"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_EVENT_HALLS_QUERY_RESULT
     '\n  *[_type == "roomType"] | order(order asc) {\n    _id,\n    name,\n    identifier,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_ROOM_TYPES_QUERY_RESULT
+    '\n  *[_type == "roomType"] | order(order asc) {\n    _id,\n    name,\n    description,\n    "wideImages": select(\n      count(images[asset->metadata.dimensions.aspectRatio > 1.2]) > 0\n        => images[asset->metadata.dimensions.aspectRatio > 1.2][0...4],\n      images[0...4]\n    )[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': HOME_ROOM_TYPES_QUERY_RESULT
   }
 }

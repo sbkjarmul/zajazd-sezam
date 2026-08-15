@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 import { sanityClient } from '@/lib/sanity/client'
-import { HOMEPAGE_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
+import { HOMEPAGE_QUERY, HOME_ROOM_TYPES_QUERY, SITE_SETTINGS_QUERY } from '@/lib/sanity/queries'
 import { buildMetadata } from '@/lib/seo/metadata'
 import type { Locale } from '@/i18n/routing'
 import { HeroSection } from '@/components/sections/HeroSection'
@@ -21,8 +21,10 @@ import { SnapController } from '@/components/SnapController'
 const CONNECTOR_IMPREZY_RESTAURACJA =
   'linear-gradient(to bottom, var(--color-light), var(--color-dark-ruby))'
 const CONNECTOR_RESTAURACJA_HOTEL =
-  'linear-gradient(to bottom, var(--color-dark-ruby), var(--color-dark))'
-const CONNECTOR_HOTEL_BISTRO = 'linear-gradient(to bottom, var(--color-dark), var(--color-light))'
+  'linear-gradient(to bottom, var(--color-dark-ruby), var(--color-light))'
+// Miedzy Hotelem a Bistro nie ma juz lacznika - od czasu jasnej sekcji Hotelu
+// (Figma 1091:2) obie strony sa na --color-light, wiec gradient bylby plaskim
+// pasem 124 px w tym samym kolorze.
 
 type Params = { locale: string }
 
@@ -45,9 +47,10 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
   setRequestLocale(rawLocale)
   const locale = rawLocale as Locale
 
-  const [home, settings] = await Promise.all([
+  const [home, settings, rooms] = await Promise.all([
     sanityClient.fetch(HOMEPAGE_QUERY),
     sanityClient.fetch(SITE_SETTINGS_QUERY),
+    sanityClient.fetch(HOME_ROOM_TYPES_QUERY),
   ])
 
   const logoImage = home?.headerLogo ?? settings?.defaultHeaderLogo ?? undefined
@@ -69,8 +72,7 @@ export default async function HomePage({ params }: { params: Promise<Params> }) 
         <SectionConnector gradient={CONNECTOR_IMPREZY_RESTAURACJA} />
         <RestaurantBlock data={home?.restaurantBlock ?? null} locale={locale} />
         <SectionConnector gradient={CONNECTOR_RESTAURACJA_HOTEL} />
-        <HotelBlock data={home?.hotelBlock ?? null} locale={locale} />
-        <SectionConnector gradient={CONNECTOR_HOTEL_BISTRO} />
+        <HotelBlock data={home?.hotelBlock ?? null} rooms={rooms} locale={locale} />
         <BistroBlock data={home?.bistroBlock ?? null} locale={locale} />
         <Reviews data={home?.reviewsBlock ?? null} locale={locale} />
         <ContactBlock data={home?.contactBlock ?? null} settings={settings} locale={locale} />

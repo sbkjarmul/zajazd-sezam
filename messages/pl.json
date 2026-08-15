@@ -171,6 +171,8 @@
   "hotel": {
     "bookRoom": "Zarezerwuj",
     "prevImage": "Poprzednie zdjęcie",
-    "nextImage": "Następne zdjęcie"
-}
+    "nextImage": "Następne zdjęcie",
+    "prevRoom": "Poprzedni pokój",
+    "nextRoom": "Następny pokój"
+  }
 }

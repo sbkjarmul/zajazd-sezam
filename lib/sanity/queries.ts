@@ -351,3 +351,25 @@ export const ALL_ROOM_TYPES_QUERY = defineQuery(`
     images[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
   }
 `)
+
+// Lekki wariant pod blok Hotel na stronie glownej. Pelne galerie pokoi to ~45
+// assetow, wiec pobieramy tylko to, co blok renderuje:
+//   wideImages — 4 kadry do poziomego rzedu na desktopie; mobile bierze z tego
+//                pierwszy kadr do slidera (ramka 4:3, tez pozioma).
+//
+// Galerie pokoi mieszaja orientacje, a wszystkie ramki bloku sa poziome (desktop
+// 1.35/1.45, mobile 1.33). Zdjecie pionowe traci w nich przy object-cover ~50%
+// kadru, dlatego bierzemy 4 pierwsze POZIOME zdjecia. Gdy pokoj nie ma zadnego,
+// wracamy do 4 pierwszych z galerii (lepiej przyciete niz puste sloty).
+export const HOME_ROOM_TYPES_QUERY = defineQuery(`
+  *[_type == "roomType"] | order(order asc) {
+    _id,
+    name,
+    description,
+    "wideImages": select(
+      count(images[asset->metadata.dimensions.aspectRatio > 1.2]) > 0
+        => images[asset->metadata.dimensions.aspectRatio > 1.2][0...4],
+      images[0...4]
+    )[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
+  }
+`)
