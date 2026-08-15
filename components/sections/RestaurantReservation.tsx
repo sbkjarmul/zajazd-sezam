@@ -42,7 +42,7 @@ export async function RestaurantReservation({
   return (
     <section
       data-header-theme="dark"
-      className="text-text-inverse w-full py-20 md:py-24"
+      className="text-text-inverse w-full pt-20 pb-4 md:py-24"
       style={{ background: 'var(--color-dark-ruby)' }}
     >
       <div className="layout-container flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
@@ -59,9 +59,7 @@ export async function RestaurantReservation({
           )}
           <Reveal delay={120}>
             {description && (
-              <p className="text-text-inverse mt-6 max-w-2xl text-lg leading-normal">
-                {description}
-              </p>
+              <p className="text-text-inverse mt-6 max-w-2xl text-lg">{description}</p>
             )}
             {phone && (
               <a

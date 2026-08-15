@@ -56,9 +56,7 @@ export function HotelBlock({ data, locale }: Props) {
           <Reveal className="flex flex-col gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="text-[40px] leading-[40px] font-normal tracking-[-3px] text-balance">
-                {title}
-              </h2>
+              <h2 className="text-[40px] font-normal tracking-[-3px] text-balance">{title}</h2>
             )}
           </Reveal>
           {description && <p className="text-text-inverse/90 text-base">{description}</p>}
@@ -87,9 +85,7 @@ export function HotelBlock({ data, locale }: Props) {
                     style={{ backgroundImage: ROOM_CARD_GRADIENT }}
                   />
                   <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-5">
-                    <p className="font-accent text-[21px] leading-none text-white italic">
-                      {room.name}
-                    </p>
+                    <p className="font-accent text-[21px] text-white italic">{room.name}</p>
                     <p className="text-text-inverse/90 text-xs">{room.caption}</p>
                   </div>
                 </article>
@@ -144,7 +140,7 @@ export function HotelBlock({ data, locale }: Props) {
                 className="flex flex-col items-start gap-8 lg:justify-end lg:p-4 lg:pb-20"
               >
                 {description && (
-                  <p className="text-text max-w-[308px] text-[16px] leading-[1.2]">{description}</p>
+                  <p className="text-text max-w-[308px] text-[16px]">{description}</p>
                 )}
                 {ctaLabel && (
                   <ReservationCtaButton

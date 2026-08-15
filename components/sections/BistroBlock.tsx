@@ -56,9 +56,7 @@ export function BistroBlock({ data, locale }: Props) {
           <Reveal className="flex flex-col items-center gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="text-[43px] leading-[40px] font-medium tracking-[-3px] text-balance">
-                {title}
-              </h2>
+              <h2 className="text-[43px] font-medium tracking-[-3px] text-balance">{title}</h2>
             )}
           </Reveal>
           {ctaLabel && (
@@ -89,7 +87,7 @@ export function BistroBlock({ data, locale }: Props) {
           parallax
         />
         <div className="layout-container relative z-10 flex h-full flex-col items-center justify-center gap-8 text-center">
-          <Reveal className="flex max-w-[780px] flex-col items-center gap-5">
+          <Reveal className="flex max-w-[780px] flex-col items-center gap-4">
             {eyebrow && (
               <p className="text-ruby-light/70 wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
@@ -98,7 +96,7 @@ export function BistroBlock({ data, locale }: Props) {
             {title && (
               <RevealText
                 as="h2"
-                className="text-ruby-light text-4xl leading-[1.05] font-normal tracking-[-0.03em] text-balance"
+                className="text-ruby-light text-4xl font-normal tracking-[-0.03em] text-balance"
               >
                 {title}
               </RevealText>

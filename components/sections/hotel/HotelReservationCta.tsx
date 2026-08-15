@@ -27,7 +27,7 @@ export function HotelReservationCta({ data, locale }: Props) {
     >
       <div className="layout-container grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">
         <div className="flex flex-col justify-center gap-10">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             {eyebrow && (
               <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
@@ -38,11 +38,7 @@ export function HotelReservationCta({ data, locale }: Props) {
                 {title}
               </h2>
             )}
-            {description && (
-              <p className="text-text-inverse max-w-xl text-lg leading-[1.2]">
-                {description}
-              </p>
-            )}
+            {description && <p className="text-text-inverse max-w-xl text-lg">{description}</p>}
           </div>
           {ctaLabel && (
             <ReservationCtaButton

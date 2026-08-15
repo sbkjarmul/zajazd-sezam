@@ -70,7 +70,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
         <header className="flex flex-col items-start gap-8 lg:flex-row lg:justify-between">
           <Reveal className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text wide:text-lg text-base leading-[normal] tracking-normal uppercase">
+              <p className="text-text wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -82,7 +82,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
           </Reveal>
           {description && (
             <Reveal delay={100}>
-              <p className="text-text-muted max-w-sm text-base leading-[1.2] md:text-lg lg:text-xl">
+              <p className="text-text-muted max-w-sm text-base md:text-lg lg:text-xl">
                 {description}
               </p>
             </Reveal>
@@ -163,7 +163,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
                         <div className="overflow-hidden">
                           <p
                             className={cn(
-                              'text-text-muted mt-4 max-w-xl text-base leading-[1.35] transition-opacity duration-500 motion-reduce:transition-none md:text-lg lg:mt-0 lg:pt-4',
+                              'text-text-muted mt-4 max-w-xl text-base transition-opacity duration-500 motion-reduce:transition-none md:text-lg lg:mt-0 lg:pt-4',
                               isActive ? 'lg:opacity-100' : 'lg:opacity-0',
                             )}
                           >

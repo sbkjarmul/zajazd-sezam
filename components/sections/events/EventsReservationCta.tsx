@@ -27,7 +27,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
         <Reveal>
           <header className="flex flex-col items-center gap-4">
             {eyebrow && (
-              <p className="text-accent text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-accent wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -41,7 +41,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
 
         {description && (
           <Reveal delay={100}>
-            <p className="text-text-muted max-w-3xl text-base leading-[1.2] md:text-lg">{description}</p>
+            <p className="text-text-muted max-w-3xl text-base md:text-lg">{description}</p>
           </Reveal>
         )}
 
@@ -49,7 +49,7 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
           <Reveal delay={180}>
             <a
               href={`tel:${phone.replace(/\s+/g, '')}`}
-              className="font-accent text-accent text-[40px] font-semibold whitespace-nowrap tracking-normal transition-opacity hover:opacity-80 sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
+              className="font-accent text-accent text-[40px] font-semibold tracking-normal whitespace-nowrap transition-opacity hover:opacity-80 sm:text-5xl md:text-6xl lg:text-[96px] lg:leading-none"
             >
               {formatPhonePl(phone)}
             </a>
@@ -59,14 +59,8 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
         {(formTitle || formText) && (
           <Reveal delay={260}>
             <div className="flex flex-col items-center gap-1">
-              {formTitle && (
-                <p className="text-text text-2xl leading-[normal] tracking-[-0.03em]">
-                  {formTitle}
-                </p>
-              )}
-              {formText && (
-                <p className="text-text-muted text-base leading-[1.2] md:text-lg">{formText}</p>
-              )}
+              {formTitle && <p className="text-text text-2xl tracking-[-0.03em]">{formTitle}</p>}
+              {formText && <p className="text-text-muted text-base md:text-lg">{formText}</p>}
             </div>
           </Reveal>
         )}

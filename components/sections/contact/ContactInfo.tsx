@@ -20,7 +20,8 @@ export function ContactInfo({ data, settings, locale }: Props) {
   const eyebrow = pickLocale(data?.eyebrow, locale)
   const title = pickLocale(data?.title, locale)
   const phonesLabel = pickLocale(data?.phoneLabel, locale)
-  const addressLabel = pickLocale(data?.addressLabel, locale) ?? (locale === 'pl' ? 'Adres' : 'Address')
+  const addressLabel =
+    pickLocale(data?.addressLabel, locale) ?? (locale === 'pl' ? 'Adres' : 'Address')
   const emailLabel = pickLocale(data?.emailLabel, locale) ?? 'Email'
 
   const address = settings?.address
@@ -30,7 +31,10 @@ export function ContactInfo({ data, settings, locale }: Props) {
   // Linie telefoniczne per branza — etykieta z Sanity, numer z siteSettings.
   const phoneLines = [
     { label: pickLocale(data?.receptionLabel, locale), value: mainPhone },
-    { label: pickLocale(data?.restaurantLabel, locale), value: settings?.phoneRestaurant ?? mainPhone },
+    {
+      label: pickLocale(data?.restaurantLabel, locale),
+      value: settings?.phoneRestaurant ?? mainPhone,
+    },
     { label: pickLocale(data?.bistroLabel, locale), value: settings?.phoneBistro ?? mainPhone },
     { label: pickLocale(data?.hotelLabel, locale), value: mainPhone },
     { label: pickLocale(data?.eventsLabel, locale), value: mainPhone },
@@ -41,10 +45,8 @@ export function ContactInfo({ data, settings, locale }: Props) {
       data-header-theme="dark"
       className="bg-dark text-light flex min-h-[100svh] flex-col items-center justify-center gap-16 px-4 py-32 md:gap-24 md:px-16"
     >
-      <header className="flex flex-col items-center gap-2 text-center">
-        {eyebrow && (
-          <p className="text-base tracking-normal uppercase md:text-lg">{eyebrow}</p>
-        )}
+      <header className="flex flex-col items-center gap-4 text-center">
+        {eyebrow && <p className="text-base tracking-normal uppercase md:text-lg">{eyebrow}</p>}
         {title && (
           <h1 className="font-accent text-[clamp(48px,10vw,100px)] leading-none font-normal tracking-[-0.02em] not-italic">
             {title}
@@ -77,7 +79,7 @@ export function ContactInfo({ data, settings, locale }: Props) {
           {address?.street && (
             <div className="flex flex-col gap-4">
               <p className="text-sm tracking-normal uppercase md:text-base">{addressLabel}</p>
-              <p className="text-lg leading-[1.3] text-white md:text-xl">
+              <p className="text-lg text-white md:text-xl">
                 {address.street}
                 {address.postalCode && address.city && (
                   <>

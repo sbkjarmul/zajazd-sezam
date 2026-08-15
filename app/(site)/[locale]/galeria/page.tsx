@@ -79,7 +79,7 @@ export default async function GaleriaPage({ params }: { params: Promise<Params> 
           <header className="mb-12 max-w-3xl md:mb-16">
             {/* Naglowek: Inter font-normal, leading-[1.1], skala 30->52->60->64,
                 tracking -7% (tracking-[-0.07em]). Bez akcentu, bez eyebrow. */}
-            <h1 className="text-text text-[30px] leading-[1.1] font-normal tracking-[-0.07em] md:text-[52px] lg:text-[60px] xl:text-[64px]">
+            <h1 className="text-text text-[30px] font-normal tracking-[-0.07em] md:text-[52px] lg:text-[60px] xl:text-[64px]">
               {title}
             </h1>
             {intro && <p className="text-text-muted mt-5 text-base whitespace-pre-line">{intro}</p>}

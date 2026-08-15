@@ -221,7 +221,7 @@ export function HeroSection({ data, locale }: Props) {
         </div>
 
         {(mobAccent || deskAccent) && (
-          <h1 className="text-[30px] leading-[1.1] font-normal tracking-tight md:text-[52px] lg:text-[60px] xl:text-[64px]">
+          <h1 className="text-[30px] font-normal tracking-tight md:text-[52px] lg:text-[60px] xl:text-[64px]">
             {mobAccent && (
               <span data-hl="mobile" className="md:hidden">
                 <Headline
@@ -246,10 +246,7 @@ export function HeroSection({ data, locale }: Props) {
 
         {(subheadlineMobile || subheadlineDesktop) && (
           <div className="overflow-hidden">
-            <p
-              data-hero-sub
-              className="text-text-inverse/90 max-w-xl text-base leading-snug md:text-lg"
-            >
+            <p data-hero-sub className="text-text-inverse/90 max-w-xl text-base md:text-lg">
               <span className="md:hidden">{subheadlineMobile}</span>
               <span className="hidden md:inline">{subheadlineDesktop}</span>
             </p>

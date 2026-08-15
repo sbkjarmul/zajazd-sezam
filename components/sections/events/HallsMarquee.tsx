@@ -77,9 +77,7 @@ function HallMarqueeItem({
   // Opisy przy aktywnym kaflu: dociągnięte do lewej krawędzi powiększonego zdjęcia
   // (−halfW), rozciągnięte na jego szerokość (w·SCALE); pojemność nad, reszta pod.
   // Geometria (left/width/translateY) trwa przez cały czas isActive → brak skoku.
-  const capStyle = hovered
-    ? { left: `${-halfW}px`, width: `${hovered.w * SCALE}px` }
-    : undefined
+  const capStyle = hovered ? { left: `${-halfW}px`, width: `${hovered.w * SCALE}px` } : undefined
   // Wejście: fade z opóźnieniem (po powiększeniu zdjęcia). Wyjście: natychmiastowy
   // fade, bez opóźnienia — napis znika pierwszy.
   const capTransition = captionOn ? 'opacity 0.4s ease 0.35s' : 'opacity 0.3s ease'
@@ -150,7 +148,7 @@ function HallMarqueeItem({
         className="mt-3 flex flex-col items-start gap-1 text-left lg:absolute lg:top-full lg:left-0 lg:mt-0 lg:pt-1 lg:opacity-0 lg:transition-opacity lg:duration-300"
         style={bottomActive}
       >
-        {name && <p className="text-text text-xl leading-none font-normal tracking-tight">{name}</p>}
+        {name && <p className="text-text text-xl font-normal tracking-tight">{name}</p>}
         {desc && <p className="text-text-muted text-sm">{desc}</p>}
       </div>
     </div>
@@ -190,9 +188,12 @@ export function HallsMarquee({ halls, locale }: Props) {
     return () => mq.removeEventListener('change', apply)
   }, [])
 
-  useEffect(() => () => {
-    if (leaveTimer.current) clearTimeout(leaveTimer.current)
-  }, [])
+  useEffect(
+    () => () => {
+      if (leaveTimer.current) clearTimeout(leaveTimer.current)
+    },
+    [],
+  )
 
   useGSAP(
     () => {
@@ -259,7 +260,7 @@ export function HallsMarquee({ halls, locale }: Props) {
 
   return (
     <div ref={rootRef}>
-      <div className="snap-x snap-mandatory scroll-px-4 overflow-x-auto overflow-y-visible [scrollbar-width:none] lg:snap-none lg:overflow-x-clip [&::-webkit-scrollbar]:hidden">
+      <div className="snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] overflow-x-auto overflow-y-visible lg:snap-none lg:overflow-x-clip [&::-webkit-scrollbar]:hidden">
         <div ref={trackRef} className="flex w-max px-4 will-change-transform lg:px-0">
           {sets.map((_, s) =>
             halls.map((hall, j) => {

@@ -62,9 +62,7 @@ export function HotelHero({ data, locale }: Props) {
               </h1>
             )}
             {subtitle && (
-              <p className="text-text-inverse wide:text-xl text-base leading-[1.3] md:text-lg">
-                {subtitle}
-              </p>
+              <p className="text-text-inverse wide:text-xl text-base md:text-lg">{subtitle}</p>
             )}
           </div>
 

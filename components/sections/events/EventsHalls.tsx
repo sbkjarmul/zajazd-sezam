@@ -16,12 +16,17 @@ export function EventsHalls({ section, halls, locale }: Props) {
   const description = pickLocale(section?.description, locale)
 
   return (
-    <section id="halls" data-header-theme="light" data-header-surface="#ffffff" className="bg-surface py-20 md:py-32">
+    <section
+      id="halls"
+      data-header-theme="light"
+      data-header-surface="#ffffff"
+      className="bg-surface py-20 md:py-32"
+    >
       <div className="layout-container">
         <Reveal>
           <header className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-text wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -31,7 +36,7 @@ export function EventsHalls({ section, halls, locale }: Props) {
               </h2>
             )}
             {description && (
-              <p className="text-text-muted max-w-3xl text-base leading-[1.2] md:text-lg lg:text-xl">
+              <p className="text-text-muted max-w-3xl text-base md:text-lg lg:text-xl">
                 {description}
               </p>
             )}

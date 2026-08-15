@@ -47,9 +47,9 @@ export async function Reviews({ data, locale, uppercaseTitle = false }: Props) {
       <div className="flex flex-col gap-10 md:gap-[54px]">
         <Reveal>
           <div className="layout-container">
-            <header className="mx-auto flex max-w-[874px] flex-col items-center gap-3 text-center md:gap-4">
+            <header className="mx-auto flex max-w-[874px] flex-col items-center gap-4 text-center">
               {eyebrow && (
-                <p className="text-text wide:text-lg text-base tracking-normal uppercase leading-[normal]">
+                <p className="text-text wide:text-lg text-base tracking-normal uppercase">
                   {eyebrow}
                 </p>
               )}

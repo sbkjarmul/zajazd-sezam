@@ -29,7 +29,9 @@ export function HotelDiscover({ data, locale }: Props) {
       className="bg-bg pt-[120px] pb-16 md:justify-start! md:pt-40 md:pb-20"
     >
       <div className="layout-container flex flex-col gap-12 md:gap-20">
-        <header className="flex flex-col items-start gap-4 md:flex-row md:items-baseline md:justify-between md:gap-12">
+        {/* Eyebrow zawsze NAD naglowkiem (takze na desktopie) — wczesniej od md
+            szedl w jednym rzedzie po lewej stronie tytulu. */}
+        <header className="flex flex-col items-start gap-4">
           {eyebrow && (
             <p className="text-text wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
           )}
@@ -42,8 +44,11 @@ export function HotelDiscover({ data, locale }: Props) {
 
         {/* Poziomy slider: karty w jednym rzedzie, snap-x, swipe/scroll w poziomie.
             Szerokosci: mobile ~80% (podglad kolejnej), sm 45%, lg 4 karty na ekran
-            (jak dawna siatka grid-cols-4, gap-6 = 1.5rem -> 3 przerwy = 4.5rem). */}
-        <div className="-mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-4 px-4 pb-4 [scrollbar-width:none] md:mx-0 md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden">
+            (jak dawna siatka grid-cols-4, gap-6 = 1.5rem -> 3 przerwy = 4.5rem).
+            Ujemny margin + rowny padding wypychaja scroller poza `layout-container`,
+            zeby karty przewijaly sie DO KRAWEDZI ekranu, a nie do paddingu sekcji
+            (16px mobile / 64px od md - te same wartosci co layout-container). */}
+        <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] gap-6 overflow-x-auto px-4 pb-4 md:-mx-16 md:scroll-px-16 md:px-16 [&::-webkit-scrollbar]:hidden">
           {cards.map((card, i) => {
             const cardEyebrow = pickLocale(card.eyebrow, locale)
             const cardDesc = pickLocale(card.description, locale)
@@ -64,11 +69,11 @@ export function HotelDiscover({ data, locale }: Props) {
                 </div>
                 <div className="flex flex-1 flex-col gap-3">
                   {cardEyebrow && (
-                    <p className="text-text text-xl leading-none font-normal tracking-tight uppercase md:tracking-[-0.03em]">
+                    <p className="text-text text-xl font-normal tracking-tight uppercase md:tracking-[-0.03em]">
                       {cardEyebrow}
                     </p>
                   )}
-                  {cardDesc && <p className="text-text text-base leading-[1.2]">{cardDesc}</p>}
+                  {cardDesc && <p className="text-text text-base">{cardDesc}</p>}
                 </div>
                 {cardCta && card.ctaHref && (
                   <a

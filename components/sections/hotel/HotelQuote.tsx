@@ -23,7 +23,7 @@ export function HotelQuote({ data, locale }: Props) {
       className="bg-bg flex min-h-[800px] items-center justify-center"
     >
       <div className="layout-container">
-        <p className="mx-auto max-w-[1021px] text-xl leading-[normal] font-light tracking-[-0.02em] whitespace-pre-line uppercase md:text-[32px]">
+        <p className="mx-auto max-w-[1021px] text-xl font-light tracking-[-0.02em] whitespace-pre-line uppercase md:text-[32px]">
           <ColorizeText text={value} />
         </p>
       </div>

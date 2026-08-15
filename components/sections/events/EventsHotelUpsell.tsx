@@ -56,7 +56,7 @@ export function EventsHotelUpsell({ data, image, locale }: Props) {
         <Reveal>
           <header className="flex flex-col items-center gap-4">
             {eyebrow && (
-              <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -69,9 +69,7 @@ export function EventsHotelUpsell({ data, image, locale }: Props) {
         </Reveal>
         {description && (
           <Reveal delay={100}>
-            <p className="text-text-inverse/80 max-w-3xl text-base leading-[1.2] md:text-lg">
-              {description}
-            </p>
+            <p className="text-text-inverse/80 max-w-3xl text-base md:text-lg">{description}</p>
           </Reveal>
         )}
         {ctaLabel && (

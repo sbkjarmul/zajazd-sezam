@@ -72,7 +72,7 @@ export function ReviewsTrack({ reviews, locale }: Props) {
     >
       <div
         ref={trackRef}
-        className="flex w-max px-4 [transform:translateZ(0)] will-change-transform"
+        className="flex w-max [transform:translateZ(0)] px-4 will-change-transform"
       >
         {sets.map((_, s) =>
           reviews.map((review, i) => (
@@ -99,7 +99,7 @@ function ReviewCard({
       className="mr-[10px] flex h-[353px] w-[338px] shrink-0 flex-col justify-between rounded-2xl border border-white bg-transparent p-8 md:w-[406px]"
       {...rest}
     >
-      <p className="text-text line-clamp-[8] text-base leading-[1.4]">{text}</p>
+      <p className="text-text line-clamp-[8] text-base">{text}</p>
       <div className="flex items-start gap-3">
         <Avatar name={review.authorName} photoUrl={review.profilePhotoUrl} />
         <div className="flex min-w-0 flex-1 flex-col gap-1">

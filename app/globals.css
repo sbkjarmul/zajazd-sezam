@@ -118,7 +118,11 @@
   /* Tekst */
   --color-text: #1f1f1c; /* główny tekst na light */
   --color-text-muted: color-mix(in srgb, #1f1f1c 65%, transparent);
-  --color-text-faded: color-mix(in srgb, #1f1f1c 22%, transparent); /* wyblakly start ColorizeText — litery wtapiaja sie w light bg, potem "wypelniaja" do color-text */
+  --color-text-faded: color-mix(
+    in srgb,
+    #1f1f1c 22%,
+    transparent
+  ); /* wyblakly start ColorizeText — litery wtapiaja sie w light bg, potem "wypelniaja" do color-text */
   --color-text-inverse: #f6f5ef; /* tekst na dark surface */
 
   /* CTA / przyciski — dark to primary w designie */
@@ -279,6 +283,27 @@ body {
     -moz-appearance: textfield;
     appearance: textfield;
   }
+}
+
+/* ZASADA PROJEKTU (typografia globalna):
+     - kazdy naglowek h1-h6 ma line-height 100%,
+     - kazdy akapit/opis (p) ma line-height 120%.
+   Reguly celowo stoja POZA `@layer` - CSS bez warstwy wygrywa z kazda warstwa,
+   wiec bija utility rozmiaru tekstu Tailwinda (`text-3xl`, `text-base`...),
+   ktore niosa wlasny line-height. Dzieki temu naglowki i akapity nie potrzebuja
+   `leading-*` w klasach. Wyjatek dla pojedynczego elementu: wariant important,
+   np. `leading-[1.1]!`. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1;
+}
+
+p {
+  line-height: 1.2;
 }
 
 /* =============================================================================

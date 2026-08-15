@@ -37,12 +37,7 @@ type Props = {
 // rozwiniety. Jasny motyw (ruby na cream) — pasuje do jasnych sekcji tresci
 // restauracji, hotelu i imprez. Reuzywany na wszystkich trzech stronach.
 // Wariant 'plain' zamienia serif+ruby na Inter+dark, zeby wtopic sie w /hotel.
-export function FaqSection({
-  data,
-  locale,
-  variant = 'serif',
-  headingWeight = 'light',
-}: Props) {
+export function FaqSection({ data, locale, variant = 'serif', headingWeight = 'light' }: Props) {
   if (!data) return null
   const isPlain = variant === 'plain'
   const textColor = isPlain ? 'text-text' : 'text-ruby'
@@ -60,7 +55,9 @@ export function FaqSection({
 
   return (
     <section data-header-theme="light" className="bg-bg py-16 md:py-24">
-      <div className="layout-container grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+      {/* Dwie kolumny dopiero od lg - na tablecie (768-1023) siatka 2-kolumnowa
+          byla za ciasna, wiec naglowek i akordeon ida jedna kolumna. */}
+      <div className="layout-container grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
         {heading &&
           (isPlain ? (
             <RevealText
@@ -107,9 +104,7 @@ export function FaqSection({
                   </Accordion.Trigger>
                 </Accordion.Header>
                 <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
-                  {item.answer && (
-                    <p className={`${textColor} pb-6 text-lg leading-normal`}>{item.answer}</p>
-                  )}
+                  {item.answer && <p className={`${textColor} pb-6 text-lg`}>{item.answer}</p>}
                 </Accordion.Content>
               </Accordion.Item>
             ))}

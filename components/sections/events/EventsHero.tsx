@@ -64,9 +64,9 @@ export function EventsHero({ data, locale }: Props) {
 
       <div className="text-text-inverse layout-container pt-32 pb-16 md:pt-40 md:pb-32">
         <div className="flex max-w-5xl flex-col gap-6 md:gap-10">
-          <div className="flex flex-col gap-3 md:gap-4">
+          <div className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -77,9 +77,7 @@ export function EventsHero({ data, locale }: Props) {
             )}
           </div>
           {subtitle && (
-            <p className="text-text-inverse max-w-2xl text-base leading-[1.2] md:text-xl">
-              {subtitle}
-            </p>
+            <p className="text-text-inverse max-w-2xl text-base md:text-xl">{subtitle}</p>
           )}
 
           <div className="mt-2 flex flex-col gap-3 md:flex-row md:flex-wrap">

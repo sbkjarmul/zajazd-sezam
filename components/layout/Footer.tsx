@@ -215,7 +215,7 @@ export async function Footer({
             {description && (
               <p
                 className={cn(
-                  'max-w-[450px] text-base leading-[1.2]',
+                  'max-w-[450px] text-base',
                   isDark ? 'text-text-inverse' : 'text-text',
                 )}
               >
@@ -324,7 +324,9 @@ function FooterColumn({
   const spanClass = isDark ? 'text-text-inverse' : strong ? 'text-dark-ruby' : 'text-text'
 
   return (
-    <div className="flex flex-col items-center gap-3 md:items-start">
+    // text-center na mobile: items-center centruje bloki, ale wieloliniowe wpisy
+    // (adres, godziny z <br/>) mialy tekst do lewej - stad jawne wysrodkowanie.
+    <div className="flex flex-col items-center gap-3 text-center md:items-start md:text-left">
       <h4 className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}>
         {title}
       </h4>

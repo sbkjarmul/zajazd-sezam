@@ -25,7 +25,7 @@ export function EventsCatering({ data, locale }: Props) {
         <Reveal className="flex flex-col gap-10 px-4 md:px-16">
           <div className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-text wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}
@@ -36,7 +36,7 @@ export function EventsCatering({ data, locale }: Props) {
             )}
           </div>
           {description && (
-            <p className="text-text-muted max-w-2xl text-base leading-[1.2] whitespace-pre-line md:text-lg">
+            <p className="text-text-muted max-w-2xl text-base whitespace-pre-line md:text-lg">
               {description}
             </p>
           )}

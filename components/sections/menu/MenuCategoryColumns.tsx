@@ -37,14 +37,10 @@ export function MenuCategoryColumns({ category, locale }: Props) {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-24">
           {/* Lewa kolumna — nagłówek + opis sekcji */}
           <header className="flex flex-col gap-4">
-            <h2 className="font-accent text-[clamp(44px,5vw,72px)] leading-[0.95] tracking-normal">
-              {name}
-            </h2>
+            <h2 className="font-accent text-[clamp(44px,5vw,72px)] tracking-normal">{name}</h2>
             {subtitle && <p className="text-lg font-normal">{subtitle}</p>}
             {description && (
-              <p className="text-ruby/80 max-w-md text-base leading-[1.35] md:text-lg">
-                {description}
-              </p>
+              <p className="text-ruby/80 max-w-md text-base md:text-lg">{description}</p>
             )}
           </header>
 
@@ -58,14 +54,8 @@ export function MenuCategoryColumns({ category, locale }: Props) {
                   key={item._id}
                   className="mb-10 flex break-inside-avoid flex-col gap-3 last:mb-0"
                 >
-                  <h3 className="text-lg leading-tight font-medium tracking-normal uppercase">
-                    {itemName}
-                  </h3>
-                  {itemDesc && (
-                    <p className="text-ruby/80 text-sm leading-[1.35] md:text-base">
-                      {itemDesc}
-                    </p>
-                  )}
+                  <h3 className="text-lg font-medium tracking-normal uppercase">{itemName}</h3>
+                  {itemDesc && <p className="text-ruby/80 text-sm md:text-base">{itemDesc}</p>}
                   <div className="mt-1 text-lg tabular-nums">{item.price} zł</div>
                 </li>
               )

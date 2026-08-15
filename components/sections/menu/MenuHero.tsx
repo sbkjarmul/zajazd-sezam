@@ -15,7 +15,7 @@ export function MenuHero({ data, locale }: Props) {
   return (
     <section data-header-theme="light" className="bg-bg text-ruby pt-40 pb-8 md:pt-48 md:pb-12">
       <div className="layout-container flex justify-center">
-        <h1 className="font-accent text-ruby text-center text-[clamp(72px,13vw,180px)] leading-[0.95] tracking-normal italic">
+        <h1 className="font-accent text-ruby text-center text-[clamp(72px,13vw,180px)] tracking-normal italic">
           {title}
         </h1>
       </div>

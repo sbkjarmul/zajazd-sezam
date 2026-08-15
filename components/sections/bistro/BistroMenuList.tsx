@@ -25,6 +25,11 @@ function splitTitle(raw: string | null | undefined) {
 // #1a2789 — wg Figmy).
 // Animacje: nagłówek fade, nazwy kategorii i pozycje odsłaniane spod maski
 // (RevealText mode="lines" — SplitText, linia wyjeżdża spod niewidzialnej maski).
+// Mobile i tablet (< lg) uzywaja mniejszej typografii — nazwa kategorii 36px,
+// pozycje 18px (o 25% mniej niz docelowe 48/24px) — bo w pelnym rozmiarze
+// pozycje lamaly sie na 2 wiersze. Tablet dzieli wiersz na dwie ROWNE kolumny
+// (md:grid-cols-2); od lg wracaja rozmiary i proporcje z Figmy (prawa kolumna
+// max 436px).
 export function BistroMenuList({ categories, heading, locale }: Props) {
   const rendered = categories.filter((cat) => cat.slug && (cat.items ?? []).length > 0)
   if (rendered.length === 0) return null
@@ -35,7 +40,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
         <RevealText
           as="h2"
           mode="fade"
-          className="text-ruby-light text-center text-[clamp(44px,9vw,110px)] leading-[1.1] font-black tracking-tight uppercase md:tracking-[-0.03em]"
+          className="text-ruby-light text-center text-[clamp(44px,9vw,110px)] font-black tracking-tight uppercase md:tracking-[-0.03em]"
         >
           {heading}
         </RevealText>
@@ -50,18 +55,18 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
             <div key={category._id} className="border-ruby-light border-b">
               <div
                 id={category.slug ?? undefined}
-                className="layout-container grid scroll-mt-32 grid-cols-1 gap-4 py-8 md:grid-cols-[1fr_minmax(0,436px)] md:items-start md:gap-16 md:py-10"
+                className="layout-container grid scroll-mt-32 grid-cols-1 gap-8 py-8 md:grid-cols-2 md:items-start md:gap-16 md:py-10 lg:grid-cols-[1fr_minmax(0,436px)]"
               >
                 <div className="flex flex-col gap-2">
                   <RevealText
                     as="h3"
                     mode="lines"
-                    className="text-ruby-light text-3xl leading-[1.1] font-black tracking-tight uppercase md:text-4xl md:tracking-[-0.02em] lg:text-[64px]"
+                    className="text-ruby-light text-[36px] font-black tracking-tight uppercase md:tracking-[-0.02em] lg:text-[64px]"
                   >
                     {name}
                   </RevealText>
                   {subtitle && (
-                    <p className="text-ruby-light text-base leading-[1.1] font-normal tracking-normal uppercase md:text-lg">
+                    <p className="text-ruby-light text-base font-normal tracking-normal uppercase md:text-lg">
                       {subtitle}
                     </p>
                   )}
@@ -75,7 +80,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
                       mode="lines"
                       delay={idx * 0.08}
                       start="top 90%"
-                      className="text-lg leading-[1.1] font-normal tracking-tight uppercase md:text-xl"
+                      className="text-[18px] leading-[1.1] font-normal tracking-tight uppercase lg:text-xl"
                     >
                       {pickLocale(item.name, locale)}
                     </RevealText>

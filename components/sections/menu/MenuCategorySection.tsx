@@ -123,7 +123,7 @@ export function MenuCategorySection({
               <header className="flex flex-col gap-4">
                 <h2 className={cn(headingSizeWithImage, headingStyleClass)}>{name}</h2>
                 {subtitle && <p className="text-lg font-normal">{subtitle}</p>}
-                {description && <p className="text-lg leading-[1.2] md:text-2xl">{description}</p>}
+                {description && <p className="text-lg md:text-2xl">{description}</p>}
               </header>
 
               <ul className="flex flex-col gap-4">
@@ -139,7 +139,7 @@ export function MenuCategorySection({
                         {itemDesc && (
                           <p
                             className={cn(
-                              'text-xs leading-[1.2]',
+                              'text-xs',
                               isDark ? 'text-text-inverse/70' : lightTextMuted,
                             )}
                           >
@@ -163,9 +163,7 @@ export function MenuCategorySection({
             <header className={cn('flex flex-col gap-3 md:gap-4', !serifHeadings && 'max-w-3xl')}>
               <h2 className={cn(headingSizeFull, headingStyleClass)}>{name}</h2>
               {subtitle && <p className="max-w-3xl text-lg font-normal">{subtitle}</p>}
-              {description && (
-                <p className="max-w-3xl text-base leading-[1.2] md:text-lg">{description}</p>
-              )}
+              {description && <p className="max-w-3xl text-base md:text-lg">{description}</p>}
             </header>
 
             <ul className="md:columns-2 md:gap-x-16">
@@ -182,7 +180,7 @@ export function MenuCategorySection({
                       {itemDesc && (
                         <p
                           className={cn(
-                            'text-sm leading-[1.2] md:text-base',
+                            'text-sm md:text-base',
                             isDark ? 'text-text-inverse/70' : lightTextMuted,
                           )}
                         >

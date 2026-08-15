@@ -39,7 +39,7 @@ export function AboutSection({ data, locale }: Props) {
       >
         <div className="layout-container flex flex-col items-center gap-10 py-24 text-center">
           {introMobile && (
-            <p className="text-[24px] leading-[1.2] font-normal">
+            <p className="text-[24px] font-normal">
               <ColorizeText text={introMobile} />
             </p>
           )}
@@ -75,7 +75,7 @@ export function AboutSection({ data, locale }: Props) {
             </p>
           )}
           {introDesktop && (
-            <p className="max-w-[922px] flex-1 text-[32px] leading-[1.3] font-normal tracking-[-0.02em]">
+            <p className="max-w-[922px] flex-1 text-[32px] font-normal tracking-[-0.02em]">
               <ColorizeText text={introDesktop} />
             </p>
           )}

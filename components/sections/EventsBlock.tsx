@@ -42,12 +42,10 @@ export function EventsBlock({ data, locale }: Props) {
         <div className="layout-container relative z-10 flex flex-col pt-[120px]">
           {/* Imprezy - do lewej */}
           <div className="flex flex-col gap-10">
-            <Reveal className="flex flex-col gap-2">
+            <Reveal className="flex flex-col gap-4">
               {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
               {title && (
-                <h2 className="text-[40px] leading-[40px] font-normal tracking-[-3px] text-balance">
-                  {title}
-                </h2>
+                <h2 className="text-[40px] font-normal tracking-[-3px] text-balance">{title}</h2>
               )}
             </Reveal>
             <Reveal delay={100} className="flex flex-col gap-10">
@@ -92,7 +90,7 @@ export function EventsBlock({ data, locale }: Props) {
           {/* Blok 2: nagłówek + rząd [mały obraz][opis + CTA] */}
           <Reveal className="flex flex-1 flex-col gap-8 lg:justify-between">
             {/* Nagłówek */}
-            <div className="flex flex-col gap-4 md:gap-6">
+            <div className="flex flex-col gap-4">
               {eyebrow && (
                 <p className="text-text wide:text-lg text-base tracking-normal uppercase">
                   {eyebrow}
@@ -118,9 +116,7 @@ export function EventsBlock({ data, locale }: Props) {
               )}
               <div className="flex flex-1 flex-col gap-6">
                 {description && (
-                  <p className="text-text-muted text-base leading-[1.2] md:text-lg">
-                    {description}
-                  </p>
+                  <p className="text-text-muted text-base md:text-lg">{description}</p>
                 )}
                 {ctaLabel && (
                   <Link

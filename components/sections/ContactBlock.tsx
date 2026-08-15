@@ -34,9 +34,9 @@ export async function ContactBlock({ data, settings, locale }: Props) {
     >
       <div className="layout-container flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-20">
         <Reveal className="flex flex-col gap-8 lg:flex-1 lg:gap-10">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             {eyebrow && (
-              <p className="text-text-inverse text-base wide:text-lg tracking-normal uppercase leading-[normal]">
+              <p className="text-text-inverse wide:text-lg text-base tracking-normal uppercase">
                 {eyebrow}
               </p>
             )}

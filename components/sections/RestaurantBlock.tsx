@@ -45,10 +45,10 @@ export function RestaurantBlock({ data, locale }: Props) {
         {/* Tresc u gory, zdjecie in-flow nizej WYDLUZA sekcje ponad 100svh
             (scroll do pelnego zdjecia, potem snap - jak Hotel). */}
         <div className="layout-container relative z-10 flex flex-col gap-10 pt-[120px]">
-          <Reveal className="flex flex-col gap-2">
+          <Reveal className="flex flex-col gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="max-w-[14ch] text-[40px] leading-[40px] font-normal tracking-[-3px] text-balance">
+              <h2 className="max-w-[14ch] text-[40px] font-normal tracking-[-3px] text-balance">
                 {titleNoOrphans}
               </h2>
             )}
@@ -117,9 +117,7 @@ export function RestaurantBlock({ data, locale }: Props) {
           {/* Dół-lewo: opis + CTA */}
           <Reveal delay={100} className="flex flex-col gap-8">
             {description && (
-              <p className="text-text-inverse/85 max-w-md text-base leading-[1.3] md:text-lg">
-                {description}
-              </p>
+              <p className="text-text-inverse/85 max-w-md text-base md:text-lg">{description}</p>
             )}
             {ctaLabel && (
               <Link

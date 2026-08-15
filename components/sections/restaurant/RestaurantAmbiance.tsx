@@ -42,7 +42,7 @@ export function RestaurantAmbiance({ data, settings, phone: phoneOverride, local
             delay={120}
             className="flex flex-col items-start gap-6 md:col-span-5 md:items-end md:text-right"
           >
-            {tagline && <p className="text-ruby max-w-sm text-lg leading-normal">{tagline}</p>}
+            {tagline && <p className="text-ruby max-w-sm text-lg">{tagline}</p>}
             {ctaLabel && phone && (
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}

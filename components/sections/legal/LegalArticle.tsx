@@ -14,7 +14,7 @@ export function LegalArticle({ title, intro, body }: Props) {
         <h1 className="text-3xl leading-none font-normal tracking-tight uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]">
           {title}
         </h1>
-        {intro && <p className="text-base leading-[1.4] whitespace-pre-line">{intro}</p>}
+        {intro && <p className="text-base whitespace-pre-line">{intro}</p>}
         {body && <div className="text-base leading-[1.4] whitespace-pre-line">{body}</div>}
       </div>
     </section>

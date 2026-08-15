@@ -25,15 +25,13 @@ export function EventsSteps({ data, locale }: Props) {
   return (
     <section
       data-header-theme="light"
-      className="relative flex min-h-[800px] w-full flex-col bg-light lg:h-[800px]"
+      className="bg-light relative flex min-h-[800px] w-full flex-col lg:h-[800px]"
     >
       <div className="layout-container flex flex-col pt-[120px] pb-16 md:pb-20">
         <Reveal>
-          <header className="flex flex-col items-center gap-2 text-center text-dark">
+          <header className="text-dark flex flex-col items-center gap-4 text-center">
             {eyebrow && (
-              <p className="text-base wide:text-lg tracking-normal uppercase leading-[normal]">
-                {eyebrow}
-              </p>
+              <p className="wide:text-lg text-base tracking-normal uppercase">{eyebrow}</p>
             )}
             {title && (
               <h2 className="max-w-3xl text-3xl leading-none font-normal tracking-tight md:text-4xl md:tracking-[-0.03em]">
@@ -52,18 +50,20 @@ export function EventsSteps({ data, locale }: Props) {
               return (
                 <li
                   key={i}
-                  className="group relative border-b border-dark-gold py-8 text-center md:py-9"
+                  className="group border-dark-gold relative border-b py-8 text-center md:py-9"
                 >
-                  {/* Nagłówek + numer (numer wyrównany do środka nagłówka) */}
+                  {/* Nagłówek + numer. Na mobile numer stoi NAD tytułem (przy
+                      lewej krawędzi wchodził na długie tytuły); od md wraca na
+                      lewą krawędź, wyrównany do środka nagłówka. */}
                   <div className="relative">
                     <span
                       aria-hidden
-                      className="absolute top-1/2 left-0 -translate-y-1/2 font-accent text-2xl italic text-gold lg:text-[2rem]"
+                      className="font-accent text-gold mb-1 block text-2xl italic md:absolute md:top-1/2 md:left-0 md:mb-0 md:-translate-y-1/2 lg:text-[2rem]"
                     >
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     {stepTitle && (
-                      <h3 className="font-accent text-3xl leading-[1.1] italic text-dark md:text-4xl lg:text-5xl">
+                      <h3 className="font-accent text-dark text-3xl italic md:text-4xl lg:text-5xl">
                         {stepTitle}
                       </h3>
                     )}
@@ -77,7 +77,7 @@ export function EventsSteps({ data, locale }: Props) {
                   {text && (
                     <div className="grid grid-rows-[1fr] transition-[grid-template-rows] duration-300 ease-out lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr]">
                       <div className="overflow-hidden">
-                        <p className="pt-4 text-base text-dark-gold transition-opacity duration-300 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-hover:delay-200">
+                        <p className="text-dark-gold pt-4 text-base transition-opacity duration-300 ease-out lg:opacity-0 lg:group-hover:opacity-100 lg:group-hover:delay-200">
                           {text}
                         </p>
                       </div>
