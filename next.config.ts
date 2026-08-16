@@ -62,6 +62,20 @@ const LEGACY_REDIRECTS: { from: string[]; to: string }[] = [
 ]
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // CSS wstawiany bezposrednio w HTML zamiast <link rel="stylesheet">.
+    // Arkusz (17,7 kB w transferze) byl jedynym zasobem blokujacym render -
+    // Lighthouse wycenil to na 220 ms (audyt `render-blocking-insight`,
+    // szacowany zysk 200 ms na FCP i 200 ms na LCP). Strony sa statyczne (SSG)
+    // i cache'owane na brzegu, wiec wieksze HTML nie kosztuje dodatkowego
+    // zapytania - a zaoszczedzamy caly round trip po arkusz.
+    inlineCss: true,
+    // Importy z tych paczek rozbijane na pojedyncze moduly zamiast ciagnac
+    // caly barrel. Cel: audyt `unused-javascript` (52 kB, szacowany zysk
+    // 150 ms na LCP). lucide-react jest juz na domyslnej liscie Next,
+    // wymieniony jawnie dla czytelnosci.
+    optimizePackageImports: ['lucide-react', 'radix-ui', 'date-fns'],
+  },
   images: {
     // AVIF przed WebP - Next negocjuje format wg Accept przegladarki i schodzi
     // do WebP tam, gdzie AVIF nie jest wspierany. Zdjecia to najciezsza grupa
