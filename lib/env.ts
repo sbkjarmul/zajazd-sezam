@@ -36,9 +36,23 @@ function resolveSiteUrl(): string {
 
 export const SITE_URL = resolveSiteUrl().replace(/\/$/, '')
 
-// Czy ten build jest publicznie indeksowalny. Na Vercelu deploye `preview`
-// (kazdy branch/PR) MUSZA zostac zablokowane, inaczej Google zaindeksuje
-// dziesiatki kopii strony. Poza Vercelem decyduje NODE_ENV + brak localhosta.
-export const IS_INDEXABLE_DEPLOYMENT = process.env.VERCEL_ENV
-  ? process.env.VERCEL_ENV === 'production'
-  : process.env.NODE_ENV === 'production' && !SITE_URL.includes('localhost')
+// Czy ten build jest publicznie indeksowalny.
+//
+// Indeksujemy WYLACZNIE gdy spelnione sa oba warunki:
+//   1. deploy produkcyjny (poza Vercelem: NODE_ENV=production),
+//   2. SITE_URL wskazuje docelowa domene - nie localhost i nie *.vercel.app.
+//
+// Warunek 2 jest celowy i wazny: domena techniczna Vercela nie moze trafic do
+// indeksu. Po starcie zajazdsezam.pl bylaby duplikatem calego serwisu, a
+// wycofanie tego z Google to tygodnie. Dopoki NEXT_PUBLIC_SITE_URL nie wskazuje
+// prawdziwej domeny, kazdy deploy - takze produkcyjny - serwuje `Disallow: /`.
+// Zdjecie blokady = ustawienie NEXT_PUBLIC_SITE_URL na docelowa domene.
+//
+// Skutek uboczny przy testach: audyt SEO w Lighthouse bedzie zglaszal
+// `is-crawlable` jako blad az do podpiecia domeny. To poprawne zachowanie.
+const isVercelTechnicalDomain = /\.vercel\.app$/.test(new URL(SITE_URL).hostname)
+const isRealDomain = !SITE_URL.includes('localhost') && !isVercelTechnicalDomain
+
+export const IS_INDEXABLE_DEPLOYMENT =
+  isRealDomain &&
+  (process.env.VERCEL_ENV ? process.env.VERCEL_ENV === 'production' : process.env.NODE_ENV === 'production')

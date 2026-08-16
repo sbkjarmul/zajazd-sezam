@@ -63,6 +63,10 @@ const LEGACY_REDIRECTS: { from: string[]; to: string }[] = [
 
 const nextConfig: NextConfig = {
   images: {
+    // AVIF przed WebP - Next negocjuje format wg Accept przegladarki i schodzi
+    // do WebP tam, gdzie AVIF nie jest wspierany. Zdjecia to najciezsza grupa
+    // zasobow na stronie glownej (hero + kafle pokoi + galeria sekcji).
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
