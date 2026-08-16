@@ -358,3 +358,106 @@ html.snap-y-page {
     scroll-snap-type: none;
   }
 }
+
+/* =============================================================================
+   Sekwencja wejsciowa nad pierwszym ekranem - CSS zamiast GSAP.
+
+   Powod jest wydajnosciowy: naglowek hero i pasek to jedyne elementy nad foldem,
+   ktore kazaly ladowac i inicjalizowac biblioteke animacji, zanim przegladarka
+   zdazyla cokolwiek namalowac. GSAP startowal dopiero po hydracji i po
+   `document.fonts.ready`, wiec strona stala pusta mimo gotowych zasobow.
+   Te same keyframes w CSS ruszaja w pierwszej klatce i nie potrzebuja JS.
+
+   Choreografia 1:1 z poprzednim timeline'em GSAP:
+     naglowek slowo po slowie  0.6s, stagger 0.04s, od 0s
+     opis (spod maski)         0.7s, od 0.7s
+     button (spod maski)       0.6s, od 1.1s
+     ocena/gwiazdki            0.55s, od 1.45s
+     pasek (fade z gory)       0.9s, od 1.1s
+   Ease power3.out z GSAP = quart out = cubic-bezier(0.165, 0.84, 0.44, 1).
+
+   Stan spoczynkowy (poza media query) = tresc widoczna, wiec przy
+   prefers-reduced-motion i gdyby CSS nie dojechal, nic nie znika.
+   ============================================================================= */
+.hero-word {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-word,
+  .hero-mask-in,
+  .hero-fade-in {
+    animation-duration: var(--hero-dur, 0.6s);
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    animation-delay: var(--hero-delay, 0s);
+    animation-fill-mode: both;
+  }
+
+  /* Slowa naglowka: --hero-i to indeks slowa, stagger 0.04s jak w GSAP. */
+  .hero-word {
+    animation-name: hero-word-in;
+    animation-delay: calc(var(--hero-i, 0) * 0.04s);
+  }
+
+  /* Opis i button wjezdzaja spod maski (rodzic ma overflow-hidden), wiec
+     animujemy sam transform - bez opacity, dokladnie jak `gsap.from(yPercent)`. */
+  .hero-mask-in {
+    animation-name: hero-mask-in;
+  }
+
+  .hero-fade-in {
+    animation-name: hero-fade-in;
+  }
+
+  /* Pasek gorny. `backwards`, NIE `both` - po zakonczeniu element musi wrocic
+     pod kontrole klas Tailwinda, bo transform sluzy tez chowaniu paska przy
+     scrollu w dol. `both` przytrzymalby `transform: none` na zawsze i zepsul
+     chowanie. Animujemy `opacity`, nie autoAlpha - GSAP dokladal tam
+     `visibility: hidden`, co ukrywalo cala nawigacje przed czytnikami ekranu
+     na czas wejscia. */
+  .header-in {
+    animation: header-in 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) var(--header-delay, 0s) backwards;
+  }
+}
+
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(45%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-mask-in {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

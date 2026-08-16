@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useTranslations } from 'next-intl'
 import { Menu } from 'lucide-react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { useActiveHeaderTheme } from '@/hooks/useActiveHeaderTheme'
 import { useUI } from '@/components/providers/UIProvider'
@@ -97,43 +95,17 @@ export function Header({
   const { openReservation, openBurger } = useUI()
   const pathname = usePathname()
 
-  useGSAP(
-    () => {
-      if (!animateIn) return
-      const el = headerRef.current
-      if (!el) return
-      const mm = gsap.matchMedia()
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        // Header ma klasę `transition-all duration-300` (dla scroll-hide + tła).
-        // Kłóci się ona z per-frame inline transform/opacity gsapa — rendered
-        // wartości laggują ~300ms i header wygląda na wyblakły/„zawieszony" przez
-        // cały wjazd. Wyłączamy CSS transition na czas animacji, przywracamy po.
-        // clearProps → transform/opacity wracają pod kontrolę klas Tailwinda.
-        el.style.transition = 'none'
-        const restore = () => {
-          gsap.set(el, { clearProps: 'transform,opacity,visibility' })
-          el.style.transition = ''
-        }
-        gsap.set(el, { y: -28, autoAlpha: 0 })
-        const tween = gsap.to(el, {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.9,
-          delay: animateInDelay,
-          ease: 'power3.out',
-          onComplete: restore,
-        })
-        return () => {
-          tween.kill()
-          restore()
-        }
-      })
-      return () => mm.revert()
-    },
-    // Bez `dependencies` — animateIn/animateInDelay to statyczne propsy (nie
-    // zmieniają się po montażu), więc efekt uruchamiamy raz na mount.
-    { scope: headerRef },
-  )
+  // Wejscie headera robi CSS (klasa `.header-in` + keyframes w globals.css),
+  // a nie GSAP. Powody:
+  //  1. Wydajnosc - to byl jeden z dwoch elementow nad pierwszym ekranem, ktore
+  //     zmuszaly do zaladowania i zainicjalizowania GSAP-a, zanim przegladarka
+  //     zdazyla cokolwiek namalowac. Animacja CSS rusza w pierwszej klatce.
+  //  2. Dostepnosc - GSAP animowal `autoAlpha`, ktore przy kryciu 0 ustawia
+  //     `visibility: hidden`. Cala nawigacja i logo znikaly wtedy z drzewa
+  //     dostepnosci na czas wejscia.
+  // Znika tez dawny problem z `transition-all duration-300` na headerze: CSS
+  // animation ma pierwszenstwo przed transition na tych samych wlasciwosciach,
+  // wiec nie trzeba juz recznie wylaczac i przywracac transition.
 
   const isTop = direction === 'top'
   const isHidden = direction === 'down'
@@ -175,7 +147,9 @@ export function Header({
         // gradient (poniżej). Bez trybu adaptacyjnego — zachowanie jak dotąd.
         !adaptive && isHidden && '-translate-y-full',
         !adaptive && !isTop && 'bg-bg/85 backdrop-blur-md',
+        animateIn && 'header-in',
       )}
+      style={animateIn ? ({ '--header-delay': `${animateInDelay}s` } as CSSProperties) : undefined}
       data-state={direction}
     >
       {adaptive && (
