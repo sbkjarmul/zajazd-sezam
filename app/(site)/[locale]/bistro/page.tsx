@@ -72,8 +72,8 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
 
       <BistroBanner text={page.centralBanner} hours={page.hoursText} locale={locale} />
 
-      {/* Stopka wg Figma 1010:104 — wielki napis „SEZAM" (StretchWord) na górze,
-          bez logo, kolumny dociśnięte do prawej. */}
+      {/* Stopka wg Figma 1010:104 — bez logo, kolumny dociśnięte do prawej,
+          a wielki napis „SEZAM" (StretchWord) pod nimi. */}
       <Footer
         settings={settings}
         locale={locale}
@@ -86,6 +86,7 @@ export default async function BistroPage({ params }: { params: Promise<Params> }
         displayWord="SEZAM"
         displayWordClassName="fill-current font-sans font-black tracking-[-0.06em]"
         displayWordPad={0.06}
+        displayWordAtEnd
         hoursText={hoursText}
         logoImage={logoImage}
       />

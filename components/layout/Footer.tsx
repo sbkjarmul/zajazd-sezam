@@ -55,6 +55,9 @@ type Props = {
   // Margines wokół napisu `displayWord` (ułamek wysokości glifów) — odsuwa
   // skrajne litery od krawędzi, żeby ich nie ucinało na pełnej szerokości.
   displayWordPad?: number
+  // Napis `displayWord` pod kolumnami zamiast nad nimi (Bistro): najpierw
+  // nawigacja, dopiero potem wielkie "SEZAM" tuż nad paskiem copyright.
+  displayWordAtEnd?: boolean
   // Ukrywa opis (shortDescription) obok logo w standardowym wariancie stopki.
   hideDescription?: boolean
   // Obraz logo — to samo co w headerze per-podstrona. Jeśli brak, fallback tekstowy "SEZAM / ZAWSZE ŚWIEŻO".
@@ -76,6 +79,7 @@ export async function Footer({
   displayWord,
   displayWordClassName,
   displayWordPad,
+  displayWordAtEnd = false,
 }: Props) {
   const t = await getTranslations()
   const description = hideDescription ? undefined : settings?.shortDescription?.[locale]
@@ -92,6 +96,27 @@ export async function Footer({
       ? { background: 'var(--color-dark-ruby)' }
       : undefined
 
+  const displayWordBlock = displayWord ? (
+    <div
+      className={cn(
+        'w-full overflow-hidden',
+        // Pod kolumnami odstep jest juz w ich `pb-12` - dokladamy mniej, zeby
+        // napis nie odplynal od nawigacji.
+        displayWordAtEnd ? 'pt-8 md:pt-10' : 'pt-16 md:pt-20',
+        isDark ? 'text-text-inverse' : 'text-dark-ruby',
+      )}
+    >
+      {/* Napis dekoracyjny rozciągnięty na całą szerokość — jedna linia,
+          niezależnie od ekranu (StretchWord mierzy glify i dopasowuje SVG). */}
+      <StretchWord
+        text={displayWord.replace(/\*/g, '').replace(/\n/g, ' ').trim()}
+        className="block h-auto w-full"
+        textClassName={displayWordClassName}
+        pad={displayWordPad}
+      />
+    </div>
+  ) : null
+
   return (
     <footer
       data-header-theme={isDark ? 'dark' : 'light'}
@@ -101,23 +126,7 @@ export async function Footer({
       )}
       style={bgStyle}
     >
-      {displayWord && (
-        <div
-          className={cn(
-            'w-full overflow-hidden pt-16 md:pt-20',
-            isDark ? 'text-text-inverse' : 'text-dark-ruby',
-          )}
-        >
-          {/* Napis dekoracyjny rozciągnięty na całą szerokość — jedna linia,
-              niezależnie od ekranu (StretchWord mierzy glify i dopasowuje SVG). */}
-          <StretchWord
-            text={displayWord.replace(/\*/g, '').replace(/\n/g, ' ').trim()}
-            className="block h-auto w-full"
-            textClassName={displayWordClassName}
-            pad={displayWordPad}
-          />
-        </div>
-      )}
+      {!displayWordAtEnd && displayWordBlock}
 
       {bigBrand ? (
         <div
@@ -283,6 +292,8 @@ export async function Footer({
           </div>
         </div>
       )}
+
+      {displayWordAtEnd && displayWordBlock}
 
       <div className={cn('border-t', isDark ? 'border-white/15' : 'border-border-subtle')}>
         <div className="layout-container flex py-6">
