@@ -75,6 +75,17 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Proxy dla plikow SVG z Sanity (patrz components/SanityImage.tsx).
+  // Zdjecia rastrowe ida przez /_next/image, wiec przegladarka pobiera je z
+  // naszego origin - ale SVG Next celowo omija, przez co logo w headerze bylo
+  // pobierane wprost z cdn.sanity.io. Trzecia strona w zapytaniu oznacza, ze
+  // przegladarka dokladala do niego ciasteczka Sanity (u osob zalogowanych do
+  // Studio - `sanitySession`), co Lighthouse 13 zglasza jako `third-party-cookies`
+  // i `inspector-issues`. Rewrite sprawia, ze zadanie idzie na nasza domene,
+  // a po Sanity siega dopiero serwer.
+  async rewrites() {
+    return [{ source: '/sanity-cdn/:path*', destination: 'https://cdn.sanity.io/:path*' }]
+  },
   async redirects(): Promise<Redirect[]> {
     return LEGACY_REDIRECTS.flatMap(({ from, to }) =>
       from.map((source) => ({ source, destination: to, permanent: true })),

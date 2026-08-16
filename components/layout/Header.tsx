@@ -190,12 +190,14 @@ export function Header({
               variant={mobileOnLightContrast ? 'on-light' : 'on-dark'}
               image={logoImage}
               locale={locale}
+              priority
               className="md:hidden"
             />
             <Logo
               variant={onLightContrast ? 'on-light' : 'on-dark'}
               image={logoImage}
               locale={locale}
+              priority
               className="hidden md:inline-flex"
             />
           </>
@@ -204,6 +206,7 @@ export function Header({
             variant={onLightContrast ? 'on-light' : 'on-dark'}
             image={logoImage}
             locale={locale}
+            priority
           />
         )}
 

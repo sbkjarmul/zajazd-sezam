@@ -16,6 +16,10 @@ type LogoProps = {
   className?: string
   image?: LogoImage
   locale?: Locale
+  // Logo w headerze jest nad pierwszym ekranem na kazdej podstronie, wiec ma
+  // ladowac sie od razu. Domyslnie `false`, bo ten sam komponent stoi tez
+  // w stopce i w menu burgera - tam leniwe ladowanie jest wlasciwe.
+  priority?: boolean
 }
 
 // Logo Zajazdu Sezam — wordmark "SEZAM" + tagline (fallback) lub obraz z Sanity.
@@ -26,6 +30,7 @@ export function Logo({
   className,
   image,
   locale = 'pl',
+  priority = false,
 }: LogoProps) {
   const t = useTranslations('header')
   const isOnDark = variant === 'on-dark'
@@ -60,6 +65,7 @@ export function Logo({
             image={image}
             locale={locale}
             fill
+            priority={priority}
             sizes={isLg ? '440px' : '220px'}
             // Logo z Sanity to jeden ciemny asset. Na ciemnym tle (on-dark)
             // wybielamy go filtrem brightness(0) invert(1) — działa dla

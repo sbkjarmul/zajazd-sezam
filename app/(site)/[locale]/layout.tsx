@@ -99,13 +99,10 @@ export default async function LocaleLayout({
       lang={HTML_LANG[locale]}
       className={`${inter.variable} ${westbourne.variable} h-full antialiased`}
     >
-      <head>
-        {/* Zdjecia ida przez /_next/image (ten sam origin), ale SVG NIE - Next
-            nie optymalizuje SVG, wiec logo w headerze leci prosto z Sanity, nad
-            foldem, na zimnym polaczeniu. Lighthouse wycenil to na ~300 ms.
-            preconnect (nie dns-prefetch) bo potrzebny jest tez handshake TLS. */}
-        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
-      </head>
+      {/* Nie ma tu preconnect do cdn.sanity.io - przegladarka nie laczy sie juz
+          z Sanity w ogole. Rastry ida przez /_next/image, a SVG przez rewrite
+          `/sanity-cdn/*` (patrz next.config.ts). Zbedny preconnect otwieralby
+          polaczenie, ktore nigdy nie zostaje uzyte. */}
       <body className="bg-bg text-text flex min-h-full flex-col font-sans">
         <JsonLd data={organizationJsonLd({ settings: settingsForJsonLd, locale })} />
         <JsonLd data={localBusinessJsonLd({ settings: settingsForJsonLd, locale })} />

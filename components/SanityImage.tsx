@@ -34,6 +34,21 @@ type FillProps = CommonProps & { fill: true; width?: never; height?: never }
 type SizedProps = CommonProps & { fill?: false; width?: number; height?: number }
 type Props = FillProps | SizedProps
 
+// next/image nie optymalizuje SVG - takie pliki ida do przegladarki wprost
+// z cdn.sanity.io, czyli z obcej domeny. Przegladarka dokladala wtedy do
+// zapytania ciasteczka Sanity (u zalogowanych do Studio - `sanitySession`),
+// co Lighthouse 13 punktuje jako `third-party-cookies` + `inspector-issues`.
+// Podmieniamy host na wlasny prefiks obslugiwany przez rewrite z next.config,
+// dzieki czemu przegladarka w ogole nie rozmawia z Sanity. Rastry zostaja bez
+// zmian - one i tak przechodza przez /_next/image na naszym origin.
+const SANITY_CDN = 'https://cdn.sanity.io/'
+
+function sameOriginIfSvg(url: string): string {
+  if (!url.startsWith(SANITY_CDN)) return url
+  if (!url.split('?')[0].toLowerCase().endsWith('.svg')) return url
+  return `/sanity-cdn/${url.slice(SANITY_CDN.length)}`
+}
+
 export function SanityImage({
   image,
   locale,
@@ -44,7 +59,8 @@ export function SanityImage({
   onLoad,
   ...rest
 }: Props) {
-  const url = image?.asset?.url
+  const rawUrl = image?.asset?.url
+  const url = rawUrl ? sameOriginIfSvg(rawUrl) : rawUrl
   const alt = pickLocale(image?.alt, locale) ?? ''
   const dims = image?.asset?.metadata?.dimensions
   const lqip = image?.asset?.metadata?.lqip ?? undefined
