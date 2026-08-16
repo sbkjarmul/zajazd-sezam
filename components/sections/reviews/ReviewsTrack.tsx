@@ -108,12 +108,12 @@ function ReviewCard({
               href={review.authorUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text text-base font-bold underline-offset-2 hover:underline"
+              className="text-text text-base font-normal underline-offset-2 hover:underline"
             >
               {review.authorName}
             </a>
           ) : (
-            <span className="text-text text-base font-bold">{review.authorName}</span>
+            <span className="text-text text-base font-normal">{review.authorName}</span>
           )}
           <span className="text-gray text-xs">{time}</span>
         </div>
