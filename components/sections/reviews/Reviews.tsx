@@ -57,7 +57,7 @@ export async function Reviews({ data, locale, uppercaseTitle = false }: Props) {
                 <RevealText
                   as="h2"
                   className={cn(
-                    'text-text w-full text-3xl leading-none font-normal tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]',
+                    'text-text w-full text-3xl leading-none font-light tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]',
                     uppercaseTitle && 'uppercase',
                   )}
                 >
