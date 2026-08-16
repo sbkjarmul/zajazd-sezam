@@ -122,7 +122,8 @@ export function RevealText({
           el.style.flexDirection = 'column'
           gsap.set(split.lines, { yPercent: 110, paddingTop: GLYPH_PAD, paddingBottom: GLYPH_PAD })
           const masks = (split as SplitText & { masks?: Element[] }).masks
-          if (masks?.length) gsap.set(masks, { marginTop: `-${GLYPH_PAD}`, marginBottom: `-${GLYPH_PAD}` })
+          if (masks?.length)
+            gsap.set(masks, { marginTop: `-${GLYPH_PAD}`, marginBottom: `-${GLYPH_PAD}` })
           tween = gsap.to(split.lines, {
             yPercent: 0,
             duration: 0.9,
