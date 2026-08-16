@@ -2,8 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ReactLenis } from 'lenis/react'
-import 'lenis/dist/lenis.css'
+import dynamic from 'next/dynamic'
+
+// Lenis w osobnym chunku (patrz LenisRoot). Statyczny import wciagal ~68 kB
+// biblioteki takze na strony, ktore ja wylaczaja ponizej.
+//
+// `ssr: false` jest tu bezpieczne TYLKO dlatego, ze LenisRoot nie opakowuje
+// dzieci - w trybie root Lenis przejmuje scroll okna bez wrappera DOM, wiec
+// stoi obok tresci. Gdyby opakowywal, wylaczenie SSR zabraloby serwerowy render
+// calej strony. Przy `ssr: true` chunk i tak trafial do bundla kazdej trasy,
+// bo warunek ponizej rozstrzyga sie dopiero w runtime.
+const LenisRoot = dynamic(() => import('@/components/LenisRoot'), { ssr: false })
 
 /**
  * Globalny smooth-scroll (Lenis) na roocie strony.
@@ -37,11 +46,11 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     pathname.endsWith('/events') ||
     pathname.endsWith('/hotel')
 
-  if (!smooth || nativeScrollPage) return <>{children}</>
-
+  // Lenis stoi OBOK tresci, nie wokol niej - patrz komentarz przy imporcie.
   return (
-    <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
+    <>
+      {smooth && !nativeScrollPage && <LenisRoot />}
       {children}
-    </ReactLenis>
+    </>
   )
 }
