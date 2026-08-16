@@ -37,6 +37,9 @@ yarn-error.log*
 # mock emails (dev mode for /api/send-form)
 tmp/
 
+# react-email dev server (podglad szablonow: pnpm email)
+.react-email/
+
 # Sanity Studio
 /dist
 .sanity/

@@ -1,9 +1,9 @@
-// Email dispatcher.
-// Dev: zapisuje pliki HTML do tmp/mails/ (do podglądu w przeglądarce).
-// Produkcja (F8): podmieni mock na Resend gdy RESEND_API_KEY będzie ustawione.
+// Dispatcher maili.
+// Produkcja: Resend (gdy RESEND_API_KEY jest ustawione).
+// Dev: mock zapisujacy HTML do tmp/mails/ - bez klucza nie robimy zadnych
+// zapytan sieciowych, wiec formularz da sie testowac lokalnie.
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
+import { Resend } from 'resend'
 
 export type EmailPayload = {
   to: string
@@ -11,18 +11,62 @@ export type EmailPayload = {
   html: string
   text: string
   replyTo?: string
+  // Tagi Resend (dashboard/analytics). Tylko ASCII: [a-zA-Z0-9_-].
+  tags?: { name: string; value: string }[]
+}
+
+const FROM_NAME = 'Zajazd Sezam'
+
+// Klient tworzony leniwie i cache'owany - jeden na proces (lambda warm start).
+let client: Resend | null = null
+
+function getClient(apiKey: string): Resend {
+  client ??= new Resend(apiKey)
+  return client
+}
+
+function getFromAddress(): string {
+  const from = process.env.REPLY_FROM_EMAIL
+  if (!from) {
+    throw new Error(
+      'Missing REPLY_FROM_EMAIL — Resend wymaga adresu nadawcy na zweryfikowanej domenie.',
+    )
+  }
+  return `${FROM_NAME} <${from}>`
 }
 
 export async function sendEmail(payload: EmailPayload): Promise<{ id: string }> {
-  const resendApiKey = process.env.RESEND_API_KEY
-  if (resendApiKey) {
-    // F8: tu podłączymy Resend (require lazy żeby nie ładować w dev).
-    throw new Error('Resend integration pending (F8). Usuń RESEND_API_KEY by skorzystać z mocka.')
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return mockSend(payload)
+
+  const { data, error } = await getClient(apiKey).emails.send({
+    from: getFromAddress(),
+    to: payload.to,
+    subject: payload.subject,
+    html: payload.html,
+    text: payload.text,
+    replyTo: payload.replyTo,
+    tags: payload.tags,
+  })
+
+  if (error) {
+    throw new Error(`Resend: ${error.name} — ${error.message}`)
   }
-  return mockSend(payload)
+  if (!data) {
+    throw new Error('Resend: pusta odpowiedź API (brak id wiadomości).')
+  }
+
+  return { id: data.id }
 }
 
+// ============================================================================
+// Dev mock
+// ============================================================================
 async function mockSend(payload: EmailPayload): Promise<{ id: string }> {
+  // Import dynamiczny: `node:fs` nie moze trafic do bundla edge/produkcyjnego,
+  // gdzie i tak zawsze idziemy sciezka Resend.
+  const [fs, path] = await Promise.all([import('node:fs/promises'), import('node:path')])
+
   const dir = path.join(process.cwd(), 'tmp', 'mails')
   await fs.mkdir(dir, { recursive: true })
 

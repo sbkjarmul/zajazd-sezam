@@ -57,6 +57,18 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
   }
 `)
 
+// Logo do naglowka maili transakcyjnych — to samo, ktore widzi gosc w headerze
+// strony glownej (`homepage.headerLogo`), z fallbackiem do logo domyslnego.
+export const EMAIL_LOGO_QUERY = defineQuery(`
+  coalesce(
+    *[_type == "homepage" && _id == "homepage"][0].headerLogo,
+    *[_type == "siteSettings" && _id == "siteSettings"][0].defaultHeaderLogo
+  ){
+    alt,
+    asset->{ url, metadata { dimensions } }
+  }
+`)
+
 // =============================================================================
 // Strony — singletony
 // =============================================================================
