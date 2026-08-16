@@ -23,11 +23,16 @@ const H3_CLASS =
   'text-text text-2xl leading-none font-light tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]'
 const DESC_CLASS = 'text-text text-base leading-[1.2]'
 const LI_CLASS = 'text-text text-base leading-[1.5]'
+// Mobile: ciasniejszy interlinia listy - kwadratowa galeria zabiera pol ekranu,
+// wiec dane pokoju musza zmiescic sie w reszcie panelu snapu.
+const LI_MOBILE_CLASS = 'text-text text-base leading-[1.4]'
 
 // Prezentacja pokoi na /hotel jako scroll-driven "scrollytelling":
 //
 // Desktop (lg+): galerie pokoi ułożone pionowo po lewej przewijają się razem ze
-// stroną (każda to RoomImageSlider — strzałki/swipe jak wszędzie). Po prawej
+// stroną (każda to RoomImageSlider — strzałki/swipe jak wszędzie) i każda jest
+// osobnym panelem snapu (100svh + snap-start/snap-always), więc scroll zawsze
+// dociąga do jednego pokoju — tak samo jak na mobile. Po prawej
 // przypięty (sticky) panel danych pokoju z tym samym layoutem co dawna karta:
 // nazwa + opis u góry, CTA, udogodnienia dosunięte do prawej i na dół
 // (items-end + mt-auto). Aktywny pokój wybiera IntersectionObserver (linia
@@ -35,7 +40,11 @@ const LI_CLASS = 'text-text text-base leading-[1.5]'
 // jest remountowany (key={active}), więc RevealText odgrywa reveal spod maski
 // (jak na restauracji/bistro) — nie fade.
 //
-// Mobile: stacked — galeria, pod nią dane pokoju, pokój po pokoju.
+// Mobile: stacked — galeria, pod nią dane pokoju, pokój po pokoju. Każdy pokój
+// to osobny panel snapu (h-[100svh] + snap-start/snap-always w obrębie
+// .snap-panels), więc scroll zatrzymuje się dokładnie na jednym pokoju:
+// galeria jest zawsze kwadratowa (aspect-square), a blok danych wypełnia resztę
+// panelu (flex-1 + justify-between, lista udogodnień na dole).
 export function HotelRoomsShowcase({ rooms, locale }: Props) {
   const t = useTranslations('hotel')
   const [active, setActive] = useState(0)
@@ -68,15 +77,18 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
 
   return (
     <>
-      {/* Mobile: stacked — galeria + dane pokoju, pokój po pokoju */}
+      {/* Mobile: stacked — galeria + dane pokoju, jeden pokój = jeden ekran snapu */}
       <div className="flex flex-col lg:hidden">
         {rooms.map((room) => {
           const name = pickLocale(room.name, locale)
           const description = pickLocale(room.description, locale)
           const amenities = room.amenities ?? []
           return (
-            <div key={room._id} className="grid grid-cols-1">
-              <Reveal className="relative aspect-square overflow-hidden">
+            <div key={room._id} className="flex h-[100svh] snap-start snap-always flex-col">
+              {/* Galeria zawsze 1:1. Bez `shrink-0` - gdy ekran jest za niski na
+                  kwadrat + dane, kwadrat oddaje nadmiar (min-h-0), zamiast
+                  wypychac tresc poza panel snapu. */}
+              <Reveal className="relative aspect-square min-h-0 w-full overflow-hidden">
                 <RoomImageSlider
                   images={room.images ?? []}
                   locale={locale}
@@ -84,8 +96,10 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                   nextLabel={nextLabel}
                 />
               </Reveal>
-              <div className="bg-bg flex flex-col gap-6 p-6 md:p-8">
-                <div className="flex flex-col gap-4">
+              {/* flex-1 + justify-between: dane wypelniaja reszte ekranu, lista
+                  udogodnien siada na dole panelu (jak w makiecie). */}
+              <div className="bg-bg flex min-h-0 flex-1 flex-col justify-between gap-4 px-6 py-5 md:p-8">
+                <div className="flex flex-col gap-3">
                   {name && (
                     <RevealText as="h3" className={H3_CLASS}>
                       {name}
@@ -107,9 +121,9 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                   </ReservationCtaButton>
                 </Reveal>
                 {amenities.length > 0 && (
-                  <RevealText as="ul" className="flex flex-col items-end pt-2">
+                  <RevealText as="ul" className="flex flex-col items-end">
                     {amenities.map((a, i) => (
-                      <li key={i} className={LI_CLASS}>
+                      <li key={i} className={LI_MOBILE_CLASS}>
                         {pickLocale(a, locale)}
                       </li>
                     ))}
@@ -132,7 +146,10 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
               ref={(el) => {
                 panelsRef.current[i] = el
               }}
-              className="relative h-screen w-full overflow-hidden"
+              /* Kazda galeria = punkt snapu takze na desktopie: scroll dosuwa
+                 pokoj do pelnego ekranu, a przypiety panel po prawej pokazuje
+                 wtedy dokladnie jego dane. */
+              className="relative h-[100svh] w-full snap-start snap-always overflow-hidden"
             >
               <RoomImageSlider
                 images={room.images ?? []}

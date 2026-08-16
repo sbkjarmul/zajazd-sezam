@@ -78,11 +78,11 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
         <HotelHero data={page.hero} locale={locale} />
         <HotelQuote data={page.quote} locale={locale} />
 
-        {/* Pokoje = wyspa scrollytellingu wolna od snapu. `snap-start` na tym
-            wysokim (kilka ekranow) wrapperze robi z niego "przerosniety" obszar
-            snapu: mandatory snap dosuwa gore pokoi po HotelQuote, po czym pozwala
-            przewijac swobodnie w srodku, a na koncu snapuje do HotelAmenities. */}
-        <div id="rooms" data-header-theme="light" className="snap-start bg-bg">
+        {/* Pokoje: kazdy pokoj to wlasny punkt snapu (klasy siedza na panelach
+            w HotelRoomsShowcase - mobilnych i desktopowych galeriach), wiec
+            scroll zatrzymuje sie dokladnie na jednym pokoju. `snap-start` tutaj
+            trzyma gore wyspy po HotelQuote i domyka ja do HotelAmenities. */}
+        <div id="rooms" data-header-theme="light" className="bg-bg snap-start">
           <HotelRoomsShowcase rooms={rooms} locale={locale} />
         </div>
 
@@ -91,7 +91,12 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
         <HotelDiscover data={page.discoverSection} locale={locale} />
         <FaqSection data={page.faqSection} locale={locale} variant="plain" />
         <HotelReservationCta data={page.reservationSection} locale={locale} />
-        <Footer settings={settings} locale={locale} brandLabel="Hotel Sezam" logoImage={logoImage} />
+        <Footer
+          settings={settings}
+          locale={locale}
+          brandLabel="Hotel Sezam"
+          logoImage={logoImage}
+        />
       </div>
     </>
   )
