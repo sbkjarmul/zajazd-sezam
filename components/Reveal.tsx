@@ -12,6 +12,13 @@ type Props = {
   once?: boolean
   /** Opóźnienie (ms) po przekroczeniu progu. Default 0. */
   delay?: number
+  /**
+   * Tag renderowanego wrappera. Default 'div'. Potrzebne, gdy Reveal stoi
+   * wewnatrz listy: `<ul>` moze miec za bezposrednie dzieci wylacznie `<li>`,
+   * wiec `<ul><Reveal><li>...` lamie semantyke listy (Lighthouse `list` +
+   * `listitem`). Wtedy `as="li"` sprawia, ze wrapper JEST pozycja listy.
+   */
+  as?: 'div' | 'li'
 }
 
 // Scroll-reveal wrapper: blur + opacity-0 → ostrość + opacity-1 gdy element
@@ -19,8 +26,15 @@ type Props = {
 // attribute + CSS transitions na opacity i filter.
 //
 // `prefers-reduced-motion: reduce` → reveal natychmiastowy (bez animacji).
-export function Reveal({ children, className, threshold = 0.3, once = true, delay = 0 }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
+export function Reveal({
+  children,
+  className,
+  threshold = 0.3,
+  once = true,
+  delay = 0,
+  as: Tag = 'div',
+}: Props) {
+  const ref = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const el = ref.current
@@ -65,8 +79,8 @@ export function Reveal({ children, className, threshold = 0.3, once = true, dela
   }, [threshold, once, delay])
 
   return (
-    <div
-      ref={ref}
+    <Tag
+      ref={ref as React.Ref<HTMLDivElement & HTMLLIElement>}
       data-revealed="false"
       className={cn(
         'transition-opacity duration-700 ease-out',
@@ -75,6 +89,6 @@ export function Reveal({ children, className, threshold = 0.3, once = true, dela
       )}
     >
       {children}
-    </div>
+    </Tag>
   )
 }

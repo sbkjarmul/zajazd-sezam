@@ -120,12 +120,18 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                     {ctaLabel}
                   </ReservationCtaButton>
                 </Reveal>
+                {/* Swiadomie div/span, nie ul/li: RevealText dzieli tresc na LINIE
+                    i owija kazda we wlasny div z maska, co wsadzaloby obce dzieci
+                    miedzy liste a jej pozycje i lamalo semantyke (Lighthouse:
+                    `list` + `listitem`). Naprawa przez liste na zewnatrz wymagalaby
+                    RevealText per pozycja, czyli zmiany animacji. Udogodnienia
+                    czytaja sie tu jako ciag linii tekstu - wyglad i ruch bez zmian. */}
                 {amenities.length > 0 && (
-                  <RevealText as="ul" className="flex flex-col items-end">
+                  <RevealText as="div" className="flex flex-col items-end">
                     {amenities.map((a, i) => (
-                      <li key={i} className={LI_MOBILE_CLASS}>
+                      <span key={i} className={`block ${LI_MOBILE_CLASS}`}>
                         {pickLocale(a, locale)}
-                      </li>
+                      </span>
                     ))}
                   </RevealText>
                 )}
@@ -198,16 +204,18 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                         {ctaLabel}
                       </ReservationCtaButton>
                     </Reveal>
+                    {/* div/span zamiast listy - patrz komentarz przy wariancie
+                        mobilnym powyzej. */}
                     {amenities.length > 0 && (
                       <RevealText
-                        as="ul"
+                        as="div"
                         start="top bottom"
                         className="mt-auto flex flex-col items-end"
                       >
                         {amenities.map((a, j) => (
-                          <li key={j} className={LI_CLASS}>
+                          <span key={j} className={`block ${LI_CLASS}`}>
                             {pickLocale(a, locale)}
-                          </li>
+                          </span>
                         ))}
                       </RevealText>
                     )}

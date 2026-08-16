@@ -35,7 +35,13 @@ export function Logo({
   return (
     <Link
       href="/"
-      aria-label="Zajazd Sezam — strona główna"
+      // WCAG 2.5.3 "Label in Name": gdy element ma widoczny tekst, dostepna
+      // nazwa musi go zawierac. Wariant tekstowy pokazuje "SEZAM" + tagline,
+      // wiec sztywny aria-label je nadpisywal i rozjezdzal sie z trescia
+      // (Lighthouse label-content-name-mismatch) - uzytkownik sterowania glosem
+      // mowil "SEZAM", a przegladarka szukala "Zajazd Sezam - strona glowna".
+      // Wariant ze zdjeciem nie ma widocznego tekstu, wiec label zostaje.
+      aria-label={hasImage ? 'Zajazd Sezam — strona główna' : undefined}
       className={cn(
         'inline-flex items-center leading-none transition-colors',
         hasImage ? '' : isLg ? 'flex-col items-center' : 'flex-col items-start',
@@ -47,9 +53,7 @@ export function Logo({
         <span
           className={cn(
             'relative block',
-            isLg
-              ? 'h-20 w-[300px] md:h-28 md:w-[440px]'
-              : 'h-12 w-[180px] md:h-14 md:w-[220px]',
+            isLg ? 'h-20 w-[300px] md:h-28 md:w-[440px]' : 'h-12 w-[180px] md:h-14 md:w-[220px]',
           )}
         >
           <SanityImage
@@ -74,9 +78,7 @@ export function Logo({
           >
             SEZAM
           </span>
-          <span
-            className={cn(isLg ? 'text-xs tracking-[0.3em]' : 'text-[0.5rem] tracking-normal')}
-          >
+          <span className={cn(isLg ? 'text-xs tracking-[0.3em]' : 'text-[0.5rem] tracking-normal')}>
             {t('tagline')}
           </span>
         </>

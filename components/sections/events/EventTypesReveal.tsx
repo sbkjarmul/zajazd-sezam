@@ -58,6 +58,11 @@ export function EventTypesReveal({ section, types, locale }: Props) {
   if (!types.length) return null
 
   const openGalleryLabel = locale === 'pl' ? 'Otwórz galerię zdjęć' : 'Open photo gallery'
+  // WCAG 2.5.3 "Label in Name": przycisk wiersza pokazuje nazwe typu imprezy
+  // ORAZ jej opis, wiec zaden krotki aria-label nie pokryje calego widocznego
+  // tekstu - kazdy wariant lamie label-content-name-mismatch. Zamiast nadpisywac
+  // nazwe, nie ustawiamy aria-label wcale: dostepna nazwa powstaje z tresci
+  // przycisku, a cel dokladamy ukrytym wizualnie dopiskiem (patrz nizej).
   const galleryImages = openIdx !== null ? galleryOf(types[openIdx]) : []
 
   const eyebrow = pickLocale(section?.eyebrow, locale)
@@ -136,9 +141,11 @@ export function EventTypesReveal({ section, types, locale }: Props) {
                     type="button"
                     onFocus={() => handleEnter(i)}
                     onClick={() => setOpenIdx(i)}
-                    aria-label={openGalleryLabel}
                     className="group block w-full cursor-pointer py-7 text-left focus-visible:outline-none md:py-8"
                   >
+                    {/* Cel przycisku dla czytnikow - dopisek, nie nadpisanie
+                        nazwy, wiec widoczny tekst zostaje jej czescia. */}
+                    <span className="sr-only">{openGalleryLabel}: </span>
                     {name && (
                       <h3
                         className={cn(

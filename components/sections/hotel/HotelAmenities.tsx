@@ -58,30 +58,36 @@ export function HotelAmenities({ data, locale }: Props) {
           {items.map((item, i) => {
             const itemTitle = pickLocale(item.title, locale)
             const itemDesc = pickLocale(item.description, locale)
+            // Reveal renderuje <li>, a nie <div> owijajacy <li> - inaczej <ul>
+            // dostaje bezposrednie dzieci inne niz <li> i lista traci semantyke
+            // (Lighthouse `list` + `listitem`).
             return (
-              <Reveal key={i} delay={i * 80}>
-                <li className="border-gold flex flex-col items-start justify-between gap-3 border-b pb-4 md:min-h-0">
-                  <div className="flex flex-col gap-3">
-                    {itemTitle && (
-                      <h3 className="text-text text-base font-light tracking-tight uppercase md:text-2xl md:leading-none md:tracking-[-0.03em] lg:text-[32px]">
-                        {itemTitle}
-                      </h3>
-                    )}
-                    {itemDesc && (
-                      <p className="text-dark-gold text-[14px]/[1.2] md:text-base">{itemDesc}</p>
-                    )}
-                  </div>
-                  {item.icon && (
-                    <Image
-                      src={`/images/icons/${item.icon}`}
-                      alt=""
-                      width={48}
-                      height={48}
-                      className="size-12 object-contain"
-                      aria-hidden
-                    />
+              <Reveal
+                key={i}
+                as="li"
+                delay={i * 80}
+                className="border-gold flex flex-col items-start justify-between gap-3 border-b pb-4 md:min-h-0"
+              >
+                <div className="flex flex-col gap-3">
+                  {itemTitle && (
+                    <h3 className="text-text text-base font-light tracking-tight uppercase md:text-2xl md:leading-none md:tracking-[-0.03em] lg:text-[32px]">
+                      {itemTitle}
+                    </h3>
                   )}
-                </li>
+                  {itemDesc && (
+                    <p className="text-dark-gold text-[14px]/[1.2] md:text-base">{itemDesc}</p>
+                  )}
+                </div>
+                {item.icon && (
+                  <Image
+                    src={`/images/icons/${item.icon}`}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="size-12 object-contain"
+                    aria-hidden
+                  />
+                )}
               </Reveal>
             )
           })}

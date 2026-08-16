@@ -338,12 +338,15 @@ function FooterColumn({
     // text-center na mobile: items-center centruje bloki, ale wieloliniowe wpisy
     // (adres, godziny z <br/>) mialy tekst do lewej - stad jawne wysrodkowanie.
     <div className="flex flex-col items-center gap-3 text-center md:items-start md:text-left">
-      {/* h3, nie h4 — kolumny stopki sa pierwszym poziomem pod <h2> sekcji, wiec
-          h4 tworzylo dziure w hierarchii (Lighthouse heading-order). Wyglad bez
-          zmian: klasy sa jawne, a globalny line-height obejmuje h1-h6 tak samo. */}
-      <h3 className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}>
+      {/* h2, nie h4/h3 — stopka jest wlasnym landmarkiem i jej kolumny to
+          naglowki najwyzszego poziomu w tym bloku. h4 (i pozniej h3) tworzylo
+          dziure w hierarchii na podstronach, gdzie ostatnim naglowkiem przed
+          stopka jest h1 (regulamin, polityka, kontakt, galeria) - axe liczy
+          kolejnosc globalnie, wiec h1 -> h3 to wciaz skok. h2 dziala wszedzie:
+          po h1 i po h2 sekcji. Wyglad bez zmian - klasy sa jawne. */}
+      <h2 className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}>
         {title}
-      </h3>
+      </h2>
       {items.filter(Boolean).map((item, i) => {
         if (!item) return null
         const className = cn(
