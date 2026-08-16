@@ -53,7 +53,14 @@ export function RevealText({
         if (mode === 'fade') {
           gsap.from(el, {
             yPercent: 40,
-            autoAlpha: 0,
+            // `opacity`, NIE `autoAlpha`. autoAlpha przy krycia 0 ustawia takze
+            // `visibility: hidden`, co USUWA element z drzewa dostepnosci -
+            // czytnik ekranu nie widzial naglowkow sekcji, dopoki uzytkownik do
+            // nich nie przewinal. Osoba niewidoma nawiguje wlasnie po naglowkach,
+            // wiec byla to bledna petla; axe raportowal to jako `heading-order`
+            // (po h1 pierwszym WIDOCZNYM naglowkiem byl dopiero h3).
+            // Wizualnie bez roznicy - samo krycie animuje sie tak samo.
+            opacity: 0,
             duration: 0.8,
             ease: 'power3.out',
             delay,

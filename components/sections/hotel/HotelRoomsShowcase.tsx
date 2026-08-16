@@ -19,6 +19,9 @@ type Props = {
 
 // Klasy 1:1 z pierwotnego HotelRoomCard (Figma 676:357) — te same rozmiary,
 // tracking, leading i odstępy, żeby layout/typografia zostały bez zmian.
+// Klasa nazwy pokoju. Element to <h2>, nie <h3>: sekcja pokoi nie ma wlasnego
+// naglowka sekcji, wiec nazwy pokoi sa w niej najwyzszym poziomem i h3 tworzylo
+// skok h1 -> h3 (Lighthouse heading-order). Nazwa klasy zostaje - to styl, nie tag.
 const H3_CLASS =
   'text-text text-2xl leading-none font-light tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]'
 const DESC_CLASS = 'text-text text-base leading-[1.2]'
@@ -101,7 +104,7 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
               <div className="bg-bg flex min-h-0 flex-1 flex-col justify-between gap-4 px-6 py-5 md:p-8">
                 <div className="flex flex-col gap-3">
                   {name && (
-                    <RevealText as="h3" className={H3_CLASS}>
+                    <RevealText as="h2" className={H3_CLASS}>
                       {name}
                     </RevealText>
                   )}
@@ -181,7 +184,7 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                   <div key={active} className="flex h-full flex-col gap-8">
                     <div className="flex flex-col gap-4">
                       {name && (
-                        <RevealText as="h3" start="top bottom" className={H3_CLASS}>
+                        <RevealText as="h2" start="top bottom" className={H3_CLASS}>
                           {name}
                         </RevealText>
                       )}
