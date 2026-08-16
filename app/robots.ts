@@ -1,10 +1,8 @@
 import type { MetadataRoute } from 'next'
-import { SITE_URL } from '@/lib/env'
+import { IS_INDEXABLE_DEPLOYMENT, SITE_URL } from '@/lib/env'
 
 export default function robots(): MetadataRoute.Robots {
-  const isProduction = process.env.NODE_ENV === 'production' && !SITE_URL.includes('localhost')
-
-  if (!isProduction) {
+  if (!IS_INDEXABLE_DEPLOYMENT) {
     // Dev / preview — zablokuj indeksowanie wszystkiego.
     return {
       rules: [{ userAgent: '*', disallow: '/' }],

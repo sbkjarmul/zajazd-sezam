@@ -96,7 +96,15 @@ export function RevealText({
         const rebuild = () => {
           if (!ref.current) return
           teardown() // reset display → SplitText mierzy w bloku (nie flex-column)
-          split = SplitText.create(el, { type: 'lines', mask: 'lines', reduceWhiteSpace: false })
+          // aria:'none' — patrz HeroSection: domyslny aria-label ladowal na
+          // <span> bez roli (aria-prohibited-attr). Podzial na LINIE zachowuje
+          // pelny tekst w DOM, wiec AT czyta go bez labela.
+          split = SplitText.create(el, {
+            type: 'lines',
+            mask: 'lines',
+            reduceWhiteSpace: false,
+            aria: 'none',
+          })
           // Kontener flex-column: maski to flex-items, których marginesy NIE
           // collapse'ują (inaczej -0.2em góra/dół zwijały się do -0.2em zamiast
           // -0.4em i między liniami zostawał ~0.2em nadmiarowego odstępu). Maska

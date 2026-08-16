@@ -9,8 +9,22 @@ import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/
 import { useUI } from '@/components/providers/UIProvider'
 import { VisuallyHidden } from 'radix-ui'
 import { cn } from '@/lib/utils'
-import { RoomBookingForm } from '@/components/forms/RoomBookingForm'
-import { EventInquiryForm } from '@/components/forms/EventInquiryForm'
+import dynamic from 'next/dynamic'
+
+// Formularze laduja sie leniwie, dopiero gdy drawer sie otworzy. Statycznie
+// ciagnely react-hook-form + zod + react-day-picker + date-fns + Turnstile do
+// bundla KAZDEJ podstrony, mimo ze drawer startuje zamkniety. Radix montuje
+// SheetContent dopiero przy otwarciu, wiec import dynamiczny nie opoznia nic,
+// co uzytkownik widzi wczesniej.
+// ssr:false - formularze i tak sa interaktywne i nie wnosza nic do HTML-a.
+const RoomBookingForm = dynamic(
+  () => import('@/components/forms/RoomBookingForm').then((m) => m.RoomBookingForm),
+  { ssr: false },
+)
+const EventInquiryForm = dynamic(
+  () => import('@/components/forms/EventInquiryForm').then((m) => m.EventInquiryForm),
+  { ssr: false },
+)
 
 // Wg Figma 676:1750: drawer 632px szerokości, bg-white, p-[32px], gap-[40px].
 // Header: "REZERWUJ" text-[40px] font-light + close X 32px.

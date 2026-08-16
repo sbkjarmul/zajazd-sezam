@@ -24,8 +24,11 @@ type Props = {
 // IntersectionObserver gdy
 // wrapper wjedzie w viewport. `prefers-reduced-motion` → pełen kolor od razu.
 //
-// `aria-label` z pełnym tekstem dla screen-readerów; per-char spany są
-// `aria-hidden` żeby nie zaśmiecać czytania.
+// Dostepnosc: per-char spany sa `aria-hidden` (inaczej czytnik literowalby tekst
+// znak po znaku), a pelna tresc podaje rownolegly span `sr-only`. Wczesniej rolę
+// tę pełnił `aria-label` na wrapperze, ale `aria-label` na golym <span> bez roli
+// jest zabroniony przez ARIA (Lighthouse `aria-prohibited-attr`) i czesc czytnikow
+// go ignorowala — tekst potrafil zniknac z odczytu calkowicie.
 export function ColorizeText({
   text,
   className,
@@ -68,7 +71,8 @@ export function ColorizeText({
   }, [threshold])
 
   return (
-    <span ref={ref} className={className} aria-label={text}>
+    <span ref={ref} className={className}>
+      <span className="sr-only">{text}</span>
       {Array.from(text).map((char, i) => (
         <span
           key={i}

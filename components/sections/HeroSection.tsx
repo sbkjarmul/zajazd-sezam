@@ -140,7 +140,12 @@ export function HeroSection({ data, locale }: Props) {
             // BEZ maski per-word — kursywa Westbourne ma zwisy/descendery ("j"),
             // które maska by przycięła. Maska (overflow) zarezerwowana dla opisu
             // i buttona (wjazd od dołu).
-            split = SplitText.create(headlineEl, { type: 'words' })
+            // aria:'none' — SplitText domyslnie doklada aria-label na dzielony
+            // element i aria-hidden na kawalki. Celem jest <span> bez roli,
+            // a aria-label na golym spanie jest zabroniony (Lighthouse
+            // aria-prohibited-attr). Przy podziale na SLOWA tresc zostaje
+            // czytelna dla AT, wiec label jest zbedny. Zero zmian wizualnych.
+            split = SplitText.create(headlineEl, { type: 'words', aria: 'none' })
             gsap.set(split.words, { autoAlpha: 0, yPercent: 45 })
 
             // Pozycje absolutne na osi czasu → deterministyczna kolejność:

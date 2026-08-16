@@ -7,6 +7,13 @@
       "runtimeArgs": ["dev"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "Next.js production (build output, do pomiarow Core Web Vitals)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["start", "--port", "3100"],
+      "port": 3100,
+      "autoPort": true
     }
   ]
 }

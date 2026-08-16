@@ -338,9 +338,12 @@ function FooterColumn({
     // text-center na mobile: items-center centruje bloki, ale wieloliniowe wpisy
     // (adres, godziny z <br/>) mialy tekst do lewej - stad jawne wysrodkowanie.
     <div className="flex flex-col items-center gap-3 text-center md:items-start md:text-left">
-      <h4 className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}>
+      {/* h3, nie h4 — kolumny stopki sa pierwszym poziomem pod <h2> sekcji, wiec
+          h4 tworzylo dziure w hierarchii (Lighthouse heading-order). Wyglad bez
+          zmian: klasy sa jawne, a globalny line-height obejmuje h1-h6 tak samo. */}
+      <h3 className={cn('text-sm tracking-normal uppercase', strong && 'font-bold', headingClass)}>
         {title}
-      </h4>
+      </h3>
       {items.filter(Boolean).map((item, i) => {
         if (!item) return null
         const className = cn(

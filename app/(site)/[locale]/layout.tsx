@@ -33,10 +33,13 @@ const inter = Inter({
 // Westbourne Serif — akcentowa kursywa dla wyróżnionej frazy w hero
 // ("rodzinnej atmosferze"). Tylko waga 400 (regular + italic). Wystawiana jako
 // --font-westbourne → mapowana na utility `font-serif` w globals.css.
+// WOFF2 z subsetem latin + latin-ext (patrz skrypt konwersji w historii zadania):
+// 146 kB surowego TTF -> 43 kB. Pliki `.ttf` zostaja w repo jako mastery do
+// ewentualnego ponownego subsetowania, ale aplikacja ich nie serwuje.
 const westbourne = localFont({
   src: [
-    { path: '../../../public/font/WestbourneSerif-Regular.ttf', weight: '400', style: 'normal' },
-    { path: '../../../public/font/WestbourneSerif-Italic.ttf', weight: '400', style: 'italic' },
+    { path: '../../../public/font/WestbourneSerif-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../../../public/font/WestbourneSerif-Italic.woff2', weight: '400', style: 'italic' },
   ],
   variable: '--font-westbourne',
   display: 'swap',
