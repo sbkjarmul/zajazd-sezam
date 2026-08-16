@@ -29,6 +29,9 @@ export async function ContactBlock({ data, settings, locale }: Props) {
   return (
     <section
       data-header-theme="dark"
+      // Sekcja jest na sezam dark, nie na granacie — bez tego header ciagnalby
+      // nad nia domyslny gradient dark-ruby i na styku widac bylo granatowy pas.
+      data-header-surface="var(--color-primary)"
       className="text-text-inverse pt-[120px] pb-16 md:py-20"
       style={{ background: 'var(--color-primary)' }}
     >

@@ -42,6 +42,10 @@ const INFO_SPACER_H = 42.72 // 223/522
 // Wysokosc duzego kadru w % szerokosci kolumny info — minimalna wysokosc
 // kolumny, dzieki ktorej CTA laduje rowno z dolem kadru.
 const INFO_MIN_H = 90.99 // 475/522
+// Info dzieli sie na dwie kolumny 1:1 z kadrami nad soba: nazwa/opis/CTA pod
+// 3. kadrem, strzalki pod 4. Pierwsza kolumna ma szerokosc peeka wyrazona w %
+// szerokosci kolumny info (324/522), reszta zostaje na strzalki.
+const INFO_COL_1 = 62.06 // 324/522
 
 // Kolejnosc slotow w rzedzie: 4 pierwsze zdjecia pokoju, od lewej do prawej.
 // Drugi slot jest duzy — to on niesie kadr wiodacy.
@@ -142,53 +146,65 @@ export function HomeHotelCarousel({ rooms, locale, ctaLabel }: Props) {
         />
         <div className="col-start-1 row-start-1 flex min-w-0 flex-col">
           <div aria-hidden style={{ paddingBottom: `${INFO_SPACER_H}%` }} />
-          <div className="flex flex-1 flex-col pt-[62px]">
-            {/* flex-wrap + min-w na bloku tekstu: na 1512 nazwa/opis i strzalki
-                stoja obok siebie (Figma), a gdy kolumna sie zwezi, strzalki
-                schodza do wlasnego wiersza zamiast dusic opis do kilku znakow. */}
-            <div className="flex flex-wrap items-start justify-between gap-6">
+          {/* Info dziedziczy siatke kadrow nad soba: nazwa/opis/CTA siedza w
+              kolumnie 3. kadru, strzalki w kolumnie 4. Rozporka wysokosci peeka
+              jest WYZEJ (wspolna dla obu kolumn), wiec oba slupki startuja na
+              tej samej wysokosci niezaleznie od szerokosci ekranu. */}
+          <div
+            className="grid flex-1"
+            style={{ gridTemplateColumns: `${INFO_COL_1}% auto`, columnGap: `${GAP}px` }}
+          >
+            <div className="flex min-w-0 flex-col pt-6">
               {/* key={active} — remount odpala fade tak samo jak przy kadrach. */}
-              <div
-                key={active}
-                className="animate-lb-fade-in flex min-w-[260px] flex-1 flex-col gap-3"
-              >
+              <div key={active} className="animate-lb-fade-in flex flex-col gap-3">
                 {name && <h3 className="text-text text-xl font-normal uppercase">{name}</h3>}
-                {description && <p className="text-text max-w-[420px] text-base">{description}</p>}
+                {/* Opis zostaje w kanonicznych 16 px (DESIGN-RULES 1.1), ale
+                    pokazujemy go dopiero od 1440 px. Nizej kolumna kadru jest
+                    za waska: nazwa lamie sie na dwie linie, opis rosnie do 4-5
+                    i CTA wypada ponizej dolnej krawedzi duzego kadru. Lepiej
+                    schowac opis niz zmniejszac go pod skale podpisow. */}
+                {description && (
+                  <p className="text-text wide:block hidden text-base">{description}</p>
+                )}
               </div>
-              {count > 1 && (
-                <div className="flex shrink-0 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => go(-1)}
-                    aria-label={t('prevRoom')}
-                    className={arrowClass}
+
+              {ctaLabel && (
+                /* mt-auto dosuwa CTA do dolu kolumny (rowno z dolem duzego
+                   kadru); pt-3 to tylko minimalny odstep od opisu — przy
+                   najdluzszym z opisow pokoi (4 linie) kolumna wciaz miesci
+                   sie w kadrze. */
+                <div className="mt-auto pt-3">
+                  <ReservationCtaButton
+                    tab="room"
+                    variant="filled-dark"
+                    className="min-w-[224px] whitespace-nowrap"
                   >
-                    <ChevronLeft className="size-6" aria-hidden />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => go(1)}
-                    aria-label={t('nextRoom')}
-                    className={arrowClass}
-                  >
-                    <ChevronRight className="size-6" aria-hidden />
-                  </button>
+                    {ctaLabel}
+                  </ReservationCtaButton>
                 </div>
               )}
             </div>
 
-            {ctaLabel && (
-              /* mt-auto dosuwa CTA do dolu kolumny (rowno z dolem duzego kadru);
-                 pt-3 to tylko minimalny odstep od opisu — przy najdluzszym z
-                 opisow pokoi (4 linie) kolumna wciaz miesci sie w kadrze. */
-              <div className="mt-auto pt-3">
-                <ReservationCtaButton
-                  tab="room"
-                  variant="filled-dark"
-                  className="min-w-[224px] whitespace-nowrap"
+            {/* Kolumna 2 — pod 4. kadrem. Strzalki do lewej krawedzi kolumny,
+                czyli dokladnie pod lewa krawedzia tego kadru. */}
+            {count > 1 && (
+              <div className="flex h-fit gap-2 pt-6">
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  aria-label={t('prevRoom')}
+                  className={arrowClass}
                 >
-                  {ctaLabel}
-                </ReservationCtaButton>
+                  <ChevronLeft className="size-6" aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  aria-label={t('nextRoom')}
+                  className={arrowClass}
+                >
+                  <ChevronRight className="size-6" aria-hidden />
+                </button>
               </div>
             )}
           </div>

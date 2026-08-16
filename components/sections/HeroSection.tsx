@@ -193,6 +193,9 @@ export function HeroSection({ data, locale }: Props) {
     // przypieta do gory => napisy w niebie, NAD budynkiem (mobile i desktop).
     <section
       data-header-theme="dark"
+      // Hero zostaje czystym kadrem — bez przyciemnienia pod headerem, ktore
+      // przy przewijaniu w obrebie sekcji zakrywalo pierwsza linie h1.
+      data-header-gradient="off"
       className="relative flex w-full flex-col justify-start! overflow-hidden"
       style={heroStyle}
     >

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useTranslations } from 'next-intl'
 import { Menu } from 'lucide-react'
 import gsap from 'gsap'
@@ -17,9 +17,7 @@ import { cn } from '@/lib/utils'
 
 type LogoImage = Parameters<typeof SanityImage>[0]['image']
 
-export type HeaderNavLink =
-  | { label: string; href: Pathname }
-  | { label: string; hash: string }
+export type HeaderNavLink = { label: string; href: Pathname } | { label: string; hash: string }
 
 type Props = {
   // 'dark' (default) — ciemne hero → header light contrast (cream)
@@ -39,7 +37,8 @@ type Props = {
   // Header „section-aware" (mobile + desktop): zawsze widoczny (bez chowania
   // przy scrollu), z gradientem, którego motyw (ciemny/jasny) i kolor śledzą
   // sekcję aktualnie pod headerem — sekcje deklarują `data-header-theme`
-  // (+ opcjonalnie `data-header-surface`). Gradient znika na samej górze strony.
+  // (+ opcjonalnie `data-header-surface` = własne tło, `data-header-gradient="off"`
+  // = bez gradientu). Gradient znika też na samej górze strony.
   adaptive?: boolean
   // Nadpisanie CTA (domyślnie „Zarezerwuj termin" → otwiera drawer rezerwacji).
   // ctaLabel zmienia etykietę; ctaHref (np. `tel:…`) renderuje link zamiast
@@ -71,18 +70,32 @@ export function Header({
   lightAccent = 'ruby',
   darkGradient = 'ruby',
 }: Props) {
+  const headerRef = useRef<HTMLElement>(null)
   const direction = useScrollDirection()
+  // Realna wysokość headera (88 mobile / 108 desktop) — pas, w którym gradient
+  // przykrywa treść. Hook potrzebuje jej, żeby zgasić gradient dopóki sekcja
+  // odmawiająca go dotyka tego pasa. Fallback 48 do pierwszego pomiaru.
+  const [headerHeight, setHeaderHeight] = useState(48)
+  useEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+    const measure = () => setHeaderHeight(Math.round(el.getBoundingClientRect().height))
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   // heroTheme = motyw startowy (fallback, gdy nic jeszcze nie wykryte / SSR) —
   // strony z ciemnym hero mają heroTheme='dark', z jasnym 'light'.
-  const { theme: activeTheme, surface: activeSurface } = useActiveHeaderTheme(
-    adaptive,
-    48,
-    heroTheme,
-  )
+  const {
+    theme: activeTheme,
+    surface: activeSurface,
+    gradient: activeGradient,
+  } = useActiveHeaderTheme(adaptive, 48, heroTheme, headerHeight)
   const t = useTranslations('common')
   const { openReservation, openBurger } = useUI()
   const pathname = usePathname()
-  const headerRef = useRef<HTMLElement>(null)
 
   useGSAP(
     () => {
@@ -146,9 +159,12 @@ export function Header({
   const lightBtnMd = isDarkAccent
     ? 'md:border-dark md:text-dark md:hover:bg-dark md:hover:text-text-inverse'
     : 'md:border-ruby md:text-ruby md:hover:bg-ruby md:hover:text-text-inverse'
-  // Warstwa gradientu dark-contrast (tło headera nad ciemnymi sekcjami).
+  // Kolor gradientu dark-contrast (tło headera nad ciemnymi sekcjami). Sekcja
+  // może go nadpisać przez `data-header-surface` — na stronie głównej sekcje
+  // ciemne mają dwa różne tła (Restauracja = dark-ruby, Kontakt = sezam dark),
+  // więc jeden prop na całą stronę zawsze rozjeżdżałby się z którąś z nich.
   const darkGradientFrom =
-    darkGradient === 'dark' ? 'from-[var(--color-dark)]' : 'from-[var(--color-dark-ruby)]'
+    activeSurface ?? (darkGradient === 'dark' ? 'var(--color-dark)' : 'var(--color-dark-ruby)')
 
   return (
     <header
@@ -165,13 +181,15 @@ export function Header({
       {adaptive && (
         // Gradient headera (mobile + desktop) — kryje pod sobą przewijaną treść
         // na wysokości headera. Dwie warstwy (jasna/ciemna) krzyżowo wygaszane,
-        // bo CSS nie animuje przejścia między gradientami. Cały gradient znika na
-        // samej górze strony (isTop) — czysty hero bez przyciemnienia.
+        // bo CSS nie animuje przejścia między gradientami. Gradient znika na
+        // samej górze strony (isTop) ORAZ nad sekcjami, które go nie chcą
+        // (`data-header-gradient="off"` — np. hero, gdzie przyciemnienie
+        // zjadałoby pierwszą linię nagłówka przy przewijaniu w obrębie sekcji).
         <div
           aria-hidden
           className={cn(
             'pointer-events-none absolute inset-0 transition-opacity duration-300 ease-out',
-            isTop ? 'opacity-0' : 'opacity-100',
+            isTop || !activeGradient ? 'opacity-0' : 'opacity-100',
           )}
         >
           <div
@@ -182,9 +200,9 @@ export function Header({
             )}
           />
           <div
+            style={{ '--hdr-dark-from': darkGradientFrom } as CSSProperties}
             className={cn(
-              'absolute inset-0 bg-gradient-to-b from-30% to-transparent transition-opacity duration-500 ease-out',
-              darkGradientFrom,
+              'absolute inset-0 bg-gradient-to-b from-[var(--hdr-dark-from)] from-30% to-transparent transition-opacity duration-500 ease-out',
               mobileOnLightContrast ? 'opacity-0' : 'opacity-100',
             )}
           />
