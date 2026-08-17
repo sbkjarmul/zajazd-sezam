@@ -57,8 +57,11 @@ export async function Reviews({ data, locale, uppercaseTitle = false }: Props) {
                 <RevealText
                   as="h2"
                   className={cn(
-                    'text-text w-full text-3xl leading-none font-light tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]',
-                    uppercaseTitle && 'uppercase',
+                    'text-text w-full text-3xl leading-none tracking-tight text-balance md:text-4xl md:tracking-[-0.03em]',
+                    // Home i /imprezy: kanoniczny `font-normal` (DESIGN-RULES §4.3).
+                    // Hotel (wariant uppercase) zostaje lekki - tam sasiednie
+                    // sekcje tez ida na font-light.
+                    uppercaseTitle ? 'font-light uppercase' : 'font-normal',
                   )}
                 >
                   {title}

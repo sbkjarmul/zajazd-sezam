@@ -473,6 +473,8 @@ Hero h1 lg+ jest **zawsze większy niż h2 sekcji** (kanon h2 lg+ = 72px). Wszys
 | **Bistro** | `font-black` | Brand bistro — najcięższy weight, dynamika "uliczna" |
 | **Kontakt** | `font-normal` | Spójność z home/hotel/events — Kontakt nie ma już osobnej brand-wagi |
 
+**Odstępstwo — sekcja opinii na /hotel** ([components/sections/reviews/Reviews.tsx](../components/sections/reviews/Reviews.tsx) to jeden komponent na home / hotel / imprezy): w wariancie uppercase (tylko /hotel) h2 idzie na `font-light`, bo sąsiednie sekcje hotelu też są `font-light`. Wariant sentence case (home, /imprezy) trzyma kanoniczny `font-normal`.
+
 #### Warianty rozmiaru
 
 W trzech sytuacjach robimy mniejszą h2 świadomie:
@@ -702,7 +704,7 @@ Każda strona poniżej ma tabelę sekcji w kolejności renderowania z paddingiem
 | 2 | HotelQuote | FH (`min-h-[800px]`) | (body-quote `font-light`) | — |
 | 3..N | HotelRoomCard × N | (karta, nie sekcja) | h3-room `font-normal uppercase` | — |
 | N+1 | HotelAmenities | D | `h2-medium` `font-normal uppercase` | B (baseline-aligned) |
-| N+2 | HotelReviews | C | h2 kanon | D (centered) |
+| N+2 | HotelReviews | C | h2 kanon `font-light uppercase` (odstępstwo — patrz §4.3) | D (centered) |
 | N+3 | HotelDiscover | D | `h2-medium` `font-normal uppercase` | B (baseline-aligned) |
 | N+4 | HotelReservationCta | D + dark | h2 kanon `font-normal uppercase` (text-text-inverse) | D (text-text-inverse, `md:text-2xl` lokalnie — do uspójnienia) |
 
