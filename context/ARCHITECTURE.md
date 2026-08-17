@@ -146,8 +146,7 @@ sezam/
 │       ├── menuCategory.ts
 │       ├── menuItem.ts
 │       ├── eventHall.ts
-│       ├── eventType.ts
-│       └── conferenceRoom.ts            ← szkielet, widok poza zakresem v1
+│       └── eventType.ts
 │
 ├── middleware.ts                         ← i18n routing, redirect / → /pl/
 ├── next.config.ts
@@ -234,8 +233,6 @@ Sanity Project
 │
 ├── eventHall[]           ← sale eventowe (nazwa, pojemność, zdjęcia, seo)
 ├── eventType[]           ← typy imprez (wesele, komunia, urodziny…)
-│
-├── conferenceRoom[]      ← [SZKIELET v1 — widok poza zakresem]
 │
 └── seoMeta               ← reużywalny obiekt osadzany we wszystkich schematach
 ```

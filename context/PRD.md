@@ -96,7 +96,6 @@ Strona jest dwujęzyczna. Język polski jest domyślny, dostępny pod `/pl/`, an
     └── /en/contact
 
 🚫 Poza zakresem v1 (do wdrożenia w przyszłości):
-    /pl/konferencje-i-szkolenia
     /pl/catering
 ```
 
@@ -244,7 +243,7 @@ Weryfikacja tokena odbywa się **po stronie serwera** (Next.js Route Handler / A
 
 **Dane z Sanity:** schemat `menuCategory` + `menuItem`
 
-### 5.3 /pl/hotel (i odpowiednik /en/)
+### 5.2 /pl/hotel (i odpowiednik /en/)
 
 **Logika widoku:**
 - Hero z zdjęciem pokoju
@@ -262,17 +261,7 @@ Weryfikacja tokena odbywa się **po stronie serwera** (Next.js Route Handler / A
 
 **Dane z Sanity:** schemat `hotel` + typy pokoi
 
-### 5.3 /pl/konferencje-i-szkolenia (i odpowiednik /en/)
-
-**Logika widoku:**
-- Hero
-- Karty sal konferencyjnych z opisem wyposażenia AV
-- Oferta cateringowa na czas szkolenia
-- CTA → drawer Rezerwuj (zakładka: event, rodzaj: konferencja)
-
-**Dane z Sanity:** schemat `conferenceRoom`
-
-### 5.4 /pl/catering (i odpowiednik /en/)
+### 5.3 /pl/catering (i odpowiednik /en/)
 
 **Logika widoku:**
 - Hero
@@ -280,7 +269,7 @@ Weryfikacja tokena odbywa się **po stronie serwera** (Next.js Route Handler / A
 - Zasięg geograficzny (Stalowa Wola i okolice)
 - CTA → drawer Rezerwuj (zakładka: event)
 
-### 5.5 /pl/kontakt (i odpowiednik /en/)
+### 5.4 /pl/kontakt (i odpowiednik /en/)
 
 **Logika widoku:**
 - Mapa Google z lokalizacją (Stalowa Wola)
@@ -372,7 +361,6 @@ Każda branża ma dedykowany JSON-LD wstrzyknięty przez Next.js w `<head>`. Dan
 | Bistro | `Restaurant` |
 | Hotel | `LodgingBusiness` (z `amenityFeature`, `checkinTime`, `checkoutTime`) |
 | Imprezy | `EventVenue` |
-| Konferencje | `EventVenue` + `MeetingRoom` |
 | Kontakt | `LocalBusiness` z pełnymi danymi NAP |
 
 **NAP (Name, Address, Phone)** musi być identyczny we wszystkich Schema.org, stopce i stronie kontaktowej — Google weryfikuje spójność dla SEO lokalnego.
@@ -424,7 +412,7 @@ Opinie pobierane są z wizytówki Google Business Profile przez **Google Places 
 - `next/image` z automatyczną optymalizacją i lazy loadingiem
 
 **CMS:** Sanity.io
-- Jeden projekt Sanity obsługuje wszystkie trzy branże (Restauracja, Bistro, Hotel) + imprezy i konferencje
+- Jeden projekt Sanity obsługuje wszystkie trzy branże (Restauracja, Bistro, Hotel) + imprezy
 - Treści wielojęzyczne obsługiwane przez pola obiektowe z kluczami `pl` i `en`
 - Sanity Studio dostępne dla redaktora treści bez wiedzy technicznej
 - Webhooks → Vercel ISR revalidation przy każdej publikacji treści
@@ -441,7 +429,6 @@ Opinie pobierane są z wizytówki Google Business Profile przez **Google Places 
 | `menuItem` | Pozycja menu (nazwa PL/EN, opis, cena, diety) | ✅ |
 | `eventHall` | Sala eventowa (nazwa, pojemność, zdjęcia) | ✅ |
 | `eventType` | Typ imprezy (wesele, komunia…) | ✅ |
-| `conferenceRoom` | Sala szkoleniowa + wyposażenie | ✅ | *(szkielet — widok poza zakresem v1)* |
 | `siteSettings` | Dane globalne: telefon, email, godziny | częściowo |
 
 **Theming per branża:**

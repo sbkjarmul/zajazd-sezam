@@ -287,7 +287,7 @@ Zmienne z prefiksem `NEXT_PUBLIC_` są widoczne client-side — tylko te które 
 - [ ] `app/sitemap.ts` — wpisy `/pl/` i `/en/` (URL z env: `NEXT_PUBLIC_SITE_URL=http://localhost:3000` lokalnie)
 - [ ] `public/robots.txt` (lokalnie `Disallow: /` lub bez sitemapy do produkcji)
 - [ ] Schema.org JSON-LD helpers: `Organization`, `LocalBusiness`, `Restaurant`, `LodgingBusiness`, `EventVenue` — dane z `siteSettings`
-- [ ] Schematy Sanity: `siteSettings`, `homepage`, `restaurant`, `bistro`, `hotel`, `menuCategory`, `menuItem`, `eventHall`, `eventType`, `conferenceRoom` (szkielet)
+- [ ] Schematy Sanity: `siteSettings`, `homepage`, `restaurant`, `bistro`, `hotel`, `menuCategory`, `menuItem`, `eventHall`, `eventType`
 - [ ] GROQ queries w `lib/sanity/queries.ts` dla wszystkich stron
 - [ ] Wprowadzenie testowych treści PL+EN w lokalnym Studio (NAP, hero, 2–3 pozycje menu, 1 sala — wystarczy do dev)
 
@@ -377,7 +377,7 @@ Używana w: canonical URL, hreflang, sitemap, Schema.org, Cloudflare config.
 - Nie fetchuj danych z Sanity po stronie klienta — Server Components
 - Nie używaj `localStorage` ani `sessionStorage`
 - Nie instaluj bibliotek bez sprawdzenia czy nie duplikują istniejącej funkcjonalności
-- Nie twórz podstron `/konferencje` ani `/catering` — poza zakresem v1
+- Nie twórz podstron `/konferencje` ani `/catering` — konferencje wypadły z zakresu produktu (schemat `conferenceRoom` usunięty), catering jest obsługiwany w ramach imprez okolicznościowych
 - Nie hardkoduj tekstów stron — treści z Sanity, etykiety UI z `messages/`
 - Nie commituj `.env.local`
 
