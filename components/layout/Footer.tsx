@@ -210,7 +210,6 @@ export async function Footer({
                   href: '/polityka-prywatnosci',
                   isInternal: true,
                 },
-                { text: t('footer.links.cookies') },
                 { text: t('footer.links.terms'), href: '/regulamin', isInternal: true },
               ]}
             />
@@ -285,7 +284,6 @@ export async function Footer({
                   href: '/polityka-prywatnosci',
                   isInternal: true,
                 },
-                { text: t('footer.links.cookies') },
                 { text: t('footer.links.terms'), href: '/regulamin', isInternal: true },
               ]}
             />
