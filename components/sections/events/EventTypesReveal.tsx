@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
@@ -23,6 +23,45 @@ type Props = {
   locale: Locale
 }
 
+// Kursywa Westbourne ma spore lewe odsadzenie (side bearing) i rozne dla roznych
+// liter: "W" w "Wesela" zaczyna sie 0,27em od krawedzi ramki, a "K" w "Komunie"
+// zaledwie 0,03em - przez co pierwszy wiersz wyglada na wciety wzgledem kreski
+// nad nim. Mierzymy odsadzenie pierwszego znaku kazdej nazwy na canvasie i
+// cofamy je ujemnym marginesem. Wynik trzymamy w `em`, wiec dziala na kazdym
+// breakpoincie bez ponownego pomiaru.
+function useInkOffsets(root: React.RefObject<HTMLElement | null>, deps: unknown[]) {
+  const [offsets, setOffsets] = useState<number[]>([])
+
+  useEffect(() => {
+    let cancelled = false
+
+    void document.fonts.ready.then(() => {
+      const el = root.current
+      if (cancelled || !el) return
+      const ctx = document.createElement('canvas').getContext('2d')
+      if (!ctx) return
+
+      setOffsets(
+        Array.from(el.querySelectorAll<HTMLElement>('[data-ink-align]')).map((node) => {
+          const style = getComputedStyle(node)
+          // Pomiar przy 100px, wynik dzielimy przez 100 -> wartosc w em.
+          ctx.font = `${style.fontStyle} 100px ${style.fontFamily}`
+          const { actualBoundingBoxLeft } = ctx.measureText(node.textContent ?? '')
+          // actualBoundingBoxLeft < 0 => ink zaczyna sie na prawo od krawedzi boxu.
+          return actualBoundingBoxLeft < 0 ? -actualBoundingBoxLeft / 100 : 0
+        }),
+      )
+    })
+
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps)
+
+  return offsets
+}
+
 // Galeria typów imprez sterowana hoverem (desktop):
 //  - lista nazw po prawej; najechanie na wiersz płynnie rozwija jego opis
 //    (grid-rows 0fr→1fr, jak w satius.app/membership) i przełącza zdjęcie
@@ -36,6 +75,8 @@ export function EventTypesReveal({ section, types, locale }: Props) {
   const [previewIdx, setPreviewIdx] = useState<number[]>(() => types.map(() => 0))
   // Typ, którego galeria jest otwarta w lightboxie (null = zamknięty).
   const [openIdx, setOpenIdx] = useState<number | null>(null)
+  const listRef = useRef<HTMLUListElement>(null)
+  const inkOffsets = useInkOffsets(listRef, [types, locale])
 
   // Hover/focus wiersza: aktywacja + losowy kadr z galerii tego typu.
   const handleEnter = useCallback(
@@ -128,7 +169,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
           </div>
 
           {/* Lista typów imprez */}
-          <ul className="flex flex-col">
+          <ul ref={listRef} className="flex flex-col">
             {types.map((type, i) => {
               const name = pickLocale(type.name, locale)
               const desc = pickLocale(type.description, locale)
@@ -151,6 +192,8 @@ export function EventTypesReveal({ section, types, locale }: Props) {
                     <span className="sr-only">{openGalleryLabel}: </span>
                     {name && (
                       <h3
+                        data-ink-align
+                        style={inkOffsets[i] ? { marginLeft: `-${inkOffsets[i]}em` } : undefined}
                         className={cn(
                           'font-accent text-text text-3xl leading-none italic transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none md:text-4xl lg:text-5xl',
                           'lg:group-hover:text-dark-gold',
