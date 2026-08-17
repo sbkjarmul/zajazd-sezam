@@ -105,13 +105,18 @@ export function EventTypesReveal({ section, types, locale }: Props) {
               {types.map((type, i) => {
                 const imgs = galleryOf(type)
                 const preview = imgs[previewIdx[i]] ?? imgs[0]
+                // `sizes` musi opisywac szerokosc ZRODLA, nie ramki: ramka jest
+                // pionowa (280x367), a zdjecia z galerii przewaznie poziome, wiec
+                // `object-cover` skaluje je do wysokosci ramki - potrzeba ~367px * AR
+                // zdjecia (przy 3:2 ok. 550px). Przy `sizes="280px"` przegladarka
+                // brala wariant 640w i rozciagala go ~1,7x, stad rozmyty kadr.
                 return (
                   <SanityImage
                     key={i}
                     image={preview}
                     locale={locale}
                     fill
-                    sizes="280px"
+                    sizes="600px"
                     className={cn(
                       'origin-center object-cover transition-[opacity,scale] duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/frame:scale-105 motion-reduce:transition-none',
                       i === active ? 'scale-100 opacity-100' : 'scale-90 opacity-0',

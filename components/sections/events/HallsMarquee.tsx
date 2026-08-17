@@ -133,11 +133,14 @@ function HallMarqueeItem({
           transition: `transform 0.6s ${EASE}`,
         }}
       >
+        {/* Kadr 4:3, a zdjecia sal bywaja panoramiczne (do ~2,2:1) - `object-cover`
+            skaluje je wtedy do wysokosci kadru, wiec `sizes` musi opisywac szerokosc
+            zrodla (~wysokosc kadru * AR zdjecia), nie szerokosc kadru. */}
         <SanityImage
           image={cover}
           locale={locale}
           fill
-          sizes="(max-width: 1024px) 66vw, 300px"
+          sizes="(max-width: 1024px) 100vw, 550px"
           className="object-cover"
         />
       </button>
