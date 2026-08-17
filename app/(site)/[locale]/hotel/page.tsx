@@ -89,7 +89,7 @@ export default async function HotelPage({ params }: { params: Promise<Params> })
         <HotelAmenities data={page.amenitiesSection} locale={locale} />
         <Reviews data={page.reviewsSection} locale={locale} uppercaseTitle />
         <HotelDiscover data={page.discoverSection} locale={locale} />
-        <FaqSection data={page.faqSection} locale={locale} variant="plain" />
+        <FaqSection data={page.faqSection} locale={locale} variant="plain" spacing="panel" />
         <HotelReservationCta data={page.reservationSection} locale={locale} />
         <Footer
           settings={settings}

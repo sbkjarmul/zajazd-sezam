@@ -331,6 +331,8 @@ Redesign strony głównej (mobile) — każda sekcja to **pełnoekranowy panel s
 
 **Wyjątki (stan na teraz):** `BistroBlock` — celowo wyśrodkowany (bez `mb-auto`), decyzja usera. Reszta (Events/Imprezy, Restaurant, Hotel, About) — top-align wg reguły.
 
+**Reguła dotyczy też paneli na podstronach, nie tylko home.** `FaqSection` jest współdzielony przez `/hotel`, `/imprezy` i `/restauracja`, ale panelem snapu jest tylko na dwóch pierwszych — tam `spacing="panel"` daje `pt-[120px] pb-16` wg kanonu. Przy poprzednim `py-16` (64px) nagłówek FAQ po dosunięciu panelu wchodził pod fixed header (88px). Na `/restauracja` sekcja jest w normalnym flow, więc zostaje `spacing="compact"` (`py-16 md:py-24`) — 120px robiłoby tam wyrwę w rytmie strony. Sprawdzaj `min-height`/`scroll-snap-align` sekcji przed zmianą paddingu współdzielonego komponentu.
+
 ---
 
 ## 3. Skala gapów
@@ -439,14 +441,16 @@ Mały capslocked nadpis nad nagłówkiem sekcji.
 
 | Strona | Klasy | Weight | Case |
 |---|---|---|---|
-| **Home** | `text-3xl md:text-6xl lg:text-[80px]` | `font-normal` | mixed |
-| **Hotel** | `text-3xl md:text-7xl lg:text-[80px] wide:text-[96px]` | `font-normal` | **UPPERCASE** |
+| **Home** | `text-[30px] md:text-[52px] lg:text-[60px] xl:text-[64px]` | `font-normal` | mixed |
+| **Hotel** | `text-[30px] md:text-7xl lg:text-[80px] wide:text-[96px]` | `font-light` | **UPPERCASE** |
 | **Events** | `text-[64px] md:text-7xl lg:text-[120px]` | `font-medium` | mixed |
 | **Restauracja** | mobile `text-[clamp(72px,20vw,112px)] font-black`, desktop `md:text-[120px] font-bold` | mixed | **UPPERCASE** |
 | **Bistro** | `text-5xl md:text-7xl lg:text-[90px]` | `font-black` | **UPPERCASE** |
 | ~~Kontakt~~ | _image-only h-[400px], bez h1 — patrz §7.7_ | — | — |
 
 Hero h1 lg+ jest **zawsze większy niż h2 sekcji** (kanon h2 lg+ = 72px). Wszystkie hero osiągają ≥ 80px na lg+.
+
+**Mobile h1 = 30px na Home i Hotelu.** Hotel miał wcześniej `text-3xl` (40px) — na telefonie wychodził o klasę większy niż home przy tej samej roli. Decyzja usera (2026-08-17): rozmiary na `/hotel` mobile schodzą do poziomu strony głównej. Ta sama decyzja obniżyła nazwę pokoju w `HotelRoomsShowcase` do `text-xl` (24px, tyle samo co `HomeHotelMobileSlider`) i opis w `HotelReservationCta` do `text-base` (16px, kanon §4.5). md+ bez zmian — desktop zostaje wg makiety.
 
 ### 4.3 H2 sekcja
 

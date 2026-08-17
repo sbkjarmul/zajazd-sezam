@@ -56,8 +56,11 @@ export function HotelHero({ data, locale }: Props) {
                 {eyebrow}
               </p>
             )}
+            {/* Mobile 30px - ten sam rozmiar co h1 na stronie glownej (HeroSection:
+                text-[30px]). Wczesniej text-3xl (40px) robil na telefonie o klase
+                wiekszy naglowek niz home. md+ bez zmian. */}
             {title && (
-              <h1 className="text-text-inverse wide:text-[96px] text-3xl leading-none font-light tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
+              <h1 className="text-text-inverse wide:text-[96px] text-[30px] leading-none font-light tracking-tight uppercase md:text-7xl md:tracking-[-0.03em] lg:text-[80px]">
                 {title}
               </h1>
             )}

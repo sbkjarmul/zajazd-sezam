@@ -36,6 +36,15 @@ type Props = {
    * (/imprezy).
    */
   headingCase?: 'upper' | 'sentence'
+  /**
+   * 'compact' (default) — `py-16 md:py-24`, sekcja w normalnym flow strony
+   * (/restauracja).
+   * 'panel' — `pt-[120px] pb-16`, gdy FAQ jest mobilnym panelem snapu (/hotel,
+   * /imprezy). Panel dosuwa sie GORA do viewportu, wiec przy 64px naglowek
+   * wchodzil pod fixed header (88px wysokosci). 120px to kanon z DESIGN-RULES 2.9,
+   * ten sam co w sasiednich panelach (HotelAmenities, Reviews, HotelDiscover).
+   */
+  spacing?: 'compact' | 'panel'
 }
 
 // Wspoldzielony FAQ (bazowo Figma 971:1509 z restauracji): serif naglowek z
@@ -49,6 +58,7 @@ export function FaqSection({
   variant = 'serif',
   headingWeight = 'light',
   headingCase = 'upper',
+  spacing = 'compact',
 }: Props) {
   if (!data) return null
   const isPlain = variant === 'plain'
@@ -66,8 +76,12 @@ export function FaqSection({
 
   if (!items.length) return null
 
+  // Odstep gorny: patrz `spacing` w Props. Na panelach snapu 120px, bo panel
+  // dosuwa sie gora do viewportu i 64px chowalo naglowek pod fixed headerem.
+  const paddingClass = spacing === 'panel' ? 'pt-[120px] pb-16 md:py-24' : 'py-16 md:py-24'
+
   return (
-    <section data-header-theme="light" className="bg-bg py-16 md:py-24">
+    <section data-header-theme="light" className={`bg-bg ${paddingClass}`}>
       {/* Dwie kolumny dopiero od lg - na tablecie (768-1023) siatka 2-kolumnowa
           byla za ciasna, wiec naglowek i akordeon ida jedna kolumna. */}
       <div className="layout-container grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">

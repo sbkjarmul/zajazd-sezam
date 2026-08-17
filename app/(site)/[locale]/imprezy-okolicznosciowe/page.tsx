@@ -87,6 +87,7 @@ export default async function EventsPage({ params }: { params: Promise<Params> }
           variant="plain"
           headingWeight="regular"
           headingCase="sentence"
+          spacing="panel"
         />
         <EventsReservationCta data={page.reservationSection} settings={settings} locale={locale} />
         <Footer settings={settings} locale={locale} logoImage={logoImage} />

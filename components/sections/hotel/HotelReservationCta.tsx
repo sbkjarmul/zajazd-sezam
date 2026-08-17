@@ -38,7 +38,11 @@ export function HotelReservationCta({ data, locale }: Props) {
                 {title}
               </h2>
             )}
-            {description && <p className="text-text-inverse max-w-xl text-lg">{description}</p>}
+            {/* Opis = 16px na mobile (kanon DESIGN-RULES 4.5 i rozmiar opisow na
+                home); text-lg dawal 20px. Na md+ wraca 20px jak w makiecie. */}
+            {description && (
+              <p className="text-text-inverse max-w-xl text-base md:text-lg">{description}</p>
+            )}
           </div>
           {ctaLabel && (
             <ReservationCtaButton

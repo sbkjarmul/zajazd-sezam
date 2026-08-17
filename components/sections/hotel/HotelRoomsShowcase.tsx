@@ -22,8 +22,11 @@ type Props = {
 // Klasa nazwy pokoju. Element to <h2>, nie <h3>: sekcja pokoi nie ma wlasnego
 // naglowka sekcji, wiec nazwy pokoi sa w niej najwyzszym poziomem i h3 tworzylo
 // skok h1 -> h3 (Lighthouse heading-order). Nazwa klasy zostaje - to styl, nie tag.
+// Mobile 24px (`text-xl`) - tyle samo, ile nazwa pokoju w slajderze na stronie
+// glownej (HomeHotelMobileSlider). Wcześniej text-2xl (32px) wychodzil wieksze niz
+// home przy tej samej roli. md+ bez zmian.
 const H3_CLASS =
-  'text-text text-2xl leading-none font-light tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]'
+  'text-text text-xl leading-none font-light tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]'
 const DESC_CLASS = 'text-text text-base leading-[1.2]'
 const LI_CLASS = 'text-text text-base leading-[1.5]'
 // Mobile: ciasniejszy interlinia listy - kwadratowa galeria zabiera pol ekranu,
