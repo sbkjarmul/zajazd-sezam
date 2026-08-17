@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { galleryImageMember } from '../objects/galleryImageMember'
 
 export const eventHall = defineType({
   name: 'eventHall',
@@ -39,7 +40,7 @@ export const eventHall = defineType({
       name: 'images',
       title: 'Galeria zdjęć',
       type: 'array',
-      of: [{ type: 'imageWithAlt' }],
+      of: [galleryImageMember()],
       validation: (r) => r.min(1),
     }),
     defineField({

@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { galleryImageMember } from '../objects/galleryImageMember'
 
 export const eventType = defineType({
   name: 'eventType',
@@ -32,7 +33,7 @@ export const eventType = defineType({
       name: 'gallery',
       title: 'Galeria zdjęć (lightbox + losowy kadr na hover)',
       type: 'array',
-      of: [{ type: 'imageWithAlt' }],
+      of: [galleryImageMember()],
     }),
     defineField({
       name: 'order',

@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { galleryImageMember } from '../objects/galleryImageMember'
 
 // ID slugów odpowiada wartościom z formularza rezerwacji
 // (patrz ROOM_TYPE_IDS w lib/validators/reservation.ts).
@@ -47,7 +48,7 @@ export const roomType = defineType({
       name: 'images',
       title: 'Galeria zdjęć',
       type: 'array',
-      of: [{ type: 'imageWithAlt' }],
+      of: [galleryImageMember()],
       validation: (r) => r.min(1),
     }),
     defineField({

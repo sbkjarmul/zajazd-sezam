@@ -541,11 +541,15 @@ export type RoomType = {
       _key: string
     } & LocaleString
   >
-  images?: Array<
-    {
-      _key: string
-    } & ImageWithAlt
-  >
+  images?: Array<{
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: LocaleString
+    _type: 'imageWithAlt'
+    _key: string
+  }>
   order?: number
 }
 
@@ -564,11 +568,15 @@ export type EventHall = {
       _key: string
     } & LocaleString
   >
-  images?: Array<
-    {
-      _key: string
-    } & ImageWithAlt
-  >
+  images?: Array<{
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: LocaleString
+    _type: 'imageWithAlt'
+    _key: string
+  }>
   order?: number
   suitableFor?: Array<
     {
@@ -629,11 +637,15 @@ export type EventType = {
   slug?: Slug
   description?: LocaleText
   image?: ImageWithAlt
-  gallery?: Array<
-    {
-      _key: string
-    } & ImageWithAlt
-  >
+  gallery?: Array<{
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: LocaleString
+    _type: 'imageWithAlt'
+    _key: string
+  }>
   order?: number
 }
 
@@ -1601,8 +1613,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       alt: LocaleString | null
     } | null
     gallery: Array<{
-      _key: string
-      _type: 'imageWithAlt'
       asset: {
         _id: string
         url: string | null
@@ -1616,6 +1626,8 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
       alt: LocaleString | null
+      _type: 'imageWithAlt'
+      _key: string
     }> | null
   }> | null
   hallsSection: {
@@ -1636,8 +1648,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
     > | null
     order: number | null
     images: Array<{
-      _key: string
-      _type: 'imageWithAlt'
       asset: {
         _id: string
         url: string | null
@@ -1651,6 +1661,8 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
       alt: LocaleString | null
+      _type: 'imageWithAlt'
+      _key: string
     }> | null
   }> | null
   hotelUpsellSection: {
@@ -1928,8 +1940,6 @@ export type ALL_EVENT_HALLS_QUERY_RESULT = Array<{
   > | null
   order: number | null
   images: Array<{
-    _key: string
-    _type: 'imageWithAlt'
     asset: {
       _id: string
       url: string | null
@@ -1943,6 +1953,8 @@ export type ALL_EVENT_HALLS_QUERY_RESULT = Array<{
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt: LocaleString | null
+    _type: 'imageWithAlt'
+    _key: string
   }> | null
 }>
 
@@ -1962,8 +1974,6 @@ export type ALL_ROOM_TYPES_QUERY_RESULT = Array<{
   > | null
   order: number | null
   images: Array<{
-    _key: string
-    _type: 'imageWithAlt'
     asset: {
       _id: string
       url: string | null
@@ -1977,6 +1987,8 @@ export type ALL_ROOM_TYPES_QUERY_RESULT = Array<{
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt: LocaleString | null
+    _type: 'imageWithAlt'
+    _key: string
   }> | null
 }>
 
@@ -1988,8 +2000,6 @@ export type HOME_ROOM_TYPES_QUERY_RESULT = Array<{
   name: LocaleString | null
   description: LocaleText | null
   wideImages: Array<{
-    _key: string
-    _type: 'imageWithAlt'
     asset: {
       _id: string
       url: string | null
@@ -2003,6 +2013,8 @@ export type HOME_ROOM_TYPES_QUERY_RESULT = Array<{
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt: LocaleString | null
+    _type: 'imageWithAlt'
+    _key: string
   }> | null
 }>
 
