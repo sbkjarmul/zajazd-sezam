@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 
 type Props = {
   text: string
@@ -48,14 +48,15 @@ export function ColorizeText({
 
     // Wyłącz animację dla użytkowników z `prefers-reduced-motion: reduce`
     // oraz na ekranach < md (768px) — niska potrzeba i zazwyczaj słabsze CPU.
+    // NIE flipujemy tu stanu na `animated`: wyblakly start i transitiony zyja w
+    // globals.css za tym samym media query, wiec ponizej progu znaki od poczatku
+    // maja docelowy kolor. Wczesniejsze `setAnimated(true)` po hydracji tylko
+    // odpalalo te sama fale na wejsciu, bo inline transition zostawal.
     const skipAnimation =
       window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       window.matchMedia('(max-width: 767px)').matches
 
-    if (skipAnimation) {
-      queueMicrotask(() => setAnimated(true))
-      return
-    }
+    if (skipAnimation) return
 
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -71,17 +72,18 @@ export function ColorizeText({
   }, [threshold])
 
   return (
-    <span ref={ref} className={className}>
+    <span
+      ref={ref}
+      className={className}
+      data-colorize={animated ? 'on' : 'idle'}
+      style={{ '--colorize-duration': `${charDurationMs}ms` } as CSSProperties}
+    >
       <span className="sr-only">{text}</span>
       {Array.from(text).map((char, i) => (
         <span
           key={i}
           aria-hidden
-          style={{
-            color: animated ? 'var(--color-text)' : 'var(--color-text-faded)',
-            transition: `color ${charDurationMs}ms ease-out`,
-            transitionDelay: `${(startIndex + i) * charDelayMs}ms`,
-          }}
+          style={{ '--colorize-delay': `${(startIndex + i) * charDelayMs}ms` } as CSSProperties}
         >
           {char}
         </span>

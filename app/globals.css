@@ -420,6 +420,34 @@ html.snap-y-page {
   }
 }
 
+/* =============================================================================
+   ColorizeText - fala kolorowania znak po znaku.
+
+   Stan startowy (wyblakle znaki) i same transitiony siedza TU, za media query,
+   nie w inline style komponentu. Powod: guard `max-width: 767px` w JS ustawial
+   stan koncowy dopiero PO hydracji, a inline `transition: color` zostawal - wiec
+   na mobile fala i tak sie odtwarzala, tylko zamiast na scrollu odpalala sie na
+   wejsciu. Poza media query nie ma ani wyblaklego koloru, ani transitionow, wiec
+   mobile dostaje docelowy kolor od razu z SSR.
+
+   --colorize-delay / --colorize-duration ustawia komponent per znak (custom
+   properties sa inertne, dopoki jakas regula ich nie uzyje - ponizej 768px nie
+   uzywa ich nic).
+   ============================================================================= */
+[data-colorize] > span[aria-hidden='true'] {
+  color: var(--color-text);
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  [data-colorize] > span[aria-hidden='true'] {
+    transition: color var(--colorize-duration, 100ms) ease-out var(--colorize-delay, 0ms);
+  }
+
+  [data-colorize='idle'] > span[aria-hidden='true'] {
+    color: var(--color-text-faded);
+  }
+}
+
 @keyframes hero-word-in {
   from {
     opacity: 0;

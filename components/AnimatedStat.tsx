@@ -1,7 +1,12 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
+
+// useLayoutEffect odpala sie PRZED malowaniem, wiec cofniecie stanu do zera na
+// desktopie jest niewidoczne. Na serwerze React ostrzega przed useLayoutEffect,
+// stad podmiana na useEffect (SSR i tak nie maluje).
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 type Props = {
   /** Wartość np. "5000+", "70+". Liczba rośnie 0→target w gray; po zakończeniu
@@ -42,12 +47,19 @@ export function AnimatedStat({
   const suffix = hasNumber ? match[2] : ''
 
   const ref = useRef<HTMLDivElement>(null)
-  const [current, setCurrent] = useState(0)
-  const [numberDone, setNumberDone] = useState(false)
-  const [suffixVisible, setSuffixVisible] = useState(false)
-  const [labelVisible, setLabelVisible] = useState(false)
+  // Stan poczatkowy = STAN KONCOWY animacji, a `animating` trzyma transitiony
+  // wylaczone. Dzieki temu SSR i pierwsza klatka pokazuja gotowa statystyke, a na
+  // mobile nie dzieje sie NIC: ani odliczania, ani fade'u sufiksu i labela.
+  // Poprzednio stan startowy byl "pusty", a mobilny guard ustawial koncowy dopiero
+  // po hydracji - klasy `transition-opacity` zostawaly, wiec cala sekwencja i tak
+  // sie odtwarzala.
+  const [current, setCurrent] = useState(target)
+  const [numberDone, setNumberDone] = useState(true)
+  const [suffixVisible, setSuffixVisible] = useState(true)
+  const [labelVisible, setLabelVisible] = useState(true)
+  const [animating, setAnimating] = useState(false)
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current
     if (!el) return
     if (typeof window === 'undefined') return
@@ -56,15 +68,15 @@ export function AnimatedStat({
       window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       window.matchMedia('(max-width: 767px)').matches
 
-    if (skipAnimation || !hasNumber) {
-      queueMicrotask(() => {
-        setCurrent(target)
-        setNumberDone(true)
-        setSuffixVisible(true)
-        setLabelVisible(true)
-      })
-      return
-    }
+    // Nic nie robimy - wyrenderowany stan JEST stanem koncowym.
+    if (skipAnimation || !hasNumber) return
+
+    // Desktop: cofamy do stanu startowego jeszcze przed malowaniem.
+    setAnimating(true)
+    setCurrent(0)
+    setNumberDone(false)
+    setSuffixVisible(false)
+    setLabelVisible(false)
 
     const timeouts: ReturnType<typeof setTimeout>[] = []
     let rafId: number | null = null
@@ -112,12 +124,12 @@ export function AnimatedStat({
         aria-label={value}
         style={{
           color: numberDone ? 'var(--color-text)' : 'var(--color-gray)',
-          transition: `color ${COLOR_DURATION_MS}ms ease-out`,
+          transition: animating ? `color ${COLOR_DURATION_MS}ms ease-out` : 'none',
         }}
       >
         <span
-          className="transition-opacity duration-200 ease-out"
-          style={{ opacity: hasNumber && current === 0 ? 0 : 1 }}
+          className={cn('ease-out', animating ? 'transition-opacity duration-200' : '')}
+          style={{ opacity: hasNumber && animating && current === 0 ? 0 : 1 }}
         >
           {hasNumber ? current : value}
         </span>
@@ -125,10 +137,11 @@ export function AnimatedStat({
           <span
             aria-hidden
             className={cn(
-              'transition-opacity ease-out',
+              'ease-out',
+              animating && 'transition-opacity',
               suffixVisible ? 'opacity-100' : 'opacity-0',
             )}
-            style={{ transitionDuration: `${SUFFIX_FADE_MS}ms` }}
+            style={{ transitionDuration: animating ? `${SUFFIX_FADE_MS}ms` : undefined }}
           >
             {suffix}
           </span>
@@ -136,11 +149,12 @@ export function AnimatedStat({
       </span>
       <span
         className={cn(
-          'transition-opacity ease-out',
+          'ease-out',
+          animating && 'transition-opacity',
           labelVisible ? 'opacity-100' : 'opacity-0',
           labelClassName,
         )}
-        style={{ transitionDuration: `${LABEL_FADE_MS}ms` }}
+        style={{ transitionDuration: animating ? `${LABEL_FADE_MS}ms` : undefined }}
       >
         {label}
       </span>
