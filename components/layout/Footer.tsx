@@ -294,8 +294,15 @@ export async function Footer({
       {displayWordAtEnd && displayWordBlock}
 
       <div className={cn('border-t', isDark ? 'border-white/15' : 'border-border-subtle')}>
-        <div className="layout-container flex py-6">
-          <p className={cn('text-sm', isDark ? 'text-text-inverse' : 'text-text-muted')}>
+        {/* Mobile: wysrodkowane jak reszta stopki (kolumny i opis tez sa
+            centrowane ponizej md). Od md wracamy do lewej krawedzi. */}
+        <div className="layout-container flex justify-center py-6 md:justify-start">
+          <p
+            className={cn(
+              'text-center text-sm md:text-left',
+              isDark ? 'text-text-inverse' : 'text-text-muted',
+            )}
+          >
             {t('footer.copyright', { year })}
           </p>
         </div>

@@ -31,19 +31,25 @@ const NAV_ITEMS: NavItem[] = [
 const SLIDE_MS = 650
 const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)'
 
+// Push <main> tylko od `lg` (1024px) — czyli na desktopie. Na mobile i tablecie
+// panel po prostu nasuwa się na stronę od góry, bez spychania treści w dół
+// (patrz komentarz przy komponencie).
+const PUSH_QUERY = '(min-width: 1024px)'
+
 // Blur-in dla tekstów w menu: przy otwieraniu wychodzą z rozmycia (filter) +
 // fade, ze staggerem przez per-element `transition-delay`. Bez ruchu translate.
 // motion-reduce → brak animacji (snap).
-const REVEAL =
-  'transition-[opacity,filter] duration-[600ms] ease-out motion-reduce:transition-none'
+const REVEAL = 'transition-[opacity,filter] duration-[600ms] ease-out motion-reduce:transition-none'
 const REVEAL_WITH_COLOR =
   'transition-[color,opacity,filter] duration-[600ms] ease-out motion-reduce:transition-none'
 const REVEAL_IN = 'opacity-100 blur-[0px]'
 const REVEAL_OUT = 'opacity-0 blur-[10px]'
 
 // Menu pełnoekranowe w stylu annnimate „Fullscreen Slide Menu": panel wjeżdża
-// z góry, a cała aplikacja (<main>) zjeżdża o 100dvh w dół — oba ruchy z tą
-// samą krzywą/czasem, więc wyglądają jak jeden pionowy stos przesuwany w dół.
+// z góry. Na desktopie (lg+) cała aplikacja (<main>) zjeżdża jednocześnie
+// o 100dvh w dół — oba ruchy z tą samą krzywą/czasem, więc wyglądają jak jeden
+// pionowy stos przesuwany w dół. Na mobile i tablecie pushu NIE ma: panel po
+// prostu nasuwa się na nieruchomą stronę (mniej ruchu na mniejszym ekranie).
 //
 // Menu jest rodzeństwem <main> w layoucie, więc transform/inert nakładane na
 // <main> nie dotykają panelu. Fixed nagłówek strony żyje wewnątrz <main>: jego
@@ -93,19 +99,27 @@ export function BurgerMenu() {
     closeForNavigation()
   }
 
-  // Push aplikacji (<main> zjeżdża o 100dvh w dół, sklejone z wjazdem panelu) +
-  // scroll-lock, inert tła i zarządzanie focusem zależnie od stanu.
+  // Push aplikacji (na lg+ <main> zjeżdża o 100dvh w dół, sklejone z wjazdem
+  // panelu) + scroll-lock, inert tła i zarządzanie focusem zależnie od stanu.
   useEffect(() => {
     const main = document.querySelector('main')
     const html = document.documentElement
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const push = window.matchMedia(PUSH_QUERY).matches
 
     if (burgerOpen) {
       restoreFocusRef.current = document.activeElement as HTMLElement | null
       html.style.overflow = 'hidden'
       if (main) {
-        main.style.transition = reduce ? 'none' : `transform ${SLIDE_MS}ms ${EASE}`
-        main.style.transform = 'translateY(100dvh)'
+        if (push) {
+          main.style.transition = reduce ? 'none' : `transform ${SLIDE_MS}ms ${EASE}`
+          main.style.transform = 'translateY(100dvh)'
+        } else {
+          // Mobile/tablet: żadnego ruchu <main> — czyścimy ewentualny push z desktopu
+          // (np. po zmianie orientacji / resize przy otwartym menu).
+          main.style.transition = 'none'
+          main.style.transform = ''
+        }
         main.setAttribute('inert', '') // tło poza tab-orderem i czytnikiem
       }
       const id = window.setTimeout(() => {
@@ -217,7 +231,7 @@ export function BurgerMenu() {
             className={cn(
               // Rozmiar + line-height w JEDNEJ klasie — patrz uwaga niżej o tailwind-merge.
               // font-accent = Westbourne Serif, italic (jak akcenty hero).
-              'font-accent text-text font-normal italic tracking-tight text-[clamp(3rem,9vw,7.5rem)]/[0.95]',
+              'font-accent text-text text-[clamp(3rem,9vw,7.5rem)]/[0.95] font-normal tracking-tight italic',
               REVEAL,
               burgerOpen ? REVEAL_IN : REVEAL_OUT,
             )}

@@ -1,11 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type { EVENTS_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { Reveal } from '@/components/Reveal'
 import { SanityLightbox } from '@/components/sections/gallery/SanityLightbox'
+import { useInkOffsets } from '@/hooks/useInkOffsets'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { cn } from '@/lib/utils'
 
@@ -21,45 +22,6 @@ type Props = {
   section: NonNullable<EVENTS_PAGE_QUERY_RESULT>['eventTypesSection']
   types: EventType[]
   locale: Locale
-}
-
-// Kursywa Westbourne ma spore lewe odsadzenie (side bearing) i rozne dla roznych
-// liter: "W" w "Wesela" zaczyna sie 0,27em od krawedzi ramki, a "K" w "Komunie"
-// zaledwie 0,03em - przez co pierwszy wiersz wyglada na wciety wzgledem kreski
-// nad nim. Mierzymy odsadzenie pierwszego znaku kazdej nazwy na canvasie i
-// cofamy je ujemnym marginesem. Wynik trzymamy w `em`, wiec dziala na kazdym
-// breakpoincie bez ponownego pomiaru.
-function useInkOffsets(root: React.RefObject<HTMLElement | null>, deps: unknown[]) {
-  const [offsets, setOffsets] = useState<number[]>([])
-
-  useEffect(() => {
-    let cancelled = false
-
-    void document.fonts.ready.then(() => {
-      const el = root.current
-      if (cancelled || !el) return
-      const ctx = document.createElement('canvas').getContext('2d')
-      if (!ctx) return
-
-      setOffsets(
-        Array.from(el.querySelectorAll<HTMLElement>('[data-ink-align]')).map((node) => {
-          const style = getComputedStyle(node)
-          // Pomiar przy 100px, wynik dzielimy przez 100 -> wartosc w em.
-          ctx.font = `${style.fontStyle} 100px ${style.fontFamily}`
-          const { actualBoundingBoxLeft } = ctx.measureText(node.textContent ?? '')
-          // actualBoundingBoxLeft < 0 => ink zaczyna sie na prawo od krawedzi boxu.
-          return actualBoundingBoxLeft < 0 ? -actualBoundingBoxLeft / 100 : 0
-        }),
-      )
-    })
-
-    return () => {
-      cancelled = true
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps)
-
-  return offsets
 }
 
 // Galeria typów imprez sterowana hoverem (desktop):

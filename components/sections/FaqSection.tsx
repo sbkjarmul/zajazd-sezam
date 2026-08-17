@@ -30,6 +30,12 @@ type Props = {
   variant?: 'serif' | 'plain'
   /** Grubosc naglowka w wariancie 'plain'. Default 'light' (hotel). */
   headingWeight?: 'light' | 'regular'
+  /**
+   * Wielkosc liter naglowka w wariancie 'plain'. Default 'upper' (hotel).
+   * 'sentence' zostawia tekst z Sanity bez zmian - tylko pierwsza litera duza
+   * (/imprezy).
+   */
+  headingCase?: 'upper' | 'sentence'
 }
 
 // Wspoldzielony FAQ (bazowo Figma 971:1509 z restauracji): serif naglowek z
@@ -37,11 +43,18 @@ type Props = {
 // rozwiniety. Jasny motyw (ruby na cream) — pasuje do jasnych sekcji tresci
 // restauracji, hotelu i imprez. Reuzywany na wszystkich trzech stronach.
 // Wariant 'plain' zamienia serif+ruby na Inter+dark, zeby wtopic sie w /hotel.
-export function FaqSection({ data, locale, variant = 'serif', headingWeight = 'light' }: Props) {
+export function FaqSection({
+  data,
+  locale,
+  variant = 'serif',
+  headingWeight = 'light',
+  headingCase = 'upper',
+}: Props) {
   if (!data) return null
   const isPlain = variant === 'plain'
   const textColor = isPlain ? 'text-text' : 'text-ruby'
   const plainWeight = headingWeight === 'regular' ? 'font-normal' : 'font-light'
+  const plainCase = headingCase === 'upper' ? 'uppercase' : 'normal-case'
   const heading = pickLocale(data.heading, locale)
   const items = (data.items ?? [])
     .map((item, i) => ({
@@ -63,7 +76,7 @@ export function FaqSection({ data, locale, variant = 'serif', headingWeight = 'l
             <RevealText
               as="h2"
               mode="fade"
-              className={`text-text text-3xl leading-none ${plainWeight} tracking-tight whitespace-pre-line uppercase md:text-4xl md:tracking-[-0.03em] lg:text-[48px]`}
+              className={`text-text text-3xl leading-none ${plainWeight} ${plainCase} tracking-tight whitespace-pre-line md:text-4xl md:tracking-[-0.03em] lg:text-[48px]`}
             >
               {heading.replace(/\*/g, '')}
             </RevealText>

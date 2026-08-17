@@ -43,6 +43,9 @@ export function ContactInfo({ data, settings, locale }: Props) {
   return (
     <section
       data-header-theme="dark"
+      // Gradient headera domyslnie schodzi z dark-ruby (granat) - nad ta sekcja
+      // rozjezdzal sie z jej tlem. Deklarujemy wlasne tlo = sezam dark.
+      data-header-surface="var(--color-dark)"
       className="bg-dark text-light flex min-h-[100svh] flex-col items-center justify-center gap-16 px-4 py-32 md:gap-24 md:px-16"
     >
       <header className="flex flex-col items-center gap-4 text-center">
@@ -75,9 +78,12 @@ export function ContactInfo({ data, settings, locale }: Props) {
           </div>
         )}
 
-        <div className="flex flex-col gap-10 sm:flex-row sm:gap-16">
+        {/* Adres i email jeden pod drugim, wysrodkowane - jak reszta sekcji.
+            Bez kolumn obok siebie: przy waskich kolumnach email lamal sie
+            w srodku slowa. */}
+        <div className="flex w-full flex-col items-center gap-10 text-center md:gap-12">
           {address?.street && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col items-center gap-4">
               <p className="text-sm tracking-normal uppercase md:text-base">{addressLabel}</p>
               <p className="text-lg text-white md:text-xl">
                 {address.street}
@@ -92,11 +98,11 @@ export function ContactInfo({ data, settings, locale }: Props) {
           )}
 
           {email && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col items-center gap-4">
               <p className="text-sm tracking-normal uppercase md:text-base">{emailLabel}</p>
               <a
                 href={`mailto:${email}`}
-                className="hover:text-accent text-lg break-all text-white transition-colors md:text-xl"
+                className="hover:text-accent text-lg break-words text-white transition-colors md:text-xl"
               >
                 {email}
               </a>
