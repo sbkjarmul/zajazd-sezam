@@ -56,8 +56,8 @@ const siteSettings = {
   legalName: 'Zajazd Sezam',
   shortDescription: {
     _type: 'localeText',
-    pl: 'Zajazd Sezam powstał po to, aby dawać gościom prawdziwe poczucie swobody i komfortu. Chcemy, aby każdy mógł tu spokojnie zjeść, świętować i odpocząć w jednym miejscu.',
-    en: 'Zajazd Sezam was created to give guests a true sense of freedom and comfort. We want everyone to be able to eat, celebrate and rest peacefully in one place.',
+    pl: 'Chcemy, aby każdy mógł dobrze zjeść, świętować i odpocząć.',
+    en: 'We want everyone to be able to eat well, celebrate and rest.',
   },
   address: {
     _type: 'address',
