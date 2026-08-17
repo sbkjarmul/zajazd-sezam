@@ -25,47 +25,6 @@ export type MetaDescription = {
   en?: string
 }
 
-export type ConferenceRoom = {
-  _id: string
-  _type: 'conferenceRoom'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  name?: LocaleString
-  slug?: Slug
-  capacitySeating?: number
-  capacityStanding?: number
-  description?: LocaleText
-  equipment?: Array<
-    {
-      _key: string
-    } & LocaleString
-  >
-  images?: Array<
-    {
-      _key: string
-    } & ImageWithAlt
-  >
-}
-
-export type LocaleText = {
-  _type: 'localeText'
-  pl?: string
-  en?: string
-}
-
-export type Slug = {
-  _type: 'slug'
-  current?: string
-  source?: string
-}
-
-export type LocaleString = {
-  _type: 'localeString'
-  pl?: string
-  en?: string
-}
-
 export type LegalPage = {
   _id: string
   _type: 'legalPage'
@@ -97,6 +56,18 @@ export type SeoMeta = {
     _type: 'image'
   }
   noIndex?: boolean
+}
+
+export type LocaleText = {
+  _type: 'localeText'
+  pl?: string
+  en?: string
+}
+
+export type LocaleString = {
+  _type: 'localeString'
+  pl?: string
+  en?: string
 }
 
 export type GalleryPage = {
@@ -606,6 +577,12 @@ export type EventHall = {
   >
 }
 
+export type Slug = {
+  _type: 'slug'
+  current?: string
+  source?: string
+}
+
 export type MenuCategoryReference = {
   _ref: string
   _type: 'reference'
@@ -774,13 +751,11 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | MetaTitle
   | MetaDescription
-  | ConferenceRoom
-  | LocaleText
-  | Slug
-  | LocaleString
   | LegalPage
   | SanityImageAssetReference
   | SeoMeta
+  | LocaleText
+  | LocaleString
   | GalleryPage
   | SanityImageCrop
   | SanityImageHotspot
@@ -799,6 +774,7 @@ export type AllSanitySchemaTypes =
   | Address
   | RoomType
   | EventHall
+  | Slug
   | MenuCategoryReference
   | MenuItem
   | MenuCategory

@@ -85,18 +85,6 @@ export const structure: StructureResolver = (S) =>
 
       S.divider(),
 
-      // === Konferencje (v2 — szkielet) ===
-      S.listItem()
-        .title('Konferencje (v2)')
-        .id('conferencesGroup')
-        .child(
-          S.list()
-            .title('Konferencje')
-            .items([S.documentTypeListItem('conferenceRoom').title('Sale konferencyjne')]),
-        ),
-
-      S.divider(),
-
       // Wszystko inne (poza singletonami) — fallback
       ...S.documentTypeListItems().filter(
         (item) =>
@@ -108,7 +96,6 @@ export const structure: StructureResolver = (S) =>
             'eventType',
             'eventHall',
             'roomType',
-            'conferenceRoom',
             'legalPage',
           ].includes(item.getId()!),
       ),

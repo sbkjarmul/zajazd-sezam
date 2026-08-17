@@ -28,9 +28,6 @@ import { contactPage } from './documents/contactPage'
 import { galleryPage } from './documents/galleryPage'
 import { legalPage } from './documents/legalPage'
 
-// Szkielety (poza zakresem v1)
-import { conferenceRoom } from './documents/conferenceRoom'
-
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Objects
   localeString,
@@ -58,8 +55,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   contactPage,
   galleryPage,
   legalPage,
-  // Out-of-scope-v1 skeletons
-  conferenceRoom,
 ]
 
 // Stałe ID dla singletonów — używane w structure.ts i GROQ queries.
