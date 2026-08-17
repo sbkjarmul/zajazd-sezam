@@ -64,11 +64,20 @@ const LEGACY_REDIRECTS: { from: string[]; to: string }[] = [
 const nextConfig: NextConfig = {
   experimental: {
     // CSS wstawiany bezposrednio w HTML zamiast <link rel="stylesheet">.
-    // Arkusz (17,7 kB w transferze) byl jedynym zasobem blokujacym render -
-    // Lighthouse wycenil to na 220 ms (audyt `render-blocking-insight`,
-    // szacowany zysk 200 ms na FCP i 200 ms na LCP). Strony sa statyczne (SSG)
-    // i cache'owane na brzegu, wiec wieksze HTML nie kosztuje dodatkowego
-    // zapytania - a zaoszczedzamy caly round trip po arkusz.
+    // Arkusz (17,7 kB w transferze) byl jedynym zasobem blokujacym render.
+    //
+    // Zmierzone testem A/B - po 4 przebiegi Lighthouse 13 na tej samej maszynie,
+    // realny throttling, jedyna roznica to ta flaga (mediany):
+    //           FCP/LCP     Speed Index   wynik
+    //   inline    920 ms      1445 ms      94
+    //   osobno   1772 ms      2224 ms      93,5
+    // Punktowo remis (obie wartosci sa juz w zielonym progu, wiec Lighthouse
+    // nie nagradza roznicy), ale strona maluje sie o ~850 ms szybciej. Trzymamy
+    // wlasnie za to - liczy sie realny czas do pierwszego renderu, nie punkty.
+    //
+    // Koszt: dokument rosnie z ~34 do ~83 kB w transferze, a arkusz nie jest juz
+    // wspoldzielony przez cache miedzy podstronami przy pelnych przeladowaniach.
+    // Strony sa statyczne i cache'owane na brzegu, wiec nie dochodzi zapytanie.
     inlineCss: true,
     // Importy z tych paczek rozbijane na pojedyncze moduly zamiast ciagnac
     // caly barrel. Cel: audyt `unused-javascript` (52 kB, szacowany zysk
