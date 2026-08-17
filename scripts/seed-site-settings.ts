@@ -29,9 +29,25 @@ const client = createClient({
   useCdn: false,
 })
 
+// Logo domyslne = DOKLADNIE to samo co na stronie glownej (homepage.headerLogo).
+// Uzywaja go wszystkie podstrony bez wlasnego headerLogo (Regulamin, Polityka
+// prywatnosci). Bez tego pola Logo.tsx rysuje zaszyty wordmark zamiast SVG z
+// Sanity. Ten sam asset bierze EMAIL_LOGO_QUERY. Przy podmianie logo strony
+// glownej zmien tez ten _ref.
+const HOMEPAGE_LOGO_REF = 'image-82818311467dab9cfa91874f5098f362c9d15b8f-255x39-svg'
+
 const siteSettings = {
   _id: 'siteSettings',
   _type: 'siteSettings',
+  defaultHeaderLogo: {
+    _type: 'imageWithAlt',
+    asset: { _type: 'reference', _ref: HOMEPAGE_LOGO_REF },
+    alt: {
+      _type: 'localeString',
+      pl: 'Zajazd Sezam — restauracja, hotel i sale weselne w Stalowej Woli',
+      en: 'Zajazd Sezam — restaurant, hotel and wedding venues in Stalowa Wola',
+    },
+  },
   companyName: {
     _type: 'localeString',
     pl: 'Zajazd Sezam',
