@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
+    "studio": "sanity dev --port 3333",
     "email": "email dev --dir emails --port 3030",
     "email:test": "tsx --env-file=.env.local scripts/send-test-email.ts",
     "sanity:extract": "sanity schema extract",

@@ -36,6 +36,13 @@ export const galleryPage = defineType({
       description:
         'Kolejność kafli = kolejność na liście. Wystarczy wrzucić sam plik — alt jest opcjonalny (uzupełnij tylko gdy chcesz lepsze SEO/dostępność).',
       type: 'array',
+      // Siatka miniatur zamiast domyslnej listy. Przy 66 zdjeciach domyslny
+      // uklad renderowal 66 pelnowierszowych pozycji, kazda z podgladem,
+      // uchwytem do przeciagania i rozwinietym polem alt (PL+EN) - a Sanity
+      // przerysowuje cala tablice przy kazdej zmianie, wiec dodanie zdjecia
+      // potrafilo wygladac na zawieszenie. Siatka renderuje same miniatury.
+      // Alt nadal dostepny - po kliknieciu kafla otwiera sie okno pozycji.
+      options: { layout: 'grid' },
       of: [
         defineArrayMember({
           // Zwykly obraz (NIE imageWithAlt) — celowo bez wymuszonego alt, zeby
