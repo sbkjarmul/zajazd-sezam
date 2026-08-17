@@ -25,7 +25,10 @@ type Props = {
 // wjeżdża w viewport (IntersectionObserver). Steruje przez data-revealed
 // attribute + CSS transitions na opacity i filter.
 //
-// `prefers-reduced-motion: reduce` → reveal natychmiastowy (bez animacji).
+// `prefers-reduced-motion: reduce` ORAZ ekrany < md (768px) → reveal
+// natychmiastowy (bez animacji). Na mobile to wlasnie ten fade byl widocznym
+// "pojawianiem sie tekstu": Reveal owija bloki eyebrow + naglowek + akapit,
+// wiec sam fade wrappera zostawal nawet po wylaczeniu RevealText.
 export function Reveal({
   children,
   className,
@@ -40,10 +43,17 @@ export function Reveal({
     const el = ref.current
     if (!el) return
 
-    if (
+    const skipAnimation =
       typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
+      (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        window.matchMedia('(max-width: 767px)').matches)
+
+    if (skipAnimation) {
+      // `transition: none` PRZED flipem atrybutu - inaczej `transition-opacity
+      // duration-700` z klas animowaloby 0 -> 1 po zamontowaniu, czyli caly blok
+      // i tak mrugalby fade'em (dokladnie to, czego tu nie chcemy). Oba zapisy w
+      // jednym tasku -> przegladarka nie ma czego animowac.
+      el.style.transition = 'none'
       el.dataset.revealed = 'true'
       return
     }
