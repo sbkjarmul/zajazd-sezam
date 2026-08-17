@@ -234,7 +234,6 @@ export const EVENTS_PAGE_QUERY = defineQuery(`
       "slug": slug.current,
       description,
       order,
-      image { ${IMAGE_WITH_ALT_FRAGMENT} },
       gallery[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
     } | order(order asc),
     hallsSection { eyebrow, title, description },

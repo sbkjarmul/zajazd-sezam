@@ -12,11 +12,9 @@ import { cn } from '@/lib/utils'
 type EventType = NonNullable<NonNullable<EVENTS_PAGE_QUERY_RESULT>['eventTypes']>[number]
 type GalleryImage = Parameters<typeof SanityImage>[0]['image']
 
-// Pula zdjęć danego typu: galeria ze Studio, a gdy pusta — pojedyncze zdjęcie
-// reprezentacyjne (brak regresji, gdy galeria jeszcze nieuzupełniona).
+// Pula zdjęć danego typu — galeria ze Studio (lightbox + kadr podglądu).
 function galleryOf(type: EventType): GalleryImage[] {
-  if (type.gallery && type.gallery.length) return type.gallery
-  return type.image ? [type.image] : []
+  return type.gallery ?? []
 }
 
 type Props = {
@@ -106,7 +104,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
             >
               {types.map((type, i) => {
                 const imgs = galleryOf(type)
-                const preview = imgs[previewIdx[i]] ?? type.image
+                const preview = imgs[previewIdx[i]] ?? imgs[0]
                 return (
                   <SanityImage
                     key={i}

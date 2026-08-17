@@ -25,11 +25,6 @@ export const eventType = defineType({
       type: 'localeText',
     }),
     defineField({
-      name: 'image',
-      title: 'Zdjęcie reprezentacyjne (karuzela typów)',
-      type: 'imageWithAlt',
-    }),
-    defineField({
       name: 'gallery',
       title: 'Galeria zdjęć (lightbox + losowy kadr na hover)',
       type: 'array',

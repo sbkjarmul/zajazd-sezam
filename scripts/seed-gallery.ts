@@ -38,13 +38,11 @@ type SourceImage = {
 const RAW = await client.fetch<{
   rooms: SourceImage[]
   halls: SourceImage[]
-  eventMain: SourceImage[]
   eventGallery: SourceImage[]
   homeLogo: { asset?: { _ref?: string } | null; alt?: LocaleString } | null
 }>(`{
   "rooms": *[_type == "roomType"].images[]{ asset, alt },
   "halls": *[_type == "eventHall"].images[]{ asset, alt },
-  "eventMain": *[_type == "eventType"].image{ asset, alt },
   "eventGallery": *[_type == "eventType"].gallery[]{ asset, alt },
   "homeLogo": *[_type == "homepage"][0].headerLogo{ asset, alt }
 }`)
@@ -59,12 +57,7 @@ function interleave(...lists: SourceImage[][]): SourceImage[] {
   return out
 }
 
-const combined = interleave(
-  RAW.rooms ?? [],
-  RAW.halls ?? [],
-  RAW.eventGallery ?? [],
-  RAW.eventMain ?? [],
-)
+const combined = interleave(RAW.rooms ?? [], RAW.halls ?? [], RAW.eventGallery ?? [])
 
 // Dedup po asset._ref, odrzuc bez refa. Bierzemy wszystkie unikalne dostepne
 // (infinite scroll je porcjuje) — cap tylko jako bezpiecznik.
