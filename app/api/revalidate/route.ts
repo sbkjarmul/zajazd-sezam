@@ -14,6 +14,8 @@ import type { Pathname } from '@/i18n/routing'
 
 // Mapowanie _type dokumentu Sanity → ścieżki do rewalidacji.
 const TYPE_TO_PATHS: Record<string, Pathname[]> = {
+  // siteSettings zasila Header (defaultHeaderLogo) i Footer (NAP) na KAZDEJ
+  // podstronie — wiec lista musi pokrywac wszystkie trasy, tez prawne i galerie.
   siteSettings: [
     '/',
     '/restauracja',
@@ -21,7 +23,10 @@ const TYPE_TO_PATHS: Record<string, Pathname[]> = {
     '/bistro',
     '/hotel',
     '/imprezy-okolicznosciowe',
+    '/galeria',
     '/kontakt',
+    '/regulamin',
+    '/polityka-prywatnosci',
   ],
   homepage: ['/'],
   restaurantPage: ['/restauracja'],
@@ -30,6 +35,10 @@ const TYPE_TO_PATHS: Record<string, Pathname[]> = {
   hotelPage: ['/hotel'],
   eventsPage: ['/imprezy-okolicznosciowe'],
   contactPage: ['/kontakt'],
+  galleryPage: ['/galeria'],
+  // Obie strony prawne to jeden typ (ID 'regulamin' / 'polityka-prywatnosci'),
+  // wiec rewalidujemy obie — payload webhooka nie rozroznia ich po _type.
+  legalPage: ['/regulamin', '/polityka-prywatnosci'],
   menuItem: ['/restauracja/menu'],
   menuCategory: ['/restauracja/menu'],
   eventHall: ['/imprezy-okolicznosciowe', '/'],
