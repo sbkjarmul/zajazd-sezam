@@ -72,7 +72,7 @@ export function EventTypesReveal({ section, types, locale }: Props) {
 
   return (
     <section data-header-theme="light" className="bg-bg overflow-hidden py-20 md:py-32">
-      <div className="px-4 md:px-16">
+      <div className="layout-container">
         <header className="flex flex-col items-start gap-8 lg:flex-row lg:justify-between">
           <Reveal className="flex flex-col gap-4">
             {eyebrow && (
