@@ -51,7 +51,7 @@ export function MenuCategoryColumns({ category, locale }: Props) {
               const itemDesc = pickLocale(item.description, locale)
               return (
                 <li
-                  key={item._id}
+                  key={item._key}
                   className="mb-10 flex break-inside-avoid flex-col gap-3 last:mb-0"
                 >
                   <h3 className="text-lg font-medium tracking-normal uppercase">{itemName}</h3>

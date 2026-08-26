@@ -8,11 +8,11 @@ import { address } from './objects/address'
 import { openingHoursEntry } from './objects/openingHours'
 import { hero } from './objects/hero'
 import { ctaBlock } from './objects/ctaBlock'
+import { menuItem } from './objects/menuItem'
 
 // Dokumenty referencyjne (listy)
 import { eventType } from './documents/eventType'
 import { menuCategory } from './documents/menuCategory'
-import { menuItem } from './documents/menuItem'
 import { eventHall } from './documents/eventHall'
 import { roomType } from './documents/roomType'
 
@@ -38,10 +38,10 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   openingHoursEntry,
   hero,
   ctaBlock,
+  menuItem,
   // List documents
   eventType,
   menuCategory,
-  menuItem,
   eventHall,
   roomType,
   // Singleton page documents

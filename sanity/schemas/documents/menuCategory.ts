@@ -39,6 +39,14 @@ export const menuCategory = defineType({
       type: 'localeText',
     }),
     defineField({
+      name: 'items',
+      title: 'Pozycje menu',
+      description:
+        'Dania w tej kategorii. Kolejność ustawiasz przeciągając pozycje — tak samo wyświetlą się na stronie.',
+      type: 'array',
+      of: [{ type: 'menuItem' }],
+    }),
+    defineField({
       name: 'order',
       title: 'Kolejność wyświetlania',
       type: 'number',
@@ -47,6 +55,10 @@ export const menuCategory = defineType({
   ],
   orderings: [{ title: 'Kolejność', name: 'order', by: [{ field: 'order', direction: 'asc' }] }],
   preview: {
-    select: { title: 'name.pl', subtitle: 'slug.current' },
+    select: { title: 'name.pl', cuisine: 'cuisine', items: 'items' },
+    prepare: ({ title, cuisine, items }) => ({
+      title,
+      subtitle: `${cuisine === 'bistro' ? 'Bistro' : 'Restauracja'} · ${(items ?? []).length} poz.`,
+    }),
   },
 })

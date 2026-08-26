@@ -39,8 +39,10 @@ const TYPE_TO_PATHS: Record<string, Pathname[]> = {
   // Obie strony prawne to jeden typ (ID 'regulamin' / 'polityka-prywatnosci'),
   // wiec rewalidujemy obie — payload webhooka nie rozroznia ich po _type.
   legalPage: ['/regulamin', '/polityka-prywatnosci'],
-  menuItem: ['/restauracja/menu'],
-  menuCategory: ['/restauracja/menu'],
+  // Jeden typ `menuCategory` obsluguje obie branze (pole `cuisine`), a pozycje
+  // menu siedza w nim inline — kazda edycja menu przychodzi wiec jako ten typ.
+  // Rewalidujemy obie strony, bo payload webhooka nie niesie `cuisine`.
+  menuCategory: ['/restauracja/menu', '/bistro'],
   eventHall: ['/imprezy-okolicznosciowe', '/'],
   eventType: ['/imprezy-okolicznosciowe'],
   roomType: ['/hotel'],

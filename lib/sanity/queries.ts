@@ -167,7 +167,8 @@ export const BISTRO_PAGE_QUERY = defineQuery(`
   }
 `)
 
-// Kategorie bistro — własne, niezależne od restauracji.
+// Kategorie bistro — własne, niezależne od restauracji. Pozycje siedzą inline
+// w tablicy `items`, więc kolejność bierze się z kolejności w Studio (drag & drop).
 export const BISTRO_MENU_QUERY = defineQuery(`
   *[_type == "menuCategory" && cuisine == "bistro"]
     | order(order asc) {
@@ -176,8 +177,8 @@ export const BISTRO_MENU_QUERY = defineQuery(`
       "slug": slug.current,
       description,
       order,
-      "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {
-        _id,
+      "items": items[available != false]{
+        _key,
         name,
         description,
         price,
@@ -326,8 +327,8 @@ export const MENU_BY_CATEGORY_QUERY = defineQuery(`
     "slug": slug.current,
     description,
     order,
-    "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc) {
-      _id,
+    "items": items[available != false]{
+      _key,
       name,
       description,
       price,

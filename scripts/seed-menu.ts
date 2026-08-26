@@ -572,34 +572,36 @@ const items: Item[] = [
 ]
 
 async function main() {
-  console.log('Seedowanie kategorii…')
+  console.log('Seedowanie kategorii z pozycjami inline…')
   for (const c of categories) {
+    // Pozycje nie sa juz osobnymi dokumentami — siedza w tablicy `items`
+    // kategorii, a ich kolejnosc na stronie to kolejnosc w tej tablicy.
+    const categoryItems = items
+      .filter((item) => item.category === c.slug)
+      .sort((a, b) => a.order - b.order)
+      .map((item) => ({
+        _type: 'menuItem',
+        _key: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        diet: item.diet,
+        available: true,
+      }))
+
     await client.createOrReplace({
       _id: `menuCategory-${c.slug}`,
       _type: 'menuCategory',
+      cuisine: 'restaurant',
       name: c.name,
       slug: { _type: 'slug', current: c.slug },
       description: c.description,
       order: c.order,
+      items: categoryItems,
     })
+    console.log(`  ${c.name.pl}: ${categoryItems.length} pozycji`)
   }
-  console.log(`✓ ${categories.length} kategorii zapisanych`)
-
-  console.log('Seedowanie pozycji menu…')
-  for (const item of items) {
-    await client.createOrReplace({
-      _id: `menuItem-${item.id}`,
-      _type: 'menuItem',
-      name: item.name,
-      description: item.description,
-      price: item.price,
-      category: { _type: 'reference', _ref: `menuCategory-${item.category}` },
-      diet: item.diet,
-      order: item.order,
-      available: true,
-    })
-  }
-  console.log(`✓ ${items.length} pozycji zapisanych`)
+  console.log(`✓ ${categories.length} kategorii i ${items.length} pozycji zapisanych`)
 
   console.log('Seedowanie menuPage…')
   await client.createOrReplace({

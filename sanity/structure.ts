@@ -48,17 +48,20 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
 
       // === Restauracja (listy) ===
+      // Kategorie obu branz to ten sam typ `menuCategory`, rozrozniany polem
+      // `cuisine`. Rozdzielamy je na dwie listy, zeby obsluga nie przegladala
+      // kategorii bistro szukajac dania z restauracji. Pozycje menu nie maja
+      // wlasnej listy — siedza w tablicy `items` wewnatrz kategorii.
       S.listItem()
         .title('Restauracja')
         .id('restaurantGroup')
-        .child(
-          S.list()
-            .title('Restauracja')
-            .items([
-              S.documentTypeListItem('menuCategory').title('Kategorie menu'),
-              S.documentTypeListItem('menuItem').title('Pozycje menu'),
-            ]),
-        ),
+        .child(menuCategoryList(S, 'restaurant', 'Restauracja')),
+
+      // === Bistro (listy) ===
+      S.listItem()
+        .title('Bistro')
+        .id('bistroGroup')
+        .child(menuCategoryList(S, 'bistro', 'Bistro')),
 
       // === Imprezy (listy) ===
       S.listItem()
@@ -90,14 +93,9 @@ export const structure: StructureResolver = (S) =>
         (item) =>
           item.getId() &&
           !SINGLETON_SCHEMA_NAMES.includes(item.getId() as keyof typeof SINGLETON_IDS) &&
-          ![
-            'menuCategory',
-            'menuItem',
-            'eventType',
-            'eventHall',
-            'roomType',
-            'legalPage',
-          ].includes(item.getId()!),
+          !['menuCategory', 'eventType', 'eventHall', 'roomType', 'legalPage'].includes(
+            item.getId()!,
+          ),
       ),
     ])
 
@@ -116,4 +114,17 @@ function legalItem(S: any, id: string, title: string) {
     .title(title)
     .id(id)
     .child(S.document().schemaType('legalPage').documentId(id).title(title))
+}
+
+// Lista kategorii menu jednej branzy. `initialValueTemplates` sprawia, ze nowa
+// kategoria tworzona z tej listy ma juz ustawione `cuisine` — obsluga nie musi
+// pamietac o radiu i nie doda dania bistro do menu restauracji.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function menuCategoryList(S: any, cuisine: 'restaurant' | 'bistro', title: string) {
+  return S.documentTypeList('menuCategory')
+    .title(`${title} — kategorie menu`)
+    .filter('_type == "menuCategory" && cuisine == $cuisine')
+    .params({ cuisine })
+    .defaultOrdering([{ field: 'order', direction: 'asc' }])
+    .initialValueTemplates([S.initialValueTemplateItem('menuCategory-by-cuisine', { cuisine })])
 }

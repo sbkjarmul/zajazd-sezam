@@ -131,7 +131,7 @@ export function MenuCategorySection({
                   const itemName = pickLocale(item.name, locale)
                   const itemDesc = pickLocale(item.description, locale)
                   return (
-                    <li key={item._id} className="flex items-center justify-between gap-6">
+                    <li key={item._key} className="flex items-center justify-between gap-6">
                       <div className="flex min-w-0 flex-1 flex-col">
                         <h3 className={cn('text-xl md:text-2xl', itemNameStyleClass)}>
                           {itemName}
@@ -172,7 +172,7 @@ export function MenuCategorySection({
                 const itemDesc = pickLocale(item.description, locale)
                 return (
                   <li
-                    key={item._id}
+                    key={item._key}
                     className="mb-8 flex break-inside-avoid items-start justify-between gap-6 last:mb-0"
                   >
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
