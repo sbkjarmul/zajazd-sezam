@@ -48,6 +48,9 @@
     "title": "Gallery",
     "empty": "Photos coming soon."
   },
+  "faq": {
+    "eyebrow": "FAQ"
+  },
   "reservationDrawer": {
     "title": "BOOK",
     "tabs": {

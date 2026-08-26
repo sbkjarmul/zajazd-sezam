@@ -1,6 +1,7 @@
 'use client'
 
 import { Accordion } from 'radix-ui'
+import { useTranslations } from 'next-intl'
 import type { Locale } from '@/i18n/routing'
 import { AccentText } from '@/components/AccentText'
 import { RevealText } from '@/components/RevealText'
@@ -60,6 +61,7 @@ export function FaqSection({
   headingCase = 'upper',
   spacing = 'compact',
 }: Props) {
+  const t = useTranslations('faq')
   if (!data) return null
   const isPlain = variant === 'plain'
   const textColor = isPlain ? 'text-text' : 'text-ruby'
@@ -85,24 +87,35 @@ export function FaqSection({
       {/* Dwie kolumny dopiero od lg - na tablecie (768-1023) siatka 2-kolumnowa
           byla za ciasna, wiec naglowek i akordeon ida jedna kolumna. */}
       <div className="layout-container grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-        {heading &&
-          (isPlain ? (
-            <RevealText
-              as="h2"
-              mode="fade"
-              className={`text-text text-3xl leading-none ${plainWeight} ${plainCase} tracking-tight whitespace-pre-line md:text-4xl md:tracking-[-0.03em] lg:text-[48px]`}
-            >
-              {heading.replace(/\*/g, '')}
-            </RevealText>
-          ) : (
-            <RevealText
-              as="h2"
-              mode="fade"
-              className="font-accent text-ruby text-[clamp(34px,5vw,64px)] leading-none tracking-[-0.01em] not-italic"
-            >
-              <AccentText text={heading} />
-            </RevealText>
-          ))}
+        {heading && (
+          // Eyebrow "FAQ" nad naglowkiem — kanon z DESIGN-RULES 4.1
+          // (`text-base wide:text-lg tracking-normal uppercase`), kolor
+          // dziedziczony po wariancie sekcji (ruby / dark).
+          <div className="flex flex-col gap-4">
+            <Reveal>
+              <p className={`${textColor} wide:text-lg text-base tracking-normal uppercase`}>
+                {t('eyebrow')}
+              </p>
+            </Reveal>
+            {isPlain ? (
+              <RevealText
+                as="h2"
+                mode="fade"
+                className={`text-text text-3xl leading-none ${plainWeight} ${plainCase} tracking-tight whitespace-pre-line md:text-4xl md:tracking-[-0.03em] lg:text-[48px]`}
+              >
+                {heading.replace(/\*/g, '')}
+              </RevealText>
+            ) : (
+              <RevealText
+                as="h2"
+                mode="fade"
+                className="font-accent text-ruby text-[clamp(34px,5vw,64px)] leading-none tracking-[-0.01em] not-italic"
+              >
+                <AccentText text={heading} />
+              </RevealText>
+            )}
+          </div>
+        )}
 
         <Reveal delay={120} className="w-full">
           <Accordion.Root

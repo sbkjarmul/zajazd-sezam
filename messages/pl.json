@@ -48,6 +48,9 @@
     "title": "Galeria",
     "empty": "Zdjęcia pojawią się wkrótce."
   },
+  "faq": {
+    "eyebrow": "FAQ"
+  },
   "reservationDrawer": {
     "title": "REZERWUJ",
     "tabs": {
