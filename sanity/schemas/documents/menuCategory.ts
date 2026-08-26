@@ -33,17 +33,13 @@ export const menuCategory = defineType({
       hidden: ({ document }) => Boolean(document?.cuisine),
       validation: (r) => r.required(),
     }),
+    // Kotwica sekcji (`id` w HTML) nie jest osobnym polem — powstaje z nazwy
+    // przez `categoryAnchor()` przy renderowaniu. Dawny `slug` byl wymagany i
+    // klient musial klikac "Generate", a sluzyl wylacznie za ten `id`.
     defineField({
       name: 'name',
       title: 'Nazwa (np. Przystawki, Zupy)',
       type: 'localeString',
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug (do filtra w menu)',
-      type: 'slug',
-      options: { source: 'name.pl', maxLength: 64 },
       validation: (r) => r.required(),
     }),
     defineField({

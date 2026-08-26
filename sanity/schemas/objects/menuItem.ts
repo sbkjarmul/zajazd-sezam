@@ -1,32 +1,17 @@
 import { defineField, defineType } from 'sanity'
 
-const DIET_OPTIONS = [
-  { title: 'Wegetariańskie', value: 'vegetarian' },
-  { title: 'Wegańskie', value: 'vegan' },
-  { title: 'Bezglutenowe', value: 'gluten-free' },
-  { title: 'Bezlaktozowe', value: 'lactose-free' },
-  { title: 'Ostre', value: 'spicy' },
-]
-
 // Pozycja menu jako OBIEKT osadzony w tablicy `menuCategory.items` — nie jako
-// osobny dokument. Dzieki temu obsluga dodaje danie w tym samym miejscu, w
-// ktorym edytuje kategorie: bez wyklikiwania referencji i bez wracania do
-// osobnej listy 70 dokumentow. Kolejnosc = kolejnosc w tablicy (drag & drop),
-// wiec pole `order` jest zbedne.
+// osobny dokument. Obsluga dodaje danie w tym samym miejscu, w ktorym edytuje
+// kategorie: bez wyklikiwania referencji i bez osobnej listy dokumentow.
+// Kolejnosc = kolejnosc w tablicy (drag & drop), wiec pole `order` jest zbedne.
 //
-// Pola rzadko uzywane siedza w zwinietej grupie "Szczegoly", zeby dodanie
-// pozycji sprowadzalo sie do wpisania nazwy (i ewentualnie ceny).
+// Zestaw pol jest ograniczony do tego, co faktycznie trafia na strone. Dawne
+// `diet` i `image` byly pobierane przez GROQ, ale zaden komponent ich nie
+// rysowal — usuniete razem z danymi.
 export const menuItem = defineType({
   name: 'menuItem',
   title: 'Pozycja menu',
   type: 'object',
-  fieldsets: [
-    {
-      name: 'details',
-      title: 'Szczegóły (opis, dieta, zdjęcie)',
-      options: { collapsible: true, collapsed: true },
-    },
-  ],
   fields: [
     defineField({
       name: 'name',
@@ -45,21 +30,6 @@ export const menuItem = defineType({
       name: 'description',
       title: 'Opis (składniki, sposób przygotowania)',
       type: 'localeText',
-      fieldset: 'details',
-    }),
-    defineField({
-      name: 'diet',
-      title: 'Diety specjalne',
-      type: 'array',
-      of: [{ type: 'string' }],
-      options: { list: DIET_OPTIONS },
-      fieldset: 'details',
-    }),
-    defineField({
-      name: 'image',
-      title: 'Zdjęcie dania (opcjonalnie)',
-      type: 'imageWithAlt',
-      fieldset: 'details',
     }),
     defineField({
       name: 'available',
@@ -67,17 +37,15 @@ export const menuItem = defineType({
       description: 'Odznacz, żeby chwilowo ukryć danie na stronie bez kasowania go z listy.',
       type: 'boolean',
       initialValue: true,
-      fieldset: 'details',
     }),
   ],
   preview: {
-    select: { title: 'name.pl', price: 'price', available: 'available', media: 'image' },
-    prepare: ({ title, price, available, media }) => ({
+    select: { title: 'name.pl', price: 'price', available: 'available' },
+    prepare: ({ title, price, available }) => ({
       title: title || 'Bez nazwy',
       subtitle: [price ? `${price} zł` : null, available === false ? 'ukryte' : null]
         .filter(Boolean)
         .join(' · '),
-      media,
     }),
   },
 })

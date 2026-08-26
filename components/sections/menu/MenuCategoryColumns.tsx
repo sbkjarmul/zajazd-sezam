@@ -1,6 +1,7 @@
 import type { MENU_BY_CATEGORY_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { categoryAnchor } from '@/lib/menu/categoryAnchor'
 
 type Category = MENU_BY_CATEGORY_QUERY_RESULT[number]
 
@@ -16,9 +17,6 @@ type Props = {
  * nazwa uppercase → opis → cena pod spodem.
  */
 export function MenuCategoryColumns({ category, locale }: Props) {
-  const slug = category.slug
-  if (!slug) return null
-
   const rawName = pickLocale(category.name, locale)
   // Konwencja Sanity: "Tytuł — podtytuł" → duży nagłówek + regular pod spodem.
   const [name, subtitle] = (() => {
@@ -31,8 +29,11 @@ export function MenuCategoryColumns({ category, locale }: Props) {
   const items = category.items ?? []
   if (items.length === 0) return null
 
+  // Kotwica z polskiej nazwy — stabilna miedzy /pl i /en.
+  const anchor = categoryAnchor(category.name)
+
   return (
-    <section id={slug} className="bg-bg text-ruby scroll-mt-32">
+    <section id={anchor} className="bg-bg text-ruby scroll-mt-32">
       <div className="layout-container py-12 md:py-16">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-24">
           {/* Lewa kolumna — nagłówek + opis sekcji */}
