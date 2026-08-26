@@ -114,13 +114,9 @@ async function cleanup() {
     console.log('Brak istniejących kategorii Bistro do usunięcia.')
     return
   }
-  const itemIds: string[] = await client.fetch(
-    `*[_type == "menuItem" && category._ref in $ids]._id`,
-    { ids: catIds },
-  )
-  console.log(`Usuwam ${itemIds.length} pozycji i ${catIds.length} kategorii Bistro…`)
+  console.log(`Usuwam ${catIds.length} kategorii Bistro (pozycje siedzą w nich inline)…`)
   let tx = client.transaction()
-  for (const id of [...itemIds, ...catIds]) tx = tx.delete(id)
+  for (const id of catIds) tx = tx.delete(id)
   await tx.commit()
 }
 
@@ -129,6 +125,9 @@ async function main() {
 
   console.log(`Seedowanie ${CATEGORIES.length} kategorii Bistro…`)
   for (const cat of CATEGORIES) {
+    const items = ITEMS[cat.slug] ?? []
+    console.log(`  ${cat.name.pl}: ${items.length} pozycji`)
+
     await client.createOrReplace({
       _id: catId(cat.slug),
       _type: 'menuCategory',
@@ -136,21 +135,14 @@ async function main() {
       name: cat.name,
       slug: { _type: 'slug', current: cat.slug },
       order: cat.order,
-    })
-
-    const items = ITEMS[cat.slug] ?? []
-    console.log(`  ${cat.name.pl}: ${items.length} pozycji`)
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i]
-      await client.createOrReplace({
-        _id: `menuItem-bistro-${cat.slug}-${i}`,
+      // Pozycje inline — kolejnosc w tablicy = kolejnosc na stronie.
+      items: items.map((item, i) => ({
         _type: 'menuItem',
+        _key: `${cat.slug}-${i}`,
         name: item,
-        category: { _type: 'reference', _ref: catId(cat.slug) },
         available: true,
-        order: (i + 1) * 10,
-      })
-    }
+      })),
+    })
   }
 
   console.log('✓ Done')

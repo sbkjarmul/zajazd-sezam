@@ -16,31 +16,42 @@ const client = createClient({
 
 async function main() {
   const categories = await client.fetch<
-    Array<{ _id: string; name: { pl: string }; slug: string; order: number; itemCount: number }>
+    Array<{
+      _id: string
+      name: { pl: string }
+      slug: string
+      order: number
+      cuisine: string
+      itemCount: number
+    }>
   >(`
     *[_type == "menuCategory"] | order(order asc) {
       _id,
       name,
       "slug": slug.current,
       order,
-      "itemCount": count(*[_type == "menuItem" && references(^._id)])
+      cuisine,
+      "itemCount": count(items)
     }
   `)
   console.log('Categories:')
   for (const c of categories) {
-    console.log(`  ${c.order ?? '?'}. [${c.slug}] ${c.name?.pl} — ${c.itemCount} items (id=${c._id})`)
+    console.log(
+      `  ${c.order ?? '?'}. [${c.cuisine}/${c.slug}] ${c.name?.pl} — ${c.itemCount} items (id=${c._id})`,
+    )
   }
 
-  const items = await client.fetch<
-    Array<{ _id: string; name: string; price: number; category: string }>
+  const grouped = await client.fetch<
+    Array<{ category: string; items: Array<{ name: string; price: number }> | null }>
   >(`
-    *[_type == "menuItem"] {
-      _id,
-      "name": name.pl,
-      price,
-      "category": category->slug.current
-    } | order(category, _createdAt)
+    *[_type == "menuCategory"] | order(cuisine asc, order asc) {
+      "category": cuisine + "/" + slug.current,
+      items[]{ "name": name.pl, price }
+    }
   `)
+  const items = grouped.flatMap((g) =>
+    (g.items ?? []).map((it) => ({ ...it, category: g.category })),
+  )
   console.log('\nTotal items:', items.length)
   const byCategory: Record<string, string[]> = {}
   for (const it of items) {

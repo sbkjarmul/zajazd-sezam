@@ -14,6 +14,19 @@ export default defineConfig({
   dataset,
   schema: {
     types: schemaTypes,
+    // Szablon uzywany przez listy "Restauracja"/"Bistro" w structure.ts —
+    // nowa kategoria ma z gory ustawiona branze, wiec obsluga nie musi
+    // pamietac o radiu `cuisine`.
+    templates: (prev) => [
+      ...prev,
+      {
+        id: 'menuCategory-by-cuisine',
+        title: 'Kategoria menu (z branżą)',
+        schemaType: 'menuCategory',
+        parameters: [{ name: 'cuisine', type: 'string' }],
+        value: ({ cuisine }: { cuisine: string }) => ({ cuisine }),
+      },
+    ],
   },
   // plPLLocale dokłada polski do menu uzytkownika w Studio (Menu > Appearance >
   // Language). Wybor zapisuje sie per uzytkownik, wiec kazda osoba z obslugi

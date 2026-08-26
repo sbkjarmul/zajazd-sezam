@@ -75,7 +75,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
                 <ul className="flex flex-col gap-3 md:gap-4">
                   {items.map((item, idx) => (
                     <RevealText
-                      key={item._id}
+                      key={item._key}
                       as="li"
                       mode="lines"
                       delay={idx * 0.08}

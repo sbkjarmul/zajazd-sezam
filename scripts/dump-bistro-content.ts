@@ -15,11 +15,12 @@ async function main() {
     "centralBanner": centralBanner.pl,
     "hoursText": hoursText.pl
   }`)
-  const cats = await client.fetch(`*[_type == "menuCategory" && cuisine == "bistro"] | order(order asc){
+  const cats =
+    await client.fetch(`*[_type == "menuCategory" && cuisine == "bistro"] | order(order asc){
     "name": name.pl,
     "slug": slug.current,
     "description": description.pl,
-    "items": *[_type == "menuItem" && references(^._id) && available == true] | order(order asc){
+    "items": items[available != false]{
       "name": name.pl,
       "description": description.pl,
       price
