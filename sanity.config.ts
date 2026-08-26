@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { plPLLocale } from '@sanity/locale-pl-pl'
 import { apiVersion, dataset, projectId } from './sanity/env'
 import { schemaTypes, SINGLETON_IDS } from './sanity/schemas'
 import { structure } from './sanity/structure'
@@ -14,7 +15,14 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
-  plugins: [structureTool({ structure }), visionTool({ defaultApiVersion: apiVersion })],
+  // plPLLocale dokłada polski do menu uzytkownika w Studio (Menu > Appearance >
+  // Language). Wybor zapisuje sie per uzytkownik, wiec kazda osoba z obslugi
+  // przestawia go raz u siebie.
+  plugins: [
+    structureTool({ structure }),
+    visionTool({ defaultApiVersion: apiVersion }),
+    plPLLocale(),
+  ],
   document: {
     // Wyłącz "Create new" i "Duplicate" w globalnym menu dla singletonów —
     // klient pracuje wyłącznie z istniejącymi dokumentami o stałym ID.
