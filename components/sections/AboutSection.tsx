@@ -44,7 +44,13 @@ export function AboutSection({ data, locale }: Props) {
             </p>
           )}
           {stats.length > 0 && (
-            <div className="flex flex-col gap-6">
+            // Statystyki 2x2, nie jedna kolumna: kolumna czterech pozycji (325px)
+            // spychala intro wysoko nad srodek ekranu i sekcja "rozjezdzala sie"
+            // przy wejsciu w panel. Siatka skraca blok o polowe, wiec tresc
+            // laduje blizej srodka viewportu. Liczby 40->32px, etykiety 16->12px
+            // (text-xs) — przy 12px najdluzsza, "zorganizowanych imprez", miesci
+            // sie w kolumnie w jednej linii, wiec wiersze sa rownej wysokosci.
+            <div className="grid w-full grid-cols-2 gap-x-6 gap-y-8">
               {stats.map((stat, i) => (
                 <AnimatedStat
                   key={i}
@@ -52,8 +58,8 @@ export function AboutSection({ data, locale }: Props) {
                   label={pickLocale(stat.label, locale) ?? ''}
                   delayMs={i * STAT_STAGGER_MS}
                   className="flex flex-col items-center gap-1"
-                  valueClassName="text-text text-[40px] leading-none font-normal tracking-[-0.04em]"
-                  labelClassName="text-text text-base"
+                  valueClassName="text-text text-[32px] leading-none font-normal tracking-[-0.04em]"
+                  labelClassName="text-text text-xs"
                 />
               ))}
             </div>
