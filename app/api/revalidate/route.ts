@@ -76,6 +76,20 @@ export async function POST(request: Request) {
   const revalidated: string[] = []
 
   for (const internalPath of internalPaths) {
+    // Katalogi w `app/` nosza slugi POLSKIE (app/(site)/[locale]/restauracja/menu),
+    // a angielskie adresy sa rewrite'ami z next-intl `pathnames`. Rewalidacja
+    // samego publicznego URL-a EN (/en/restaurant/menu) czysci HTML, ale dane
+    // Sanity zostaja z cache'u przypietego do sciezki wewnetrznej — strona EN
+    // renderuje sie na nowo ze starymi kategoriami.
+    //
+    // Wzorzec trasy z '/[locale]' unieważnia oba jezyki jednym wywolaniem i nie
+    // zalezy od tego, jak wyglada publiczny slug.
+    const routePattern = internalPath === '/' ? '/[locale]' : `/[locale]${internalPath}`
+    revalidatePath(routePattern, 'page')
+    revalidated.push(routePattern)
+
+    // Dodatkowo konkretne adresy publiczne — tanie, a pokrywa przypadki, w
+    // ktorych wpis w cache siedzi pod zlokalizowanym URL-em.
     for (const locale of routing.locales) {
       const localized = getPathname({ href: { pathname: internalPath }, locale })
       revalidatePath(localized)
