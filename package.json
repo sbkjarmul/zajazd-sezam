@@ -24,6 +24,7 @@
     "@react-email/components": "^1.0.12",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/locale-pl-pl": "^1.2.36",
     "@sanity/vision": "^5.25.1",
     "@sanity/webhook": "^4.0.4",
     "class-variance-authority": "^0.7.1",
