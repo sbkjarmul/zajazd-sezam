@@ -174,16 +174,13 @@ export const BISTRO_MENU_QUERY = defineQuery(`
     | order(order asc) {
       _id,
       name,
-      "slug": slug.current,
       description,
       order,
       "items": items[available != false]{
         _key,
         name,
         description,
-        price,
-        diet,
-        image { ${IMAGE_WITH_ALT_FRAGMENT} }
+        price
       }
     }
 `)
@@ -324,16 +321,13 @@ export const MENU_BY_CATEGORY_QUERY = defineQuery(`
   *[_type == "menuCategory" && cuisine == "restaurant"] | order(order asc) {
     _id,
     name,
-    "slug": slug.current,
     description,
     order,
     "items": items[available != false]{
       _key,
       name,
       description,
-      price,
-      diet,
-      image { ${IMAGE_WITH_ALT_FRAGMENT} }
+      price
     }
   }
 `)

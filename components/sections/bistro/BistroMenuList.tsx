@@ -2,6 +2,7 @@ import type { BISTRO_MENU_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { RevealText } from '@/components/RevealText'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { categoryAnchor } from '@/lib/menu/categoryAnchor'
 
 type Props = {
   categories: BISTRO_MENU_QUERY_RESULT
@@ -31,7 +32,7 @@ function splitTitle(raw: string | null | undefined) {
 // (md:grid-cols-2); od lg wracaja rozmiary i proporcje z Figmy (prawa kolumna
 // max 436px).
 export function BistroMenuList({ categories, heading, locale }: Props) {
-  const rendered = categories.filter((cat) => cat.slug && (cat.items ?? []).length > 0)
+  const rendered = categories.filter((cat) => (cat.items ?? []).length > 0)
   if (rendered.length === 0) return null
 
   return (
@@ -54,7 +55,7 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
           return (
             <div key={category._id} className="border-ruby-light border-b">
               <div
-                id={category.slug ?? undefined}
+                id={categoryAnchor(category.name)}
                 className="layout-container grid scroll-mt-32 grid-cols-1 gap-8 py-8 md:grid-cols-2 md:items-start md:gap-16 md:py-10 lg:grid-cols-[1fr_minmax(0,436px)]"
               >
                 <div className="flex flex-col gap-2">
