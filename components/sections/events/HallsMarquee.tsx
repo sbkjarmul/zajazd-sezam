@@ -152,7 +152,11 @@ function HallMarqueeItem({
         style={bottomActive}
       >
         {name && <p className="text-text text-xl font-normal tracking-tight">{name}</p>}
-        {desc && <p className="text-text-muted text-sm">{desc}</p>}
+        {/* Opis sali na mobile schodzi do 12px (text-xs) — swiadome odstepstwo od
+            reguly "opisy = 16px" z DESIGN-RULES 4.5, decyzja usera: przy kaflu
+            66vw pelne 16px robilo z opisu drugi naglowek. Na lg opis pokazuje sie
+            dopiero na hoverze, przy zdjeciu powiekszonym 1.5x — tam zostaje 16px. */}
+        {desc && <p className="text-text-muted text-xs lg:text-sm">{desc}</p>}
       </div>
     </div>
   )
