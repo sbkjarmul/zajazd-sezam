@@ -39,9 +39,16 @@ export default defineConfig({
   document: {
     // Wyłącz "Create new" i "Duplicate" w globalnym menu dla singletonów —
     // klient pracuje wyłącznie z istniejącymi dokumentami o stałym ID.
+    //
+    // `menuCategory` blokujemy tam z innego powodu: kategoria zalozona
+    // globalnie nie przechodzi przez szablon `menuCategory-by-cuisine`, wiec
+    // nie ma ustawionej branzy i nie pokaze sie na zadnej stronie. Jedyna
+    // droga to listy "Restauracja" i "Bistro" w panelu bocznym.
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === 'global'
-        ? prev.filter((t) => !SINGLETON_TYPES.has(t.templateId ?? ''))
+        ? prev.filter(
+            (t) => !SINGLETON_TYPES.has(t.templateId ?? '') && t.templateId !== 'menuCategory',
+          )
         : prev,
     actions: (prev, { schemaType }) =>
       SINGLETON_TYPES.has(schemaType)
