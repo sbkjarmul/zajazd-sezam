@@ -3,7 +3,7 @@
 // gosc mial u siebie slad tego, co wyslal, oraz kontakt do recepcji.
 
 import * as React from 'react'
-import { Button, Heading, Section, Text } from '@react-email/components'
+import { Button, Column, Heading, Row, Text } from '@react-email/components'
 import { buildDetailRows } from '@/lib/email/labels'
 import type { BrandContact, EmailLocale, InquiryPayload } from '@/lib/email/types'
 import { DetailsTable } from './components/DetailsTable'
@@ -83,11 +83,13 @@ export function GuestAutoReplyEmail({ payload, locale, contact }: Props) {
 
       <Text style={urgent}>{copy.urgent}</Text>
       {phone ? (
-        <Section style={actions}>
-          <Button href={`tel:${phone.replace(/\s/g, '')}`} style={ctaButton}>
-            {copy.callCta}: {contact.phoneDisplay ?? phone}
-          </Button>
-        </Section>
+        <Row>
+          <Column style={actions}>
+            <Button href={`tel:${phone.replace(/\s/g, '')}`} style={ctaButton}>
+              {copy.callCta}: {contact.phoneDisplay ?? phone}
+            </Button>
+          </Column>
+        </Row>
       ) : null}
 
       <Text style={closing}>{copy.closing}</Text>
@@ -172,6 +174,8 @@ const urgent: React.CSSProperties = {
   color: BRAND.dark,
 }
 
+// Odstep nad CTA na <td>, nie na <table> - inaczej gubi go Outlook i webmail
+// home.pl (Roundcube), a przycisk przykleja sie do tabeli szczegolow.
 const actions: React.CSSProperties = {
   paddingTop: '16px',
 }

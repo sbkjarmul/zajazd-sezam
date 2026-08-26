@@ -1,11 +1,18 @@
 // Wspolny shell obu szablonow: <head>, tlo strony, karta tresci, header z
 // wordmarkiem SEZAM i stopka z NAP-em z Sanity. Layout tabelkowy zapewniaja
-// komponenty react-email (Container/Section/Row) - klienci pocztowi nie maja
+// komponenty react-email (Container/Row/Column) - klienci pocztowi nie maja
 // niezawodnego flexboxa.
+//
+// KAZDY padding siedzi na <td> (react-email: <Column>), nigdy na <table>
+// (<Section>/<Container>). Padding na <table> honoruje Gmail, ale ignoruja go
+// Outlook i sanitizery webmaili - poczta home.pl (Roundcube) kasowala go w
+// calosci i mail przychodzil bez marginesow: logo przyklejone do gornej
+// krawedzi karty, tabela szczegolow na styk z bokami.
 
 import * as React from 'react'
 import {
   Body,
+  Column,
   Container,
   Head,
   Hr,
@@ -13,7 +20,7 @@ import {
   Img,
   Link,
   Preview,
-  Section,
+  Row,
   Text,
 } from '@react-email/components'
 import type { BrandContact, EmailLocale, EmailLogo } from '@/lib/email/types'
@@ -40,50 +47,60 @@ export function EmailShell({ preview, locale, contact, logo, children }: Props) 
       <Preview>{preview}</Preview>
       <Body style={body}>
         <Container style={page}>
-          <Container style={card}>
-            <Section style={header}>
-              {logo ? (
-                <Img
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={logo.width}
-                  height={logo.height}
-                  style={logoImage}
-                />
-              ) : (
-                <>
-                  <Text style={wordmark}>SEZAM</Text>
-                  <Text style={tagline}>ZAWSZE ŚWIEŻO</Text>
-                </>
-              )}
-            </Section>
+          <Row>
+            <Column style={pageCell}>
+              <Container style={card}>
+                <Row>
+                  <Column style={headerCell}>
+                    {logo ? (
+                      <Img
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={logo.width}
+                        height={logo.height}
+                        style={logoImage}
+                      />
+                    ) : (
+                      <>
+                        <Text style={wordmark}>SEZAM</Text>
+                        <Text style={tagline}>ZAWSZE ŚWIEŻO</Text>
+                      </>
+                    )}
+                  </Column>
+                </Row>
 
-            <Section style={content}>{children}</Section>
-          </Container>
+                <Row>
+                  <Column style={contentCell}>{children}</Column>
+                </Row>
+              </Container>
 
-          <Section style={footer}>
-            <Text style={footerName}>{contact.companyName}</Text>
-            <Text style={footerLine}>{contact.addressLine}</Text>
-            <Text style={footerLine}>
-              {contact.phone ? (
-                <Link href={`tel:${contact.phone.replace(/\s/g, '')}`} style={footerLink}>
-                  {contact.phoneDisplay ?? contact.phone}
-                </Link>
-              ) : null}
-              {contact.phone && contact.email ? <span style={footerDot}> · </span> : null}
-              {contact.email ? (
-                <Link href={`mailto:${contact.email}`} style={footerLink}>
-                  {contact.email}
-                </Link>
-              ) : null}
-            </Text>
-            <Hr style={footerRule} />
-            <Text style={footerLine}>
-              <Link href={contact.siteUrl} style={footerLink}>
-                {contact.siteUrl.replace(/^https?:\/\//, '')}
-              </Link>
-            </Text>
-          </Section>
+              <Row>
+                <Column style={footerCell}>
+                  <Text style={footerName}>{contact.companyName}</Text>
+                  <Text style={footerLine}>{contact.addressLine}</Text>
+                  <Text style={footerLine}>
+                    {contact.phone ? (
+                      <Link href={`tel:${contact.phone.replace(/\s/g, '')}`} style={footerLink}>
+                        {contact.phoneDisplay ?? contact.phone}
+                      </Link>
+                    ) : null}
+                    {contact.phone && contact.email ? <span style={footerDot}> · </span> : null}
+                    {contact.email ? (
+                      <Link href={`mailto:${contact.email}`} style={footerLink}>
+                        {contact.email}
+                      </Link>
+                    ) : null}
+                  </Text>
+                  <Hr style={footerRule} />
+                  <Text style={footerLine}>
+                    <Link href={contact.siteUrl} style={footerLink}>
+                      {contact.siteUrl.replace(/^https?:\/\//, '')}
+                    </Link>
+                  </Text>
+                </Column>
+              </Row>
+            </Column>
+          </Row>
         </Container>
       </Body>
     </Html>
@@ -103,6 +120,10 @@ const page: React.CSSProperties = {
   width: '100%',
   maxWidth: '600px',
   margin: '0 auto',
+}
+
+// Oddech wokol karty. Na <td>, nie na <table> powyzej - patrz naglowek pliku.
+const pageCell: React.CSSProperties = {
   padding: '32px 16px 40px',
 }
 
@@ -117,7 +138,7 @@ const card: React.CSSProperties = {
 
 // Pasek naglowka jest jasny, bo logo z Sanity to jeden ciemny asset - na
 // stronie wybielamy go filtrem CSS, ale filtry nie dzialaja w mailu.
-const header: React.CSSProperties = {
+const headerCell: React.CSSProperties = {
   backgroundColor: BRAND.surface,
   borderBottom: `1px solid ${BRAND.border}`,
   padding: '36px 32px 32px',
@@ -153,12 +174,12 @@ const tagline: React.CSSProperties = {
 
 // Cala tresc maila jest wysrodkowana (naglowki, opisy, tabela, CTA) - stopka
 // i tak byla. Poszczegolne style nie nadpisuja `text-align`, wiec dziedzicza stad.
-const content: React.CSSProperties = {
+const contentCell: React.CSSProperties = {
   padding: '32px',
   textAlign: 'center',
 }
 
-const footer: React.CSSProperties = {
+const footerCell: React.CSSProperties = {
   padding: '24px 8px 0',
   textAlign: 'center',
 }

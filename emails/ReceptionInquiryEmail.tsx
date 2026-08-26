@@ -4,7 +4,7 @@
 // kliencie pocztowym trafia prosto do niego.
 
 import * as React from 'react'
-import { Button, Heading, Section, Text } from '@react-email/components'
+import { Button, Column, Heading, Row, Text } from '@react-email/components'
 import { buildDetailRows } from '@/lib/email/labels'
 import type { BrandContact, InquiryPayload } from '@/lib/email/types'
 import { DetailsTable } from './components/DetailsTable'
@@ -52,11 +52,13 @@ export function ReceptionInquiryEmail({ payload, contact }: Props) {
 
       <DetailsTable rows={rows} />
 
-      <Section style={actions}>
-        <Button href={`tel:${phone.replace(/\s/g, '')}`} style={ctaButton}>
-          Zadzwoń: {phone}
-        </Button>
-      </Section>
+      <Row>
+        <Column style={actions}>
+          <Button href={`tel:${phone.replace(/\s/g, '')}`} style={ctaButton}>
+            Zadzwoń: {phone}
+          </Button>
+        </Column>
+      </Row>
 
       <Text style={note}>
         Wiadomość wygenerowana automatycznie przez formularz na{' '}
@@ -125,6 +127,8 @@ const lead: React.CSSProperties = {
   color: BRAND.textMuted,
 }
 
+// Odstep nad CTA na <td>, nie na <table> - inaczej gubi go Outlook i webmail
+// home.pl (Roundcube), a przycisk przykleja sie do tabeli szczegolow.
 const actions: React.CSSProperties = {
   paddingTop: '28px',
 }
