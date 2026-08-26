@@ -90,7 +90,7 @@ export function restaurantJsonLd({ settings, locale }: Args) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
-    '@id': `${SITE_URL}/${locale}/restauracja#restaurant`,
+    '@id': `${SITE_URL}/${locale}/${locale === 'pl' ? 'restauracja' : 'restaurant'}#restaurant`,
     name: `Restauracja ${pickName(settings, locale) ?? 'Sezam'}`,
     servesCuisine: ['Polish'],
     url: `${SITE_URL}/${locale}/${locale === 'pl' ? 'restauracja' : 'restaurant'}`,

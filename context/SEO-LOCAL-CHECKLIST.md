@@ -117,15 +117,21 @@
 
 ## 9. Migracja starej strony (Joomla) — przekierowania
 
-> Zweryfikowane 2026-08-14 przez crawl żywej `http://zajazdsezam.pl` (stara Joomla nadal online).
+> Zweryfikowane 2026-08-14 przez crawl żywej `http://zajazdsezam.pl`, potwierdzone ponownie
+> 2026-08-25 (stara Joomla nadal online, linki z homepage pokrywają się 1:1 z mapą w kodzie).
 
-- [x] **P0** Redirecty 301/308 kompletne — 21 realnych URL-i starej strony pokrytych w `next.config.ts`
-  (menu + warianty `index.php`/SEF; podtypy imprez; `/rodo`, `/zajazd/regulamin`)
+- [x] **P0** Redirecty 301/308 kompletne — 35 źródeł w `LEGACY_REDIRECTS` (`next.config.ts`)
+  (menu + warianty `index.php`/SEF; podtypy imprez; `/rodo`, `/zajazd/regulamin`; `component/search`)
 - [x] Potwierdzone: brak osieroconych URL-i treściowych (19 prób → 404); cele redirectów istnieją
+- [x] 2026-08-25 test na buildzie produkcyjnym: wszystkie 35 źródeł → 308, jeden hop, cel 200.
+  Warianty z trailing slash dochodzą do celu w 2 hopach (normalizacja Next) — akceptowalne.
+- [x] Stara strona nie ma `sitemap.xml` (404) — brak dodatkowego źródła URL-i do pokrycia
+- [x] `www` na starej stronie **nie** przekierowuje na apex (oba 200) — po cutoverze `www` → 301 apex
+  robi Vercel (domain-level redirect), a `http→https` Cloudflare („Always Use HTTPS")
 - [ ] **P1 launch** ⚠️ Stara strona ma ZEPSUTE HTTPS (działa tylko `http://`) — po wdrożeniu
   upewnić się, że `https://zajazdsezam.pl` działa i `http→https` się przekierowuje
 - [ ] **P1 launch** Po deployu: GSC → Strony → 404 — dorobić redirecty dla ewentualnych orphanów
-- [ ] (opcjonalne) `/index.php/component/search` (200, wyszukiwarka Joomli) — noindex/ignore
+- [x] `/index.php/component/search` (+ wariant SEF) → 308 na `/pl` — dopisane do mapy 2026-08-25
 - [ ] (opcjonalne) 308 → literalne 301 przez `vercel.json` `statusCode: 301` (Google traktuje równoważnie)
 
 ---

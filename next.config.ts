@@ -59,6 +59,9 @@ const LEGACY_REDIRECTS: { from: string[]; to: string }[] = [
   // Strony prawne (nowe podstrony)
   { from: ['/index.php/zajazd/regulamin', '/zajazd/regulamin'], to: '/pl/regulamin' },
   { from: ['/index.php/home/rodo', '/rodo'], to: '/pl/polityka-prywatnosci' },
+  // Wyszukiwarka Joomli - nadal zwraca 200 na starej stronie, wiec mogla trafic
+  // do indeksu. Nowa strona nie ma wyszukiwarki, kierujemy na strone glowna.
+  { from: ['/index.php/component/search', '/component/search'], to: '/pl' },
 ]
 
 const nextConfig: NextConfig = {
