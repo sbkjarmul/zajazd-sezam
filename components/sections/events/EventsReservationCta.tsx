@@ -66,11 +66,15 @@ export function EventsReservationCta({ data, settings, locale }: Props) {
         )}
 
         {ctaLabel && (
-          <Reveal delay={340}>
+          <Reveal delay={340} className="w-full md:w-auto">
+            {/* forceDrawer: sekcja mowi wprost "Wolisz napisac? Wypelnij
+                formularz" — na mobile ten CTA musi otworzyc formularz, a nie
+                wybrac numer (numer jest osobnym linkiem tuz nad przyciskiem). */}
             <ReservationCtaButton
               tab="event"
               variant="filled-dark"
-              className="!bg-accent !text-text !border-accent"
+              forceDrawer
+              className="!bg-accent !text-text !border-accent w-full md:w-auto"
             >
               {ctaLabel}
             </ReservationCtaButton>
