@@ -46,6 +46,9 @@ const TYPE_TO_PATHS: Record<string, Pathname[]> = {
   eventHall: ['/imprezy-okolicznosciowe', '/'],
   eventType: ['/imprezy-okolicznosciowe'],
   roomType: ['/hotel'],
+  // Tasma opinii wisi na trzech stronach naraz — kazda edycja opinii musi
+  // odswiezyc wszystkie trzy.
+  review: ['/', '/hotel', '/imprezy-okolicznosciowe'],
 }
 
 export async function POST(request: Request) {

@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import type { GoogleReview } from '@/lib/googleReviews'
+import type { GuestReview } from '@/lib/reviews'
 import type { Locale } from '@/i18n/routing'
 
 // Predkosc dryfu tasmy opinii (px/s) - spokojny, ciagly ruch.
@@ -12,7 +12,7 @@ const SPEED = 40
 const COPIES = 3
 
 type Props = {
-  reviews: GoogleReview[]
+  reviews: GuestReview[]
   locale: Locale
 }
 
@@ -89,7 +89,7 @@ function ReviewCard({
   locale,
   ...rest
 }: {
-  review: GoogleReview
+  review: GuestReview
   locale: Locale
 } & React.HTMLAttributes<HTMLElement>) {
   const text = review.text[locale]
@@ -101,7 +101,7 @@ function ReviewCard({
     >
       <p className="text-text line-clamp-[8] text-base">{text}</p>
       <div className="flex items-start gap-3">
-        <Avatar name={review.authorName} photoUrl={review.profilePhotoUrl} />
+        <Avatar name={review.authorName} />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           {review.authorUrl ? (
             <a
@@ -122,20 +122,12 @@ function ReviewCard({
   )
 }
 
-function Avatar({ name, photoUrl }: { name: string; photoUrl?: string }) {
+function Avatar({ name }: { name: string }) {
+  // Inicjal zamiast zdjecia profilowego z Google: awatary recenzentow to
+  // hotlink do googleusercontent.com — znikaja, gdy autor zmieni zdjecie,
+  // i wymagaja wpuszczenia obcego hosta do `next/image`. Litera jest stabilna
+  // i nie dociaga niczego z zewnatrz.
   const initial = name.trim().charAt(0).toUpperCase() || '?'
-  if (photoUrl) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={photoUrl}
-        alt={name}
-        width={40}
-        height={40}
-        className="size-10 shrink-0 rounded-full object-cover"
-      />
-    )
-  }
   return (
     <span
       aria-hidden

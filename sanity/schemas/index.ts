@@ -15,6 +15,7 @@ import { eventType } from './documents/eventType'
 import { menuCategory } from './documents/menuCategory'
 import { eventHall } from './documents/eventHall'
 import { roomType } from './documents/roomType'
+import { review } from './documents/review'
 
 // Dokumenty stron (singletons — patrz sanity/structure.ts)
 import { siteSettings } from './documents/siteSettings'
@@ -44,6 +45,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   menuCategory,
   eventHall,
   roomType,
+  review,
   // Singleton page documents
   siteSettings,
   homepage,

@@ -86,6 +86,18 @@ export const structure: StructureResolver = (S) =>
             .items([S.documentTypeListItem('roomType').title('Typy pokoi')]),
         ),
 
+      // === Opinie gosci ===
+      // Zrodlem tresci jest CMS, nie Google Places API — API oddaje najwyzej
+      // 5 opinii bez paginacji i bez kontroli nad tym, ktore to beda.
+      S.listItem()
+        .title('Opinie')
+        .id('reviewsGroup')
+        .child(
+          S.documentTypeList('review')
+            .title('Opinie gości')
+            .defaultOrdering([{ field: 'order', direction: 'asc' }]),
+        ),
+
       S.divider(),
 
       // Wszystko inne (poza singletonami) — fallback
@@ -93,7 +105,7 @@ export const structure: StructureResolver = (S) =>
         (item) =>
           item.getId() &&
           !SINGLETON_SCHEMA_NAMES.includes(item.getId() as keyof typeof SINGLETON_IDS) &&
-          !['menuCategory', 'eventType', 'eventHall', 'roomType', 'legalPage'].includes(
+          !['menuCategory', 'eventType', 'eventHall', 'roomType', 'legalPage', 'review'].includes(
             item.getId()!,
           ),
       ),

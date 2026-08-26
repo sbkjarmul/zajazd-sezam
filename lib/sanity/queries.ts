@@ -379,3 +379,21 @@ export const HOME_ROOM_TYPES_QUERY = defineQuery(`
     )[]{ ${IMAGE_WITH_ALT_FRAGMENT} }
   }
 `)
+
+// =============================================================================
+// review (lista) — tasma opinii na home / hotel / imprezy
+// =============================================================================
+
+// Bierzemy wszystko, co redakcja opublikuje, w kolejnosci z pola `order`.
+// `[0...10]` to bezpiecznik, nie cel: tasma sklada kazda opinie w trzech
+// kopiach, wiec przy kilkudziesieciu wpisach urosloby to w setki kart w DOM.
+export const REVIEWS_QUERY = defineQuery(`
+  *[_type == "review"] | order(order asc, publishedAt desc)[0...10] {
+    _id,
+    authorName,
+    rating,
+    text,
+    publishedAt,
+    authorUrl
+  }
+`)

@@ -6,14 +6,14 @@ import type {
 import type { Locale } from '@/i18n/routing'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { cn } from '@/lib/utils'
-import { getGoogleReviews } from '@/lib/googleReviews'
+import { getReviews } from '@/lib/reviews'
 import { Reveal } from '@/components/Reveal'
 import { RevealText } from '@/components/RevealText'
 import { ReviewsTrack } from './ReviewsTrack'
 
 // Wspolny ksztalt sekcji opinii z Sanity — identyczny na homepage (`reviewsBlock`)
 // oraz hotelu / imprezach (`reviewsSection`). Naglowek + podsumowanie oceny;
-// pojedyncze opinie pochodza z Google (mock `getGoogleReviews`, F8: prawdziwe API).
+// pojedyncze opinie to osobne dokumenty `review` w Sanity (patrz `lib/reviews`).
 type ReviewsData =
   | NonNullable<HOMEPAGE_QUERY_RESULT>['reviewsBlock']
   | NonNullable<HOTEL_PAGE_QUERY_RESULT>['reviewsSection']
@@ -35,9 +35,9 @@ export async function Reviews({ data, locale, uppercaseTitle = false }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
   const title = pickLocale(data.title, locale)
-  const reviews = await getGoogleReviews()
+  const reviews = await getReviews()
 
-  if (reviews.reviews.length === 0 && !title) return null
+  if (reviews.length === 0 && !title) return null
 
   return (
     <section
@@ -73,7 +73,7 @@ export async function Reviews({ data, locale, uppercaseTitle = false }: Props) {
 
         {/* Pelnoszerokosciowa tasma opinii — przesuwa sie sama w prawo. */}
         <Reveal delay={120}>
-          <ReviewsTrack reviews={reviews.reviews} locale={locale} />
+          <ReviewsTrack reviews={reviews} locale={locale} />
         </Reveal>
       </div>
     </section>

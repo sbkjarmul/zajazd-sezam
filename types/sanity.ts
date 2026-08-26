@@ -526,6 +526,20 @@ export type Address = {
   longitude?: number
 }
 
+export type Review = {
+  _id: string
+  _type: 'review'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  authorName?: string
+  rating?: number
+  text?: LocaleText
+  publishedAt?: string
+  authorUrl?: string
+  order?: number
+}
+
 export type RoomType = {
   _id: string
   _type: 'roomType'
@@ -772,6 +786,7 @@ export type AllSanitySchemaTypes =
   | Hero
   | SiteSettings
   | Address
+  | Review
   | RoomType
   | EventHall
   | Slug
@@ -1953,6 +1968,18 @@ export type HOME_ROOM_TYPES_QUERY_RESULT = Array<{
   }> | null
 }>
 
+// Source: lib/sanity/queries.ts
+// Variable: REVIEWS_QUERY
+// Query: *[_type == "review"] | order(order asc, publishedAt desc)[0...10] {    _id,    authorName,    rating,    text,    publishedAt,    authorUrl  }
+export type REVIEWS_QUERY_RESULT = Array<{
+  _id: string
+  authorName: string | null
+  rating: number | null
+  text: LocaleText | null
+  publishedAt: string | null
+  authorUrl: string | null
+}>
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
@@ -1974,5 +2001,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "eventHall"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_EVENT_HALLS_QUERY_RESULT
     '\n  *[_type == "roomType"] | order(order asc) {\n    _id,\n    name,\n    identifier,\n    capacity,\n    description,\n    amenities,\n    order,\n    images[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': ALL_ROOM_TYPES_QUERY_RESULT
     '\n  *[_type == "roomType"] | order(order asc) {\n    _id,\n    name,\n    description,\n    "wideImages": select(\n      count(images[asset->metadata.dimensions.aspectRatio > 1.2]) > 0\n        => images[asset->metadata.dimensions.aspectRatio > 1.2][0...4],\n      images[0...4]\n    )[]{ \n  ...,\n  asset->{\n    _id,\n    url,\n    metadata { dimensions, lqip, palette }\n  },\n  alt\n }\n  }\n': HOME_ROOM_TYPES_QUERY_RESULT
+    '\n  *[_type == "review"] | order(order asc, publishedAt desc)[0...10] {\n    _id,\n    authorName,\n    rating,\n    text,\n    publishedAt,\n    authorUrl\n  }\n': REVIEWS_QUERY_RESULT
   }
 }
