@@ -5,10 +5,23 @@ export const menuCategory = defineType({
   title: 'Kategoria menu',
   type: 'document',
   fields: [
+    // Pole techniczne: Restauracja i Bistro to ten sam typ dokumentu, a
+    // rozdziela je wylacznie ta wartosc — filtry GROQ, listy w Studio i podglad
+    // kategorii wszystkie po niej filtruja.
+    //
+    // Obsluga go nie widzi: kategorie tworzy sie z listy "Restauracja" albo
+    // "Bistro", a szablon `menuCategory-by-cuisine` (sanity.config.ts) ustawia
+    // branze z gory. Pole odslania sie TYLKO gdy jest puste — czyli gdy
+    // dokument powstal poza tymi listami — zeby dalo sie go naprawic zamiast
+    // zostac z niewidoczna kategoria, ktorej nie widac na zadnej stronie.
+    //
+    // Brak `initialValue` jest celowy: cichy domysl 'restaurant' wrzucalby
+    // takie sieroty do menu restauracji zamiast je ujawnic.
     defineField({
       name: 'cuisine',
       title: 'Branża (czyje menu)',
-      description: 'Restauracja albo Bistro. Każda strona ma własny zestaw kategorii.',
+      description:
+        'Ustawiane automatycznie przy tworzeniu kategorii z listy Restauracja albo Bistro.',
       type: 'string',
       options: {
         list: [
@@ -17,7 +30,7 @@ export const menuCategory = defineType({
         ],
         layout: 'radio',
       },
-      initialValue: 'restaurant',
+      hidden: ({ document }) => Boolean(document?.cuisine),
       validation: (r) => r.required(),
     }),
     defineField({
