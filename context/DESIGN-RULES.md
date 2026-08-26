@@ -548,6 +548,16 @@ Duży, display-style paragraf wprowadzający sekcję.
 **Reguła**: body zawsze `font-normal` (400), `tracking-normal` (0), `leading-[1.2]` (lub `leading-[normal]` dla lead, `leading-[1.4]` dla quote review).
 
 > ⛔ **ŻELAZNA REGUŁA — opisy = 16px.** Każdy tekst na stronie głównej (i wszędzie), który jest **opisem / dłuższym akapitem** — czyli NIE jest headingiem, buttonem ani accent-textem (`.font-accent`/`AccentText`) — MUSI mieć **`text-base` (16px), normalny line-height, normalny tracking**. Nigdy `text-lg`/`text-xl`/`text-2xl` ani custom `leading-*`/`tracking-*` na opisie. Nie powiększać opisów „bo w makiecie wyglądają większe" — makieta w px ≠ nasze tokeny; heading rośnie, opis zostaje 16px.
+
+**Świadome odstępstwa (decyzje usera, nie pomyłki — nie „naprawiać" ich z powrotem):**
+
+| Miejsce | Rozmiar | Powód |
+|---|---|---|
+| Opis sali w `HallsMarquee` (mobile) | `text-xs` (12px) | Kafel ma 66vw; przy 16px opis czytał się jak drugi nagłówek. Desktop pokazuje opis dopiero na hoverze przy zdjęciu 1.5x — tam zostaje 16px. |
+| Odpowiedź w `FaqSection` (mobile) | `text-[14px]`, `lg:text-lg` | Pytanie ma `text-lg` (20px). Gdy odpowiedź też miała 20px, rozwinięta pozycja zlewała się z nagłówkiem akordeonu. |
+| Udogodnienia pokoju w `HotelRoomsShowcase` (mobile) | `text-[14px]/[1.2]`, `md:text-base` | Lista pod nazwą pokoju, wcześniejsza decyzja o zejściu rozmiarów na `/hotel` mobile. |
+
+Wspólny mianownik: schodzimy poniżej 16px **tylko na mobile** i **tylko tam, gdzie opis stoi bezpośrednio pod większym tekstem**, z którym inaczej się zlewa. Nigdy w akapitach stojących samodzielnie.
 > - Wyjątek 1: **lead / intro** (§4.5, np. AboutSection intro) — osobna rola, 24px mobile / 32px desktop. To NIE jest „opis sekcji".
 > - Wyjątek 2: **caption / label w karcie** (§4.7, np. podpis pod nazwą pokoju) — krótki jednowierszowy podpis, nie akapit.
 >

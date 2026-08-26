@@ -144,7 +144,16 @@ export function FaqSection({
                   </Accordion.Trigger>
                 </Accordion.Header>
                 <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
-                  {item.answer && <p className={`${textColor} pb-6 text-lg`}>{item.answer}</p>}
+                  {/* Odpowiedz mniejsza od pytania: na mobile 14px przy pytaniu
+                      20px, na lg wraca do 20px. Wczesniej oba mialy text-lg,
+                      wiec rozwinieta pozycja zlewala sie z naglowkiem akordeonu
+                      i na telefonie trudno bylo poznac, gdzie konczy sie pytanie.
+                      Swiadome odstepstwo od reguly "opisy = 16px" (DESIGN-RULES
+                      4.5) — decyzja usera. Line-height 120% daje globalna regula
+                      dla <p> z globals.css, wiec nie dokladamy `leading-*`. */}
+                  {item.answer && (
+                    <p className={`${textColor} pb-6 text-[14px] lg:text-lg`}>{item.answer}</p>
+                  )}
                 </Accordion.Content>
               </Accordion.Item>
             ))}
