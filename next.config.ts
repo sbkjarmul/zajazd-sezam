@@ -89,17 +89,25 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', 'radix-ui', 'date-fns'],
   },
   images: {
-    // AVIF przed WebP - Next negocjuje format wg Accept przegladarki i schodzi
-    // do WebP tam, gdzie AVIF nie jest wspierany. Zdjecia to najciezsza grupa
-    // zasobow na stronie glownej (hero + kafle pokoi + galeria sekcji).
-    formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.sanity.io',
-        pathname: '/images/**',
-      },
-    ],
+    // Miniatury robi CDN Sanity, nie optymalizator Vercela — pelne uzasadnienie
+    // i mechanika w lib/sanity/imageLoader.ts. W skrocie: `/_next/image` musial
+    // pobierac z Sanity cale oryginaly (do 11 MB) pod kazdy wariant, co zjadalo
+    // limit Fast Origin Transfer (10 GB/mies na Hobby). Loader przenosi te prace
+    // na Sanity, ktore ma transformacje w cenie planu.
+    //
+    // Przy `loader: 'custom'` Next nie uruchamia wlasnego optymalizatora, wiec
+    // `formats` i `remotePatterns` przestaja cokolwiek znaczyc (formatem steruje
+    // `auto=format` po stronie Sanity) — dlatego ich tu nie ma.
+    loader: 'custom',
+    loaderFile: './lib/sanity/imageLoader.ts',
+    // Skrocona lista szerokosci srcset. Domyslne osiem (do 3840px) mnozylo
+    // liczbe roznych URL-i, przez co cache Sanity trafial rzadziej, a strona
+    // i tak nigdzie nie potrzebuje kadru szerszego niz ~2560px (makieta wide
+    // ma 1440px, zapas na ekrany 2x). Mniej wariantow = wiecej trafien w cache.
+    deviceSizes: [640, 828, 1080, 1440, 1920, 2560],
+    // Male kadry (ikony, miniatury w lightboxie) — `sizes` z wartoscia w px
+    // siega po te liste zamiast po deviceSizes.
+    imageSizes: [64, 128, 256, 384],
   },
   // Proxy dla plikow SVG z Sanity (patrz components/SanityImage.tsx).
   // Zdjecia rastrowe ida przez /_next/image, wiec przegladarka pobiera je z
