@@ -16,7 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 // data-empty ustawiamy ręcznie; data-state Radix przekazuje sam.
 
 const triggerClasses =
-  'border-accent text-accent flex h-[48px] w-full cursor-pointer items-center justify-between gap-2 rounded-none border-0 border-b-2 bg-transparent px-0 text-left text-[20px] outline-none focus-visible:outline-none transition-colors ' +
+  'border-accent text-accent flex h-[48px] w-full cursor-pointer items-center justify-between gap-2 rounded-none border-0 border-b-2 bg-transparent px-0 text-left text-base sm:text-[20px] outline-none focus-visible:outline-none transition-colors ' +
   '[&[data-empty][data-state=closed]]:border-b [&[data-empty][data-state=closed]]:border-text [&[data-empty][data-state=closed]]:text-text-muted ' +
   '[&_svg]:size-[18px] [&_svg]:text-accent [&[data-empty][data-state=closed]_svg]:text-text-muted'
 
@@ -77,9 +77,7 @@ export function DateField({
         aria-label={ariaLabel ?? placeholder}
         className={triggerClasses}
       >
-        <span className="truncate">
-          {selected ? formatDisplay(selected, locale) : placeholder}
-        </span>
+        <span className="truncate">{selected ? formatDisplay(selected, locale) : placeholder}</span>
         <CalendarIcon aria-hidden />
       </PopoverTrigger>
       <PopoverContent align="start">

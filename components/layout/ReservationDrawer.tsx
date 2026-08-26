@@ -113,14 +113,22 @@ function DrawerBody() {
       </div>
 
       <div data-reveal className="flex flex-col gap-6">
-        <div role="tablist" className="flex items-center gap-4">
+        {/* Zakladki jada jednym rzedem BEZ zawijania i wychodza poza krawedz
+            drawera — na mobile "Imprezy okolicznosciowe" nie miesci sie obok
+            "Pokoje", wiec zamiast lamac tekst dajemy poziomy scroll (`-mx-8 px-8`
+            bleeduje scroller pod padding drawera, zeby etykieta uciekala za
+            krawedz ekranu i bylo widac, ze da sie przesunac). Scrollbar ukryty. */}
+        <div
+          role="tablist"
+          className="-mx-8 flex [scrollbar-width:none] items-center gap-4 overflow-x-auto px-8 [&::-webkit-scrollbar]:hidden"
+        >
           <button
             type="button"
             role="tab"
             aria-selected={reservationTab === 'room'}
             onClick={() => setReservationTab('room')}
             className={cn(
-              'text-text cursor-pointer py-1 text-lg transition-all',
+              'text-text shrink-0 cursor-pointer py-1 text-lg whitespace-nowrap transition-all',
               reservationTab === 'room' ? 'border-text border-b font-bold' : 'font-normal',
             )}
           >
@@ -132,7 +140,7 @@ function DrawerBody() {
             aria-selected={reservationTab === 'event'}
             onClick={() => setReservationTab('event')}
             className={cn(
-              'text-text cursor-pointer py-1 text-lg transition-all',
+              'text-text shrink-0 cursor-pointer py-1 text-lg whitespace-nowrap transition-all',
               reservationTab === 'event' ? 'border-text border-b font-bold' : 'font-normal',
             )}
           >

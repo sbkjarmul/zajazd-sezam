@@ -183,12 +183,12 @@ export function EventInquiryForm() {
 // na nieaktywny (border-b 1px text dark + tekst muted). Łączymy warunki w jeden
 // selector żeby focus na pustym polu nadal trzymał accent.
 const inputClasses =
-  'border-accent text-accent placeholder:text-text-muted h-[56px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 text-[20px] outline-none focus-visible:outline-none transition-colors [&:placeholder-shown:not(:focus)]:border-b [&:placeholder-shown:not(:focus)]:border-text [&:placeholder-shown:not(:focus)]:text-text-muted'
+  'border-accent text-accent placeholder:text-text-muted h-[56px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 text-base sm:text-[20px] outline-none focus-visible:outline-none transition-colors [&:placeholder-shown:not(:focus)]:border-b [&:placeholder-shown:not(:focus)]:border-text [&:placeholder-shown:not(:focus)]:text-text-muted'
 
 // `data-[size=default]:h-[56px]` nadpisuje shadcnowe `data-[size=default]:h-9`
 // — bez tego select renderuje się jako 36px i nie pasuje do inputów.
 const selectTriggerClasses =
-  'border-accent text-accent h-[56px] data-[size=default]:h-[56px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-0 text-[20px] shadow-none outline-none focus-visible:outline-none transition-colors focus-visible:ring-0 [&[data-placeholder]:not(:focus):not([data-state=open])]:border-b [&[data-placeholder]:not(:focus):not([data-state=open])]:border-text [&[data-placeholder]:not(:focus):not([data-state=open])]:text-text-muted [&_svg]:size-5 [&_svg]:opacity-100 [&_svg]:text-accent [&[data-placeholder]:not(:focus):not([data-state=open])_svg]:text-text-muted'
+  'border-accent text-accent h-[56px] data-[size=default]:h-[56px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-0 text-base sm:text-[20px] shadow-none outline-none focus-visible:outline-none transition-colors focus-visible:ring-0 [&[data-placeholder]:not(:focus):not([data-state=open])]:border-b [&[data-placeholder]:not(:focus):not([data-state=open])]:border-text [&[data-placeholder]:not(:focus):not([data-state=open])]:text-text-muted [&_svg]:size-5 [&_svg]:opacity-100 [&_svg]:text-accent [&[data-placeholder]:not(:focus):not([data-state=open])_svg]:text-text-muted'
 
 function FieldShell({
   error,

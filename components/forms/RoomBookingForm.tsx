@@ -91,10 +91,13 @@ export function RoomBookingForm() {
           />
         </FieldShell>
 
-        {/* Rodzaj pokoju + Liczba gości w jednym rzędzie — typ dostaje 2/3 szerokości,
-            liczba gości 1/3. Oba selecty; Radix value/onValueChange są stringami,
-            więc konwertujemy do/z number na granicy z RHF. */}
-        <div className="grid grid-cols-[2fr_1fr] gap-[10px]">
+        {/* Rodzaj pokoju + Liczba gości: na mobile KAZDE POLE W OSOBNEJ LINII —
+            drawer ma wtedy szerokosc ekranu (375px minus 2x32px paddingu), wiec
+            w dwoch kolumnach "Apartament Komfort" i placeholdery dat sie nie
+            miescily. Od sm (drawer osiaga docelowe 632px) wraca uklad 2/3 + 1/3.
+            Oba selecty; Radix value/onValueChange są stringami, więc konwertujemy
+            do/z number na granicy z RHF. */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-[2fr_1fr] sm:gap-[10px]">
           <FieldShell error={errors.roomType?.message} tt={tErrors}>
             <Controller
               control={control}
@@ -141,7 +144,8 @@ export function RoomBookingForm() {
           </FieldShell>
         </div>
 
-        <div className="grid grid-cols-2 gap-[10px]">
+        {/* Zameldowanie + wymeldowanie — jak wyzej: mobile po jednym polu w linii. */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-[10px]">
           <FieldShell error={errors.checkIn?.message} tt={tErrors}>
             <Controller
               control={control}
@@ -211,7 +215,7 @@ export function RoomBookingForm() {
 // daje (0,3,0) i jednoznacznie wygrywa nad bazą (0,1,0).
 // Rozmiar tekstu 14px (mniejszy niż domyślny 16px) per request.
 const inputClasses =
-  'border-accent text-accent placeholder:text-text-muted h-[48px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 text-[20px] outline-none focus-visible:outline-none transition-colors [&:placeholder-shown:not(:focus)]:border-b [&:placeholder-shown:not(:focus)]:border-text [&:placeholder-shown:not(:focus)]:text-text-muted'
+  'border-accent text-accent placeholder:text-text-muted h-[48px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 text-base sm:text-[20px] outline-none focus-visible:outline-none transition-colors [&:placeholder-shown:not(:focus)]:border-b [&:placeholder-shown:not(:focus)]:border-text [&:placeholder-shown:not(:focus)]:text-text-muted'
 
 // Select (Radix przez shadcn/ui) — ta sama logika co dla input, ale stan "pusty"
 // czytamy z atrybutu `data-placeholder` zamiast pseudo `:placeholder-shown`.
@@ -221,7 +225,7 @@ const inputClasses =
 // (selektor atrybutowy ma wyższą specyfikę niż samo `h-[48px]`) — bez tego
 // select renderuje się jako 36px i nie pasuje wysokością do inputów.
 const selectTriggerClasses =
-  'border-accent text-accent h-[48px] data-[size=default]:h-[48px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-0 text-[20px] shadow-none outline-none focus-visible:outline-none transition-colors focus-visible:ring-0 [&[data-placeholder]:not(:focus):not([data-state=open])]:border-b [&[data-placeholder]:not(:focus):not([data-state=open])]:border-text [&[data-placeholder]:not(:focus):not([data-state=open])]:text-text-muted [&_svg]:size-[18px] [&_svg]:opacity-100 [&_svg]:text-accent [&[data-placeholder]:not(:focus):not([data-state=open])_svg]:text-text-muted'
+  'border-accent text-accent h-[48px] data-[size=default]:h-[48px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-0 text-base sm:text-[20px] shadow-none outline-none focus-visible:outline-none transition-colors focus-visible:ring-0 [&[data-placeholder]:not(:focus):not([data-state=open])]:border-b [&[data-placeholder]:not(:focus):not([data-state=open])]:border-text [&[data-placeholder]:not(:focus):not([data-state=open])]:text-text-muted [&_svg]:size-[18px] [&_svg]:opacity-100 [&_svg]:text-accent [&[data-placeholder]:not(:focus):not([data-state=open])_svg]:text-text-muted'
 
 function FieldShell({
   error,
