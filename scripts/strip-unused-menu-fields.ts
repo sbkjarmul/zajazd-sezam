@@ -5,8 +5,9 @@
  *   menuCategory.items[].diet
  *   menuCategory.items[].image
  *
- * `unset` na sciezce z filtrem tablicowym zdejmuje pole ze WSZYSTKICH pozycji
- * naraz, wiec nie trzeba iterowac po `_key`.
+ * Sciezka musi miec FILTR, nie samo `[]` — `items[_key != ""].pole` zdejmuje
+ * pole ze wszystkich elementow tablicy. Wariant `items[].pole` przechodzi bez
+ * bledu, ale nie usuwa niczego.
  *
  * Uruchomienie: npx tsx --env-file=.env.local scripts/strip-unused-menu-fields.ts
  */
@@ -33,7 +34,7 @@ async function main() {
   const ids = await client.fetch<string[]>(`*[_type == "menuCategory"]._id`)
   const tx = client.transaction()
   for (const id of ids) {
-    tx.patch(id, (p) => p.unset(['slug', 'items[]._key != ""].diet', 'items[]._key != ""].image']))
+    tx.patch(id, (p) => p.unset(['slug', 'items[_key != ""].diet', 'items[_key != ""].image']))
   }
   await tx.commit()
 
