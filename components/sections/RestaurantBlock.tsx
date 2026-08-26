@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { preventOrphans } from '@/lib/preventOrphans'
+import { ctaClasses } from '@/lib/cta'
 import { SectionBleedImage } from './SectionBleedImage'
 
 type Props = {
@@ -48,7 +49,7 @@ export function RestaurantBlock({ data, locale }: Props) {
           <Reveal className="flex flex-col gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="max-w-[14ch] text-[40px] font-normal tracking-[-3px] text-balance">
+              <h2 className="max-w-[14ch] text-3xl leading-none font-normal tracking-tight text-balance">
                 {titleNoOrphans}
               </h2>
             )}
@@ -56,10 +57,7 @@ export function RestaurantBlock({ data, locale }: Props) {
           <Reveal delay={100} className="flex flex-col gap-10">
             {description && <p className="text-text-inverse/85 text-base">{description}</p>}
             {ctaLabel && (
-              <Link
-                href="/restauracja/menu"
-                className="text-text inline-flex h-16 w-full items-center justify-center rounded-full bg-white px-6 text-xl transition-opacity hover:opacity-90"
-              >
+              <Link href="/restauracja/menu" className={ctaClasses('filled-light', 'w-full')}>
                 {ctaLabel}
               </Link>
             )}
@@ -122,7 +120,7 @@ export function RestaurantBlock({ data, locale }: Props) {
             {ctaLabel && (
               <Link
                 href="/restauracja/menu"
-                className="bg-text-inverse text-text inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-opacity hover:opacity-90 md:w-fit md:min-w-[220px]"
+                className={ctaClasses('filled-light', 'w-full md:w-fit md:min-w-[220px]')}
               >
                 {ctaLabel}
               </Link>

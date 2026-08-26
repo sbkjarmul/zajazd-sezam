@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/routing'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
 import { HeroParallaxImage } from '@/components/sections/HeroParallaxImage'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<HOTEL_PAGE_QUERY_RESULT>['hero']
@@ -71,19 +72,12 @@ export function HotelHero({ data, locale }: Props) {
 
           <div className="flex flex-col gap-3 md:flex-row md:gap-[10px]">
             {primaryCta && (
-              <ReservationCtaButton
-                tab="room"
-                variant="filled-light"
-                className="h-[65px] w-full md:w-auto"
-              >
+              <ReservationCtaButton tab="room" variant="filled-light" className="w-full md:w-auto">
                 {primaryCta}
               </ReservationCtaButton>
             )}
             {secondaryCta && (
-              <a
-                href="#rooms"
-                className="border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text inline-flex h-[65px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto"
-              >
+              <a href="#rooms" className={ctaClasses('outline-light', 'w-full md:w-auto')}>
                 {secondaryCta}
               </a>
             )}

@@ -6,6 +6,7 @@ import { RevealText } from '@/components/RevealText'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
 import { formatPhonePl } from '@/lib/format/phone'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<HOMEPAGE_QUERY_RESULT>['contactBlock']
@@ -101,7 +102,10 @@ export async function ContactBlock({ data, settings, locale }: Props) {
           {phone && (
             <a
               href={`tel:${phone.replace(/\s/g, '')}`}
-              className="bg-accent text-accent-foreground hover:bg-accent-hover my-8 inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-colors md:w-fit md:min-w-[220px] lg:hidden"
+              className={ctaClasses(
+                'filled-gold',
+                'my-8 w-full md:w-fit md:min-w-[220px] lg:hidden',
+              )}
             >
               {locale === 'pl' ? 'Zadzwoń' : 'Call us'}
             </a>

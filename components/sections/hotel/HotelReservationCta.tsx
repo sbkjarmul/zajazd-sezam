@@ -10,7 +10,8 @@ type Props = {
 }
 
 // Wg Figma 676:647: bg-dark, text-light, eyebrow 24px / title 64px / desc 24px,
-// CTA outline-light w-[320px] h-[65px]. Image 500×514 po prawej, bez rounding.
+// CTA outline-light w-[320px] (wysokosc wspolna z lib/cta.ts). Image 500x514
+// po prawej, bez rounding.
 export function HotelReservationCta({ data, locale }: Props) {
   if (!data) return null
   const eyebrow = pickLocale(data.eyebrow, locale)
@@ -48,7 +49,7 @@ export function HotelReservationCta({ data, locale }: Props) {
             <ReservationCtaButton
               tab="room"
               variant="outline-light"
-              className="h-[65px] w-full md:w-[320px]"
+              className="w-full md:w-[320px]"
             >
               {ctaLabel}
             </ReservationCtaButton>

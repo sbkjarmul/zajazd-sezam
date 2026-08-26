@@ -580,30 +580,48 @@ Duży, display-style paragraf wprowadzający sekcję.
 
 ## 5. Buttony
 
-**Źródło prawdy**: [components/ReservationCtaButton.tsx](../components/ReservationCtaButton.tsx) — pill shape `h-[60px]`, `rounded-full`, `px-6`, `text-lg`, `font-normal`. 4 warianty kolorystyczne.
+**Źródło prawdy**: [lib/cta.ts](../lib/cta.ts) — `CTA_BASE` + `CTA_VARIANTS` + helper `ctaClasses(variant, className)`. Używa go [ReservationCtaButton](../components/ReservationCtaButton.tsx) oraz **każdy** `<Link>` / `<button>` w roli CTA i submit formularzy.
 
-### Wysokości
+### Rozmiar — jeden dla wszystkich breakpointów
 
-| Wariant | Wysokość | Klasy | Użycie |
-|---|---|---|---|
-| **`btn-standard`** | `h-[60px]` | `inline-flex items-center justify-center rounded-full px-6 text-lg font-normal` | Standard — większość CTA |
-| **`btn-hero`** | `h-[65px]` | jw. + `className="h-[65px]"` | Hero CTA (HotelHero, EventsHero), HotelReservationCta finalne |
-| **`btn-card`** | `h-[48px]` + `text-base` | jw. + mniejszy tekst | Cross-sell card (HotelDiscover) |
+```
+inline-flex h-[60px] cursor-pointer items-center justify-center rounded-full border-2
+px-6 text-lg leading-none font-normal tracking-normal transition-colors
+```
 
-### Warianty kolorystyczne (z `ReservationCtaButton`)
+| | Mobile | Desktop |
+|---|---|---|
+| `height` | 60px | 60px |
+| `font-size` | 20px (`text-lg`) | 20px |
+| `letter-spacing` | 0 (`tracking-normal`) | 0 |
+| `padding-x` | 24px (`px-6`) | 24px |
+
+**Decyzja usera (2026-08-26): zero wariantów wysokości.** Wcześniej mobile miał `h-16 text-xl` (24px!) w blokach home, hero `h-[65px]`, karty `h-[48px] text-base`, RestaurantPitch `py-3` — na jednej stronie były 4 różne rozmiary CTA. Wszystko zeszło do `h-[60px] text-lg`.
+
+W `className` CTA wolno przekazać **wyłącznie klasy szerokości / marginesu** (`w-full`, `md:w-auto`, `min-w-[220px]`, `my-8`). Nigdy `h-*`, `text-*`, `tracking-*`, `py-*`.
+
+### Warianty kolorystyczne (`CTA_VARIANTS`)
 
 | Wariant | Klasy |
 |---|---|
-| `filled-dark` | `bg-primary text-primary-foreground border-2 border-primary hover:bg-primary-hover` |
-| `filled-light` | `bg-text-inverse text-text border-2 border-text-inverse hover:bg-transparent hover:text-text-inverse` |
-| `outline-dark` | `border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground` |
-| `outline-light` | `border-2 border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text` |
+| `filled-dark` | `bg-primary text-primary-foreground border-primary hover:bg-primary-hover` |
+| `filled-light` | `bg-text-inverse text-text border-text-inverse hover:bg-transparent hover:text-text-inverse` |
+| `filled-gold` | `bg-accent text-text-inverse border-accent hover:bg-accent-hover` |
+| `filled-ruby` | `bg-ruby-light text-light border-ruby-light hover:bg-ruby` |
+| `filled-ruby-dark` | `bg-dark-ruby text-text-inverse border-dark-ruby hover:bg-ruby` |
+| `outline-dark` | `border-primary text-primary hover:bg-primary hover:text-primary-foreground` |
+| `outline-light` | `border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text` |
+| `outline-ruby` | `border-ruby text-ruby hover:bg-ruby hover:text-light` |
 
 ### Anti-patterns
 
-- ❌ `h-[63px]` — ujednolicić do `h-[60px]`
+- ❌ `h-16` / `h-[63px]` / `h-[64px]` / `h-[65px]` / `h-[48px]` / `py-3` — CTA zawsze `h-[60px]` z `ctaClasses()`
+- ❌ `text-xl` / `text-base` w CTA — zawsze `text-lg` (20px)
+- ❌ Ręczne sklejanie klas pill zamiast `ctaClasses()` — rozjeżdża się przy kolejnej zmianie
 - ❌ Hardcoded background bez ról semantycznych — używać `bg-primary`/`bg-text-inverse`
 - ❌ `rounded-lg` lub bez `rounded-full` — buttony Sezam zawsze pill
+
+> Wyjątek: chipy filtra kategorii w [MenuFilter](../components/sections/menu/MenuFilter.tsx) (`h-10 text-sm`) — to kontrolka filtrująca w poziomym scrollerze, nie CTA.
 
 ### Cykliczne strzałki (carousel nav)
 

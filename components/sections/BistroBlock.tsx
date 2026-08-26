@@ -4,6 +4,7 @@ import { RevealText } from '@/components/RevealText'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 import { SectionBleedImage } from './SectionBleedImage'
 
 type Props = {
@@ -56,15 +57,14 @@ export function BistroBlock({ data, locale }: Props) {
           <Reveal className="flex flex-col items-center gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="text-[43px] font-medium tracking-[-3px] text-balance">{title}</h2>
+              <h2 className="text-3xl leading-none font-normal tracking-tight text-balance">
+                {title}
+              </h2>
             )}
           </Reveal>
           {ctaLabel && (
             <Reveal delay={100} className="w-full">
-              <Link
-                href="/bistro"
-                className="bg-ruby-light inline-flex h-16 w-full items-center justify-center rounded-full px-6 text-xl text-white transition-opacity hover:opacity-90"
-              >
+              <Link href="/bistro" className={ctaClasses('filled-ruby', 'w-full')}>
                 {ctaLabel}
               </Link>
             </Reveal>
@@ -105,10 +105,7 @@ export function BistroBlock({ data, locale }: Props) {
 
           {ctaLabel && (
             <Reveal delay={100}>
-              <Link
-                href="/bistro"
-                className="bg-ruby-light inline-flex h-[60px] items-center justify-center rounded-full px-8 text-lg text-white transition-opacity hover:opacity-90"
-              >
+              <Link href="/bistro" className={ctaClasses('filled-ruby', 'min-w-[220px]')}>
                 {ctaLabel}
               </Link>
             </Reveal>

@@ -2,6 +2,7 @@ import type { HOTEL_PAGE_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
 import { SanityImage } from '@/components/SanityImage'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<HOTEL_PAGE_QUERY_RESULT>['discoverSection']
@@ -76,10 +77,7 @@ export function HotelDiscover({ data, locale }: Props) {
                   {cardDesc && <p className="text-text text-base">{cardDesc}</p>}
                 </div>
                 {cardCta && card.ctaHref && (
-                  <a
-                    href={card.ctaHref}
-                    className="border-text text-text hover:bg-text hover:text-text-inverse inline-flex h-[48px] w-fit items-center justify-center rounded-full border-2 px-6 text-base transition-colors"
-                  >
+                  <a href={card.ctaHref} className={ctaClasses('outline-dark', 'w-fit')}>
                     {cardCta}
                   </a>
                 )}

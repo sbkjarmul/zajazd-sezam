@@ -6,6 +6,7 @@ import { RevealText } from '@/components/RevealText'
 import { Reveal } from '@/components/Reveal'
 import { AccentText } from '@/components/AccentText'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<RESTAURANT_PAGE_QUERY_RESULT>['craftSection']
@@ -25,8 +26,7 @@ export function RestaurantCraft({ data, locale }: Props) {
   const headingClass =
     'font-accent text-ruby text-[clamp(34px,5vw,64px)] leading-none not-italic tracking-[-0.01em]'
   const descriptionClass = 'text-ruby text-lg leading-normal'
-  const ctaClass =
-    'border-ruby text-ruby hover:bg-ruby hover:text-light inline-flex h-[64px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto'
+  const ctaClass = ctaClasses('outline-ruby', 'w-full md:w-auto')
 
   return (
     <section data-header-theme="light" className="bg-bg py-10 md:py-16">

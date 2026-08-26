@@ -5,6 +5,7 @@ import { RevealText } from '@/components/RevealText'
 import { Reveal } from '@/components/Reveal'
 import { AccentText } from '@/components/AccentText'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<RESTAURANT_PAGE_QUERY_RESULT>['ambianceSection']
@@ -46,7 +47,7 @@ export function RestaurantAmbiance({ data, settings, phone: phoneOverride, local
             {ctaLabel && phone && (
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}
-                className="border-ruby text-ruby hover:bg-ruby hover:text-light inline-flex h-[64px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:w-auto"
+                className={ctaClasses('outline-ruby', 'w-full md:w-auto')}
               >
                 {ctaLabel}
               </a>

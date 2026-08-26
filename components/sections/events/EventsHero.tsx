@@ -4,6 +4,7 @@ import type { Locale } from '@/i18n/routing'
 import { HeroParallaxImage } from '@/components/sections/HeroParallaxImage'
 import { ReservationCtaButton } from '@/components/ReservationCtaButton'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<EVENTS_PAGE_QUERY_RESULT>['hero']
@@ -87,10 +88,7 @@ export function EventsHero({ data, locale }: Props) {
               </ReservationCtaButton>
             )}
             {secondaryCta && (
-              <a
-                href="#halls"
-                className="border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text inline-flex h-[65px] w-full items-center justify-center rounded-full border-2 px-6 text-lg transition-colors md:h-[60px] md:w-auto"
-              >
+              <a href="#halls" className={ctaClasses('outline-light', 'w-full md:w-auto')}>
                 {secondaryCta}
               </a>
             )}

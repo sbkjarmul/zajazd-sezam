@@ -39,7 +39,9 @@ export function HotelBlock({ data, rooms, locale }: Props) {
           <Reveal className="flex flex-col gap-4">
             {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
             {title && (
-              <h2 className="text-[40px] font-normal tracking-[-3px] text-balance">{title}</h2>
+              <h2 className="text-3xl leading-none font-normal tracking-tight text-balance">
+                {title}
+              </h2>
             )}
           </Reveal>
           {description && <p className="text-text text-base">{description}</p>}

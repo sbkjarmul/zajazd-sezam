@@ -5,6 +5,7 @@ import { RevealText } from '@/components/RevealText'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 import { SectionBleedImage } from './SectionBleedImage'
 
 type Props = {
@@ -45,7 +46,9 @@ export function EventsBlock({ data, locale }: Props) {
             <Reveal className="flex flex-col gap-4">
               {eyebrow && <p className="text-base tracking-normal uppercase">{eyebrow}</p>}
               {title && (
-                <h2 className="text-[40px] font-normal tracking-[-3px] text-balance">{title}</h2>
+                <h2 className="text-3xl leading-none font-normal tracking-tight text-balance">
+                  {title}
+                </h2>
               )}
             </Reveal>
             <Reveal delay={100} className="flex flex-col gap-10">
@@ -53,7 +56,7 @@ export function EventsBlock({ data, locale }: Props) {
               {ctaLabel && (
                 <Link
                   href="/imprezy-okolicznosciowe"
-                  className="bg-dark-ruby text-text-inverse inline-flex h-16 w-full items-center justify-center rounded-full px-6 text-xl transition-opacity hover:opacity-90"
+                  className={ctaClasses('filled-ruby-dark', 'w-full')}
                 >
                   {ctaLabel}
                 </Link>
@@ -121,8 +124,7 @@ export function EventsBlock({ data, locale }: Props) {
                 {ctaLabel && (
                   <Link
                     href="/imprezy-okolicznosciowe"
-                    className="text-text-inverse inline-flex h-[60px] w-full items-center justify-center rounded-full px-6 text-lg transition-opacity hover:opacity-90 md:w-fit md:min-w-[220px]"
-                    style={{ background: 'var(--color-dark-ruby)' }}
+                    className={ctaClasses('filled-ruby-dark', 'w-full md:w-fit md:min-w-[220px]')}
                   >
                     {ctaLabel}
                   </Link>

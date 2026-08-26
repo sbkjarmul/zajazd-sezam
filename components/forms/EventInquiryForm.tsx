@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { ctaClasses } from '@/lib/cta'
 
 // Styling per Figma 676:1763 (tab room) — to samo dla event tab dla spójności.
 // Pola h-[63px] border p-[16px] text-[20px], submit h-[65px], disclaimer text-base center.
@@ -164,7 +165,7 @@ export function EventInquiryForm() {
           type="submit"
           disabled={submitting || !turnstileToken}
           className={cn(
-            'bg-primary text-primary-foreground hover:bg-primary-hover inline-flex h-[65px] w-full items-center justify-center rounded-full px-6 text-base font-normal transition-colors',
+            ctaClasses('filled-dark', 'w-full'),
             (submitting || !turnstileToken) && 'cursor-not-allowed opacity-60',
           )}
         >

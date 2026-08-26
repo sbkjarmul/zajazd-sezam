@@ -247,7 +247,7 @@ export function Header({
             const ctaClassName = cn(
               // Ukryty na mobile + tablet (kolidował z nav na md). Pokazujemy
               // dopiero od lg, gdy mamy dość miejsca obok nawigacji.
-              'hidden cursor-pointer items-center justify-center rounded-full border-2 font-normal whitespace-nowrap transition-colors lg:inline-flex lg:h-[60px] lg:px-6 lg:text-lg',
+              'hidden cursor-pointer items-center justify-center rounded-full border-2 leading-none font-normal tracking-normal whitespace-nowrap transition-colors lg:inline-flex lg:h-[60px] lg:px-6 lg:text-lg',
               onLightContrast
                 ? lightBtn
                 : 'border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-text',

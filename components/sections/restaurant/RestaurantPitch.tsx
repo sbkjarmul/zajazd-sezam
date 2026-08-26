@@ -5,6 +5,7 @@ import { AccentText } from '@/components/AccentText'
 import { RevealText } from '@/components/RevealText'
 import { Reveal } from '@/components/Reveal'
 import { pickLocale } from '@/lib/i18n/pickLocale'
+import { ctaClasses } from '@/lib/cta'
 
 type Props = {
   data: NonNullable<RESTAURANT_PAGE_QUERY_RESULT>['pitchSection']
@@ -35,10 +36,7 @@ export function RestaurantPitch({ data, locale }: Props) {
         )}
         {ctaLabel && (
           <Reveal delay={120}>
-            <Link
-              href="/restauracja/menu"
-              className="border-ruby text-ruby hover:bg-ruby hover:text-light inline-flex items-center justify-center rounded-full border-2 px-6 py-3 text-lg transition-colors"
-            >
+            <Link href="/restauracja/menu" className={ctaClasses('outline-ruby')}>
               {ctaLabel}
             </Link>
           </Reveal>
