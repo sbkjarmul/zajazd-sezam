@@ -17,14 +17,7 @@ type Props = {
  * nazwa uppercase → opis → cena pod spodem.
  */
 export function MenuCategoryColumns({ category, locale }: Props) {
-  const rawName = pickLocale(category.name, locale)
-  // Konwencja Sanity: "Tytuł — podtytuł" → duży nagłówek + regular pod spodem.
-  const [name, subtitle] = (() => {
-    if (!rawName) return [rawName, undefined] as const
-    const idx = rawName.indexOf(' — ')
-    if (idx === -1) return [rawName, undefined] as const
-    return [rawName.slice(0, idx), rawName.slice(idx + 3)] as const
-  })()
+  const name = pickLocale(category.name, locale)
   const description = pickLocale(category.description, locale)
   const items = category.items ?? []
   if (items.length === 0) return null
@@ -39,7 +32,6 @@ export function MenuCategoryColumns({ category, locale }: Props) {
           {/* Lewa kolumna — nagłówek + opis sekcji */}
           <header className="flex flex-col gap-4">
             <h2 className="font-accent text-[clamp(44px,5vw,72px)] tracking-normal">{name}</h2>
-            {subtitle && <p className="text-lg font-normal">{subtitle}</p>}
             {description && (
               <p className="text-ruby/80 max-w-md text-base md:text-lg">{description}</p>
             )}

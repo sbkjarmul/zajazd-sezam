@@ -10,18 +10,9 @@ type Props = {
   locale: Locale
 }
 
-// Konwencja Sanity: "Tytuł — podtytuł" → duży nagłówek + podtytuł uppercase pod
-// spodem (np. "Pierogi — porcja 14 sztuk" → PIEROGI / PORCJA 14 SZTUK).
-function splitTitle(raw: string | null | undefined) {
-  if (!raw) return [raw, undefined] as const
-  const idx = raw.indexOf(' — ')
-  if (idx === -1) return [raw, undefined] as const
-  return [raw.slice(0, idx), raw.slice(idx + 3)] as const
-}
-
 // Redesign wg Figma 1010:2 — sekcja "NASZE MENU" na jasnym tle. Każda
 // kategoria to wiersz: po lewej nazwa (ruby-light, font-black uppercase) +
-// ewentualny podtytuł, po prawej lista pozycji (uppercase, ruby-light, waga
+// ewentualny opis kategorii, po prawej lista pozycji (uppercase, ruby-light, waga
 // regular). Wiersze rozdzielone pełnej szerokości liniami 1px (ruby-light
 // #1a2789 — wg Figmy).
 // Animacje: nagłówek fade, nazwy kategorii i pozycje odsłaniane spod maski
@@ -50,7 +41,12 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
       {/* Linie pełnej szerokości (full-bleed), 1px, ruby-light (#1a2789 — Figma). */}
       <div className="border-ruby-light mt-10 border-t md:mt-16">
         {rendered.map((category) => {
-          const [name, subtitle] = splitTitle(pickLocale(category.name, locale))
+          const name = pickLocale(category.name, locale)
+          // Podtytul pod nazwa kategorii bierze sie z pola `description`
+          // (np. Pierogi -> "Porcja 14 sztuk"). Wczesniej byl wciskany w nazwe
+          // po separatorze " — " i rozbijany w kodzie — pole w Sanity bylo
+          // pobierane, ale nigdzie nierysowane.
+          const description = pickLocale(category.description, locale)
           const items = category.items ?? []
           return (
             <div key={category._id} className="border-ruby-light border-b">
@@ -66,9 +62,9 @@ export function BistroMenuList({ categories, heading, locale }: Props) {
                   >
                     {name}
                   </RevealText>
-                  {subtitle && (
-                    <p className="text-ruby-light text-base font-normal tracking-normal uppercase md:text-lg">
-                      {subtitle}
+                  {description && (
+                    <p className="text-ruby-light text-base font-normal tracking-normal uppercase">
+                      {description}
                     </p>
                   )}
                 </div>
