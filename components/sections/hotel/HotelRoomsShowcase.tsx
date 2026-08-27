@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import type { ALL_ROOM_TYPES_QUERY_RESULT } from '@/types/sanity'
 import type { Locale } from '@/i18n/routing'
@@ -29,9 +29,9 @@ const H3_CLASS =
   'text-text text-xl leading-none font-light tracking-tight uppercase md:text-3xl md:tracking-[-0.03em] lg:text-[40px]'
 const DESC_CLASS = 'text-text text-base leading-[1.2]'
 const LI_CLASS = 'text-text text-base leading-[1.5]'
-// Mobile: ciasniejszy interlinia listy - kwadratowa galeria zabiera pol ekranu,
-// wiec dane pokoju musza zmiescic sie w reszcie panelu snapu.
-const LI_MOBILE_CLASS = 'text-text text-base leading-[1.4]'
+// Mobile: udogodnienia to pasek na dole karty, nie pionowa lista - 12px i
+// przygaszony kolor, zeby ciag nazw nie konkurowal z nazwa pokoju i opisem.
+const LI_MOBILE_CLASS = 'text-text-muted text-xs'
 
 // Prezentacja pokoi na /hotel jako scroll-driven "scrollytelling":
 //
@@ -126,20 +126,38 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                     {ctaLabel}
                   </ReservationCtaButton>
                 </Reveal>
-                {/* Swiadomie div/span, nie ul/li: RevealText dzieli tresc na LINIE
-                    i owija kazda we wlasny div z maska, co wsadzaloby obce dzieci
-                    miedzy liste a jej pozycje i lamalo semantyke (Lighthouse:
-                    `list` + `listitem`). Naprawa przez liste na zewnatrz wymagalaby
-                    RevealText per pozycja, czyli zmiany animacji. Udogodnienia
-                    czytaja sie tu jako ciag linii tekstu - wyglad i ruch bez zmian. */}
+                {/* Pasek udogodnien u dolu karty: zawijany ciag nazw rozdzielony
+                    kropkami. Pionowa lista nie miescila sie na niskich ekranach -
+                    panel snapu ma stala wysokosc (100svh), wiec nadmiar byl po
+                    prostu ucinany.
+                    Reveal (fade), nie RevealText: RevealText dzieli tresc na LINIE
+                    przez SplitText, co przy zawijanym flexie rozjezdza sie z
+                    ukladem. Ponizej 768px RevealText i tak nie animuje, ale ten
+                    wariant zyje do lg (768-1023px juz animuje).
+                    Separatory sa aria-hidden - czytnik dostaje sam ciag nazw.
+                    Div/span zamiast ul/li - patrz komentarz w wariancie desktop. */}
                 {amenities.length > 0 && (
-                  <RevealText as="div" className="flex flex-col items-end">
-                    {amenities.map((a, i) => (
-                      <span key={i} className={`block ${LI_MOBILE_CLASS}`}>
-                        {pickLocale(a, locale)}
-                      </span>
-                    ))}
-                  </RevealText>
+                  <Reveal delay={200}>
+                    {/* Separator to kolko 4px (h-1 w-1 + rounded-full), nie znak
+                        `middot`: glif kropki jest drobny i skaluje sie razem z
+                        fontem, wiec zadanej srednicy nie da sie nim trafic.
+                        bg-current dziedziczy przygaszony kolor paska,
+                        self-center ustawia kolko w osi wiersza (kolko nie ma
+                        wlasnej linii bazowej, wiec items-baseline by je zgubil). */}
+                    <div className={`flex flex-wrap items-baseline gap-x-1.5 ${LI_MOBILE_CLASS}`}>
+                      {amenities.map((a, i) => (
+                        <Fragment key={i}>
+                          {i > 0 && (
+                            <span
+                              aria-hidden="true"
+                              className="h-1 w-1 self-center rounded-full bg-current opacity-40"
+                            />
+                          )}
+                          <span>{pickLocale(a, locale)}</span>
+                        </Fragment>
+                      ))}
+                    </div>
+                  </Reveal>
                 )}
               </div>
             </div>
@@ -210,8 +228,13 @@ export function HotelRoomsShowcase({ rooms, locale }: Props) {
                         {ctaLabel}
                       </ReservationCtaButton>
                     </Reveal>
-                    {/* div/span zamiast listy - patrz komentarz przy wariancie
-                        mobilnym powyzej. */}
+                    {/* Swiadomie div/span, nie ul/li: RevealText dzieli tresc na
+                        LINIE i owija kazda we wlasny div z maska, co wsadzaloby
+                        obce dzieci miedzy liste a jej pozycje i lamalo semantyke
+                        (Lighthouse: `list` + `listitem`). Naprawa przez liste na
+                        zewnatrz wymagalaby RevealText per pozycja, czyli zmiany
+                        animacji. Udogodnienia czytaja sie tu jako ciag linii
+                        tekstu - wyglad i ruch bez zmian. */}
                     {amenities.length > 0 && (
                       <RevealText
                         as="div"
